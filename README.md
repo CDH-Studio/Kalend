@@ -1,5 +1,7 @@
 # Kalend
 
+[![CircleCI](https://circleci.com/gh/CDH-Studio/Kalend.svg?style=svg)](https://circleci.com/gh/CDH-Studio/Kalend)
+
 If an error occurs while trying to sign in with Google, run the PowerShell script called *setup.ps1* by right-clicking and selecting **Run with PowerShell**
 
 To have the app running
