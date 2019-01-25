@@ -7,5 +7,5 @@ import renderer from 'react-test-renderer';
 test('Home snapShot', () => {
 	const snap = renderer.create(
 		<Home />
-	)
+	);
 });
