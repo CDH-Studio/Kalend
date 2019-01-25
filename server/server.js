@@ -38,10 +38,10 @@ io.listen(app.listen(port, () => {
 }));
 
 app.io = io.on("connection", (socket) => {
-	console.log("Socket connected: " + socket.id);
+    console.log("Socket connected: " + socket.id);
 
-	socket.on("sendData", (obj) => {
-		console.log("Recieved in the server", obj)
-	})
+    socket.on("sendData", (obj) => {
+        console.log("Recieved in the server", obj)
+    })
 });
 
