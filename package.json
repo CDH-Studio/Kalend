@@ -10,6 +10,7 @@
     "react": "16.6.3",
     "react-addons-update": "^15.6.2",
     "react-native": "0.57.8",
+    "react-native-google-signin": "^1.0.2",
     "react-native-router-flux": "^4.0.6",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
