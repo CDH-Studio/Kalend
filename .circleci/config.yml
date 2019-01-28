@@ -9,20 +9,20 @@ jobs:
           path: ~/ReactNativeTEST
 
       - restore_cache:
-          key: yarn-v5-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
-          key: node-v5-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
       - run: yarn install
 
       - save_cache:
-          key: yarn-v5-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - ~/.cache/yarn
 
       - save_cache:
-          key: node-v5-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
 
@@ -45,10 +45,10 @@ jobs:
           path: ~/ReactNativeTEST
 
       - restore_cache:
-          key: yarn-v5-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
-          key: jars-v5-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run: yarn install
 
@@ -65,12 +65,12 @@ jobs:
           command: cd android && ./gradlew assembleRelease
 
       - save_cache:
-          key: jars-v5-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
 
       - save_cache:
-          key: yarn-v5-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - ~/.cache/yarn
 
