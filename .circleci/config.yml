@@ -1,12 +1,12 @@
 version: 2
 jobs:
   jest:
-    working_directory: ~/ReactNativeTEST
+    working_directory: ~/Kalend
     docker:
       - image: circleci/node:8
     steps:
       - checkout:
-          path: ~/ReactNativeTEST
+          path: ~/Kalend
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -35,14 +35,14 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
   android:
-    working_directory: ~/ReactNativeTEST
+    working_directory: ~/Kalend
     docker:
       - image: circleci/android:api-27-node8-alpha
     environment:
       - JVM_OPTS: -Xmx3200m
     steps:
       - checkout:
-          path: ~/ReactNativeTEST
+          path: ~/Kalend
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
