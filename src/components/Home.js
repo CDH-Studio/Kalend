@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ImageBackground, StatusBar, StyleSheet, Button, View, Image, Text } from 'react-native';
-import {GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import {GoogleSigninButton} from 'react-native-google-signin';
 import { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo } from '../services/google_identity';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 class Home extends React.Component {
@@ -16,44 +17,41 @@ class Home extends React.Component {
 
 	render() {
 		return (
-			<ImageBackground  style={styles.container} source={require('../assets/img/bg-pattern.png')} resizeMode="repeat">
-				<StatusBar translucent={true} backgroundColor={'#00000050'}/>
+			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+				<ImageBackground  style={styles.container} source={require('../assets/img/pattern.png')} resizeMode="repeat">
+			
+					<StatusBar translucent={true} backgroundColor={'#00000050'}/>
 				
-				<View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
-				<Image style={{height: 80, width: undefined}} source={require('../assets/img/logo.png')} resizeMode="contain"/>
-				
-				<View style={{alignItems:'center'}}>
-				<Text style={styles.text}>The Better Way to Start your Month!</Text>
-				<Image source={require('../assets/img/userLogin.png')} />
+					<View style={{alignItems:'center', flex:1, flexDirection: 'column', justifyContent: 'space-evenly'}}>
+						<View>
+							<Image style={{height: 80, width: undefined}} source={require('../assets/img/logo.png')} resizeMode="contain"/>
+							<Text style={styles.text}>The Better Way to Start your Month!</Text>
+						</View>						
+						<Image source={require('../assets/img/userLogin.png')} />
+
+						<GoogleSigninButton
+							style={{width: 312, height: 48}}
+							size={GoogleSigninButton.Size.Wide}
+							color={GoogleSigninButton.Color.Light}
+							onPress={this.signIn} />
+					</View>
 					
-				<GoogleSigninButton
-					style={{width: 312, height: 48}}
-					size={GoogleSigninButton.Size.Wide}
-					color={GoogleSigninButton.Color.Light}
-					onPress={this.signIn} />
-				</View>
-				</View>
-						
-			</ImageBackground >
+				</ImageBackground >
+			</LinearGradient>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		width: '100%',
-		height: '110%',
-		backgroundColor:'#1473E6',
-		paddingTop: 80
+		flex: 1
 	},
 
 	text: {
 		fontFamily: 'Raleway-Regular',
 		color:'#FFFFFF',
 		fontSize: 20,
-		paddingTop: 10,
-		paddingBottom: 50
+		paddingTop: 10
 	}
 });
 
