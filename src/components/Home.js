@@ -1,15 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ImageBackground, StatusBar, StyleSheet, Button } from 'react-native';
-import { GoogleSigninButton } from 'react-native-google-signin';
-import { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo } from '../services/google_identity'
+import { ImageBackground, StatusBar, StyleSheet, Button, View, Image, Text } from 'react-native';
+import {GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo } from '../services/google_identity';
 
 
 class Home extends React.Component {
-	test = () => {
-		console.log(this.state)
-	}
 
+	//In order to sign in with Google account
 	signIn = () => {
 		googleSignIn().then( (userInfo) => {
 			this.setState({userInfo});
@@ -20,32 +18,22 @@ class Home extends React.Component {
 		return (
 			<ImageBackground  style={styles.container} source={require('../assets/img/bg-pattern.png')} resizeMode="repeat">
 				<StatusBar translucent={true} backgroundColor={'#00000050'}/>
-			
+				
+				<View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+				<Image style={{height: 80, width: undefined}} source={require('../assets/img/logo.png')} resizeMode="contain"/>
+				
+				<View style={{alignItems:'center'}}>
+				<Text style={styles.text}>The Better Way to Start your Month!</Text>
+				<Image source={require('../assets/img/userLogin.png')} />
+					
 				<GoogleSigninButton
-					style={{ width: 312, height: 48 }}
+					style={{width: 312, height: 48}}
 					size={GoogleSigninButton.Size.Wide}
 					color={GoogleSigninButton.Color.Light}
 					onPress={this.signIn} />
-
-				<Button 
-					title="Print State"
-					onPress={this.test} />
-
-				<Button 
-					title="Sign Out"
-					onPress={googleSignOut} />
-
-				<Button 
-					title="Revoke Access"
-					onPress={googleRevokeAccess} />
-
-				<Button 
-					title="Is Signed In"
-					onPress={() => googleIsSignedIn().then((result) => console.log(result))} />
-
-				<Button 
-					title="Get Current User Info"
-					onPress={() => googleGetCurrentUserInfo().then((result) => console.log(result))} />
+				</View>
+				</View>
+						
 			</ImageBackground >
 		)
 	}
@@ -57,8 +45,15 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '110%',
 		backgroundColor:'#1473E6',
-		justifyContent: 'center',
-		alignItems: 'center',
+		paddingTop: 80
+	},
+
+	text: {
+		fontFamily: 'Raleway-Regular',
+		color:'#FFFFFF',
+		fontSize: 20,
+		paddingTop: 10,
+		paddingBottom: 50
 	}
 });
 
