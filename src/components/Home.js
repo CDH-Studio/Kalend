@@ -24,11 +24,12 @@ class Home extends React.Component {
 				
 					<View style={{alignItems:'center', flex:1, flexDirection: 'column', justifyContent: 'space-evenly'}}>
 						<View>
-							<Image style={{height: 80, width: undefined}} source={require('../assets/img/logo.png')} resizeMode="contain"/>
+							<Image style={{height: 100, width: undefined}} source={require('../assets/img/logoScreen.png')} resizeMode="contain"/>
 							<Text style={styles.text}>The Better Way to Start your Month!</Text>
-						</View>						
-						<Image source={require('../assets/img/userLogin.png')} />
-
+						</View>
+									
+						<Image style={{height:'35%'}} source={require('../assets/img/userLoginScreen.png')} resizeMode="contain" />
+					
 						<GoogleSigninButton
 							style={{width: 312, height: 48}}
 							size={GoogleSigninButton.Size.Wide}
@@ -51,7 +52,10 @@ const styles = StyleSheet.create({
 		fontFamily: 'Raleway-Regular',
 		color:'#FFFFFF',
 		fontSize: 20,
-		paddingTop: 10
+		paddingTop: 10,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 20
 	}
 });
 
