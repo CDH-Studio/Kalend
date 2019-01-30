@@ -1,91 +1,87 @@
 version: 2
 jobs:
-  jest:
-    working_directory: ~/Kalend
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout:
-          path: ~/Kalend
+  	jest:
+    	working_directory: ~/Kalend
+    	docker:
+      		- image: circleci/node:8
+		steps:
+			- checkout:
+				path: ~/Kalend
 
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+			- restore_cache:
+				key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+			- restore_cache:
+				key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
-      - run: yarn install
+			- run: yarn install
 
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
+			- save_cache:
+				key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+				paths:
+					- ~/.cache/yarn
 
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
+			- save_cache:
+				key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+				paths:
+					- node_modules
 
-      - run:
-          name: Jest tests
-          command: |
-            mkdir -p test-results/jest
-            yarn run test --detectOpenHandles --forceExit
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-      - run: 
-            name: Evil linter
-            command: yarn run lint-client
+			- run:
+				name: Jest tests
+				command: |
+					mkdir -p test-results/jest
+					yarn run test --detectOpenHandles --forceExit
+				environment:
+					JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+	android:
+    	working_directory: ~/Kalend
+    	docker:
+      		- image: circleci/android:api-27-node8-alpha
+   		 environment:
+      		- JVM_OPTS: -Xmx3200m
+		steps:
+			- checkout:
+				path: ~/Kalend
 
-  android:
-    working_directory: ~/Kalend
-    docker:
-      - image: circleci/android:api-27-node8-alpha
-    environment:
-      - JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout:
-          path: ~/Kalend
+			- restore_cache:
+				key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+			- restore_cache:
+				key: jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
-      - restore_cache:
-          key: jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+			- run: yarn install
 
-      - run: yarn install
+			- run:
+				name: Chmod permissions
+				command: cd android && chmod +x ./gradlew
 
-      - run:
-          name: Chmod permissions
-          command: cd android && chmod +x ./gradlew
+			- run:
+				name: Download Dependencies
+				command: cd android && ./gradlew androidDependencies
 
-      - run:
-          name: Download Dependencies
-          command: cd android && ./gradlew androidDependencies
+			- run:
+				name: Builds
+				command: cd android && ./gradlew assembleRelease
 
-      - run:
-          name: Builds
-          command: cd android && ./gradlew assembleRelease
+			- save_cache:
+				key: jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+				paths:
+					- ~/.gradle
 
-      - save_cache:
-          key: jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-          paths:
-            - ~/.gradle
+			- save_cache:
+				key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+				paths:
+					- ~/.cache/yarn
 
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-
-      - store_artifacts:
-          path: android/app/build/outputs/apk/release/
-          destination: apks/
+			- store_artifacts:
+				path: android/app/build/outputs/apk/release/
+				destination: apks/
 
 workflows:
-  version: 2
-  node-android:
+  	version: 2
+  	node-android:
     jobs:
       - jest
       - android:
-          requires:
-            - jest
+          	requires:
+            	- jest
