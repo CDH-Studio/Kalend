@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image Background renders correctly 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    Object {
+      "flex": 1,
+      "height": "110%",
+      "width": "100%",
+    }
+  }
+>
+  <Image
+    resizeMode="repeat"
+    source={
+      Object {
+        "testUri": "../../../src/assets/img/loginScreen/backPattern.png",
+      }
+    }
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "height": "110%",
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`Logo renders correctly 1`] = `
+<Image
+  style={
+    Object {
+      "height": 240,
+      "width": 320,
+    }
+  }
+/>
+`;
+
+exports[`StatusBar renders correctly 1`] = `null`;
+
+exports[`UserIcon renders correctly 1`] = `
+<Image
+  style={
+    Object {
+      "height": 240,
+      "width": 320,
+    }
+  }
+/>
+`;
