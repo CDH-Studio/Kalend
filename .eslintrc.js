@@ -22,6 +22,7 @@ module.exports = {
     "rules": {
         "no-console": "off",
         "no-const-assign": "error",
+        "linebreak-style": "off",
         "no-var": "error",
         "no-array-constructor": "error",
         "no-new-func": "error",
