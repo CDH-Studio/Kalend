@@ -22,7 +22,7 @@ googleSignIn = async () => {
 		} else {
 		  // some other error happened
 		}
-		console.error(error);
+		//console.error(error);
 	}
 };
 
@@ -31,7 +31,7 @@ googleSignOut = async () => {
 		await GoogleSignin.revokeAccess();
 		await GoogleSignin.signOut();
 	} catch (error) {
-		console.error(error);
+		//console.error(error);
 	}
 };
 
@@ -39,7 +39,7 @@ googleRevokeAccess = async () => {
 	try {
 		await GoogleSignin.revokeAccess();
 	} catch (error) {
-		console.error(error);
+		//console.error(error);
 	}
 };
 
