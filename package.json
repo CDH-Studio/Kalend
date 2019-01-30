@@ -27,7 +27,8 @@
     "redux-logger": "^3.0.6"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "automock": true
   },
   "rnpm": {
     "assets": [
