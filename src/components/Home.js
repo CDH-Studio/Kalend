@@ -1,14 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
+/*import { connect } from 'react-redux';*/
 import { ImageBackground, StatusBar, StyleSheet, Button } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
-import { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo } from '../services/google_identity'
-
+import { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo } from '../services/google_identity';
 
 class Home extends React.Component {
-	test = () => {
-		console.log(this.state)
-	}
 
 	signIn = () => {
 		googleSignIn().then( (userInfo) => {
@@ -47,7 +43,7 @@ class Home extends React.Component {
 					title="Get Current User Info"
 					onPress={() => googleGetCurrentUserInfo().then((result) => console.log(result))} />
 			</ImageBackground >
-		)
+		);
 	}
 }
 

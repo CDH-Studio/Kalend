@@ -1,5 +1,5 @@
 {
-  "name": "KalendFrontEnd",
+  "name": "Kalend",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -19,7 +19,11 @@
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "23.6.0",
+    "eslint": "^5.12.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-native": "^3.6.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3",
