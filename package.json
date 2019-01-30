@@ -28,7 +28,7 @@
   },
   "jest": {
     "preset": "react-native",
-    "automock": true
+    "setupTestFrameworkScriptFile": "./setupTestsFramework.js"
   },
   "rnpm": {
     "assets": [

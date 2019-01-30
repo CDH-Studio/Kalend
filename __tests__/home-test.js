@@ -1,17 +1,13 @@
 import React from "react";
 import Home from "../src/components/Home";
+import {GoogleSigninButton, GoogleSignin} from 'react-native-google-signin';
+import {googleSignIn} from '../services/google_identity';
 import renderer from "react-test-renderer";
 
-
 test("Home renders correctly", () => {
-    const tree = renderer.create(<Home />).toJSON();
-    expect(tree).toMatchSnapshot();
+  const tree = renderer.create(<Home />).toJSON();
+  expect(tree).toMatchSnapshot();
 });
-
-
-jest.mock('react-native-google-signin');
-
-
 
 test("Linear Gradient renders correctly", () => {
     const LinearGradient = require('react-native-linear-gradient');
