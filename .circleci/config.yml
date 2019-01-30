@@ -33,6 +33,9 @@ jobs:
             yarn run test --detectOpenHandles --forceExit
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+      - run: 
+            name: Evil linter
+            command: yarn run lint-client
 
   android:
     working_directory: ~/Kalend
