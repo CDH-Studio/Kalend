@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
-import reducer from '../reducers'
-import { createLogger } from 'redux-logger'
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import reducer from '../reducers';
+import { createLogger } from 'redux-logger';
 
 const log = createLogger({ diff: true, collapsed: true});
 
@@ -16,7 +16,7 @@ export default(initialState = {}) => {
 		compose(
 			applyMiddleware(...middlerware,...enhancers)
 		)
-	)
+	);
 
 	return store;
-}
+};

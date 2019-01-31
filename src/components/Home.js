@@ -4,7 +4,6 @@ import {GoogleSigninButton} from 'react-native-google-signin';
 import {googleSignIn} from '../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 class Home extends React.Component {
 
 	//In order to sign in with Google account

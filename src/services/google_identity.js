@@ -1,5 +1,5 @@
-import { GoogleSignin, statusCodes } from "react-native-google-signin";
-import { webClientId, googleIdentityScope } from "../../config";
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+import { webClientId, googleIdentityScope } from '../../config';
 
 GoogleSignin.configure({
 	scopes: googleIdentityScope,
@@ -7,26 +7,26 @@ GoogleSignin.configure({
 	offlineAccess: true
 });
 
-googleSignIn = async () => {
+let googleSignIn = async () => {
 	try {
 		await GoogleSignin.hasPlayServices();
 		const userInfo = await GoogleSignin.signIn();
 		return userInfo;
 	} catch (error) {
 		if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-		  // user cancelled the login flow
+			// user cancelled the login flow
 		} else if (error.code === statusCodes.IN_PROGRESS) {
-		  // operation (f.e. sign in) is in progress already
+			// operation (f.e. sign in) is in progress already
 		} else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-		  // play services not available or outdated
+			// play services not available or outdated
 		} else {
-		  // some other error happened
+			// some other error happened
 		}
 		//console.error(error);
 	}
 };
 
-googleSignOut = async () => {
+let googleSignOut = async () => {
 	try {
 		await GoogleSignin.revokeAccess();
 		await GoogleSignin.signOut();
@@ -35,7 +35,7 @@ googleSignOut = async () => {
 	}
 };
 
-googleRevokeAccess = async () => {
+let googleRevokeAccess = async () => {
 	try {
 		await GoogleSignin.revokeAccess();
 	} catch (error) {
@@ -43,12 +43,12 @@ googleRevokeAccess = async () => {
 	}
 };
 
-googleIsSignedIn = async () => {
+let googleIsSignedIn = async () => {
 	const isSignedIn = await GoogleSignin.isSignedIn();
 	return isSignedIn;
 };
 
-googleGetCurrentUserInfo = async () => {
+let googleGetCurrentUserInfo = async () => {
 	try {
 		const userInfo = await GoogleSignin.signInSilently();
 		return userInfo;
