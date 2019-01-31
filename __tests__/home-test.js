@@ -1,21 +1,21 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { ImageBackground, Image, StatusBar, StyleSheet } from "react-native";
+import {ImageBackground, Image, StatusBar} from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 
+//Removed this test in order to avoid the GoogleSignIn errors
 // test("Home renders correctly", () => {
 //   const tree = renderer.create(<Home />).toJSON();
 //   expect(tree).toMatchSnapshot();
 // });
 
-// test("Linear Gradient renders correctly", () => {
-//     const LinearGradient = require('react-native-linear-gradient');
-//     const linearGradient = renderer.create(<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}></LinearGradient>).toJSON();
-//     expect(linearGradient).toMatchSnapshot();
-// });
+test("Linear Gradient renders correctly", () => {
+    const linearGradient = renderer.create(<LinearGradient style={{flex: 1, width: '100%', height: '110%'}} colors={['#1473E6', '#0E55AA']}></LinearGradient>).toJSON();
+    expect(linearGradient).toMatchSnapshot();
+});
 
 test("Image Background renders correctly", () => {
-    const imageBackground = renderer.create(<ImageBackground  style={styles.container} source={require('../src/assets/img/loginScreen/backPattern.png')} resizeMode="repeat" ></ImageBackground>).toJSON();
+    const imageBackground = renderer.create(<ImageBackground  style={{flex: 1, width: '100%', height: '110%'}} source={require('../src/assets/img/loginScreen/backPattern.png')} resizeMode="repeat" ></ImageBackground>).toJSON();
     expect(imageBackground).toMatchSnapshot();
 });
 
@@ -38,43 +38,4 @@ test('UserIcon renders correctly', done => {
       expect(logo).toMatchSnapshot();
       done();
     });
-});
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		width: '100%',
-		height: '110%' //Fixes pattern bug
-	},
-
-	content: {
-		alignItems: 'center',
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-evenly'
-	},
-
-	logo: {
-		height: 100, 
-		width: undefined
-	},
-
-	text: {
-		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
-		fontSize: 20,
-		paddingTop: 10,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 20
-	},
-
-	userIcon: {
-		height:'35%'
-	},
-
-	signInButton: {
-		width: 312, 
-		height: 48
-	}
 });

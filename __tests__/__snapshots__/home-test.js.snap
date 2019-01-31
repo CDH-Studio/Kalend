@@ -38,6 +38,37 @@ exports[`Image Background renders correctly 1`] = `
 </View>
 `;
 
+exports[`Linear Gradient renders correctly 1`] = `
+<BVLinearGradient
+  colors={
+    Array [
+      4279530470,
+      4279129514,
+    ]
+  }
+  endPoint={
+    Object {
+      "x": 0.5,
+      "y": 1,
+    }
+  }
+  locations={null}
+  startPoint={
+    Object {
+      "x": 0.5,
+      "y": 0,
+    }
+  }
+  style={
+    Object {
+      "flex": 1,
+      "height": "110%",
+      "width": "100%",
+    }
+  }
+/>
+`;
+
 exports[`Logo renders correctly 1`] = `
 <Image
   style={
