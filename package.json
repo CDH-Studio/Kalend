@@ -27,8 +27,7 @@
     "redux-logger": "^3.0.6"
   },
   "jest": {
-    "preset": "react-native",
-    "setupTestFrameworkScriptFile": "./setupTestsFramework.js"
+    "preset": "react-native"
   },
   "rnpm": {
     "assets": [
