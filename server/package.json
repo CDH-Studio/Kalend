@@ -15,5 +15,8 @@
     "express": "^4.15.3",
     "mongojs": "^2.4.0",
     "socket.io": "^2.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.1"
   }
 }

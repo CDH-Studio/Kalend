@@ -1,6 +1,5 @@
-import React from "react";
-import { Actions, Scene } from "react-native-router-flux";
-import Home from "../components/Home";
+import { Actions, Scene } from 'react-native-router-flux';
+import Home from '../components/Home';
 
 const scenes = Actions.create(
 	<Scene key="root" hideNavBar>
