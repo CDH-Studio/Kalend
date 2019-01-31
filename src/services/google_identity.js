@@ -3,7 +3,7 @@ import { webClientId, googleIdentityScope } from "../../config";
 
 GoogleSignin.configure({
 	scopes: googleIdentityScope,
-	webClientId:webClientId,
+	webClientId,
 	offlineAccess: true
 });
 
