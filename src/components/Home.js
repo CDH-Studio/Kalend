@@ -1,7 +1,7 @@
 import React from 'react';
 import {ImageBackground, StatusBar, StyleSheet, View, Image, Text} from 'react-native';
-import {GoogleSigninButton} from 'react-native-google-signin';
-import {googleSignIn} from '../services/google_identity';
+import GoogleSigninButton from 'react-native-google-signin';
+import googleSignIn from '../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 
 class Home extends React.Component {
@@ -39,7 +39,9 @@ class Home extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		width: '100%',
+		height: '110%' //Fixes pattern bug
 	},
 
 	content: {
