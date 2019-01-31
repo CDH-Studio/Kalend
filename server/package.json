@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
     "eslint": "^5.12.1"
   }
 }
