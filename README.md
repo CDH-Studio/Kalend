@@ -2,6 +2,11 @@
 
 [![CircleCI](https://circleci.com/gh/CDH-Studio/Kalend.svg?style=svg)](https://circleci.com/gh/CDH-Studio/Kalend)
 
+## React Native Modules
+
+* React Native Google SignIn
+  * https://github.com/react-native-community/react-native-google-signin
+
 ## Dependencies
 
 Below is a list of dependencies to run our project, you can either install all of the manually or run the PowerShell script.
