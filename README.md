@@ -6,6 +6,10 @@
 
 * React Native Google SignIn
   * https://github.com/react-native-community/react-native-google-signin
+* React Native Linear Gradient
+  * https://github.com/react-native-community/react-native-linear-gradient
+* React Navigation
+  * https://reactnavigation.org/en/
 
 ## Dependencies
 
