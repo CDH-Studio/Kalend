@@ -27,8 +27,6 @@ let apiHelperCall = (URL, method, body, query) => {
 		queryText = getQueryParam(query);
 	}
 
-	console.log(queryText);
-
 	return fetch(URL + queryText, fetchData)
 		.then((response) => {
 			if (response._bodyText === '') {
