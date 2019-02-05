@@ -3,9 +3,14 @@ import {ImageBackground, StatusBar, StyleSheet, View, Image, Text} from 'react-n
 import {GoogleSigninButton} from 'react-native-google-signin';
 import {googleSignIn} from '../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
+import { grabUserData } from '../services/service';
 
 class Home extends React.Component {
 
+	componentDidMount() {
+		let data = grabUserData();
+		console.log(data);
+	}
 	//In order to sign in with Google account
 	signIn = () => {
 		googleSignIn().then( (userInfo) => {
