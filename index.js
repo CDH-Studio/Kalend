@@ -3,6 +3,8 @@
 import {AppRegistry} from 'react-native';
 import Home from './src/components/Home';
 import SchoolSchedule from './src/components/SchoolSchedule';
+import SchoolScheduleSelectPicture from './src/components/SchoolScheduleSelectPicture';
+import SchoolScheduleTakePicture from './src/components/SchoolScheduleTakePicture';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 
@@ -15,19 +17,6 @@ const LoginNavigator = createStackNavigator(
     {
       headerMode: 'none',
       initialRouteName: 'Home'
-    }
-  );
-
-  const SchoolScheduleNavigator = createStackNavigator(
-    {
-        SchoolSchedule: SchoolSchedule,
-        //SchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
-        //SchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture}
-    }, 
-    {
-        headerMode: 'none',
-        initialRouteName: 'SchoolSchedule'
-
     }
   );
 
@@ -44,7 +33,10 @@ const LoginNavigator = createStackNavigator(
 
   const TutorialNavigator = createStackNavigator(
     {
-      SchoolSchedule : {screen: SchoolScheduleNavigator},
+        SchoolSchedule: SchoolSchedule,
+        SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
+        SchoolScheduleTakePicture: SchoolScheduleTakePicture,
+        
       //FixedEvent: {screen: FixedEvent},
       //NonFixedEvent: {screen: NonFixedEvent},
       //ReviewEvent: {screen: ReviewEvent},

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		width: '100%',
-		height: '110%' //Fixes pattern bug
+		height: '130%' //Fixes pattern bug
 	},
 
 	content: {
