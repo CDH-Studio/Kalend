@@ -81,10 +81,7 @@ inside server folder run node server.js
 
 3. Overwrite the babel.config.js content with this:
 ```
-module.exports = function (api) {
-    api.cache(true)
-    return {
- 	        "presets": ["module:metro-react-native-babel-preset"]
-    };
-}
+module.exports = {
+	presets: ['module:metro-react-native-babel-preset']
+};
 ```
