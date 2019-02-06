@@ -4,6 +4,8 @@
 
 ## React Native Modules
 
+* React Native Vector Icons
+  * https://github.com/oblador/react-native-vector-icons
 * React Native Google SignIn
   * https://github.com/react-native-community/react-native-google-signin
 * React Native Linear Gradient
