@@ -16,7 +16,7 @@ class Home extends React.Component {
 
 	render() {
 		return (
-			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+			<LinearGradient style={styles.container} colors={['#1473E6', '#0b4488']}>
 				<ImageBackground style={styles.container} source={require('../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 
 					<StatusBar translucent={true} backgroundColor={'#00000050'} />
