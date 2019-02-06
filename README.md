@@ -1,4 +1,5 @@
-# Kalend
+<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/kalendFullLogo.png" alt="Kalend" width="300"/>
+
 
 [![CircleCI](https://circleci.com/gh/CDH-Studio/Kalend.svg?style=svg)](https://circleci.com/gh/CDH-Studio/Kalend)
 
