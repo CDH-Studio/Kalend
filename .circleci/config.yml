@@ -57,6 +57,10 @@ jobs:
           command: cd android && chmod +x ./gradlew
 
       - run:
+          name: Accepting Android SDK licenses
+          command: yes | sdkmanager --licenses
+
+      - run:
           name: Download Dependencies
           command: cd android && ./gradlew androidDependencies
 
