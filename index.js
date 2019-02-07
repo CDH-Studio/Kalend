@@ -3,33 +3,23 @@
 import {AppRegistry} from 'react-native';
 import Home from './src/components/Home';
 import SchoolSchedule from './src/components/SchoolSchedule';
+import SchoolScheduleSelectPicture from './src/components/SchoolScheduleSelectPicture';
+import SchoolScheduleTakePicture from './src/components/SchoolScheduleTakePicture';
+import FixedEvent from './src/components/FixedEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 
 AppRegistry.registerComponent(appName, () => MainNavigator);
 
 const LoginNavigator = createStackNavigator(
-    {
-      Home: Home
-    },
-    {
-      headerMode: 'none',
-      initialRouteName: 'Home'
-    }
-  );
-
-  const SchoolScheduleNavigator = createStackNavigator(
-    {
-        SchoolSchedule: SchoolSchedule,
-        //SchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
-        //SchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture}
-    }, 
-    {
-        headerMode: 'none',
-        initialRouteName: 'SchoolSchedule'
-
-    }
-  );
+	{
+		Home: Home
+	},
+	{
+		headerMode: 'none',
+		initialRouteName: 'Home'
+	}
+);
 
 //   const SchoolScheduleAnalysisNavigator = createStackNavigator(
 //     {
@@ -42,18 +32,20 @@ const LoginNavigator = createStackNavigator(
 //     }
 //   );
 
-  const TutorialNavigator = createStackNavigator(
-    {
-      SchoolSchedule : {screen: SchoolScheduleNavigator},
-      //FixedEvent: {screen: FixedEvent},
-      //NonFixedEvent: {screen: NonFixedEvent},
-      //ReviewEvent: {screen: ReviewEvent},
-      //ScheduleSelection: {screen: ScheduleSelection},
-      //ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
-    }, 
-    {
-        initialRouteName: 'SchoolSchedule'
-    }
+const TutorialNavigator = createStackNavigator(
+	{
+		SchoolSchedule: SchoolSchedule,
+		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
+		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
+		FixedEvent: FixedEvent,
+	  //NonFixedEvent: {screen: NonFixedEvent},
+	  //ReviewEvent: {screen: ReviewEvent},
+	  //ScheduleSelection: {screen: ScheduleSelection},
+	  //ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
+	}, 
+	{
+		initialRouteName: 'SchoolSchedule'
+	}
   );
 
 //   const CreateScheduleNavigator = createStackNavigator(
@@ -101,14 +93,14 @@ const LoginNavigator = createStackNavigator(
 
 
 const MainNavigator = createAppContainer(createSwitchNavigator(
-    {
-        //LoadingScreen: {screen: LoadingScreen},
-        //Dashboard: DashboardNavigator,
-        LoginNavigator: LoginNavigator,
-        TutorialNavigator: TutorialNavigator
-    },
-    {
-        headerMode: 'none',
-        initialRouteName: 'LoginNavigator'
-    }
+	{
+		//LoadingScreen: {screen: LoadingScreen},
+		//Dashboard: DashboardNavigator,
+		LoginNavigator: LoginNavigator,
+		TutorialNavigator: TutorialNavigator
+	},
+	{
+		headerMode: 'none',
+		initialRouteName: 'LoginNavigator'
+	}
 ));

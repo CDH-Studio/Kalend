@@ -37,7 +37,7 @@ class Home extends React.Component {
 
 				</ImageBackground >
 			</LinearGradient>
-		)
+		);
 	}
 }
 
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		width: '100%',
-		height: '110%' //Fixes pattern bug
+		height: '130%' //Fixes pattern bug
 	},
 
 	content: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		paddingTop: 10,
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: { width: -1, height: 1 },
+		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 20
 	},
 
