@@ -1,7 +1,7 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import SchoolSchedule from './src/components/SchoolSchedule';
-import {ImageBackground, Image, StatusBar} from "react-native";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import SchoolSchedule from '../src/components/SchoolSchedule';
+import {ImageBackground, Image, StatusBar, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 
@@ -54,4 +54,122 @@ test('Inactive section icon renders correctly', done => {
 	  expect(iSection).toMatchSnapshot();
 	  done();
 	});
+});
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		width: '100%',
+		height: '130%' //Fixes pattern bug
+	},
+
+	content: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		marginTop: 160
+	},
+
+	schoolIcon: {
+		height: 130,
+		width: 130
+	},
+
+	instruction: {
+		flexDirection: 'row',
+		justifyContent: 'center'
+	},
+
+	text: {
+		fontFamily: 'Raleway-Regular',
+		color: '#FFFFFF',
+		fontSize: 20,
+		paddingTop: 30,
+		paddingLeft: 15,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 20,
+		width: 220
+	},
+
+	button: {
+		alignItems: 'center'
+	},
+
+	buttonSelect: {
+		borderRadius: 12,
+		backgroundColor: '#FFFFFF',
+		padding: 17,
+		alignItems: 'center',
+		width: 300,
+		borderWidth: 3,
+		borderColor: '#FFFFFF',
+		elevation: 4
+	},
+
+	buttonSelectText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#1473E6',
+		
+	},
+
+	buttonTake: {
+		borderRadius: 12,
+		backgroundColor: 'transparent',
+		borderWidth: 3,
+		borderColor: '#FFFFFF',
+		padding: 17,
+		alignItems: 'center',
+		marginTop: 20,
+		width: 300,
+		elevation: 4
+	},
+
+	buttonTakeText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		fontWeight:'500',
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 20
+	},
+
+	section: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginTop: 50,
+		marginBottom: 10
+	},
+
+	emptySection: {
+		marginLeft: 20,
+		opacity: 0
+	},
+
+	sectionIconRow: {
+		flexDirection: 'row'
+	},
+
+	sectionIcon: {
+		width: 20,
+		height: 20,
+		margin: 8
+	},
+
+	skipButton: {
+		marginRight: 20,
+		marginBottom: 2
+	},
+
+	skipButtonText: {
+		color: 'white',
+		fontFamily: 'Raleway-Regular',
+		fontSize: 15,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 10
+	}
 });
