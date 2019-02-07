@@ -23,4 +23,3 @@ export const grabUserData = () =>  {
 			console.log('error', error);
 		});
 }; 
-

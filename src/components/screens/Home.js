@@ -1,9 +1,9 @@
 import React from 'react';
 import {ImageBackground, StatusBar, StyleSheet, View, Image, Text} from 'react-native';
 import {GoogleSigninButton} from 'react-native-google-signin';
-import {googleSignIn} from '../services/google_identity';
+import {googleSignIn} from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
-import { grabUserData } from '../services/service';
+import { grabUserData } from '../../services/service';
 
 class Home extends React.Component {
 
@@ -22,17 +22,17 @@ class Home extends React.Component {
 	render() {
 		return (
 			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
-				<ImageBackground style={styles.container} source={require('../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
+				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 
 					<StatusBar translucent={true} backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>
 						<View>
-							<Image style={styles.logo} source={require('../assets/img/kalendFullLogo.png')} resizeMode="contain" />
+							<Image style={styles.logo} source={require('../../assets/img/kalendFullLogo.png')} resizeMode="contain" />
 							<Text style={styles.text}>The Better Way to Start your Month!</Text>
 						</View>
 
-						<Image style={styles.userIcon} source={require('../assets/img/loginScreen/userIcon.png')} resizeMode="contain" />
+						<Image style={styles.userIcon} source={require('../../assets/img/loginScreen/userIcon.png')} resizeMode="contain" />
 
 						<GoogleSigninButton style={{
 							width: 312,
