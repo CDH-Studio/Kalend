@@ -40,7 +40,7 @@ class SchoolSchedule extends React.Component {
 
 						<View style={styles.section}>
 							<View style={styles.emptySection}>
-								<Text style={styles.skipButtonText}>Skip</Text> {/*In order to center the bottom section*/}
+								<Text style={styles.skipButtonText}>Skip</Text>
 							</View>
 							<View style={styles.sectionIconRow}>
 								<Image style={styles.sectionIcon} source={require('../assets/img/schoolSchedule/sectionActive.png')} resizeMode="contain" />

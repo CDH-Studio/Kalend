@@ -5,6 +5,7 @@ import Home from './src/components/Home';
 import SchoolSchedule from './src/components/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/SchoolScheduleSelectPicture';
 import SchoolScheduleTakePicture from './src/components/SchoolScheduleTakePicture';
+import LoadingScreen from './src/components/LoadingScreen';
 import FixedEvent from './src/components/FixedEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
@@ -94,13 +95,13 @@ const TutorialNavigator = createStackNavigator(
 
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{
-		//LoadingScreen: {screen: LoadingScreen},
+		LoadingScreen: {screen: LoadingScreen},
 		//Dashboard: DashboardNavigator,
 		LoginNavigator: LoginNavigator,
 		TutorialNavigator: TutorialNavigator
 	},
 	{
 		headerMode: 'none',
-		initialRouteName: 'LoginNavigator'
+		initialRouteName: 'LoadingScreen'
 	}
 ));
