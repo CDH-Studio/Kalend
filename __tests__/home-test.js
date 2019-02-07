@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import {ImageBackground, Image, StatusBar} from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 
-//Removed this test in order to avoid the GoogleSignIn errors
+// Removed this test in order to avoid the GoogleSignIn errors
 // test("Home renders correctly", () => {
 //   const tree = renderer.create(<Home />).toJSON();
 //   expect(tree).toMatchSnapshot();
