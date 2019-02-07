@@ -58,7 +58,7 @@ jobs:
 
       - run:
           name: Accepting Android SDK licenses
-          command: yes | sdkmanager --licenses
+          command: y | sdkmanager --licenses
 
       - run:
           name: Download Dependencies
