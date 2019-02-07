@@ -4,6 +4,7 @@ import GradientHelper from './GradientHelper';
 
 const AnimatedGradientHelper = Animated.createAnimatedComponent(GradientHelper);
 
+// Inspired from https://github.com/dslounge/rn-animated-gradient-example
 export default class AnimatedGradient extends React.Component {
 	constructor(props) {
 		super(props);
@@ -65,4 +66,3 @@ const styles = StyleSheet.create({
 		flex: 1
 	}
 });
-  
