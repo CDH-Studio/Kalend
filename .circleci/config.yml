@@ -58,7 +58,11 @@ jobs:
 
       - run:
           name: Accepting Android SDK licenses
-          command: y | sdkmanager --licenses
+          command: yes | sdkmanager --licenses && yes | sdkmanager --update
+
+      - run:
+          name: Explicitly install platforms;android-26
+          command: sdkmanager "platforms;android-26"
 
       - run:
           name: Download Dependencies
