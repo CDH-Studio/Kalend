@@ -1,12 +1,12 @@
 /** @format */
 
 import {AppRegistry} from 'react-native';
-import Home from './src/components/Home';
-import SchoolSchedule from './src/components/SchoolSchedule';
-import SchoolScheduleSelectPicture from './src/components/SchoolScheduleSelectPicture';
-import SchoolScheduleTakePicture from './src/components/SchoolScheduleTakePicture';
-import LoadingScreen from './src/components/LoadingScreen';
-import FixedEvent from './src/components/FixedEvent';
+import Home from './src/components/screens/Home';
+import SchoolSchedule from './src/components/screens/SchoolSchedule';
+import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
+import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
+import LoadingScreen from './src/components/screens/LoadingScreen';
+import FixedEvent from './src/components/screens/FixedEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 

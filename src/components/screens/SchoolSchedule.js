@@ -19,12 +19,12 @@ class SchoolSchedule extends React.Component {
 	render() {
 		return (
 			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
-				<ImageBackground style={styles.container} source={require('../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
+				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
 					<View style={styles.content}>
 						<View style={styles.instruction}>
-							<Image style={styles.schoolIcon} source={require('../assets/img/schoolSchedule/school.png')} resizeMode="contain" />
+							<Image style={styles.schoolIcon} source={require('../../assets/img/schoolSchedule/school.png')} resizeMode="contain" />
 							<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
 						</View>
 						
@@ -43,11 +43,11 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.skipButtonText}>Skip</Text>
 							</View>
 							<View style={styles.sectionIconRow}>
-								<Image style={styles.sectionIcon} source={require('../assets/img/schoolSchedule/sectionActive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
+								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionActive.png')} resizeMode="contain" />
+								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
+								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
+								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
+								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
 							</View>
 							
 							<View style={styles.skipButton}>
