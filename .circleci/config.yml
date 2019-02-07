@@ -58,7 +58,7 @@ jobs:
 
       - run:
           name: Explicitly install platforms;android-26
-          command: sdkmanager "platforms;android-26"
+          command: echo "Y" | sdkmanager "platforms;android-26"
 
       - run:
           name: Download Dependencies
