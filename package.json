@@ -8,6 +8,7 @@
     "lint-client": "node_modules/.bin/eslint src"
   },
   "dependencies": {
+    "lottie-react-native": "2.3.2",
     "react": "16.6.3",
     "react-addons-update": "^15.6.2",
     "react-native": "0.57.8",
@@ -40,7 +41,7 @@
   },
   "rnpm": {
     "assets": [
-      "./assets/fonts/"
+      "src/assets/fonts/"
     ]
   }
 }

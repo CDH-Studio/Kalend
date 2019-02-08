@@ -53,6 +53,12 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>OpenSans-Regular.ttf</string>
+		<string>Raleway-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-SemiBold.ttf</string>
+		<string>Raleway-Bold.ttf</string>
+		<string>Raleway-SemiBold.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>

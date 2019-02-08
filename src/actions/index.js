@@ -5,7 +5,7 @@ export function logUser (profile) {
 		type: SIGNED_IN,
 		profile
 	};
-	
+
 	return action;
 }
 

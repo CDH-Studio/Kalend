@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -31,9 +32,10 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new VectorIconsPackage(),
-            new RNGestureHandlerPackage(),
-            new LinearGradientPackage(),
-            new RNGoogleSigninPackage()
+            new LottiePackage(),
+          new RNGestureHandlerPackage(),
+          new LinearGradientPackage(),
+          new RNGoogleSigninPackage()
       );
     }
 
