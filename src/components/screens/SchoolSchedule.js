@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
+import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 
 class SchoolSchedule extends React.Component {
@@ -18,7 +19,7 @@ class SchoolSchedule extends React.Component {
 
 	render() {
 		return (
-			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 

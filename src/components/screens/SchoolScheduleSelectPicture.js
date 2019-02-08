@@ -13,7 +13,7 @@ import {
 	ImageBackground,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { FAB } from 'react-native-paper';
+import { gradientColors } from '../../../config';
 
 
 async function requestCameraPermission() {
@@ -86,7 +86,7 @@ class SchoolScheduleSelectPicture extends Component {
 	render() {
 		return (
 
-			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<View style={{flex: 1}}>
 						<StatusBar translucent={true} backgroundColor={'#00000050'} />
