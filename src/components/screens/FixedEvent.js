@@ -1,6 +1,7 @@
 import React from 'react';
 import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 
 class FixedEvent extends React.Component {
@@ -21,11 +22,13 @@ class FixedEvent extends React.Component {
 		super(props);
 		this.state = { 
 			title: '',
+			location: '',
 			allDay: false,
 			startDate: new Date().toDateString(),
+			minStartDate: new Date().toDateString(),
 			endDate: new Date().toDateString(),
-			startTime: new Date().toTimeString(),
-			endTime: new Date().toTimeString()
+			startTime: new Date().toLocaleTimeString(),
+			endTime: new Date().toLocaleTimeString()
 		};
 	}
 
@@ -37,11 +40,11 @@ class FixedEvent extends React.Component {
 				<View style={styles.content}>
 					<View style={styles.instruction}>
 						<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-						<Icon name="calendar-today" size={130} color="#1473E6" />
+						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6" />
 					</View>
 
 					<View style={styles.textInput}>
-						<Icon name="format-title" size={30} color="#1473E6" />
+						<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
 						<View style={styles.textInputBorder}>
 							<TextInput style={styles.textInputfont} placeholder="Title" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
 						</View>
@@ -60,20 +63,21 @@ class FixedEvent extends React.Component {
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
 								placeholder={this.state.startDate} 
 								format="ddd., MMM DD, YYYY" 
-								minDate={this.state.startDate} 
+								minDate={this.state.minStartDate} 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(startDate) => this.setState({startDate: new Date(startDate)})} />
+								onDateChange={(startDate) => this.setState({startDate: new Date(startDate).toDateString()})} />
 								
 							<DatePicker showIcon={false} 
 								time={this.state.startTime} 
 								mode="time" 
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
 								placeholder={this.state.startTime} 
-								format="HH:MM A" 
+								format="HH:mm A" 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onTimeChange={(startTime) => this.setState({startTime: new Date(startTime)})} />
+								is24Hour={false}
+								onDateChange={(startTime) => this.setState({startTime})} />
 						</View>
 
 						<View style={styles.end}>
@@ -84,21 +88,58 @@ class FixedEvent extends React.Component {
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
 								placeholder={this.state.endDate} 
 								format="ddd., MMM DD, YYYY" 
-								minDate={this.state.endDate} 
+								minDate={this.state.startDate} 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(endDate) => this.setState({endDate: new Date(endDate)})} />
+								onDateChange={(endDate) => this.setState({endDate: new Date(endDate).toDateString()})} />
 
 							<DatePicker showIcon={false} 
 								time={this.state.endTime} 
 								mode="time" 
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
 								placeholder={this.state.endTime} 
-								format="HH:MM A" 
+								format="HH:mm A" 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onTimeChange={(endTime) => this.setState({endTime: new Date(endTime)})} />
+								onDateChange={(endTime) => this.setState({endTime})} />
 						</View>
+					</View>
+
+					<View style={styles.description}>
+
+						<View style={styles.textInput}>
+							<MaterialIcons name="location-on" size={30} color="#1473E6" />
+							<View style={styles.textInputBorder}>
+								<TextInput style={styles.textInputfont} placeholder="Location" onChangeText={(location) => this.setState({location})} value={this.state.location}/>
+							</View>
+						</View>
+
+						<View style={styles.textInput}>
+							<MaterialCommunityIcons name="text-short" size={30} color="#1473E6" />
+							<View style={styles.textInputBorder}>
+								<TextInput style={styles.textInputfont} placeholder="Description" onChangeText={(description) => this.setState({description})} value={this.state.description}/>
+							</View>
+						</View>
+
+						<View style={styles.textInput}>
+							<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
+							<View style={styles.textInputBorder}>
+								<TextInput style={styles.textInputfont} placeholder="Recurrence" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
+							</View>
+						</View>
+
+					</View>
+
+					<View style={styles.buttons}>
+						<TouchableOpacity style={styles.buttonEvent} onPress={() => this.props.navigation.navigate('SchoolScheduleSelectPicture')}>
+							<Text style={styles.buttonEventText}>ADD ANOTHER EVENT</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('SchoolScheduleSelectPicture')}>
+							<Text style={styles.buttonNextText}>NEXT</Text>
+						</TouchableOpacity>
+
+
 					</View>
 
 				</View>
@@ -156,7 +197,8 @@ const styles = StyleSheet.create({
 	blueTitle: {
 		color: '#1473E6',
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 18
+		fontSize: 18,
+		width: 70
 	},
 	
 	timeSection: {
