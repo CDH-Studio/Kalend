@@ -378,7 +378,6 @@ exports[`SchoolSchedule renders correctly 1`] = `
           >
             Skip
           </Text>
-           
         </View>
         <View
           style={
