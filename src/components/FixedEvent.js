@@ -51,7 +51,7 @@ class FixedEvent extends React.Component {
 
 						<View style={styles.start}>
 							<Text style={styles.blueTitle}>Start</Text>
-							<DatePicker showIcon={false} date={this.state.date} mode="date" placeholder={this.state.date} format="MM/DD/YY" minDate={this.state.date} confirmBtnText="Confirm" cancelBtnText="Cancel" onDateChange={(date) => this.setState({date: date})} value={this.state.date}/>
+							<DatePicker showIcon={false} date={this.state.date} mode="date" customStyles={{dateInput:{borderWidth: 0, fontFamily: 'OpenSans-Regular'}}} placeholder={this.state.date} format="MM/DD/YY" minDate={this.state.date} confirmBtnText="Confirm" cancelBtnText="Cancel" onDateChange={(date) => this.setState({date: date})} value={this.state.date}/>
 						</View>
 
 						<View style={styles.end}>
