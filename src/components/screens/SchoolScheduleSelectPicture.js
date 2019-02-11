@@ -1,7 +1,8 @@
 import React from 'react';
-import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground } from 'react-native';
+import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class SchoolScheduleSelectPicture extends React.Component {
 	static navigationOptions = {
@@ -26,9 +27,10 @@ class SchoolScheduleSelectPicture extends React.Component {
 				first: 99, 
 				assetType: 'Photos',
 			},
-			showFAB: false
+			showFAB: false,
+			loadingAnimationValue: 0,
+			selectedStyle: Array(99).fill(1)
 		};
-		this._selectImage = this._selectImage.bind(this);
 	}
 
 	componentDidMount() {
@@ -41,12 +43,43 @@ class SchoolScheduleSelectPicture extends React.Component {
 			.catch((error) => console.log(error));
 	}
 
-	_selectImage(uri) {
+	scrollListener = (event) => {
+		event = event.nativeEvent;
+		if (event.contentOffset.y + event.layoutMeasurement.height === event.contentSize.height) {
+			this.atTheBottom(true);
+		}
+		this.atTheBottom(false);
+	}
+
+	atTheBottom = (bool) => {
+		if (bool) {
+			console.log("AT THE BOTTOM");
+			
+			let loop1 = setInterval(() => {
+				this.setState({loadingAnimationValue: this.state.loadingAnimationValue + .2});
+				if (this.state.loadingAnimationValue > 0.5) {
+					clearInterval(loop1);
+				}
+			}, 1);
+		} else if (this.state.loadingAnimation !== 0) {
+			let loop2 = setInterval(() => {
+				this.setState({loadingAnimationValue: this.state.loadingAnimationValue - .2});
+				if (this.state.loadingAnimationValue < 0) {
+					clearInterval(loop2);
+				}
+			}, 1);
+		}
+	}
+	
+	selectImage = (uri, index) => {
 		this.setState({
 			selected: uri,
 			showFAB: true
 		});
-		console.log('Selected image: ', uri);
+
+		console.log(index);
+
+		this.state.selectedStyle[index] = 0.5;
 	}
 
 	render() {
@@ -59,19 +92,35 @@ class SchoolScheduleSelectPicture extends React.Component {
 					<View style={styles.content}>
 						<StatusBar translucent={true} 
 							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
-						<ScrollView style={styles.scroll}>
+						<ScrollView style={styles.scroll}
+							onScroll={this.scrollListener}>
 							<View style={styles.imageGrid}>
-								{ this.state.images.map(image => {
+								{ this.state.images.map((image, index) => {
 									return (
 										<TouchableOpacity key={image.uri} 
 											style={styles.touch} 
-											onPress={() => this._selectImage(image.uri)}>
+											onPress={() => this.selectImage(image.uri, index)}
+											activeOpacity={0.7}>
+
+											<Icon style={{opacity: 1,position:"absolute", bottom:0, right:0, padding: 5}} name="check" size={30} color="#ffffff" />
+											
+											<View style={{backgroundColor:'#232323',
+												position:"absolute", 
+												borderRadius: 5,
+												height:Dimensions.get('window').width/3 - 14, 
+												width:Dimensions.get('window').width/3 - 14,
+												opacity: 2-this.state.selectedStyle[index]*2}}>
+											</View>
+
 											<Image style={styles.image} 
-												source={{ uri: image.uri }} />
+												source={{ uri: image.uri }} >
+											</Image>
 										</TouchableOpacity>
 									);
 								}) }
+        						<ActivityIndicator style={{padding:15,opacity:this.state.loadingAnimationValue}} size="large" color="#ffffff" />
 							</View>
+							
 						</ScrollView>
 					</View>
 				</ImageBackground>
@@ -97,6 +146,7 @@ const styles = StyleSheet.create({
 		width: Dimensions.get('window').width/3 - 14,
 		height: Dimensions.get('window').width/3 - 14,
 		borderRadius: 5,
+		backgroundColor: '#000',
 	},
 	touch: {
 		margin: 5,
