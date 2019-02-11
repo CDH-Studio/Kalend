@@ -89,7 +89,7 @@ jobs:
       
       - run:
           name: "List file structure"
-          command: ls
+          command: cd .. && ls -LR
       
       - persist_to_workspace:
           root: ~/Kalend/apks
