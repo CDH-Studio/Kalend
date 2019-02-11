@@ -100,9 +100,14 @@ jobs:
           at: ~/Kalend
         
       - run:
-          name: "List directories"
+          name: "Renames the APK file"
           command:
-            cd .. && ls -LR
+            cd ~/Kalend/android/app/build/outputs/apk/release && mv app-release.apk Kalend.apk
+
+      - run:
+          name: "Renames the APK file"
+          command:
+            cd ~/Kalend/android/app/build/outputs/apk/release && rm output.json
 
       - run:
           name: "Publish Release on GitHub"
