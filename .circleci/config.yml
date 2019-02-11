@@ -82,6 +82,19 @@ jobs:
           path: android/app/build/outputs/apk/release/
           destination: apks/
 
+  publish-github-release:
+    working_directory: ~/Kalend
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: ./artifacts
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            VERSION=$(my-binary --version)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts/
+
 workflows:
   version: 2
   node-android:
@@ -90,3 +103,6 @@ workflows:
       - android:
           requires:
             - jest
+      - publish-github-release:
+          requires:
+            - android
