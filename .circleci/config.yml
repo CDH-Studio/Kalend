@@ -98,17 +98,11 @@ jobs:
     
       - attach_workspace:
           at: ~/Kalend
-
-      - checkout:
-          path: ~/Kalend
         
       - run:
           name: "List directories"
           command:
             cd .. && ls -LR
-
-      - restore_cache:
-          key: apks-v1-{{ checksum "~/Kalend/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
 
       - run:
           name: "Publish Release on GitHub"
