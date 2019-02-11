@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 class SchoolSchedule extends React.Component {
 	static navigationOptions = {
@@ -43,11 +44,11 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.skipButtonText}>Skip</Text>
 							</View>
 							<View style={styles.sectionIconRow}>
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionActive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
+								<Octicons name="primitive-dot" size={35} color="#FFFFFF" style={styles.sectionIconActive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
 							</View>
 							
 							<View style={styles.skipButton}>
@@ -154,13 +155,16 @@ const styles = StyleSheet.create({
 	},
 
 	sectionIconRow: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		marginRight: -20
 	},
 
-	sectionIcon: {
-		width: 20,
-		height: 20,
-		margin: 8
+	sectionIconActive: {
+		width: 40,
+	},
+
+	sectionIconInactive: {
+		width: 40,
 	},
 
 	skipButton: {

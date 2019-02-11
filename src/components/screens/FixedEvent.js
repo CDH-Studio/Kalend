@@ -1,8 +1,15 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch} from 'react-native';
+import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import Octicons from 'react-native-vector-icons/Octicons';
 import DatePicker from 'react-native-datepicker';
+
+//TODO
+//Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
+//Add onSubmit functions for buttons + navigate/resetForm
+//Modify logic for date and time
 
 class FixedEvent extends React.Component {
 	static navigationOptions = {
@@ -20,15 +27,20 @@ class FixedEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		let currentDay = new Date().toLocaleTimeString().split(':');
 		this.state = { 
 			title: '',
 			location: '',
+
+			//Time section
 			allDay: false,
 			startDate: new Date().toDateString(),
 			minStartDate: new Date().toDateString(),
 			endDate: new Date().toDateString(),
-			startTime: new Date().toLocaleTimeString(),
-			endTime: new Date().toLocaleTimeString()
+			startTime: currentDay[0] + ':' + currentDay[1] + ' ' + currentDay[2].split(' ')[1],
+			endTime: currentDay[0] + ':' + currentDay[1] + ' ' + currentDay[2].split(' ')[1],
+
+			recurrenceValue: 'none'
 		};
 	}
 
@@ -60,18 +72,19 @@ class FixedEvent extends React.Component {
 							<DatePicker showIcon={false} 
 								date={this.state.startDate} 
 								mode="date" 
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
+								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
 								placeholder={this.state.startDate} 
 								format="ddd., MMM DD, YYYY" 
 								minDate={this.state.minStartDate} 
+								maxDate={this.state.endDate}
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(startDate) => this.setState({startDate: new Date(startDate).toDateString()})} />
+								onDateChange={(startDate) => this.setState({startDate})} />
 								
 							<DatePicker showIcon={false} 
 								time={this.state.startTime} 
 								mode="time" 
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
+								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
 								placeholder={this.state.startTime} 
 								format="HH:mm A" 
 								confirmBtnText="Confirm" 
@@ -85,22 +98,23 @@ class FixedEvent extends React.Component {
 							<DatePicker showIcon={false} 
 								date={this.state.endDate} 
 								mode="date" 
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
+								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
 								placeholder={this.state.endDate} 
 								format="ddd., MMM DD, YYYY" 
 								minDate={this.state.startDate} 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(endDate) => this.setState({endDate: new Date(endDate).toDateString()})} />
+								onDateChange={(endDate) => this.setState({endDate})} />
 
 							<DatePicker showIcon={false} 
 								time={this.state.endTime} 
 								mode="time" 
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}}} 
+								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
 								placeholder={this.state.endTime} 
 								format="HH:mm A" 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
+								is24Hour={false}
 								onDateChange={(endTime) => this.setState({endTime})} />
 						</View>
 					</View>
@@ -122,24 +136,48 @@ class FixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
+							<Feather name="repeat" size={30} color="#1473E6" />
 							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputfont} placeholder="Recurrence" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
+								<Picker style={styles.recurrence} selectedValue={this.state.recurrence} onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
+									<Picker.Item label="None" value="none" />
+									<Picker.Item label="Everyday" value="everyday" />
+									<Picker.Item label="Weekly" value="weekly" />
+									<Picker.Item label="Monthly" value="monthly" />
+								</Picker>
 							</View>
 						</View>
 
 					</View>
 
 					<View style={styles.buttons}>
-						<TouchableOpacity style={styles.buttonEvent} onPress={() => this.props.navigation.navigate('SchoolScheduleSelectPicture')}>
+						<TouchableOpacity style={styles.buttonEvent}> 
 							<Text style={styles.buttonEventText}>ADD ANOTHER EVENT</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('SchoolScheduleSelectPicture')}>
+						<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
 							<Text style={styles.buttonNextText}>NEXT</Text>
 						</TouchableOpacity>
 
 
+					</View>
+
+					<View style={styles.section}>
+						<View style={styles.emptySection}>
+							<Text style={styles.skipButtonText}>Skip</Text>
+						</View>
+						<View style={styles.sectionIconRow}>
+							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconActive} />
+							<Octicons name="primitive-dot" size={35} color="#1473E6" style={styles.sectionIconInactive} />
+							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconInactive} />
+							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconInactive} />
+							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconInactive} />
+						</View>
+							
+						<View style={styles.skipButton}>
+							<TouchableOpacity onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
+								<Text style={styles.skipButtonText}>Skip</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 
 				</View>
@@ -157,7 +195,8 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'space-evenly'
+		justifyContent: 'space-evenly',
+		marginTop: 100
 	},
 
 	instruction: {
@@ -179,16 +218,19 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'flex-end',
-		marginRight: 20
+		marginRight: 20,
+		height: 40,
+		marginTop: 10
 	},
 
 	textInputFont: {
 		fontFamily: 'OpenSans-Regular',
-		fontSize: 20
+		fontSize: 20,
+		color: '#565454'
 	},
 
 	textInputBorder: {
-		borderBottomColor: '#979797',
+		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: 320,
 		marginLeft: 20
@@ -202,7 +244,8 @@ const styles = StyleSheet.create({
 	},
 	
 	timeSection: {
-		marginLeft: 70
+		marginLeft: 65,
+		marginTop: 20
 	},
 
 	allDay: {
@@ -219,6 +262,102 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+
+	description: {
+		marginBottom: 30
+	},
+
+	recurrence:{
+		color: '#565454',
+		height: 40,
+		width: 335,
+		marginLeft: -5
+	},
+
+	buttons: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+
+	buttonEvent: {
+		borderRadius: 12,
+		backgroundColor: '#1473E6',
+		width: 150,
+		height: 60,
+		borderWidth: 3,
+		borderColor: '#1473E6',
+		elevation: 4,
+		marginRight: 25,
+		justifyContent:'center'
+	},
+
+	buttonEventText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		textAlign: 'center',
+		padding: 8
+	},
+
+	buttonNext: {
+		borderRadius: 12,
+		backgroundColor: '#FFFFFF',
+		width: 100,
+		height: 60,
+		borderWidth: 3,
+		borderColor: '#1473E6',
+		elevation: 4,
+		justifyContent:'center'
+	},
+
+	buttonNextText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#1473E6',
+		textAlign: 'center',
+		padding: 8
+	},
+
+	section: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginTop: 30,
+		marginBottom: 10
+	},
+
+	emptySection: {
+		marginLeft: 20,
+		opacity: 0 //In order to center the bottom section
+	},
+
+	sectionIconRow: {
+		flexDirection: 'row',
+		marginRight: -20
+	},
+
+	sectionIconActive: {
+		width: 40,
+	},
+
+	sectionIconInactive: {
+		width: 40,
+	},
+
+	skipButton: {
+		marginRight: 20,
+		marginBottom: 2
+	},
+
+	skipButtonText: {
+		color: '#1473E6',
+		fontFamily: 'Raleway-Regular',
+		fontSize: 15,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 10
+	}
 });
 
 export default FixedEvent;
