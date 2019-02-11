@@ -155,5 +155,9 @@ workflows:
           requires:
             - yarn-install
       - publish-github-release:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - android-build

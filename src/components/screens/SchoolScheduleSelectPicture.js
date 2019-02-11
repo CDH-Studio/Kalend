@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Animated } from 'react-native';
+import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -53,7 +53,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	atTheBottom = (bool) => {
 		if (bool) {
-			console.log("AT THE BOTTOM");
+			console.log('AT THE BOTTOM');
 			
 			let loop1 = setInterval(() => {
 				this.setState({loadingAnimationValue: this.state.loadingAnimationValue + .2});
@@ -102,10 +102,10 @@ class SchoolScheduleSelectPicture extends React.Component {
 											onPress={() => this.selectImage(image.uri, index)}
 											activeOpacity={0.7}>
 
-											<Icon style={{opacity: 1,position:"absolute", bottom:0, right:0, padding: 5}} name="check" size={30} color="#ffffff" />
+											<Icon style={{opacity: 1,position:'absolute', bottom:0, right:0, padding: 5}} name="check" size={30} color="#ffffff" />
 											
 											<View style={{backgroundColor:'#232323',
-												position:"absolute", 
+												position:'absolute', 
 												borderRadius: 5,
 												height:Dimensions.get('window').width/3 - 14, 
 												width:Dimensions.get('window').width/3 - 14,
@@ -118,7 +118,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 										</TouchableOpacity>
 									);
 								}) }
-        						<ActivityIndicator style={{padding:15,opacity:this.state.loadingAnimationValue}} size="large" color="#ffffff" />
+								<ActivityIndicator style={{padding:15,opacity:this.state.loadingAnimationValue}} size="large" color="#ffffff" />
 							</View>
 							
 						</ScrollView>
