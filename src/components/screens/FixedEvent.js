@@ -85,7 +85,7 @@ class FixedEvent extends React.Component {
 								time={this.state.startTime} 
 								mode="time" 
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
-								placeholder={this.state.startTime} 
+								placeholder={''} 
 								format="HH:mm A" 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
@@ -110,7 +110,7 @@ class FixedEvent extends React.Component {
 								time={this.state.endTime} 
 								mode="time" 
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
-								placeholder={this.state.endTime} 
+								placeholder={''} 
 								format="HH:mm A" 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
