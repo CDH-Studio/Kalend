@@ -37,7 +37,7 @@ jobs:
       - persist_to_workspace:
           root: ~/Kalend
           paths:
-            - ~/Kalend
+            - Kalend/
 
   android:
     working_directory: ~/Kalend
@@ -99,7 +99,7 @@ jobs:
       - persist_to_workspace:
           root: ~/Kalend
           paths:
-            - ~/Kalend
+            - Kalend/
 
   publish-github-release:
     working_directory: ~/Kalend
