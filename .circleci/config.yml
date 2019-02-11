@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  jest:
+  yarn-install:
     working_directory: ~/Kalend
     docker:
       - image: circleci/node:8
@@ -9,22 +9,40 @@ jobs:
           path: ~/Kalend
 
       - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v2-{{ checksum "package.json" }}-{{ arch }}
 
       - run: yarn install
 
       - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - ~/.cache/yarn
 
       - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v2-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
+      
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - Kalend/
+            - .cache/yarn
+            - node_modules
+
+  jest-tests:
+    working_directory: ~/Kalend
+    docker:
+      - image: circleci/node:8
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - checkout:
+          path: ~/Kalend
 
       - run:
           name: Jest tests
@@ -34,21 +52,37 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
-  android:
+  linter:
+    working_directory: ~/Kalend
+    docker:
+      - image: circleci/node:8
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - checkout:
+          path: ~/Kalend
+
+      - run:
+          name: Linter
+          command: yarn run lint-client
+
+  android-build:
     working_directory: ~/Kalend
     docker:
       - image: circleci/android:api-27-node8-alpha
     environment:
       - JVM_OPTS: -Xmx3200m
     steps:
+    
+      - attach_workspace:
+          at: ~/
+
       - checkout:
           path: ~/Kalend
 
       - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      - restore_cache:
-          key: jars-v2-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: jars-v3-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run: yarn install
 
@@ -69,24 +103,61 @@ jobs:
           command: cd android && ./gradlew assembleRelease
 
       - save_cache:
-          key: jars-v2-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: jars-v3-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
-
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
 
       - store_artifacts:
           path: android/app/build/outputs/apk/release/
           destination: apks/
 
+      - persist_to_workspace:
+          root: ~/Kalend
+          paths:
+            - android/app/build/outputs/apk/release/
+
+  publish-github-release:
+    working_directory: ~/Kalend
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+    
+      - attach_workspace:
+          at: ~/Kalend
+        
+      - run:
+          name: "Renames the APK file"
+          command:
+            cd ~/Kalend/android/app/build/outputs/apk/release && mv app-release.apk Kalend.apk
+
+      - run:
+          name: "Renames the APK file"
+          command:
+            cd ~/Kalend/android/app/build/outputs/apk/release && rm output.json
+
+      - run:
+          name: "Publish Release on GitHub"
+          command:
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/Kalend/android/app/build/outputs/apk/release
+
 workflows:
   version: 2
   node-android:
     jobs:
-      - jest
-      - android:
+      - yarn-install
+      - linter:
           requires:
-            - jest
+            - yarn-install
+      - jest-tests:
+          requires:
+            - linter
+      - android-build:
+          requires:
+            - linter
+      - publish-github-release:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - android-build
