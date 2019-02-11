@@ -89,6 +89,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ./artifacts
+
+      - run:
+          name: "List file structure"
+          command: ls -LR
+
       - run:
           name: "Publish Release on GitHub"
           command:
