@@ -145,15 +145,15 @@ workflows:
   node-android:
     jobs:
       - yarn-install
-      - jest-tests:
-          requires:
-            - yarn-install
-      - android-build:
-          requires:
-            - yarn-install
       - linter:
           requires:
             - yarn-install
+      - jest-tests:
+          requires:
+            - linter
+      - android-build:
+          requires:
+            - linter
       - publish-github-release:
           filters:
             branches:
