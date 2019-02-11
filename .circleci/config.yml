@@ -35,9 +35,11 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          root: ~/Kalend
+          root: ~/
           paths:
             - Kalend/
+            - .cache/yarn
+            - node_modules
 
   android:
     working_directory: ~/Kalend
@@ -48,13 +50,10 @@ jobs:
     steps:
     
       - attach_workspace:
-          at: ~/Kalend
+          at: ~/
 
       - checkout:
           path: ~/Kalend
-
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
           key: jars-v2-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
@@ -82,16 +81,6 @@ jobs:
           paths:
             - ~/.gradle
 
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-            
-      - save_cache:
-          key: apks-v1-{{ checksum "~/Kalend/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
-          paths:
-            - ~/Kalend/android/app/build/outputs/apk/release/
-
       - store_artifacts:
           path: android/app/build/outputs/apk/release/
           destination: apks/
@@ -99,7 +88,7 @@ jobs:
       - persist_to_workspace:
           root: ~/Kalend
           paths:
-            - Kalend/
+            - android/app/build/outputs/apk/release/
 
   publish-github-release:
     working_directory: ~/Kalend
