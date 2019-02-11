@@ -96,14 +96,19 @@ jobs:
 
       - checkout:
           path: ~/Kalend
+        
+      - run:
+          name: "List directories"
+          command:
+            cd .. && ls -LR
 
       - restore_cache:
-          key: apks-v1-{{ checksum "~/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
+          key: apks-v1-{{ checksum "~/Kalend/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
 
       - run:
           name: "Publish Release on GitHub"
           command:
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/android/app/build/outputs/apk/release
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/Kalend/android/app/build/outputs/apk/release
 
 workflows:
   version: 2
