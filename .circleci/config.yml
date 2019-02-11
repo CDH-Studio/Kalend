@@ -97,9 +97,6 @@ jobs:
       - checkout:
           path: ~/Kalend
 
-      - attach_workspace:
-          at: ./artifacts
-
       - restore_cache:
           key: apks-v1-{{ checksum "~/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
 
