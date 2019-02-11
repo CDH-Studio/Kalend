@@ -80,9 +80,9 @@ jobs:
             - ~/.cache/yarn
             
       - save_cache:
-          key: apks-v1-{{ checksum "~/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
+          key: apks-v1-{{ checksum "~/Kalend/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
           paths:
-            - ~/android/app/build/outputs/apk/release/
+            - ~/Kalend/android/app/build/outputs/apk/release/
 
       - store_artifacts:
           path: android/app/build/outputs/apk/release/
