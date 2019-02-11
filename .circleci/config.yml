@@ -34,6 +34,11 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
+      - persist_to_workspace:
+          root: ~/Kalend
+          paths:
+            - ~/Kalend
+
   android:
     working_directory: ~/Kalend
     docker:
@@ -41,6 +46,9 @@ jobs:
     environment:
       - JVM_OPTS: -Xmx3200m
     steps:
+    
+      - attach_workspace:
+          at: ~/Kalend
 
       - checkout:
           path: ~/Kalend
@@ -88,11 +96,19 @@ jobs:
           path: android/app/build/outputs/apk/release/
           destination: apks/
 
+      - persist_to_workspace:
+          root: ~/Kalend
+          paths:
+            - ~/Kalend
+
   publish-github-release:
     working_directory: ~/Kalend
     docker:
       - image: cibuilds/github:0.10
     steps:
+    
+      - attach_workspace:
+          at: ~/Kalend
 
       - checkout:
           path: ~/Kalend
