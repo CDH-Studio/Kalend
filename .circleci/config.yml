@@ -78,23 +78,15 @@ jobs:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - ~/.cache/yarn
+            
+      - save_cache:
+          key: apks-v1-{{ checksum "~/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
+          paths:
+            - ~/android/app/build/outputs/apk/release/
 
       - store_artifacts:
           path: android/app/build/outputs/apk/release/
           destination: apks/
-
-      - run:
-          name: "List file structure"
-          command: ls -a
-      
-      - run:
-          name: "List file structure"
-          command: cd .. && ls -LR
-      
-      - persist_to_workspace:
-          root: ~/Kalend/apks
-          paths:
-            - apks/
 
   publish-github-release:
     working_directory: ~/Kalend
@@ -102,13 +94,19 @@ jobs:
       - image: cibuilds/github:0.10
     steps:
 
+      - checkout:
+          path: ~/Kalend
+
       - attach_workspace:
           at: ./artifacts
+
+      - restore_cache:
+          key: apks-v1-{{ checksum "~/android/app/build/outputs/apk/release/app-release.apk" }}-{{ arch }}
 
       - run:
           name: "Publish Release on GitHub"
           command:
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/android/app/build/outputs/apk/release
 
 workflows:
   version: 2
