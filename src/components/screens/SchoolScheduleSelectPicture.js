@@ -29,7 +29,8 @@ class SchoolScheduleSelectPicture extends React.Component {
 			},
 			showFAB: false,
 			loadingAnimationValue: 0,
-			selectedStyle: Array(99).fill(1)
+			selectedStyle: Array(99).fill(0),
+			prevIndex: ''
 		};
 	}
 
@@ -72,14 +73,17 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 	
 	selectImage = (uri, index) => {
+		if (this.state.prevIndex !== '') {
+			this.state.selectedStyle[this.state.prevIndex] = 0;
+		}
+
 		this.setState({
 			selected: uri,
-			showFAB: true
+			showFAB: true,
+			prevIndex: index
 		});
 
-		console.log(index);
-
-		this.state.selectedStyle[index] = 0.5;
+		this.state.selectedStyle[index] = 1;
 	}
 
 	render() {
@@ -97,25 +101,26 @@ class SchoolScheduleSelectPicture extends React.Component {
 							<View style={styles.imageGrid}>
 								{ this.state.images.map((image, index) => {
 									return (
-										<TouchableOpacity key={image.uri} 
-											style={styles.touch} 
-											onPress={() => this.selectImage(image.uri, index)}
-											activeOpacity={0.7}>
-
-											<Icon style={{opacity: 1,position:"absolute", bottom:0, right:0, padding: 5}} name="check" size={30} color="#ffffff" />
-											
-											<View style={{backgroundColor:'#232323',
+										<View  key={image.uri} >
+											<View style={
+												[styles.image, styles.touch, {backgroundColor:'#232323',
 												position:"absolute", 
-												borderRadius: 5,
-												height:Dimensions.get('window').width/3 - 14, 
-												width:Dimensions.get('window').width/3 - 14,
-												opacity: 2-this.state.selectedStyle[index]*2}}>
-											</View>
+												opacity: 0.4}]}/>
+											<TouchableOpacity
+												style={[styles.touch, {scaleX: 1 - 0.2 * this.state.selectedStyle[index], scaleY: 1 - 0.2 * this.state.selectedStyle[index]}]} 
+												// onPressIn={() => this.selectImage(image.uri, index)}
+												onPress={() => this.selectImage(image.uri, index)}
+												activeOpacity={0.7}>
 
-											<Image style={styles.image} 
-												source={{ uri: image.uri }} >
-											</Image>
-										</TouchableOpacity>
+												<Image style={styles.image} 
+													source={{ uri: image.uri }} >
+												</Image>
+
+												<Icon style={[styles.icon, {opacity: this.state.selectedStyle[index]}]} name="checkbox-blank-circle" size={35} color="#fff" />
+												<Icon style={[styles.icon, {opacity: this.state.selectedStyle[index]}]} name="checkbox-marked-circle" size={35} color="#FF9F1C" />
+
+											</TouchableOpacity>
+										</View>
 									);
 								}) }
         						<ActivityIndicator style={{padding:15,opacity:this.state.loadingAnimationValue}} size="large" color="#ffffff" />
@@ -174,6 +179,12 @@ const styles = StyleSheet.create({
 	},
 	scroll: {
 		paddingTop: 88,
+	},
+	icon: {
+		position: 'absolute', 
+		bottom: -15, 
+		right: -15, 
+		padding: 5
 	}
 });
 
