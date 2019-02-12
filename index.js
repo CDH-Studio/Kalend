@@ -5,10 +5,30 @@ import SchoolScheduleSelectPicture from './src/components/screens/SchoolSchedule
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
 import LoadingScreen from './src/components/screens/LoadingScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
+import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import React from 'react';
 
-AppRegistry.registerComponent(appName, () => MainNavigator);
+const theme = {
+	...DefaultTheme,
+	colors: {
+	  ...DefaultTheme.colors,
+	  primary: '#1473E6',
+	  accent: '#FF9F1C',
+	}
+  };
+
+export default function Main() {
+	return (
+	  <PaperProvider theme={theme}>
+		<MainNavigator />
+	  </PaperProvider>
+	);
+  }
+
+AppRegistry.registerComponent(appName, () => Main);
 
 const LoginNavigator = createStackNavigator(
 	{
@@ -35,6 +55,7 @@ const TutorialNavigator = createStackNavigator(
 		SchoolSchedule: SchoolSchedule,
 		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
 		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
+		SchoolScheduleCreation: SchoolScheduleCreation,
 		FixedEvent: FixedEvent,
 		//NonFixedEvent: {screen: NonFixedEvent},
 		//ReviewEvent: {screen: ReviewEvent},

@@ -3,6 +3,7 @@ import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, Stat
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { FAB, Snackbar  } from 'react-native-paper';
 
 class SchoolScheduleSelectPicture extends React.Component {
 	static navigationOptions = {
@@ -74,16 +75,37 @@ class SchoolScheduleSelectPicture extends React.Component {
 	
 	selectImage = (uri, index) => {
 		if (this.state.prevIndex !== '') {
-			this.state.selectedStyle[this.state.prevIndex] = 0;
+			if (index === this.state.prevIndex) {
+				if (this.state.selectedStyle[index] === 1) {
+					this.state.selectedStyle[index] = 0;
+				} else {
+					this.state.selectedStyle[index] = 1;
+				}
+			} else if (this.state.selectedStyle[this.state.prevIndex] === 1) {
+				this.state.selectedStyle[this.state.prevIndex] = 0;
+				this.state.selectedStyle[index] = 1;
+			} else {
+				this.state.selectedStyle[index] = 1;
+			}
+		} else {
+			this.state.selectedStyle[index] = 1;
+		}
+
+		if (this.state.selectedStyle[index] === 1) {
+			this.state.showFAB = true;
+		} else {
+			this.state.showFAB = false;
 		}
 
 		this.setState({
 			selected: uri,
-			showFAB: true,
 			prevIndex: index
 		});
+	}
 
-		this.state.selectedStyle[index] = 1;
+	uploadImage = () => {
+		console.log("Image selected >> " + this.state.selected);
+		this.props.navigation.navigate('SchoolScheduleCreation');
 	}
 
 	render() {
@@ -96,6 +118,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 					<View style={styles.content}>
 						<StatusBar translucent={true} 
 							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+							
 						<ScrollView style={styles.scroll}
 							onScroll={this.scrollListener}>
 							<View style={styles.imageGrid}>
@@ -108,7 +131,6 @@ class SchoolScheduleSelectPicture extends React.Component {
 												opacity: 0.4}]}/>
 											<TouchableOpacity
 												style={[styles.touch, {scaleX: 1 - 0.2 * this.state.selectedStyle[index], scaleY: 1 - 0.2 * this.state.selectedStyle[index]}]} 
-												// onPressIn={() => this.selectImage(image.uri, index)}
 												onPress={() => this.selectImage(image.uri, index)}
 												activeOpacity={0.7}>
 
@@ -116,8 +138,18 @@ class SchoolScheduleSelectPicture extends React.Component {
 													source={{ uri: image.uri }} >
 												</Image>
 
-												<Icon style={[styles.icon, {opacity: this.state.selectedStyle[index]}]} name="checkbox-blank-circle" size={35} color="#fff" />
-												<Icon style={[styles.icon, {opacity: this.state.selectedStyle[index]}]} name="checkbox-marked-circle" size={35} color="#FF9F1C" />
+												<Icon style={[styles.icon, 
+													{opacity: this.state.selectedStyle[index],
+													textShadowColor: 'rgba(0, 0, 0, 0.40)',
+													textShadowOffset: {width: -1, height: 1},
+													textShadowRadius: 20}]} 
+													name="checkbox-blank-circle" 
+													size={35} 
+													color="#FF9F1C" />
+												<Icon style={[styles.icon, {opacity: this.state.selectedStyle[index], bottom: -10, right: -10, }]} 
+													name="check" 
+													size={25} 
+													color="#764D16" />
 
 											</TouchableOpacity>
 										</View>
@@ -127,6 +159,12 @@ class SchoolScheduleSelectPicture extends React.Component {
 							</View>
 							
 						</ScrollView>
+						
+						<FAB
+							style={styles.fab}
+							icon="file-upload"
+							visible={this.state.showFAB}
+							onPress={this.uploadImage} />
 					</View>
 				</ImageBackground>
 			</LinearGradient>
@@ -184,7 +222,7 @@ const styles = StyleSheet.create({
 		position: 'absolute', 
 		bottom: -15, 
 		right: -15, 
-		padding: 5
+		padding: 5,
 	}
 });
 
