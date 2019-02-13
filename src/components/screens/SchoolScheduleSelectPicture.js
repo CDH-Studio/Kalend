@@ -3,7 +3,7 @@ import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, Stat
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { FAB, Snackbar  } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 
 class CameraRollImage extends React.Component {
 
@@ -14,7 +14,7 @@ class CameraRollImage extends React.Component {
 			image: this.props.image,
 			index: this.props.index,
 			selectedStyle: this.props.selectedStyle
-		}
+		};
 	}
 
 	update = (selected, index) => {
@@ -29,8 +29,8 @@ class CameraRollImage extends React.Component {
 			<View>
 				<View style={
 					[styles.image, styles.touch, {backgroundColor:'#232323',
-					position:"absolute", 
-					opacity: 0.4}]}/>
+						position:'absolute', 
+						opacity: 0.4}]}/>
 				<TouchableOpacity
 					style={[styles.touch, {scaleX: 1 - 0.2 * selectedStyle, scaleY: 1 - 0.2 * selectedStyle}]} 
 					onPress={() => this.update(image.uri, index)}
@@ -42,12 +42,12 @@ class CameraRollImage extends React.Component {
 
 					<Icon style={[styles.icon, 
 						{opacity: selectedStyle,
-						textShadowColor: 'rgba(0, 0, 0, 0.40)',
-						textShadowOffset: {width: -1, height: 1},
-						textShadowRadius: 20}]} 
-						name="checkbox-blank-circle" 
-						size={35} 
-						color="#FF9F1C" />
+							textShadowColor: 'rgba(0, 0, 0, 0.40)',
+							textShadowOffset: {width: -1, height: 1},
+							textShadowRadius: 20}]} 
+					name="checkbox-blank-circle" 
+					size={35} 
+					color="#FF9F1C" />
 					<Icon style={[styles.icon, {opacity: selectedStyle, bottom: -10, right: -10, }]} 
 						name="check" 
 						size={25} 
@@ -55,7 +55,7 @@ class CameraRollImage extends React.Component {
 
 				</TouchableOpacity>
 			</View>
-		)
+		);
 	}
 }
 
@@ -76,7 +76,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			pageInfo: null,
+			pageInfo: {
+				has_next_page: true
+			},
 			images: [],
 			selected: '',
 			fetchParams: { 
@@ -85,27 +87,46 @@ class SchoolScheduleSelectPicture extends React.Component {
 			},
 			showFAB: false,
 			loadingAnimationValue: 0,
-			selectedStyle: Array(99).fill(0),
+			selectedStyle: [],
 			prevIndex: '',
-			index: 0
+			index: 0,
+			activityIndicatorContent: <ActivityIndicator style={{padding:15}} size="large" color="#ffffff" />,
 		};
 	}
 
 	componentDidMount() {
+		this.setState({
+			activityIndicator: this.state.activityIndicatorContent
+		});
+
+		this.getPhotos();
+	}
+
+	getPhotos = () => {
 		CameraRoll.getPhotos(this.state.fetchParams)
 			.then((data) => {
+				let images = this.state.images;
+				images.push.apply(images, data.edges.map((edge) => edge.node.image));
+
+				this.state.selectedStyle.push.apply(this.state.selectedStyle, Array(data.edges.length).fill(0));
+
 				this.setState({
-					images: data.edges.map((edge) => edge.node.image),
-					pageInfo: data.page_info
+					images,
+					pageInfo: data.page_info,
+					activityIndicator: data.page_info.has_next_page ? this.state.activityIndicatorContent : <View/>,
+					fetchParams: {
+						first: this.state.fetchParams.first,
+						assetType: this.state.fetchParams.assetType,
+						after: data.page_info.end_cursor
+					},
 				});
-				console.log(data.page_info)
 			})
 			.catch((error) => console.log(error));
 	}
 
 	scrollListener = (event) => {
 		event = event.nativeEvent;
-		if (event.contentOffset.y + event.layoutMeasurement.height === event.contentSize.height) {
+		if (parseInt(event.contentOffset.y + event.layoutMeasurement.height) === parseInt(event.contentSize.height)) {
 			this.atTheBottom(true);
 		}
 		this.atTheBottom(false);
@@ -116,13 +137,12 @@ class SchoolScheduleSelectPicture extends React.Component {
 			console.log("AT THE BOTTOM");
 
 			if (this.state.pageInfo.has_next_page) {
-				this.state.fetchParams.after = this.state.pageInfo.end_cursor;
+				this.getPhotos();
 			}
 		}
 	}
 	
 	selectImage = (index) => {
-		console.log(index);
 		if (this.state.prevIndex !== '') {
 			if (index === this.state.prevIndex) {
 				if (this.state.selectedStyle[index] === 1) {
@@ -152,7 +172,6 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	onUpdate = (data) => {
-		console.log(data);
 		this.setState({data});
 		this.selectImage(data.index);
 	}
@@ -191,7 +210,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 									);
 								}) }
 
-        						<ActivityIndicator style={{padding:15}} size="large" color="#ffffff" />
+        						{this.state.activityIndicator}
 							</View>
 							
 						</ScrollView>
