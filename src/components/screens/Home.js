@@ -1,38 +1,38 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {ImageBackground, StatusBar, StyleSheet, View, Image, Text} from 'react-native';
 import {GoogleSigninButton} from 'react-native-google-signin';
 import {googleSignIn} from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
-import { grabUserData, analyzePicture, InsertDataIntoGoogle } from '../../services/service';
+import { analyzePicture, InsertDataIntoGoogle } from '../../services/service';
 
 class Home extends React.Component {
-
 	constructor(props) {
 		super(props);
-		this.state = {
-			userInfo: ''
-		};
 	}
+
 	componentDidMount() {
 		//let data = grabUserData();
 		let data = analyzePicture();
 		InsertDataIntoGoogle(data);
-
+	}
+	setUser = (userInfo) => {
+		this.props.dispatch({
+			type:'SIGNED_IN',
+			user: userInfo
+		});
 	}
 	
 	//In order to sign in with Google account
 	signIn = () => {
 		googleSignIn().then((userInfo) => {
-			this.setState({ userInfo });
-			console.log('userinfo', userInfo);
+			this.setUser(userInfo);
 			this.props.navigation.navigate('TutorialNavigator');
 		});
 	}
 
 	render() {
-		if(this.userInfo != undefined) {
-			console.log('userInfo',this.userInfo);
-		}
+
 		return (
 			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
@@ -58,6 +58,8 @@ class Home extends React.Component {
 		);
 	}
 }
+
+export default connect()(Home);
 
 const styles = StyleSheet.create({
 	container: {
@@ -97,5 +99,3 @@ const styles = StyleSheet.create({
 		height: 48
 	}
 });
-
-export default Home;

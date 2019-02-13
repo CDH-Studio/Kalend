@@ -1,6 +1,6 @@
 import {SIGNED_IN, SIGNED_OUT,} from '../constants';
 
-export function logUser (profile) {
+export function logonUser (profile) {
 	const action = {
 		type: SIGNED_IN,
 		profile
@@ -9,7 +9,7 @@ export function logUser (profile) {
 	return action;
 }
 
-export function unlogUser () {
+export function logoffUser () {
 	const action = {
 		type: SIGNED_OUT
 	};

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -15,6 +16,8 @@ class SchoolSchedule extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
+
+
 
 	render() {
 		return (
@@ -62,6 +65,13 @@ class SchoolSchedule extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	const { user } =  state.HomeReducer.profile;
+	console.log('user', user);
+	return user;
+}
+export default connect(mapStateToProps, null)(SchoolSchedule);
 
 const styles = StyleSheet.create({
 	container: {
@@ -181,4 +191,3 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolSchedule;
