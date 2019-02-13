@@ -1,9 +1,53 @@
 import React from 'react';
-import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Animated } from 'react-native';
+import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, Snackbar  } from 'react-native-paper';
+
+class CameraRollImage extends React.Component {
+
+	// update = (selected, index) => {
+	// 	this.props.onUpdate({selected, index});
+	// }
+
+	render () {
+		
+		const {image, index, selectedStyle} = this.props;
+		console.log(image, index, selectedStyle)
+		return (
+			<View key={index} >
+				<View style={
+					[styles.image, styles.touch, {backgroundColor:'#232323',
+					position:"absolute", 
+					opacity: 0.4}]}/>
+				<TouchableOpacity
+					style={[styles.touch, {scaleX: 1 - 0.2 * selectedStyle, scaleY: 1 - 0.2 * selectedStyle}]} 
+					// onPress={() => this.update(image.uri, index)}
+					activeOpacity={0.7}>
+
+					<Image style={styles.image} 
+						source={{ uri: image.uri }} >
+					</Image>
+
+					{/* <Icon style={[styles.icon, 
+						{opacity: selectedStyle,
+						textShadowColor: 'rgba(0, 0, 0, 0.40)',
+						textShadowOffset: {width: -1, height: 1},
+						textShadowRadius: 20}]} 
+						name="checkbox-blank-circle" 
+						size={35} 
+						color="#FF9F1C" />
+					<Icon style={[styles.icon, {opacity: selectedStyle, bottom: -10, right: -10, }]} 
+						name="check" 
+						size={25} 
+						color="#764D16" /> */}
+
+				</TouchableOpacity>
+			</View>
+		)
+	}
+}
 
 class SchoolScheduleSelectPicture extends React.Component {
 	static navigationOptions = {
@@ -22,6 +66,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			pageInfo: null,
 			images: [],
 			selected: '',
 			fetchParams: { 
@@ -31,7 +76,8 @@ class SchoolScheduleSelectPicture extends React.Component {
 			showFAB: false,
 			loadingAnimationValue: 0,
 			selectedStyle: Array(99).fill(0),
-			prevIndex: ''
+			prevIndex: '',
+			index: ''
 		};
 	}
 
@@ -40,7 +86,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 			.then((data) => {
 				this.setState({
 					images: data.edges.map((edge) => edge.node.image),
+					pageInfo: data.page_info
 				});
+				console.log(data.page_info)
 			})
 			.catch((error) => console.log(error));
 	}
@@ -56,24 +104,14 @@ class SchoolScheduleSelectPicture extends React.Component {
 	atTheBottom = (bool) => {
 		if (bool) {
 			console.log("AT THE BOTTOM");
-			
-			let loop1 = setInterval(() => {
-				this.setState({loadingAnimationValue: this.state.loadingAnimationValue + .2});
-				if (this.state.loadingAnimationValue > 0.5) {
-					clearInterval(loop1);
-				}
-			}, 1);
-		} else if (this.state.loadingAnimation !== 0) {
-			let loop2 = setInterval(() => {
-				this.setState({loadingAnimationValue: this.state.loadingAnimationValue - .2});
-				if (this.state.loadingAnimationValue < 0) {
-					clearInterval(loop2);
-				}
-			}, 1);
+
+			if (this.state.pageInfo.has_next_page) {
+				this.state.fetchParams.after = this.state.pageInfo.end_cursor;
+			}
 		}
 	}
 	
-	selectImage = (uri, index) => {
+	selectImage = (index) => {
 		if (this.state.prevIndex !== '') {
 			if (index === this.state.prevIndex) {
 				if (this.state.selectedStyle[index] === 1) {
@@ -96,11 +134,15 @@ class SchoolScheduleSelectPicture extends React.Component {
 		} else {
 			this.state.showFAB = false;
 		}
-
+		
 		this.setState({
-			selected: uri,
 			prevIndex: index
 		});
+	}
+
+	onUpdate = (data) => {
+		this.setState({data});
+		this.selectImage(this.state.index);
 	}
 
 	uploadImage = () => {
@@ -112,61 +154,44 @@ class SchoolScheduleSelectPicture extends React.Component {
 		return (
 			<LinearGradient style={styles.container} 
 				colors={gradientColors}>
+
 				<ImageBackground style={styles.container} 
 					source={require('../../assets/img/loginScreen/backPattern.png')} 
 					resizeMode="repeat">
+
 					<View style={styles.content}>
+
 						<StatusBar translucent={true} 
 							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 							
 						<ScrollView style={styles.scroll}
 							onScroll={this.scrollListener}>
+
 							<View style={styles.imageGrid}>
+
 								{ this.state.images.map((image, index) => {
 									return (
-										<View  key={image.uri} >
-											<View style={
-												[styles.image, styles.touch, {backgroundColor:'#232323',
-												position:"absolute", 
-												opacity: 0.4}]}/>
-											<TouchableOpacity
-												style={[styles.touch, {scaleX: 1 - 0.2 * this.state.selectedStyle[index], scaleY: 1 - 0.2 * this.state.selectedStyle[index]}]} 
-												onPress={() => this.selectImage(image.uri, index)}
-												activeOpacity={0.7}>
-
-												<Image style={styles.image} 
-													source={{ uri: image.uri }} >
-												</Image>
-
-												<Icon style={[styles.icon, 
-													{opacity: this.state.selectedStyle[index],
-													textShadowColor: 'rgba(0, 0, 0, 0.40)',
-													textShadowOffset: {width: -1, height: 1},
-													textShadowRadius: 20}]} 
-													name="checkbox-blank-circle" 
-													size={35} 
-													color="#FF9F1C" />
-												<Icon style={[styles.icon, {opacity: this.state.selectedStyle[index], bottom: -10, right: -10, }]} 
-													name="check" 
-													size={25} 
-													color="#764D16" />
-
-											</TouchableOpacity>
-										</View>
+										<CameraRollImage image={image} 
+											index={index} 
+											onUpdate={this.onUpdate.bind(this)}
+											selectedImage={this.state.selectedImage[index]} />
 									);
 								}) }
-        						<ActivityIndicator style={{padding:15,opacity:this.state.loadingAnimationValue}} size="large" color="#ffffff" />
+
+        						<ActivityIndicator style={{padding:15}} size="large" color="#ffffff" />
 							</View>
 							
 						</ScrollView>
 						
-						<FAB
-							style={styles.fab}
+						<FAB style={styles.fab}
 							icon="file-upload"
 							visible={this.state.showFAB}
 							onPress={this.uploadImage} />
+
 					</View>
+
 				</ImageBackground>
+				
 			</LinearGradient>
 		);
 	}
