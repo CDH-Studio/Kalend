@@ -9,7 +9,6 @@ import DatePicker from 'react-native-datepicker';
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
-//Modify logic for date and time
 
 class FixedEvent extends React.Component {
 	static navigationOptions = {
@@ -27,7 +26,6 @@ class FixedEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-		let currentDay = new Date().toLocaleTimeString().split(':');
 		this.state = { 
 			title: '',
 			location: '',
@@ -36,12 +34,62 @@ class FixedEvent extends React.Component {
 			allDay: false,
 			startDate: new Date().toDateString(),
 			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
 			endDate: new Date().toDateString(),
-			startTime: currentDay[0] + ':' + currentDay[1] + ' ' + currentDay[2].split(' ')[1],
-			endTime: currentDay[0] + ':' + currentDay[1] + ' ' + currentDay[2].split(' ')[1],
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+			startTime: new Date().toLocaleTimeString(),
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime : true,
+			amPmStart: this.getAmPm(),
+			amPmEnd: this.getAmPm(),
 
 			recurrenceValue: 'none'
 		};
+	}
+
+	getTwelveHourTime(time) {
+		let info = time.split(':');
+		time = new Date();
+		time.setHours(parseInt(info[0]));
+		time.setMinutes(parseInt(info[1]));
+		let currentHour = time.getHours();
+		let currentMinute = time.getMinutes();
+		let amOrPm = ' AM';
+
+		if(currentHour > 12) {
+			currentHour = currentHour % 12;
+			time.setHours(currentHour);
+		}
+
+		if(currentMinute < 10) {
+			currentMinute = '0' + currentMinute;
+		}
+
+		if (currentHour >= 12) {
+			amOrPm = ' PM';
+		}
+
+		return time.getHours() + ':' + currentMinute + amOrPm;
+	}
+
+	getAmPm() {
+		let hours = new Date().getHours();
+		return (hours >= 12) ? ' PM' : ' AM';
+	}
+
+	timeVerification() {
+		let min = new Date();
+		if(this.state.startDate === this.state.endDate) {
+			min = min.toLocaleTimeString();
+			min = this.state.startTime;
+			return min;
+		} else {
+			min.setHours(0);
+			min.setMinutes(0);
+			return min.toLocaleTimeString();
+		}
 	}
 
 	render() {
@@ -76,21 +124,21 @@ class FixedEvent extends React.Component {
 								placeholder={this.state.startDate} 
 								format="ddd., MMM DD, YYYY" 
 								minDate={this.state.minStartDate} 
-								maxDate={this.state.endDate}
+								maxDate={this.state.maxStartDate}
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(startDate) => this.setState({startDate})} />
+								onDateChange={(startDate) => this.setState({startDate, disabledEndDate: false, minEndDate: startDate})} />
 								
 							<DatePicker showIcon={false} 
 								time={this.state.startTime} 
 								mode="time" 
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
-								placeholder={''} 
+								placeholder={this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart} 
 								format="HH:mm A" 
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
 								is24Hour={false}
-								onDateChange={(startTime) => this.setState({startTime})} />
+								onDateChange={(startTime) => this.setState({startTime: this.getTwelveHourTime(startTime), amPmStart: '', disabledEndTime: false})} />
 						</View>
 
 						<View style={styles.end}>
@@ -98,24 +146,27 @@ class FixedEvent extends React.Component {
 							<DatePicker showIcon={false} 
 								date={this.state.endDate} 
 								mode="date" 
+								disabled = {this.state.disabledEndDate}
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
 								placeholder={this.state.endDate} 
 								format="ddd., MMM DD, YYYY" 
-								minDate={this.state.startDate} 
+								minDate={this.state.minEndDate}
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(endDate) => this.setState({endDate})} />
+								onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, minEndTime: this.timeVerification()})} />
 
 							<DatePicker showIcon={false} 
 								time={this.state.endTime} 
 								mode="time" 
+								disabled = {this.state.disabledEndTime}
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
-								placeholder={''} 
+								placeholder={this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd} 
 								format="HH:mm A" 
+								minDate={this.state.minEndTime}
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
 								is24Hour={false}
-								onDateChange={(endTime) => this.setState({endTime})} />
+								onDateChange={(endTime) => this.setState({endTime: this.getTwelveHourTime(endTime), amPmEnd: ''})} />
 						</View>
 					</View>
 
