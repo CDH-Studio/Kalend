@@ -7,30 +7,40 @@ import { FAB, Snackbar  } from 'react-native-paper';
 
 class CameraRollImage extends React.Component {
 
-	// update = (selected, index) => {
-	// 	this.props.onUpdate({selected, index});
-	// }
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			image: this.props.image,
+			index: this.props.index,
+			selectedStyle: this.props.selectedStyle
+		}
+	}
+
+	update = (selected, index) => {
+		console.log(this.props.selectedStyle);
+		this.props.onUpdate({selected, index});
+	}
 
 	render () {
 		
 		const {image, index, selectedStyle} = this.props;
-		console.log(image, index, selectedStyle)
 		return (
-			<View key={index} >
+			<View>
 				<View style={
 					[styles.image, styles.touch, {backgroundColor:'#232323',
 					position:"absolute", 
 					opacity: 0.4}]}/>
 				<TouchableOpacity
 					style={[styles.touch, {scaleX: 1 - 0.2 * selectedStyle, scaleY: 1 - 0.2 * selectedStyle}]} 
-					// onPress={() => this.update(image.uri, index)}
+					onPress={() => this.update(image.uri, index)}
 					activeOpacity={0.7}>
 
 					<Image style={styles.image} 
 						source={{ uri: image.uri }} >
 					</Image>
 
-					{/* <Icon style={[styles.icon, 
+					<Icon style={[styles.icon, 
 						{opacity: selectedStyle,
 						textShadowColor: 'rgba(0, 0, 0, 0.40)',
 						textShadowOffset: {width: -1, height: 1},
@@ -41,7 +51,7 @@ class CameraRollImage extends React.Component {
 					<Icon style={[styles.icon, {opacity: selectedStyle, bottom: -10, right: -10, }]} 
 						name="check" 
 						size={25} 
-						color="#764D16" /> */}
+						color="#764D16" />
 
 				</TouchableOpacity>
 			</View>
@@ -77,7 +87,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 			loadingAnimationValue: 0,
 			selectedStyle: Array(99).fill(0),
 			prevIndex: '',
-			index: ''
+			index: 0
 		};
 	}
 
@@ -112,6 +122,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 	
 	selectImage = (index) => {
+		console.log(index);
 		if (this.state.prevIndex !== '') {
 			if (index === this.state.prevIndex) {
 				if (this.state.selectedStyle[index] === 1) {
@@ -141,8 +152,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	onUpdate = (data) => {
+		console.log(data);
 		this.setState({data});
-		this.selectImage(this.state.index);
+		this.selectImage(data.index);
 	}
 
 	uploadImage = () => {
@@ -171,10 +183,11 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 								{ this.state.images.map((image, index) => {
 									return (
-										<CameraRollImage image={image} 
+										<CameraRollImage key={index}
+											image={image} 
 											index={index} 
 											onUpdate={this.onUpdate.bind(this)}
-											selectedImage={this.state.selectedImage[index]} />
+											selectedStyle={this.state.selectedStyle[index]} />
 									);
 								}) }
 
