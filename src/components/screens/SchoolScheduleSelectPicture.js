@@ -133,12 +133,8 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	atTheBottom = (bool) => {
-		if (bool) {
-			console.log("AT THE BOTTOM");
-
-			if (this.state.pageInfo.has_next_page) {
-				this.getPhotos();
-			}
+		if (bool && this.state.pageInfo.has_next_page) {
+			this.getPhotos();
 		}
 	}
 	
@@ -177,7 +173,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	uploadImage = () => {
-		console.log("Image selected >> " + this.state.selected);
+		console.log('Image selected >> ' + this.state.selected);
 		this.props.navigation.navigate('SchoolScheduleCreation');
 	}
 
@@ -210,7 +206,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 									);
 								}) }
 
-        						{this.state.activityIndicator}
+								{ this.state.activityIndicator }
 							</View>
 							
 						</ScrollView>
