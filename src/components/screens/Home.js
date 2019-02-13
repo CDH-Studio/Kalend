@@ -3,24 +3,36 @@ import {ImageBackground, StatusBar, StyleSheet, View, Image, Text} from 'react-n
 import {GoogleSigninButton} from 'react-native-google-signin';
 import {googleSignIn} from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
-import { grabUserData, analyzePicture } from '../../services/service';
+import { grabUserData, analyzePicture, InsertDataIntoGoogle } from '../../services/service';
 
 class Home extends React.Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			userInfo: ''
+		};
+	}
 	componentDidMount() {
 		//let data = grabUserData();
 		let data = analyzePicture();
-		console.log(data);
+		InsertDataIntoGoogle(data);
+
 	}
+	
 	//In order to sign in with Google account
 	signIn = () => {
 		googleSignIn().then((userInfo) => {
 			this.setState({ userInfo });
+			console.log('userinfo', userInfo);
 			this.props.navigation.navigate('TutorialNavigator');
 		});
 	}
 
 	render() {
+		if(this.userInfo != undefined) {
+			console.log('userInfo',this.userInfo);
+		}
 		return (
 			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">

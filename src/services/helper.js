@@ -6,24 +6,13 @@ export const convertToDictionary  = (data) => {
 		} else {
 			dict[item.position.x] = [item];
 		}
-		/*
-		if((item.courseInfo.length == 1)) {
-			days.push(item);
-			return;
-		} 
-		let name = item.courseInfo[0];
-		let time = item.courseInfo[2];
-		time.split('-');
-		let location = item.courseInfo[3];
-		*/
-
 	});
 	return dict; 
 };
 
 export const formatData = (data) => {
 	let dict = convertToDictionary(data);
-	let events = []
+	let events = [];
 	for (const [key, value] of Object.entries(dict)) {
 		if(value.length > 1) {
 			let event = {
@@ -44,5 +33,5 @@ export const formatData = (data) => {
 			events.push(event);
 		}
 	}
-	console.log('events', events);
+	return events;
 };
