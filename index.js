@@ -1,5 +1,8 @@
 import {AppRegistry} from 'react-native';
 import Home from './src/components/screens/Home';
+import React from 'react';
+import store from './src/store';
+import { Provider } from 'react-redux';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
@@ -8,7 +11,7 @@ import FixedEvent from './src/components/screens/FixedEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 
-AppRegistry.registerComponent(appName, () => MainNavigator);
+
 
 const LoginNavigator = createStackNavigator(
 	{
@@ -19,16 +22,6 @@ const LoginNavigator = createStackNavigator(
 		initialRouteName: 'Home'
 	}
 );
-
-// const SchoolScheduleAnalysisNavigator = createStackNavigator(
-// 	{
-// 		SchoolScheduleAnalysis: {screen: SchoolScheduleAnalysis}
-// 	}, 
-// 	{
-// 		headerMode: 'none',
-// 		initialRouteName: 'SchoolScheduleAnalysis'
-// 	}
-// );
 
 const TutorialNavigator = createStackNavigator(
 	{
@@ -88,10 +81,9 @@ const TutorialNavigator = createStackNavigator(
 // 	}
 // );
 
-const MainNavigator = createAppContainer(createSwitchNavigator(
+const MainNavigator = createSwitchNavigator(
 	{
 		LoadingScreen: {screen: LoadingScreen},
-		//Dashboard: DashboardNavigator,
 		LoginNavigator: LoginNavigator,
 		TutorialNavigator: TutorialNavigator
 	},
@@ -99,4 +91,18 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 		headerMode: 'none',
 		initialRouteName: 'LoadingScreen'
 	}
-));
+);
+
+const AppContainer = createAppContainer(MainNavigator);
+
+export default class App extends React.Component {
+	render() {
+		return (
+			<Provider store={store}>
+				<AppContainer/>
+			</Provider>
+		);
+	}
+}
+
+AppRegistry.registerComponent(appName, () => App);
