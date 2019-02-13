@@ -119,8 +119,8 @@ android {
         applicationId "com.kalendfrontend"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode googleVer
         versionName userVer
+        versionCode googleVer
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
