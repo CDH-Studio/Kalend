@@ -40,7 +40,7 @@
 		380AC81E94470E0883FCB8AC /* libPods-Kalend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E97E04B7433198E3893D2942 /* libPods-Kalend.a */; };
 		458AD3A43B4B496A96B5E15E /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B96BE309C844EADBFD545B3 /* OpenSans-Bold.ttf */; };
 		4748A6643CD040E5A5AC93DF /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B0CDFB589D4437B5F5FD58 /* libRNGoogleSignin.a */; };
-		5E6D3606221467790007137A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E6D3605221467790007137A /* GoogleService-Info.plist */; };
+		5E163785221486E00067C59A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E163784221486E00067C59A /* GoogleService-Info.plist */; };
 		6D5AF45C4A4846C896118055 /* libPods-KalendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFC1AEC0D07A891A7BE7D56B /* libPods-KalendTests.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A0108C1B0DC94AB3AFC7D4BB /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED161E15E425458687888B8E /* Raleway-Regular.ttf */; };
@@ -365,7 +365,7 @@
 		3BEF9ED43CB270EC186CA7E0 /* Pods-KalendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KalendTests.debug.xcconfig"; path = "Target Support Files/Pods-KalendTests/Pods-KalendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3D8A6BD8DFAE9CDE18706769 /* libPods-Kalend-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kalend-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		59B0CDFB589D4437B5F5FD58 /* libRNGoogleSignin.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGoogleSignin.a; sourceTree = "<group>"; };
-		5E6D3605221467790007137A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5E163784221486E00067C59A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6B96BE309C844EADBFD545B3 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -533,7 +533,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
-				5E6D3605221467790007137A /* GoogleService-Info.plist */,
+				5E163784221486E00067C59A /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = Kalend;
@@ -1162,7 +1162,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				5E6D3606221467790007137A /* GoogleService-Info.plist in Resources */,
+				5E163785221486E00067C59A /* GoogleService-Info.plist in Resources */,
 				458AD3A43B4B496A96B5E15E /* OpenSans-Bold.ttf in Resources */,
 				DA28457DA85A4249926708CE /* OpenSans-Regular.ttf in Resources */,
 				EDF883308E734D6FA88A12D0 /* OpenSans-SemiBold.ttf in Resources */,
