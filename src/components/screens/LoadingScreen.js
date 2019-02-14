@@ -14,7 +14,7 @@ class LoadingScreen extends React.Component {
 		};
 		
 		setTimeout(()=> {
-			this.props.navigation.navigate('LoginNavigator');
+			this.props.navigation.navigate('WelcomeScreen');
 		}, 4000);
 	}
 
