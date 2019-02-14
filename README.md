@@ -15,6 +15,10 @@
   * https://github.com/react-native-community/react-native-linear-gradient
 * React Navigation
   * https://reactnavigation.org/en/
+* React Native Datepicker
+  * https://github.com/xgfe/react-native-datepicker
+* React Native Vector Icons
+  * https://oblador.github.io/react-native-vector-icons/
 
 ## Dependencies
 
