@@ -1,6 +1,6 @@
 FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/GoogleSignIn/Frameworks"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BVLinearGradient" "${PODS_ROOT}/Headers/Public/GTMSessionFetcher" "${PODS_ROOT}/Headers/Public/GoogleToolboxForMac" "${PODS_ROOT}/Headers/Public/RNGestureHandler" "${PODS_ROOT}/Headers/Public/React" "${PODS_ROOT}/Headers/Public/lottie-ios" "${PODS_ROOT}/Headers/Public/lottie-react-native" "${PODS_ROOT}/Headers/Public/yoga"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BVLinearGradient" "${PODS_ROOT}/Headers/Public/GTMSessionFetcher" "${PODS_ROOT}/Headers/Public/GoogleToolboxForMac" "${PODS_ROOT}/Headers/Public/RNGestureHandler" "${PODS_ROOT}/Headers/Public/RNVectorIcons" "${PODS_ROOT}/Headers/Public/React" "${PODS_ROOT}/Headers/Public/lottie-ios" "${PODS_ROOT}/Headers/Public/lottie-react-native" "${PODS_ROOT}/Headers/Public/yoga"
 OTHER_LDFLAGS = $(inherited) -ObjC -l"stdc++" -framework "CoreGraphics" -framework "CoreText" -framework "Foundation" -framework "JavaScriptCore" -framework "LocalAuthentication" -framework "QuartzCore" -framework "SafariServices" -framework "Security" -framework "SystemConfiguration" -framework "UIKit"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

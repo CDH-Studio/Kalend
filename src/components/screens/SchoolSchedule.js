@@ -19,13 +19,17 @@ class SchoolSchedule extends React.Component {
 	};
 
 	selectAPicture() {
-		requestStoragePermission().then((accepted) => {
-			console.log(accepted);
-			
-			if (accepted) {
-				this.props.navigation.navigate('SchoolScheduleSelectPicture');
-			}
-		});
+		if (Platform.OS !== 'ios') {
+			requestStoragePermission().then((accepted) => {
+				console.log(accepted);
+				
+				if (accepted) {
+					this.props.navigation.navigate('SchoolScheduleSelectPicture');
+				}
+			});
+		} else {
+			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+		}
 	}
 
 	render() {

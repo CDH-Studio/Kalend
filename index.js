@@ -1,4 +1,4 @@
-import {AppRegistry} from 'react-native';
+import {AppRegistry, StatusBar} from 'react-native';
 import Home from './src/components/screens/Home';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
@@ -27,6 +27,9 @@ export default function Main() {
 	  </PaperProvider>
 	);
   }
+
+
+StatusBar.setBarStyle('light-content', true);
 
 AppRegistry.registerComponent(appName, () => Main);
 

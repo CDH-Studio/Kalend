@@ -12,6 +12,7 @@ target 'Kalend' do
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'Kalend-tvOSTests' do
     inherit! :search_paths

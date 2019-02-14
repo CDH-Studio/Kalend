@@ -32,7 +32,7 @@ class CameraRollImage extends React.Component {
 						position:'absolute', 
 						opacity: 0.4}]}/>
 				<TouchableOpacity
-					style={[styles.touch, {scaleX: 1 - 0.2 * selectedStyle, scaleY: 1 - 0.2 * selectedStyle}]} 
+					style={[styles.touch, {transform: [{scaleX: 1 - 0.2 * selectedStyle}, {scaleY: 1 - 0.2 * selectedStyle}]}]} 
 					onPress={() => this.update(image.uri, index)}
 					activeOpacity={0.7}>
 
@@ -61,7 +61,7 @@ class CameraRollImage extends React.Component {
 
 class SchoolScheduleSelectPicture extends React.Component {
 	static navigationOptions = {
-		title: 'Add School Schedule',
+		title: 'Select Picture',
 		headerTintColor: '#fff',
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
@@ -168,7 +168,10 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	onUpdate = (data) => {
-		this.setState({data});
+		this.setState({
+			selected: data.selected,
+			index: data.index
+		});
 		this.selectImage(data.index);
 	}
 
@@ -178,6 +181,8 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	render() {
+		const { images, showFAB, activityIndicator, selectedStyle } = this.state;
+
 		return (
 			<LinearGradient style={styles.container} 
 				colors={gradientColors}>
@@ -196,24 +201,24 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 							<View style={styles.imageGrid}>
 
-								{ this.state.images.map((image, index) => {
+								{ images.map((image, index) => {
 									return (
 										<CameraRollImage key={index}
 											image={image} 
 											index={index} 
-											onUpdate={this.onUpdate.bind(this)}
-											selectedStyle={this.state.selectedStyle[index]} />
+											onUpdate={this.onUpdate}
+											selectedStyle={selectedStyle[index]} />
 									);
 								}) }
 
-								{ this.state.activityIndicator }
+								{ activityIndicator }
 							</View>
 							
 						</ScrollView>
 						
 						<FAB style={styles.fab}
 							icon="file-upload"
-							visible={this.state.showFAB}
+							visible={showFAB}
 							onPress={this.uploadImage} />
 
 					</View>

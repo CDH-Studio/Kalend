@@ -24,6 +24,8 @@ PODS:
     - yoga (= 0.57.8.React)
   - RNGestureHandler (1.0.15):
     - React
+  - RNVectorIcons (6.2.0):
+    - React
   - yoga (0.57.8.React)
 
 DEPENDENCIES:
@@ -32,6 +34,7 @@ DEPENDENCIES:
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - React (from `../node_modules/react-native`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -50,6 +53,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -62,8 +67,9 @@ SPEC CHECKSUMS:
   lottie-react-native: f2e118cc10f478bc9857bbdb5568b6f4a9d30cf7
   React: adbac0757ce35e92fbd447ab98c810209d27d9b0
   RNGestureHandler: 14c09a7361c272efea8f7f3799142c893a6a4485
+  RNVectorIcons: b6b131d2fdc2e240f7aba41296df869141443793
   yoga: 74cdf036c30820443b25ade59916236b1e95ee93
 
-PODFILE CHECKSUM: 413200bcadb10194bdb2aa5d853a74a8d9bd16db
+PODFILE CHECKSUM: 7a9c4ef662e1046f833401c4e607756b424245a8
 
 COCOAPODS: 1.6.0
