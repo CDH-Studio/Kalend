@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
-import { analyzePicture, InsertDataIntoGoogle } from '../../services/service';
+import { analyzePicture } from '../../services/service';
 import LinearGradient from 'react-native-linear-gradient';
 
 class SchoolSchedule extends React.Component {
@@ -19,9 +19,7 @@ class SchoolSchedule extends React.Component {
 	};
 
 	componentDidMount() {
-		//let data = grabUserData();
-		let data = analyzePicture();
-		InsertDataIntoGoogle(data);
+		analyzePicture();
 	}
 
 	render() {
