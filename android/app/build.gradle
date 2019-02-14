@@ -82,8 +82,23 @@ def getNpmVersion() {
 }
 /* calculated from git commits to give sequential integers */
 def getGitVersion() {
-    def process = "git rev-list master --first-parent --count".execute()
+    def st = "git rev-list " + gitBranch() + " --first-parent --count"
+    print(st)
+    def process = st.execute()
+
     return process.text.toInteger()
+}
+
+def gitBranch() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+
+    print("NAME " + branch)
+
+    return branch
 }
 
 def userVer = getNpmVersion()

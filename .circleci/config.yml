@@ -43,7 +43,7 @@ jobs:
 
       - checkout:
           path: ~/Kalend
-
+          
       - run:
           name: Jest tests
           command: |
@@ -51,6 +51,7 @@ jobs:
             yarn run test --detectOpenHandles --forceExit
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
 
   linter:
     working_directory: ~/Kalend
@@ -116,6 +117,25 @@ jobs:
           paths:
             - android/app/build/outputs/apk/release/
 
+  update-version-num-ios:
+    working_directory: ~/Kalend
+    docker:
+      - image: circleci/node:8
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - checkout:
+          path: ~/Kalend
+
+      - run:
+          name: Chmod permissions
+          command: chmod +x ./version-ios.sh
+
+      - run:
+          name: Update iOS version number
+          command: yarn version-ios 
+
   publish-github-release:
     working_directory: ~/Kalend
     docker:
@@ -156,6 +176,9 @@ workflows:
           requires:
             - linter
       - android-build:
+          requires:
+            - linter
+      - update-version-num-ios:
           requires:
             - linter
       - publish-github-release:
