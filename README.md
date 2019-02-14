@@ -1,4 +1,5 @@
-# Kalend
+<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/kalendFullLogo.png" alt="Kalend" width="300"/>
+
 
 [![CircleCI](https://img.shields.io/circleci/project/github/CDH-Studio/Kalend/master.svg?style=flat&logo=circleci)](https://circleci.com/gh/CDH-Studio/Kalend)
 [![Release Version](https://img.shields.io/github/release/CDH-Studio/Kalend.svg?style=flat)](https://github.com/CDH-Studio/Kalend/releases)
@@ -8,12 +9,20 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
 
 ## React Native Modules
 
+* React Native Vector Icons
+  * https://github.com/oblador/react-native-vector-icons
+* React Native Paper
+  * https://github.com/callstack/react-native-paper
 * React Native Google SignIn
   * https://github.com/react-native-community/react-native-google-signin
 * React Native Linear Gradient
   * https://github.com/react-native-community/react-native-linear-gradient
 * React Navigation
   * https://reactnavigation.org/en/
+* React Native Datepicker
+  * https://github.com/xgfe/react-native-datepicker
+* React Native Vector Icons
+  * https://oblador.github.io/react-native-vector-icons/
 
 ## Dependencies
 
@@ -82,10 +91,7 @@ inside server folder run node server.js
 
 3. Overwrite the babel.config.js content with this:
 ```
-module.exports = function (api) {
-    api.cache(true)
-    return {
- 	        "presets": ["module:metro-react-native-babel-preset"]
-    };
-}
+module.exports = {
+	presets: ['module:metro-react-native-babel-preset']
+};
 ```
