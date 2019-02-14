@@ -1,7 +1,7 @@
-import { formatData } from './helper';
+import { formatData, getStartDate } from './helper';
 import { insertEvent } from './google_calendar';
 
-const serverUrl = 'http://192.168.0.13:8080';
+const serverUrl = 'http://35.183.124.143:8080';
 
 export const grabSampleData = () =>  {
 	fetch(`${serverUrl}/api/test`)
@@ -35,37 +35,104 @@ export const analyzePicture = () => {
 			return res.json();
 		})
 		.then(body => {
-			let data = formatData(body.data);
-			return data;
+			formatData(body.data)
+				.then(data => {
+					InsertDataIntoGoogle(data);
+				});
+			//InsertDataIntoGoogle(data)
 		})
 		.catch(error => {
 			console.log('error', error);
 		});
 };
 
-export const InsertDataIntoGoogle = (data) => {
-	console.log('inside insert function', data);
+
+export const InsertDataIntoGoogle = (events) => {
 	let obj = {
 		'end': {
-			'dateTime': '2019-02-13T13:00:00',
-			'timeZone': 'America/Los_Angeles'
+			'timeZone': 'EST'
 		},
 		'start': {
-			'dateTime': '2019-02-13T11:00:00',
-			'timeZone': 'America/Los_Angeles'
-		},
-		'summary': 'Test event!',
-		'recurrence': [
-			'RRULE:FREQ=WEEKLY;UNTIL=20190627'
-		],
-		'location': 'TB 340'
+			'timeZone': 'EST'
+		}
 	};
-	insertEvent('kalend613@gmail.com',obj,{})
-		.then( data => {
-			console.log('data', data)
-		})
-		.catch( err => {
-			console.log('err', err);
-		});
 
+	events.forEach( event => {
+		let tempStartDate = new Date('2019-02-01');
+	
+	
+		let day = event.day.substr(0,2).toUpperCase();
+		event.courses.forEach(course => {
+			// Splits the time into different arrays for startTime and endTime
+			let d = course.time.split('-').map(i => i.split(' ')).map(i => i.map(i => i.split(':')));
+			let startDate = getStartDate(tempStartDate, event.day);
+			let endDate = getStartDate(tempStartDate, event.day);
+			startDate.setHours((d[0][1][0] === 'pm'  && parseInt(d[0][0][0]) !== 12 ? 12 : 0) + parseInt(d[0][0][0]), parseInt(d[0][0][1]), 0);
+			endDate.setHours((d[1][1][0] === 'pm' && parseInt(d[1][0][0]) !== 12 ? 12 : 0) + parseInt(d[1][0][0]), parseInt(d[1][0][1]), 0);
+
+			let recurrence = [
+				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
+			];
+
+			obj.end.dateTime = endDate.toJSON();
+			obj.start.dateTime = startDate.toJSON();
+			obj.summary = course.name;
+			obj.location = course.location;
+			obj.recurrence = recurrence;
+			
+			insertEvent('kalend613@gmail.com',obj,{})
+				.then( data => {
+					console.log('data', data);
+				})
+				.catch( err => {
+					console.log('err', err);
+				});
+		});
+	});
+	
 };
+
+/*
+export const InsertDataIntoGoogle = (events) => {
+	let obj = {
+		'end': {
+			'timeZone': 'EST'
+		},
+		'start': {
+			'timeZone': 'EST'
+		}
+	};
+
+	events.forEach( event => {
+		let tempStartDate = new Date('2019-02-01');
+		let startDate = getStartDate(tempStartDate, event.day);
+		console.log('refinedDate', startDate);
+
+		let day = event.day.substr(0,2).toUpperCase();
+		event.courses.forEach(course => {
+			let startTime = convertTimeToGoogle(course.time[0]);
+			let endTime =  convertTimeToGoogle(course.time[1]);
+			let startDateTime = `${startDate}T${startTime}`;
+			let endDateTime = `${startDate}T${endTime}`;
+			let recurrence = [
+				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
+			];
+
+			obj.end.dateTime = endDateTime;
+			obj.start.dateTime = startDateTime;
+			obj.summary = course.name;
+			obj.location = course.location;
+			obj.recurrence = recurrence;
+			
+			// insertEvent('kalend613@gmail.com',obj,{})
+			// 	.then( data => {
+			// 		console.log('data', data);
+			// 	})
+			// 	.catch( err => {
+			// 		console.log('err', err);
+			// 	});
+		});
+	});
+	
+};
+*/
