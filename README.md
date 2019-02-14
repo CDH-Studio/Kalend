@@ -1,9 +1,14 @@
-# Kalend
+<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/kalendFullLogo.png" alt="Kalend" width="300"/>
+
 
 [![CircleCI](https://circleci.com/gh/CDH-Studio/Kalend.svg?style=svg)](https://circleci.com/gh/CDH-Studio/Kalend)
 
 ## React Native Modules
 
+* React Native Vector Icons
+  * https://github.com/oblador/react-native-vector-icons
+* React Native Paper
+  * https://github.com/callstack/react-native-paper
 * React Native Google SignIn
   * https://github.com/react-native-community/react-native-google-signin
 * React Native Linear Gradient
@@ -82,10 +87,7 @@ inside server folder run node server.js
 
 3. Overwrite the babel.config.js content with this:
 ```
-module.exports = function (api) {
-    api.cache(true)
-    return {
- 	        "presets": ["module:metro-react-native-babel-preset"]
-    };
-}
+module.exports = {
+	presets: ['module:metro-react-native-babel-preset']
+};
 ```
