@@ -1,4 +1,4 @@
-import {AppRegistry} from 'react-native';
+import {AppRegistry, StatusBar} from 'react-native';
 import Home from './src/components/screens/Home';
 import React from 'react';
 import store from './src/store';
@@ -8,10 +8,34 @@ import SchoolScheduleSelectPicture from './src/components/screens/SchoolSchedule
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
 import LoadingScreen from './src/components/screens/LoadingScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
+import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const theme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		primary: '#1473E6',
+		accent: '#FF9F1C',
+	}
+};
+
+export default function Main() {
+	return (
+		<Provider store={store}>
+			<PaperProvider theme={theme}>
+				<AppContainer/>
+			</PaperProvider>
+		</Provider>
+	);
+}
 
 
+StatusBar.setBarStyle('light-content', true);
+
+AppRegistry.registerComponent(appName, () => Main);
 
 const LoginNavigator = createStackNavigator(
 	{
@@ -28,6 +52,7 @@ const TutorialNavigator = createStackNavigator(
 		SchoolSchedule: SchoolSchedule,
 		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
 		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
+		SchoolScheduleCreation: SchoolScheduleCreation,
 		FixedEvent: FixedEvent,
 		//NonFixedEvent: {screen: NonFixedEvent},
 		//ReviewEvent: {screen: ReviewEvent},
@@ -94,15 +119,3 @@ const MainNavigator = createSwitchNavigator(
 );
 
 const AppContainer = createAppContainer(MainNavigator);
-
-export default class App extends React.Component {
-	render() {
-		return (
-			<Provider store={store}>
-				<AppContainer/>
-			</Provider>
-		);
-	}
-}
-
-AppRegistry.registerComponent(appName, () => App);

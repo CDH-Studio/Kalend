@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {ImageBackground, StatusBar, StyleSheet, View, Image, Text} from 'react-native';
-import {GoogleSigninButton} from 'react-native-google-signin';
-import {googleSignIn} from '../../services/google_identity';
+import { ImageBackground, StatusBar, StyleSheet, View, Image, Text } from 'react-native';
+import { GoogleSigninButton } from 'react-native-google-signin';
+import { googleSignIn } from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
+import { gradientColors } from '../../../config';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -28,7 +29,7 @@ class Home extends React.Component {
 	render() {
 
 		return (
-			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 
 					<StatusBar translucent={true} backgroundColor={'#00000050'} />
