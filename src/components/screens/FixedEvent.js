@@ -1,11 +1,10 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS} from 'react-native';
+import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
 import DatePicker from 'react-native-datepicker';
-import { ScrollView } from 'react-native-gesture-handler';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -118,6 +117,7 @@ class FixedEvent extends React.Component {
 	}
 
 	render() {
+		const { title, disabledStartTime, allDay } = this.state;
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
@@ -131,14 +131,14 @@ class FixedEvent extends React.Component {
 					<View style={styles.textInput}>
 						<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
 						<View style={styles.textInputBorder}>
-							<TextInput style={styles.textInputfont} placeholder="Title" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
+							<TextInput style={styles.textInputfont} placeholder="Title" onChangeText={(title) => this.setState({title})} value={title}/>
 						</View>
 					</View>
 					<View style={styles.timeSection}>
 						<View style={styles.allDay}>
 							<Text style={styles.blueTitle}>All-Day</Text>
 							<View style={{width: 220, alignItems:'flex-start', paddingLeft: 5}}>
-								<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={'#FF9F1C'} onValueChange={(allDay) => this.setState({allDay: allDay, disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} value = {this.state.allDay} />
+								<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={'#FF9F1C'} onValueChange={(allDay) => this.setState({allDay: allDay, disabledStartTime: !disabledStartTime, disabledEndTime: true})} value = {allDay} />
 							</View>
 						</View>
 

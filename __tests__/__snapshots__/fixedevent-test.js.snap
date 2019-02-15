@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Buttons render correctly 1`] = `
+<View
+  accessible={true}
+  isTVSelectable={true}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#1473E6",
+      "borderRadius": 12,
+      "borderWidth": 3,
+      "elevation": 4,
+      "height": 55,
+      "justifyContent": "center",
+      "opacity": 1,
+      "width": 100,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#1473E6",
+        "fontFamily": "Raleway-SemiBold",
+        "fontSize": 15,
+        "padding": 8,
+        "textAlign": "center",
+      }
+    }
+  >
+    NEXT
+  </Text>
+</View>
+`;
+
+exports[`Icons render correctly 1`] = `
+<Text
+  allowFontScaling={false}
+  style={
+    Array [
+      Object {
+        "color": "#1473E6",
+        "fontSize": 130,
+      },
+      undefined,
+      Object {
+        "fontFamily": "Material Design Icons",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      Object {},
+    ]
+  }
+>
+  
+</Text>
+`;
+
+exports[`Picker renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "color": "#565454",
+      "height": 40,
+      "marginLeft": -5,
+      "width": "105%",
+    }
+  }
+>
+  <RCTPicker
+    items={
+      Array [
+        Object {
+          "label": "None",
+          "textColor": undefined,
+          "value": "none",
+        },
+        Object {
+          "label": "Everyday",
+          "textColor": undefined,
+          "value": "everyday",
+        },
+        Object {
+          "label": "Weekly",
+          "textColor": undefined,
+          "value": "weekly",
+        },
+        Object {
+          "label": "Monthly",
+          "textColor": undefined,
+          "value": "monthly",
+        },
+      ]
+    }
+    onChange={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    selectedIndex={0}
+    style={
+      Array [
+        Object {
+          "height": 216,
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`StatusBar renders correctly 1`] = `null`;
+
+exports[`Switch renders correctly 1`] = `
+<RCTSwitch
+  accessibilityRole="button"
+  onChange={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  onTintColor="#FFBF69"
+  style={
+    Array [
+      Object {
+        "height": 31,
+        "width": 51,
+      },
+      Object {
+        "backgroundColor": "lightgray",
+        "borderRadius": 16,
+      },
+    ]
+  }
+  thumbTintColor="#FF9F1C"
+  tintColor="lightgray"
+  value={false}
+/>
+`;
+
+exports[`Text inputs render correctly 1`] = `
+<TextInput
+  allowFontScaling={true}
+  placeholder="Title"
+  underlineColorAndroid="transparent"
+/>
+`;

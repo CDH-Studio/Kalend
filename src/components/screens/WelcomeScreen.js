@@ -144,12 +144,10 @@ class WelcomeScreen extends React.Component {
 		// User finished the introduction. Show real app through
 		// navigation or simply by controlling state
 		this.setState({ showRealApp: true });
+		this.props.navigation.navigate('LoginNavigator');
 	}
 
 	render() {
-		if (this.state.showRealApp) {
-			this.props.navigation.navigate('LoginNavigator');
-		} 
 		return <AppIntroSlider slides={slides} 
 			renderItem={this._renderItem} 
 			onDone={this._onDone}
