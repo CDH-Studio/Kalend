@@ -20,10 +20,10 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://reactnavigation.org/en/
 * React Native Datepicker
   * https://github.com/xgfe/react-native-datepicker
-* React Native Vector Icons
-  * https://oblador.github.io/react-native-vector-icons/
 * React Native App Intro Sliders
   * https://github.com/Jacse/react-native-app-intro-slider
+* Jest
+  * https://jestjs.io/docs/en/tutorial-react-native
 
 ## Dependencies
 
