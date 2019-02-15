@@ -8,8 +8,6 @@ import com.airbnb.android.react.lottie.LottiePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;

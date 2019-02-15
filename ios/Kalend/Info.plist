@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>*your app name* would like to save photos from the app to your gallery</string>
+	<string>Kalend would like to save photos from the app to your gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>*your app name* would like to access your photo gallery for uploading images to the app</string>
+	<string>Kalend would like to access your photo gallery for uploading images to the app</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -53,7 +53,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Bold.ttf</string>
@@ -90,6 +90,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	
 </dict>
 </plist>

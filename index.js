@@ -9,6 +9,7 @@ import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTa
 import LoadingScreen from './src/components/screens/LoadingScreen';
 import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
+import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
@@ -54,7 +55,7 @@ const TutorialNavigator = createStackNavigator(
 		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
 		SchoolScheduleCreation: SchoolScheduleCreation,
 		FixedEvent: FixedEvent,
-		//NonFixedEvent: {screen: NonFixedEvent},
+		NonFixedEvent: NonFixedEvent,
 		//ReviewEvent: {screen: ReviewEvent},
 		//ScheduleSelection: {screen: ScheduleSelection},
 		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}

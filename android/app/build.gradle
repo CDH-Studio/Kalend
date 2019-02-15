@@ -180,11 +180,10 @@ android {
 
 dependencies {
     compile project(':react-native-vector-icons')
-    compile project(':lottie-react-native')
-    compile project(':react-native-gesture-handler')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-google-signin')
-    implementation project(':react-native-google-signin')
+    compile project(':react-native-gesture-handler')
+    compile project(':lottie-react-native')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
