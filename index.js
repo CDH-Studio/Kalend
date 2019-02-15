@@ -1,5 +1,8 @@
 import {AppRegistry, StatusBar} from 'react-native';
 import Home from './src/components/screens/Home';
+import React from 'react';
+import store from './src/store';
+import { Provider } from 'react-redux';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
@@ -10,7 +13,6 @@ import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreat
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import React from 'react';
 
 const theme = {
 	...DefaultTheme,
@@ -23,11 +25,14 @@ const theme = {
 
 export default function Main() {
 	return (
-		<PaperProvider theme={theme}>
-			<MainNavigator />
-		</PaperProvider>
+		<Provider store={store}>
+			<PaperProvider theme={theme}>
+				<AppContainer/>
+			</PaperProvider>
+		</Provider>
 	);
 }
+
 
 StatusBar.setBarStyle('light-content', true);
 AppRegistry.registerComponent(appName, () => Main);
@@ -41,16 +46,6 @@ const LoginNavigator = createStackNavigator(
 		initialRouteName: 'Home'
 	}
 );
-
-// const SchoolScheduleAnalysisNavigator = createStackNavigator(
-// 	{
-// 		SchoolScheduleAnalysis: {screen: SchoolScheduleAnalysis}
-// 	}, 
-// 	{
-// 		headerMode: 'none',
-// 		initialRouteName: 'SchoolScheduleAnalysis'
-// 	}
-// );
 
 const TutorialNavigator = createStackNavigator(
 	{
@@ -111,7 +106,7 @@ const TutorialNavigator = createStackNavigator(
 // 	}
 // );
 
-const MainNavigator = createAppContainer(createSwitchNavigator(
+const MainNavigator = createSwitchNavigator(
 	{
 		WelcomeScreen: WelcomeScreen,
 		LoadingScreen: LoadingScreen,
@@ -123,4 +118,6 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 		headerMode: 'none',
 		initialRouteName: 'LoadingScreen'
 	}
-));
+);
+
+const AppContainer = createAppContainer(MainNavigator);
