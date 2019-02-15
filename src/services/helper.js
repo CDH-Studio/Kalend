@@ -14,6 +14,7 @@ export const formatData = (data) => {
 	let dict = convertToDictionary(data);
 	let events = [];
 	for (const [key,value] of Object.entries(dict)) {
+		console.log(key);
 		if(value.length > 1) {
 			let event = {
 				courses: []
