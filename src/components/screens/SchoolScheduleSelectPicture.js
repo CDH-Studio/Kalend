@@ -201,7 +201,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 							<View style={styles.imageGrid}>
 
-								{ this.state.images.map((image, index) => {
+								{ images.map((image, index) => {
 									return (
 										<CameraRollImage key={index}
 											image={image} 
