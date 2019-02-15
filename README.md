@@ -1,6 +1,5 @@
 <img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/kalendFullLogo.png" alt="Kalend" width="300"/>
 
-
 [![CircleCI](https://img.shields.io/circleci/project/github/CDH-Studio/Kalend/master.svg?style=flat&logo=circleci)](https://circleci.com/gh/CDH-Studio/Kalend)
 [![Release Version](https://img.shields.io/github/release/CDH-Studio/Kalend.svg?style=flat)](https://github.com/CDH-Studio/Kalend/releases)
 ![](https://img.shields.io/github/license/CDH-Studio/Kalend.svg?style=flat)
@@ -23,6 +22,8 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://github.com/xgfe/react-native-datepicker
 * React Native Vector Icons
   * https://oblador.github.io/react-native-vector-icons/
+* React Native App Intro Sliders
+  * https://github.com/Jacse/react-native-app-intro-slider
 
 ## Dependencies
 
