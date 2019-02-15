@@ -1,7 +1,9 @@
 import React from 'react';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
+import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import Octicons from 'react-native-vector-icons/Octicons';
+import { requestStoragePermission } from '../../services/android_permissions';
 
 class SchoolSchedule extends React.Component {
 	static navigationOptions = {
@@ -17,9 +19,23 @@ class SchoolSchedule extends React.Component {
 		}
 	};
 
+	selectAPicture() {
+		if (Platform.OS !== 'ios') {
+			requestStoragePermission().then((accepted) => {
+				console.log(accepted);
+				
+				if (accepted) {
+					this.props.navigation.navigate('SchoolScheduleSelectPicture');
+				}
+			});
+		} else {
+			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+		}
+	}
+
 	render() {
 		return (
-			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
@@ -30,7 +46,7 @@ class SchoolSchedule extends React.Component {
 						</View>
 						
 						<View style={styles.button}>
-							<TouchableOpacity style={styles.buttonSelect} onPress={() => this.props.navigation.navigate('SchoolScheduleSelectPicture')}>
+							<TouchableOpacity style={styles.buttonSelect} onPress={() => this.selectAPicture()}>
 								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 							</TouchableOpacity>
 
@@ -63,6 +79,8 @@ class SchoolSchedule extends React.Component {
 		);
 	}
 }
+
+export default SchoolSchedule;
 
 const styles = StyleSheet.create({
 	container: {
@@ -182,4 +200,3 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolSchedule;

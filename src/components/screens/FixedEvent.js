@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker} from 'react-native';
+import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -47,7 +47,7 @@ class FixedEvent extends React.Component {
 			amPmStart: this.getAmPm(),
 			amPmEnd: this.getAmPm(),
 
-			recurrenceValue: 'none'
+			recurrenceValue: 'None'
 		};
 	}
 
@@ -94,6 +94,29 @@ class FixedEvent extends React.Component {
 		}
 	}
 
+	textOnClick = () => {
+		return ActionSheetIOS.showActionSheetWithOptions(
+			{
+				options: ['None', 'Everyday', 'Weekly', 'Monthly', 'Cancel'],
+				cancelButtonIndex: 4,
+			},
+			(buttonIndex) => {
+				console.log(buttonIndex);
+				console.log(this.state);
+				if (buttonIndex === 0) {
+					this.state.recurrenceValue = 'None';
+				} else if (buttonIndex === 1) {
+					this.state.recurrenceValue = 'Everyday';
+				} else if (buttonIndex === 2) {
+					this.state.recurrenceValue = 'Weekly';
+				} else if (buttonIndex === 3) {
+					this.state.recurrenceValue = 'Monthly';
+				}
+				this.forceUpdate();
+			},
+		);
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -102,7 +125,7 @@ class FixedEvent extends React.Component {
 				<ScrollView contentContainerStyle={styles.content}>
 					<View style={styles.instruction}>
 						<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6" style={{textShadowColor: 'rgba(0, 0, 0, 0.40)', textShadowOffset: {width: -1, height: 1}, textShadowRadius: 20}}/>
+						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6"/>
 					</View>
 
 					<View style={styles.textInput}>
@@ -198,12 +221,17 @@ class FixedEvent extends React.Component {
 						<View style={styles.textInput}>
 							<Feather name="repeat" size={30} color="#1473E6" />
 							<View style={styles.textInputBorder}>
-								<Picker style={styles.recurrence} selectedValue={this.state.recurrence} onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-									<Picker.Item label="None" value="none" />
-									<Picker.Item label="Everyday" value="everyday" />
-									<Picker.Item label="Weekly" value="weekly" />
-									<Picker.Item label="Monthly" value="monthly" />
-								</Picker>
+								{
+									Platform.OS === 'ios' ? 
+										<Text onPress={this.textOnClick}>{this.state.recurrenceValue}</Text>
+										:	
+										<Picker style={styles.recurrence} selectedValue={this.state.recurrence} onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
+											<Picker.Item label="None" value="None" />
+											<Picker.Item label="Everyday" value="everyday" />
+											<Picker.Item label="Weekly" value="weekly" />
+											<Picker.Item label="Monthly" value="monthly" />
+										</Picker>
+								}
 							</View>
 						</View>
 
@@ -211,7 +239,7 @@ class FixedEvent extends React.Component {
 
 					<View style={styles.buttons}>
 						<TouchableOpacity style={styles.buttonEvent}> 
-							<Text style={styles.buttonEventText}>ADD ANOTHER EVENT</Text>
+							<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
@@ -346,7 +374,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#1473E6',
 		width: 150,
-		height: 55,
+		height: 58,
 		borderWidth: 3,
 		borderColor: '#1473E6',
 		elevation: 4,
@@ -366,7 +394,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#FFFFFF',
 		width: 100,
-		height: 55,
+		height: 58,
 		borderWidth: 3,
 		borderColor: '#1473E6',
 		elevation: 4,

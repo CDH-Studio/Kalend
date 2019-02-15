@@ -1,4 +1,5 @@
-let accessToken = '';
+import store from '../store';
+let accessToken;
 
 /**
  * Helper method for the Google Calendar API calls
@@ -9,6 +10,8 @@ let accessToken = '';
  * @param {Object} query Query parameter object to be appended to the URL
  */
 let apiHelperCall = (URL, method, body, query) => {
+	accessToken = store.getState().HomeReducer.profile.user.accessToken;
+
 	let fetchData = {
 		method,
 		headers: {
