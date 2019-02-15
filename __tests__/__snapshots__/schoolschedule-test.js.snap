@@ -216,6 +216,7 @@ exports[`SchoolSchedule renders correctly 1`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
             "flexDirection": "row",
             "justifyContent": "center",
           }
@@ -242,13 +243,6 @@ exports[`SchoolSchedule renders correctly 1`] = `
               "fontFamily": "Raleway-Regular",
               "fontSize": 20,
               "paddingLeft": 15,
-              "paddingTop": 30,
-              "textShadowColor": "rgba(0, 0, 0, 0.40)",
-              "textShadowOffset": Object {
-                "height": 1,
-                "width": -1,
-              },
-              "textShadowRadius": 20,
               "width": 220,
             }
           }
@@ -383,84 +377,120 @@ exports[`SchoolSchedule renders correctly 1`] = `
           style={
             Object {
               "flexDirection": "row",
+              "marginRight": -20,
             }
           }
         >
-          <Image
-            resizeMode="contain"
-            source={
-              Object {
-                "testUri": "../../../src/assets/img/schoolSchedule/sectionActive.png",
-              }
-            }
+          <Text
+            allowFontScaling={false}
             style={
-              Object {
-                "height": 20,
-                "margin": 8,
-                "width": 20,
-              }
+              Array [
+                Object {
+                  "color": "#FFFFFF",
+                  "fontSize": 35,
+                },
+                Object {
+                  "width": 40,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
             }
-          />
-          <Image
-            resizeMode="contain"
-            source={
-              Object {
-                "testUri": "../../../src/assets/img/schoolSchedule/sectionInactive.png",
-              }
-            }
+          >
+            
+          </Text>
+          <Text
+            allowFontScaling={false}
             style={
-              Object {
-                "height": 20,
-                "margin": 8,
-                "width": 20,
-              }
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 0.50)",
+                  "fontSize": 35,
+                },
+                Object {
+                  "width": 40,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
             }
-          />
-          <Image
-            resizeMode="contain"
-            source={
-              Object {
-                "testUri": "../../../src/assets/img/schoolSchedule/sectionInactive.png",
-              }
-            }
+          >
+            
+          </Text>
+          <Text
+            allowFontScaling={false}
             style={
-              Object {
-                "height": 20,
-                "margin": 8,
-                "width": 20,
-              }
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 0.50)",
+                  "fontSize": 35,
+                },
+                Object {
+                  "width": 40,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
             }
-          />
-          <Image
-            resizeMode="contain"
-            source={
-              Object {
-                "testUri": "../../../src/assets/img/schoolSchedule/sectionInactive.png",
-              }
-            }
+          >
+            
+          </Text>
+          <Text
+            allowFontScaling={false}
             style={
-              Object {
-                "height": 20,
-                "margin": 8,
-                "width": 20,
-              }
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 0.50)",
+                  "fontSize": 35,
+                },
+                Object {
+                  "width": 40,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
             }
-          />
-          <Image
-            resizeMode="contain"
-            source={
-              Object {
-                "testUri": "../../../src/assets/img/schoolSchedule/sectionInactive.png",
-              }
-            }
+          >
+            
+          </Text>
+          <Text
+            allowFontScaling={false}
             style={
-              Object {
-                "height": 20,
-                "margin": 8,
-                "width": 20,
-              }
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 0.50)",
+                  "fontSize": 35,
+                },
+                Object {
+                  "width": 40,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
             }
-          />
+          >
+            
+          </Text>
         </View>
         <View
           style={

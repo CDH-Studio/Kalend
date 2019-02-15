@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
 import DatePicker from 'react-native-datepicker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -39,6 +40,7 @@ class FixedEvent extends React.Component {
 			minEndDate: this.startDate,
 			disabledEndDate : true,
 			startTime: new Date().toLocaleTimeString(),
+			disabledStartTime : false,
 			endTime: new Date().toLocaleTimeString(),
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime : true,
@@ -97,10 +99,10 @@ class FixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
-				<View style={styles.content}>
+				<ScrollView contentContainerStyle={styles.content}>
 					<View style={styles.instruction}>
 						<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6" />
+						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6" style={{textShadowColor: 'rgba(0, 0, 0, 0.40)', textShadowOffset: {width: -1, height: 1}, textShadowRadius: 20}}/>
 					</View>
 
 					<View style={styles.textInput}>
@@ -112,7 +114,9 @@ class FixedEvent extends React.Component {
 					<View style={styles.timeSection}>
 						<View style={styles.allDay}>
 							<Text style={styles.blueTitle}>All-Day</Text>
-							<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={'#FF9F1C'} onValueChange={(allDay) => this.setState({allDay})} value = {this.state.allDay} />
+							<View style={{width: 220, alignItems:'flex-start', paddingLeft: 5}}>
+								<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={'#FF9F1C'} onValueChange={(allDay) => this.setState({allDay: allDay, disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} value = {this.state.allDay} />
+							</View>
 						</View>
 
 						<View style={styles.start}>
@@ -120,6 +124,7 @@ class FixedEvent extends React.Component {
 							<DatePicker showIcon={false} 
 								date={this.state.startDate} 
 								mode="date" 
+								style={{width:140}}
 								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
 								placeholder={this.state.startDate} 
 								format="ddd., MMM DD, YYYY" 
@@ -127,12 +132,14 @@ class FixedEvent extends React.Component {
 								maxDate={this.state.maxStartDate}
 								confirmBtnText="Confirm" 
 								cancelBtnText="Cancel" 
-								onDateChange={(startDate) => this.setState({startDate, disabledEndDate: false, minEndDate: startDate})} />
+								onDateChange={(startDate) => this.setState({startDate: startDate, disabledEndDate: false, minEndDate: startDate})} />
 								
 							<DatePicker showIcon={false} 
 								time={this.state.startTime} 
 								mode="time" 
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
+								disabled = {this.state.disabledStartTime}
+								style={{width:80}}
+								customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color: this.state.disabledStartTime ? '#FF0000' :'#565454'}}}
 								placeholder={this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart} 
 								format="HH:mm A" 
 								confirmBtnText="Confirm" 
@@ -146,8 +153,9 @@ class FixedEvent extends React.Component {
 							<DatePicker showIcon={false} 
 								date={this.state.endDate} 
 								mode="date" 
+								style={{width:140}}
 								disabled = {this.state.disabledEndDate}
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
+								customStyles={{ disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular', color: this.state.disabledEndDate ? '#FF0000' :'#565454'}}} 
 								placeholder={this.state.endDate} 
 								format="ddd., MMM DD, YYYY" 
 								minDate={this.state.minEndDate}
@@ -159,7 +167,8 @@ class FixedEvent extends React.Component {
 								time={this.state.endTime} 
 								mode="time" 
 								disabled = {this.state.disabledEndTime}
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}}
+								style={{width:80}}
+								customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color: this.state.disabledEndTime ? '#FF0000' :'#565454'}}}
 								placeholder={this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd} 
 								format="HH:mm A" 
 								minDate={this.state.minEndTime}
@@ -231,7 +240,7 @@ class FixedEvent extends React.Component {
 						</View>
 					</View>
 
-				</View>
+				</ScrollView>
 
 			</View>
 		);
@@ -244,10 +253,12 @@ const styles = StyleSheet.create({
 	},
 
 	content: {
-		flex: 1,
+		flexGrow: 1,
 		flexDirection: 'column',
 		justifyContent: 'space-evenly',
-		marginTop: 100
+		marginTop: 100,
+		marginLeft: 20,
+		marginRight: 20
 	},
 
 	instruction: {
@@ -270,8 +281,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'flex-end',
 		marginRight: 20,
-		height: 40,
-		marginTop: 10
+		height: 40
 	},
 
 	textInputFont: {
@@ -283,7 +293,7 @@ const styles = StyleSheet.create({
 	textInputBorder: {
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
-		width: 320,
+		width: '87%',
 		marginLeft: 20
 	},
 
@@ -295,8 +305,9 @@ const styles = StyleSheet.create({
 	},
 	
 	timeSection: {
-		marginLeft: 65,
-		marginTop: 20
+		paddingTop: 20,
+		alignItems: 'center',
+		marginLeft: 25
 	},
 
 	allDay: {
@@ -321,7 +332,7 @@ const styles = StyleSheet.create({
 	recurrence:{
 		color: '#565454',
 		height: 40,
-		width: 335,
+		width: '105%',
 		marginLeft: -5
 	},
 
@@ -335,7 +346,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#1473E6',
 		width: 150,
-		height: 60,
+		height: 55,
 		borderWidth: 3,
 		borderColor: '#1473E6',
 		elevation: 4,
@@ -355,7 +366,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#FFFFFF',
 		width: 100,
-		height: 60,
+		height: 55,
 		borderWidth: 3,
 		borderColor: '#1473E6',
 		elevation: 4,
@@ -374,7 +385,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginTop: 30,
+		marginTop: 20,
 		marginBottom: 10
 	},
 
