@@ -1,9 +1,9 @@
 import React from 'react';
 import {ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text} from 'react-native';
 import { analyzePicture } from '../../services/service';
-import { gradientColors, orangeColor } from '../../../config';
+import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
-import { ProgressBar, Surface, ProgressBarAndroid } from 'react-native-paper';
+import { Surface } from 'react-native-paper';
 
 import * as Progress from 'react-native-progress';
 
@@ -47,11 +47,11 @@ class SchoolScheduleCreation extends React.Component {
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
- 				 	<Surface style={styles.surface}>
+					<Surface style={styles.surface}>
 						<Text style={styles.title}>Analysing your Picture</Text>
-				  		<Text style={styles.subtitle}>Extracting the information from your picture</Text>
+						<Text style={styles.subtitle}>Extracting the information from your picture</Text>
 
-<Progress.Bar style={{alignSelf:'center'}}indeterminate={true} width={200} />
+						<Progress.Bar style={{alignSelf:'center'}}indeterminate={true} width={200} />
 						{/* <ProgressBar style={{height: 10}} progress={this.state.width} color={orangeColor} />
 						<ProgressBarAndroid styleAttr="Horizontal" color={orangeColor}></ProgressBarAndroid> */}
 					</Surface>
