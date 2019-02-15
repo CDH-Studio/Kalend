@@ -7,6 +7,7 @@ import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
 import LoadingScreen from './src/components/screens/LoadingScreen';
+import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
 import {name as appName} from './app.json';
@@ -34,7 +35,6 @@ export default function Main() {
 
 
 StatusBar.setBarStyle('light-content', true);
-
 AppRegistry.registerComponent(appName, () => Main);
 
 const LoginNavigator = createStackNavigator(
@@ -108,7 +108,9 @@ const TutorialNavigator = createStackNavigator(
 
 const MainNavigator = createSwitchNavigator(
 	{
-		LoadingScreen: {screen: LoadingScreen},
+		WelcomeScreen: WelcomeScreen,
+		LoadingScreen: LoadingScreen,
+		//Dashboard: DashboardNavigator,
 		LoginNavigator: LoginNavigator,
 		TutorialNavigator: TutorialNavigator
 	},
