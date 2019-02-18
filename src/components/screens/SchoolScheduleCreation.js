@@ -1,7 +1,7 @@
 import React from 'react';
 import {ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text} from 'react-native';
 import { analyzePicture } from '../../services/service';
-import { gradientColors } from '../../../config';
+import { gradientColors, orangeColor, blueColor } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 
@@ -51,7 +51,7 @@ class SchoolScheduleCreation extends React.Component {
 						<Text style={styles.title}>Analysing your Picture</Text>
 						<Text style={styles.subtitle}>Extracting the information from your picture</Text>
 
-						<Progress.Bar style={{alignSelf:'center'}}indeterminate={true} width={200} />
+						<Progress.Bar style={{alignSelf:'center'}} indeterminate={true} width={200} color={blueColor} useNativeDriver={true} borderWidth={0} unfilledColor={orangeColor}/>
 						{/* <ProgressBar style={{height: 10}} progress={this.state.width} color={orangeColor} />
 						<ProgressBarAndroid styleAttr="Horizontal" color={orangeColor}></ProgressBarAndroid> */}
 					</Surface>
