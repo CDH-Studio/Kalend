@@ -5256,6 +5256,13 @@ react-native-paper@^2.11.0:
     react-lifecycles-compat "^3.0.4"
     react-native-safe-area-view "^0.12.0"
 
+react-native-progress@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.5.0.tgz#d1ccc7f96dc17c609aedb43b2e6695d67deae0ec"
+  integrity sha512-Tgc002D0BGes1fTlObu/qNItlsTPYKFrF9XRQaJLme77TNxNX9I04sgIz3kaq8O4R+z/jlai64dk1HDEDQhzMA==
+  dependencies:
+    prop-types "^15.5.8"
+
 react-native-router-flux@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/react-native-router-flux/-/react-native-router-flux-4.0.6.tgz#e4723f5ce89cb5822e0c9bb6d0a8d4de6179eb58"

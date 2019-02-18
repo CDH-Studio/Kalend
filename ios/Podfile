@@ -13,6 +13,9 @@ target 'Kalend' do
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'React', path: '../node_modules/react-native', subspecs: [
+    'ART',
+  ]
 
   target 'Kalend-tvOSTests' do
     inherit! :search_paths
