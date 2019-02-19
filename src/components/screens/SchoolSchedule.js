@@ -3,7 +3,7 @@ import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, To
 import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { requestStoragePermission } from '../../services/android_permissions';
+import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 
 class SchoolSchedule extends React.Component {
 	static navigationOptions = {
@@ -33,6 +33,20 @@ class SchoolSchedule extends React.Component {
 		}
 	}
 
+	cameraCapture() {
+		if (Platform.OS !== 'ios') {
+			requestCamera().then((accepted) => {
+				console.log(accepted);
+				
+				if (accepted) {
+					this.props.navigation.navigate('SchoolScheduleTakePicture');
+				}
+			});
+		} else {
+			this.props.navigation.navigate('SchoolScheduleTakePicture');
+		}
+	}
+
 	render() {
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
@@ -50,7 +64,7 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonTake} onPress={() => this.props.navigation.navigate('SchoolScheduleTakePicture')}>
+							<TouchableOpacity style={styles.buttonTake} onPress={() => this.cameraCapture()}>
 								<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
 							</TouchableOpacity>
 						</View>

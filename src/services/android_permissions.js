@@ -19,4 +19,23 @@ let requestStoragePermission = async () => {
 	}
 };
 
-module.exports = { requestStoragePermission };
+let requestCamera = async () => {
+	try {
+		const granted = await PermissionsAndroid.request(
+			PermissionsAndroid.PERMISSIONS.CAMERA, {
+				title: 'Camera Permission',
+				message:
+				'Kalend needs access to your camera to allow' +
+				'you to take a picture of you schedule.',
+				buttonNegative: 'Cancel',
+				buttonPositive: 'OK',
+			},
+		);
+		
+		return granted === PermissionsAndroid.RESULTS.GRANTED;
+	} catch (err) {
+		console.warn(err);
+	}
+};
+
+module.exports = { requestStoragePermission, requestCamera };
