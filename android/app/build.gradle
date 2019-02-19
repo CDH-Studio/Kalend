@@ -179,6 +179,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-base64')
     compile project(':react-native-vector-icons')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-google-signin')
