@@ -11,6 +11,7 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
 import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
+import ReviewEvent from './src/components/screens/ReviewEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
@@ -56,7 +57,7 @@ const TutorialNavigator = createStackNavigator(
 		SchoolScheduleCreation: SchoolScheduleCreation,
 		FixedEvent: FixedEvent,
 		NonFixedEvent: NonFixedEvent,
-		//ReviewEvent: {screen: ReviewEvent},
+		ReviewEvent: ReviewEvent,
 		//ScheduleSelection: {screen: ScheduleSelection},
 		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 

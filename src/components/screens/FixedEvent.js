@@ -254,11 +254,11 @@ class FixedEvent extends React.Component {
 							<Text style={styles.skipButtonText}>Skip</Text>
 						</View>
 						<View style={styles.sectionIconRow}>
-							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconActive} />
-							<Octicons name="primitive-dot" size={35} color="#1473E6" style={styles.sectionIconInactive} />
-							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconInactive} />
-							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconInactive} />
-							<Octicons name="primitive-dot" size={35} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIconInactive} />
+							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+							<Octicons name="primitive-dot" size={20} color="#1473E6" style={styles.sectionIcon} />
+							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
 						</View>
 							
 						<View style={styles.skipButton}>
@@ -285,8 +285,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'space-evenly',
 		marginTop: 100,
-		marginLeft: 20,
-		marginRight: 20
+		paddingLeft: 35,
+		paddingRight: 35
 	},
 
 	instruction: {
@@ -418,26 +418,16 @@ const styles = StyleSheet.create({
 	},
 
 	emptySection: {
-		marginLeft: 20,
 		opacity: 0 //In order to center the bottom section
 	},
 
 	sectionIconRow: {
 		flexDirection: 'row',
-		marginRight: -20
+		marginLeft: 10
 	},
 
-	sectionIconActive: {
-		width: 40,
-	},
-
-	sectionIconInactive: {
-		width: 40,
-	},
-
-	skipButton: {
-		marginRight: 20,
-		marginBottom: 2
+	sectionIcon: {
+		width: 20,
 	},
 
 	skipButtonText: {

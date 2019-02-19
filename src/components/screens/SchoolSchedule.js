@@ -60,11 +60,11 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.skipButtonText}>Skip</Text>
 							</View>
 							<View style={styles.sectionIconRow}>
-								<Octicons name="primitive-dot" size={35} color="#FFFFFF" style={styles.sectionIconActive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={20} color="#FFFFFF" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
 							</View>
 							
 							<View style={styles.skipButton}>
@@ -93,7 +93,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'space-between',
-		marginTop: 160
+		marginTop: 160,
+		paddingLeft: 35,
+		paddingRight: 35
 	},
 
 	schoolIcon: {
@@ -163,31 +165,21 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginTop: 50,
+		marginTop: 20,
 		marginBottom: 10
 	},
 
 	emptySection: {
-		marginLeft: 20,
 		opacity: 0 //In order to center the bottom section
 	},
 
 	sectionIconRow: {
 		flexDirection: 'row',
-		marginRight: -20
+		marginLeft: 10
 	},
 
-	sectionIconActive: {
-		width: 40,
-	},
-
-	sectionIconInactive: {
-		width: 40,
-	},
-
-	skipButton: {
-		marginRight: 20,
-		marginBottom: 2
+	sectionIcon: {
+		width: 20,
 	},
 
 	skipButtonText: {

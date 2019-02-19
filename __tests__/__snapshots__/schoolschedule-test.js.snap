@@ -210,6 +210,8 @@ exports[`SchoolSchedule renders correctly 1`] = `
           "flexDirection": "column",
           "justifyContent": "space-between",
           "marginTop": 160,
+          "paddingLeft": 35,
+          "paddingRight": 35,
         }
       }
     >
@@ -343,14 +345,13 @@ exports[`SchoolSchedule renders correctly 1`] = `
             "flexDirection": "row",
             "justifyContent": "space-between",
             "marginBottom": 10,
-            "marginTop": 50,
+            "marginTop": 20,
           }
         }
       >
         <View
           style={
             Object {
-              "marginLeft": 20,
               "opacity": 0,
             }
           }
@@ -377,7 +378,7 @@ exports[`SchoolSchedule renders correctly 1`] = `
           style={
             Object {
               "flexDirection": "row",
-              "marginRight": -20,
+              "marginLeft": 10,
             }
           }
         >
@@ -387,32 +388,10 @@ exports[`SchoolSchedule renders correctly 1`] = `
               Array [
                 Object {
                   "color": "#FFFFFF",
-                  "fontSize": 35,
+                  "fontSize": 20,
                 },
                 Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
+                  "width": 20,
                 },
                 Object {
                   "fontFamily": "Octicons",
@@ -431,32 +410,10 @@ exports[`SchoolSchedule renders correctly 1`] = `
               Array [
                 Object {
                   "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
+                  "fontSize": 20,
                 },
                 Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
+                  "width": 20,
                 },
                 Object {
                   "fontFamily": "Octicons",
@@ -475,10 +432,54 @@ exports[`SchoolSchedule renders correctly 1`] = `
               Array [
                 Object {
                   "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
+                  "fontSize": 20,
                 },
                 Object {
-                  "width": 40,
+                  "width": 20,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 0.50)",
+                  "fontSize": 20,
+                },
+                Object {
+                  "width": 20,
+                },
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 0.50)",
+                  "fontSize": 20,
+                },
+                Object {
+                  "width": 20,
                 },
                 Object {
                   "fontFamily": "Octicons",
@@ -492,14 +493,7 @@ exports[`SchoolSchedule renders correctly 1`] = `
             
           </Text>
         </View>
-        <View
-          style={
-            Object {
-              "marginBottom": 2,
-              "marginRight": 20,
-            }
-          }
-        >
+        <View>
           <View
             accessible={true}
             isTVSelectable={true}
