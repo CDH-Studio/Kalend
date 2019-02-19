@@ -22,6 +22,8 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://github.com/xgfe/react-native-datepicker
 * React Native App Intro Sliders
   * https://github.com/Jacse/react-native-app-intro-slider
+* React Native Numeric Input
+  * https://www.npmjs.com/package/react-native-numeric-input
 * Jest
   * https://jestjs.io/docs/en/tutorial-react-native
 
