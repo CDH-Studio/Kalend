@@ -5244,6 +5244,14 @@ react-native-linear-gradient@^2.5.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.3.tgz#d90cf19a13fcccfa8bb32025ac40a15ae1b49e99"
   integrity sha512-XdusrOXXlkI+yQpUW7YLeiq9cZiBwkvQX4XEkHPVrJ9H47gsKmdgBwObkZBzBQUP0dKK/Sg6aVpETEis4w43bQ==
 
+react-native-numeric-input@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/react-native-numeric-input/-/react-native-numeric-input-1.6.5.tgz#bf338a691b7e72bfd4985bb2567c3a12e30626aa"
+  integrity sha512-DzahyXE6I5Cc7FvtZ6v3pW/6P47t+NhiHOR/Xd+yLnkYHmnG5iuXCeNcjMuCFMa4qNPuQvFRfkYIH9W+hGpYhg==
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-pixel-perfect "^1.0.1"
+
 react-native-paper@^2.11.0:
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-2.11.1.tgz#6f745b956c1a95ba24c02cbc0a935528f995a2eb"
@@ -5255,6 +5263,11 @@ react-native-paper@^2.11.0:
     hoist-non-react-statics "^3.1.0"
     react-lifecycles-compat "^3.0.4"
     react-native-safe-area-view "^0.12.0"
+
+react-native-pixel-perfect@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-pixel-perfect/-/react-native-pixel-perfect-1.0.2.tgz#8e6dc97e377caa4bd07f9e584ba438d53c0e25e8"
+  integrity sha512-0IvYCNkxuQbQC9q4tI+C3i6o38nbx916p7gBRBWuPxDhKBCuTkVV3VukcfW6vtjRlwQm6kwQcF9OtI+yUBt+YA==
 
 react-native-progress@^3.5.0:
   version "3.5.0"
