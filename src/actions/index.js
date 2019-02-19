@@ -21,7 +21,7 @@ export function setImageURI (ImageUri) {
 	const action = {
 		type: SET_IMG,
 		data: ImageUri
-	};
+	}; 
 
 	return action;
 }

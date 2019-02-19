@@ -1,11 +1,10 @@
 import React from 'react';
 import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { analyzePicture } from '../../services/service';
 import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB } from 'react-native-paper';
-import ImgToBase64 from 'react-native-image-base64';
+import {connect} from 'react-redux';
 
 class CameraRollImage extends React.Component {
 
@@ -176,12 +175,16 @@ class SchoolScheduleSelectPicture extends React.Component {
 		});
 		this.selectImage(data.index);
 	}
+	setImage(imgURI) {
+		this.props.dispatch({
+			type:'SET_IMG',
+			data: imgURI
+		});
+	}
 
 	uploadImage = () => {
 		console.log('Image selected >> ' + this.state.selected);
-		ImgToBase64.getBase64String(this.state.selected)
-			.then(base64String => analyzePicture({data: base64String}))
-			.catch(err => console.log('eerr', err));
+		this.setImage(this.state.selected);
 		this.props.navigation.navigate('SchoolScheduleCreation');
 	}
 
@@ -289,4 +292,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolScheduleSelectPicture;
+export default connect()(SchoolScheduleSelectPicture);

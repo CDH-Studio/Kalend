@@ -5,7 +5,7 @@ export default function ImageReducer(state = [], action) {
 		case SET_IMG:
 			return {
 				...state,
-				...action.data
+				data: action.data
 			};
 
 		default:
