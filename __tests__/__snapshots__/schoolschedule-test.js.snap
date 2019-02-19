@@ -272,12 +272,11 @@ exports[`SchoolSchedule renders correctly 1`] = `
             Object {
               "alignItems": "center",
               "backgroundColor": "#FFFFFF",
-              "borderColor": "#FFFFFF",
               "borderRadius": 12,
-              "borderWidth": 3,
               "elevation": 4,
               "opacity": 1,
               "padding": 17,
+              "paddingVertical": 21.15,
               "width": 300,
             }
           }
