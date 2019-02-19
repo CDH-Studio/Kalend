@@ -30,7 +30,7 @@ class SchoolScheduleCreation extends React.Component {
 	};
 
 	componentDidMount() {
-		analyzePicture();
+		//analyzePicture(this.state.selected);
 		this.progressValue();
 	}
 	progressValue() {

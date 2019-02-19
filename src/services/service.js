@@ -1,8 +1,8 @@
 import { formatData, getStartDate } from './helper';
 import { insertEvent } from './google_calendar';
 
-const serverUrl = 'http://35.183.124.143:8080';
-
+//const serverUrl = 'http://52.60.127.46:8080';
+const serverUrl = 'http://172.16.119.156:8080';
 export const grabSampleData = () =>  {
 	fetch(`${serverUrl}/api/test`)
 		.then(res =>  {
@@ -29,14 +29,22 @@ export const grabUserData = () =>  {
 		});
 };
 
-export const analyzePicture = () => {
-	fetch(`${serverUrl}/api/analyzepicture`)
+export const analyzePicture = (base64Data) => {
+	fetch(`${serverUrl}/api/analyzepicture`, {
+		method:'POST',
+		body: JSON.stringify(base64Data),
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		}
+	})
 		.then(res => {
 			return res.json();
 		})
 		.then(body => {
 			formatData(body.data)
 				.then(data => {
+					console.log('data', data);
 					InsertDataIntoGoogle(data);
 				});
 			//InsertDataIntoGoogle(data)
