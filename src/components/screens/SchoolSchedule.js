@@ -125,10 +125,9 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#FFFFFF',
 		padding: 17,
+		paddingVertical: 21.15,
 		alignItems: 'center',
 		width: 300,
-		borderWidth: 3,
-		borderColor: '#FFFFFF',
 		elevation: 4
 	},
 

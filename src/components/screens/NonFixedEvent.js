@@ -296,9 +296,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#1473E6',
 		width: 150,
-		height: 58,
-		borderWidth: 3,
-		borderColor: '#1473E6',
+		height: 57.9,
 		elevation: 4,
 		marginRight: 25,
 		justifyContent:'center'
