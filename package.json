@@ -16,6 +16,7 @@
     "react-addons-update": "^15.6.2",
     "react-native": "0.57.8",
     "react-native-app-intro-slider": "^1.0.1",
+    "react-native-camera": "git+https://git@github.com/react-native-community/react-native-camera.git",
     "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-google-signin": "^1.0.2",
