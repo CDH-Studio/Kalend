@@ -1,8 +1,14 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Platform, StatusBar } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { blueColor, orangeColor, redColor } from '../../../config';
 import Entypo from 'react-native-vector-icons/Entypo';
+
+// Enables the LayoutAnimation on Android
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 class SchoolScheduleTakePicture extends React.Component {
 
@@ -24,7 +30,28 @@ class SchoolScheduleTakePicture extends React.Component {
 		this.state = {
 			base64: '',
 			changeIcon: false,
+			takePictureOpacity: 0,
+			takePictureW: null,
+			takePictureH: null,
+			takePictureIcon: 0,
+
+			dismissOpacity: 0
 		};
+	}
+
+	componentDidMount() {
+
+		setTimeout(()=>{
+
+			this.setState({
+				takePictureOpacity: 1
+			});
+			LayoutAnimation.spring();
+			this.setState({
+				takePictureIcon: 35,
+			});
+
+		}, 1000);
 	}
 
 	takePicture = async () => {
@@ -51,7 +78,7 @@ class SchoolScheduleTakePicture extends React.Component {
 	}
 
 	render() {
-		const { changeIcon } = this.state;
+		const { changeIcon, takePictureOpacity, dismissOpacity, takePictureW, takePictureH, takePictureIcon } = this.state;
 		return (
 			<View style={styles.container}>
 			
@@ -66,21 +93,21 @@ class SchoolScheduleTakePicture extends React.Component {
 					flashMode={RNCamera.Constants.FlashMode.auto} />
 
 				<View style={styles.buttonContainer}>
-					
+					<View style={{opacity: takePictureOpacity}}>
 					<TouchableOpacity onPress={this.takePicture}
-						style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor }]}>
+						style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor, height: takePictureH, width: takePictureW }]}>
 
 						<Entypo name={changeIcon ? 'upload' : 'camera'} 
-							size={35} 
+							size={takePictureIcon} 
 							color="#FFFFFF" 
 							style={styles.icon} />
 
 					</TouchableOpacity>
-					
+					</View>
 					{ this.state.changeIcon ? 
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, {backgroundColor: redColor}]}>
+							style={[styles.capture, { backgroundColor: redColor, opacity: dismissOpacity }]}>
 
 							<Entypo name='cross' 
 								size={35} 
