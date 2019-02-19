@@ -22,7 +22,7 @@ let googleSignIn = async () => {
 		} else {
 			// some other error happened
 		}
-		//console.error(error);
+		console.error(error);
 	}
 };
 

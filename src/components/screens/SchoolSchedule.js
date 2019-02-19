@@ -1,6 +1,9 @@
 import React from 'react';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
+import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
+import Octicons from 'react-native-vector-icons/Octicons';
+import { requestStoragePermission } from '../../services/android_permissions';
 
 class SchoolSchedule extends React.Component {
 	static navigationOptions = {
@@ -16,9 +19,23 @@ class SchoolSchedule extends React.Component {
 		}
 	};
 
+	selectAPicture() {
+		if (Platform.OS !== 'ios') {
+			requestStoragePermission().then((accepted) => {
+				console.log(accepted);
+				
+				if (accepted) {
+					this.props.navigation.navigate('SchoolScheduleSelectPicture');
+				}
+			});
+		} else {
+			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+		}
+	}
+
 	render() {
 		return (
-			<LinearGradient style={styles.container} colors={['#1473E6', '#0E55AA']}>
+			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
@@ -29,7 +46,7 @@ class SchoolSchedule extends React.Component {
 						</View>
 						
 						<View style={styles.button}>
-							<TouchableOpacity style={styles.buttonSelect} onPress={() => this.props.navigation.navigate('SchoolScheduleSelectPicture')}>
+							<TouchableOpacity style={styles.buttonSelect} onPress={() => this.selectAPicture()}>
 								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 							</TouchableOpacity>
 
@@ -43,11 +60,11 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.skipButtonText}>Skip</Text>
 							</View>
 							<View style={styles.sectionIconRow}>
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionActive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
-								<Image style={styles.sectionIcon} source={require('../../assets/img/schoolSchedule/sectionInactive.png')} resizeMode="contain" />
+								<Octicons name="primitive-dot" size={35} color="#FFFFFF" style={styles.sectionIconActive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
 							</View>
 							
 							<View style={styles.skipButton}>
@@ -62,6 +79,8 @@ class SchoolSchedule extends React.Component {
 		);
 	}
 }
+
+export default SchoolSchedule;
 
 const styles = StyleSheet.create({
 	container: {
@@ -84,18 +103,15 @@ const styles = StyleSheet.create({
 
 	instruction: {
 		flexDirection: 'row',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 
 	text: {
 		fontFamily: 'Raleway-Regular',
 		color: '#FFFFFF',
 		fontSize: 20,
-		paddingTop: 30,
 		paddingLeft: 15,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: { width: -1, height: 1 },
-		textShadowRadius: 20,
 		width: 220
 	},
 
@@ -153,17 +169,20 @@ const styles = StyleSheet.create({
 
 	emptySection: {
 		marginLeft: 20,
-		opacity: 0
+		opacity: 0 //In order to center the bottom section
 	},
 
 	sectionIconRow: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		marginRight: -20
 	},
 
-	sectionIcon: {
-		width: 20,
-		height: 20,
-		margin: 8
+	sectionIconActive: {
+		width: 40,
+	},
+
+	sectionIconInactive: {
+		width: 40,
 	},
 
 	skipButton: {
@@ -181,4 +200,3 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolSchedule;

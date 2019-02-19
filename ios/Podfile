@@ -1,0 +1,30 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Kalend' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for Kalend
+  pod 'React', :path => '../node_modules/react-native'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'GoogleSignIn'
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'React', path: '../node_modules/react-native', subspecs: [
+    'ART',
+  ]
+
+  target 'Kalend-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'KalendTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

@@ -1,14 +1,42 @@
-import {AppRegistry} from 'react-native';
+import {AppRegistry, StatusBar} from 'react-native';
 import Home from './src/components/screens/Home';
+import React from 'react';
+import store from './src/store';
+import { Provider } from 'react-redux';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
 import LoadingScreen from './src/components/screens/LoadingScreen';
+import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
+import NonFixedEvent from './src/components/screens/NonFixedEvent';
+import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
-AppRegistry.registerComponent(appName, () => MainNavigator);
+const theme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		primary: '#1473E6',
+		accent: '#FF9F1C',
+	}
+};
+
+export default function Main() {
+	return (
+		<Provider store={store}>
+			<PaperProvider theme={theme}>
+				<AppContainer/>
+			</PaperProvider>
+		</Provider>
+	);
+}
+
+
+StatusBar.setBarStyle('light-content', true);
+AppRegistry.registerComponent(appName, () => Main);
 
 const LoginNavigator = createStackNavigator(
 	{
@@ -20,23 +48,14 @@ const LoginNavigator = createStackNavigator(
 	}
 );
 
-// const SchoolScheduleAnalysisNavigator = createStackNavigator(
-// 	{
-// 		SchoolScheduleAnalysis: {screen: SchoolScheduleAnalysis}
-// 	}, 
-// 	{
-// 		headerMode: 'none',
-// 		initialRouteName: 'SchoolScheduleAnalysis'
-// 	}
-// );
-
 const TutorialNavigator = createStackNavigator(
 	{
 		SchoolSchedule: SchoolSchedule,
 		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
 		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
+		SchoolScheduleCreation: SchoolScheduleCreation,
 		FixedEvent: FixedEvent,
-		//NonFixedEvent: {screen: NonFixedEvent},
+		NonFixedEvent: NonFixedEvent,
 		//ReviewEvent: {screen: ReviewEvent},
 		//ScheduleSelection: {screen: ScheduleSelection},
 		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
@@ -88,9 +107,10 @@ const TutorialNavigator = createStackNavigator(
 // 	}
 // );
 
-const MainNavigator = createAppContainer(createSwitchNavigator(
+const MainNavigator = createSwitchNavigator(
 	{
-		LoadingScreen: {screen: LoadingScreen},
+		WelcomeScreen: WelcomeScreen,
+		LoadingScreen: LoadingScreen,
 		//Dashboard: DashboardNavigator,
 		LoginNavigator: LoginNavigator,
 		TutorialNavigator: TutorialNavigator
@@ -99,4 +119,6 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 		headerMode: 'none',
 		initialRouteName: 'LoadingScreen'
 	}
-));
+);
+
+const AppContainer = createAppContainer(MainNavigator);

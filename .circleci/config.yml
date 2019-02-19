@@ -52,6 +52,7 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
+
   linter:
     working_directory: ~/Kalend
     docker:
@@ -134,6 +135,10 @@ jobs:
           name: "Renames the APK file"
           command:
             cd ~/Kalend/android/app/build/outputs/apk/release && rm output.json
+
+      - run:
+          name: "Set VERSION env. variable"
+          command: VERSION=$(npm run version --silent)
 
       - run:
           name: "Publish Release on GitHub"

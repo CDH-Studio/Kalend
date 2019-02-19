@@ -1,22 +1,20 @@
 import React from 'react';
 import { StyleSheet, StatusBar, View, Animated, Easing} from 'react-native';
+import { gradientColors, blueColor } from '../../../config';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
-
-const colors1 = ['#1473E6', '#1473E6'];
-const colors2 = ['#1473E6', '#0E55AA'];
 
 class LoadingScreen extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			colors: colors1,
+			colors: [blueColor, blueColor],
 			progress: new Animated.Value(0),
 		};
 		
 		setTimeout(()=> {
-			this.props.navigation.navigate('LoginNavigator');
+			this.props.navigation.navigate('WelcomeScreen');
 		}, 4000);
 	}
 
@@ -28,7 +26,7 @@ class LoadingScreen extends React.Component {
 		}).start();
 
 		this.setState({
-			colors: colors2
+			colors: gradientColors
 		});
 	}
 
