@@ -13,7 +13,7 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 class SchoolScheduleTakePicture extends React.Component {
 
 	static navigationOptions = {
-		title: 'Take A Picture',
+		title: 'Take a Picture',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
@@ -31,38 +31,79 @@ class SchoolScheduleTakePicture extends React.Component {
 			base64: '',
 			changeIcon: false,
 			takePictureOpacity: 0,
-			takePictureW: null,
-			takePictureH: null,
 			takePictureIcon: 0,
-
-			dismissOpacity: 0
+			dismissOpacity: 0,
+			dismissIcon: 0
 		};
 	}
 
-	componentDidMount() {
-
-		setTimeout(()=>{
-
-			this.setState({
-				takePictureOpacity: 1
-			});
+	animation = (opacity, size, icon) => {
+		if (icon) {
+			if (opacity === 1) {
+				this.setState({
+					dismissOpacity: opacity,
+					takePictureOpacity: opacity
+				});
+			} else {
+				setTimeout(() => {
+					this.setState({
+						dismissOpacity: opacity,
+						takePictureOpacity: opacity
+					});
+				}, 100);
+			}
 			LayoutAnimation.spring();
 			this.setState({
-				takePictureIcon: 35,
+				dismissIcon: size,
+				takePictureIcon: size,
 			});
+		} else {
+			if (opacity === 1) {
+				this.setState({
+					takePictureOpacity: opacity
+				});
+			} else {
+				setTimeout(() => {
+					this.setState({
+						takePictureOpacity: opacity
+					});
+				}, 100);
+			}
+			LayoutAnimation.spring();
 
-		}, 1000);
+			this.setState({
+				takePictureIcon: size,
+			});
+		}
+	}
+
+	enterAnimation = (icon) => {
+		this.animation(1, 35, icon);
+	}
+
+	exitAnimation = (icon) => {
+		this.animation(0, 0, icon);
+	}
+
+	componentDidMount() {
+		setTimeout(()=>{
+			this.enterAnimation(false);
+		}, 800);
 	}
 
 	takePicture = async () => {
 		if (this.camera) {
 			if (!this.state.changeIcon) {
+				this.exitAnimation(false);
+
 				const options = { quality: 0.5, base64: true, doNotSave: false, pauseAfterCapture: true };
 				const data = await this.camera.takePictureAsync(options);
 				this.setState({
 					base64: data.base64,
 					changeIcon: true,
 				});
+
+				this.enterAnimation(true);
 			} else {
 				console.log('Image selected >> ' + this.state.base64);
 				this.props.navigation.navigate('SchoolScheduleCreation');
@@ -71,17 +112,19 @@ class SchoolScheduleTakePicture extends React.Component {
 	}
 
 	cancelPicture = () => {
+		this.exitAnimation(true);
 		this.camera.resumePreview();
 		this.setState({
 			changeIcon: false,
 		});
+		setTimeout(() => this.enterAnimation(false), 200);
 	}
 
 	render() {
-		const { changeIcon, takePictureOpacity, dismissOpacity, takePictureW, takePictureH, takePictureIcon } = this.state;
+		const { changeIcon, takePictureOpacity, dismissOpacity, takePictureIcon, dismissIcon } = this.state;
 		return (
 			<View style={styles.container}>
-			
+
 				<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 
 				<RNCamera captureAudio={false}
@@ -92,31 +135,32 @@ class SchoolScheduleTakePicture extends React.Component {
 					type={RNCamera.Constants.Type.back}
 					flashMode={RNCamera.Constants.FlashMode.auto} />
 
-				<View style={styles.buttonContainer}>
-					<View style={{opacity: takePictureOpacity}}>
-					<TouchableOpacity onPress={this.takePicture}
-						style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor, height: takePictureH, width: takePictureW }]}>
+				<View style={[styles.buttonContainer, {flexDirection: changeIcon ? 'row' : 'column'}]}>
 
-						<Entypo name={changeIcon ? 'upload' : 'camera'} 
-							size={takePictureIcon} 
-							color="#FFFFFF" 
-							style={styles.icon} />
-
-					</TouchableOpacity>
-					</View>
-					{ this.state.changeIcon ? 
+					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, { backgroundColor: redColor, opacity: dismissOpacity }]}>
+							style={[styles.capture, { backgroundColor: redColor}]}>
 
 							<Entypo name='cross' 
-								size={35} 
+								size={dismissIcon}
 								color="#FFFFFF" 
 								style={styles.icon} />
 
 						</TouchableOpacity>
-						:
-						null }
+					</View>
+
+					<View style={{opacity: takePictureOpacity}}>
+						<TouchableOpacity onPress={this.takePicture}
+							style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor }]}>
+
+							<Entypo name={changeIcon ? 'upload' : 'camera'} 
+								size={takePictureIcon} 
+								color="#FFFFFF" 
+								style={styles.icon} />
+
+						</TouchableOpacity>
+					</View>
 
 				</View>
 
@@ -160,8 +204,8 @@ const styles = StyleSheet.create({
 		textShadowRadius: 10
 	}, 
 	buttonContainer: { 
-		flexDirection: 'row', 
 		justifyContent: 'center', 
+		alignItems: 'center',
 		position: 'absolute',
 		right: 0,
 		left: 0,
