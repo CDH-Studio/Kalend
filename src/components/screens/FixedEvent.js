@@ -122,7 +122,7 @@ class FixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
-				<ScrollView contentContainerStyle={styles.content}>
+				<ScrollView style={styles.content}>
 					<View style={styles.instruction}>
 						<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6"/>
@@ -277,16 +277,14 @@ class FixedEvent extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		justifyContent: 'space-between'
 	},
 
 	content: {
-		flexGrow: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-evenly',
-		marginTop: 100,
-		paddingLeft: 35,
-		paddingRight: 35
+		marginTop: 90,
+		paddingLeft: 15,
+		paddingRight: 15
 	},
 
 	instruction: {
@@ -308,7 +306,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'flex-end',
-		marginRight: 20,
+		marginRight: 10,
 		height: 40
 	},
 
@@ -322,7 +320,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 20
+		marginLeft: 10
 	},
 
 	blueTitle: {
@@ -333,9 +331,9 @@ const styles = StyleSheet.create({
 	},
 	
 	timeSection: {
-		paddingTop: 20,
+		paddingTop: 15,
 		alignItems: 'center',
-		marginLeft: 25
+		marginLeft: 30
 	},
 
 	allDay: {
@@ -411,8 +409,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginTop: 20,
-		marginBottom: 10
+		marginTop: 15,
+		paddingBottom: 10
 	},
 
 	emptySection: {
