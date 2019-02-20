@@ -11,6 +11,7 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
 import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
+import ScheduleSelection from './src/components/screens/ScheduleSelection';
 import ReviewEvent from './src/components/screens/ReviewEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
@@ -41,7 +42,7 @@ AppRegistry.registerComponent(appName, () => Main);
 
 const LoginNavigator = createStackNavigator(
 	{
-		Home: Home
+		Home
 	},
 	{
 		headerMode: 'none',
@@ -51,14 +52,14 @@ const LoginNavigator = createStackNavigator(
 
 const TutorialNavigator = createStackNavigator(
 	{
-		SchoolSchedule: SchoolSchedule,
-		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
-		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
-		SchoolScheduleCreation: SchoolScheduleCreation,
-		FixedEvent: FixedEvent,
-		NonFixedEvent: NonFixedEvent,
-		ReviewEvent: ReviewEvent,
-		//ScheduleSelection: {screen: ScheduleSelection},
+		SchoolSchedule,
+		SchoolScheduleSelectPicture,
+		SchoolScheduleTakePicture,
+		SchoolScheduleCreation,
+		FixedEvent,
+		NonFixedEvent,
+		ReviewEvent,
+		ScheduleSelection,
 		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 
 	{
@@ -110,15 +111,16 @@ const TutorialNavigator = createStackNavigator(
 
 const MainNavigator = createSwitchNavigator(
 	{
-		WelcomeScreen: WelcomeScreen,
-		LoadingScreen: LoadingScreen,
-		//Dashboard: DashboardNavigator,
-		LoginNavigator: LoginNavigator,
-		TutorialNavigator: TutorialNavigator
+		WelcomeScreen,
+		LoadingScreen,
+		//Dashboard,
+		LoginNavigator,
+		TutorialNavigator,
+		ScheduleSelection
 	},
 	{
-		headerMode: 'none',
-		initialRouteName: 'LoadingScreen'
+		// headerMode: 'none',
+		initialRouteName: 'ScheduleSelection'
 	}
 );
 
