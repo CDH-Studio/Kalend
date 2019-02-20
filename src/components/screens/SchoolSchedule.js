@@ -2,8 +2,8 @@ import React from 'react';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
 import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
-import Octicons from 'react-native-vector-icons/Octicons';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
+import TutorialStatus from '../TutorialStatus';
 
 class SchoolSchedule extends React.Component {
 	static navigationOptions = {
@@ -47,6 +47,10 @@ class SchoolSchedule extends React.Component {
 		}
 	}
 
+	skip = () => {
+		this.props.navigation.navigate('FixedEvent');
+	}
+
 	render() {
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
@@ -69,24 +73,7 @@ class SchoolSchedule extends React.Component {
 							</TouchableOpacity>
 						</View>
 
-						<View style={styles.section}>
-							<View style={styles.emptySection}>
-								<Text style={styles.skipButtonText}>Skip</Text>
-							</View>
-							<View style={styles.sectionIconRow}>
-								<Octicons name="primitive-dot" size={20} color="#FFFFFF" style={styles.sectionIcon} />
-								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
-								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
-								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
-								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
-							</View>
-							
-							<View style={styles.skipButton}>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate('FixedEvent')}>
-									<Text style={styles.skipButtonText}>Skip</Text>
-								</TouchableOpacity>
-							</View>
-						</View>
+						<TutorialStatus active={3} color={'#ffffff'} skip={this.skip} />
 					</View>
 				</ImageBackground>
 			</LinearGradient>
@@ -173,35 +160,5 @@ const styles = StyleSheet.create({
 		textShadowOffset: { width: -1, height: 1 },
 		textShadowRadius: 20
 	},
-
-	section: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginTop: 20,
-		marginBottom: 10
-	},
-
-	emptySection: {
-		opacity: 0 //In order to center the bottom section
-	},
-
-	sectionIconRow: {
-		flexDirection: 'row',
-		marginLeft: 10
-	},
-
-	sectionIcon: {
-		width: 20,
-	},
-
-	skipButtonText: {
-		color: 'white',
-		fontFamily: 'Raleway-Regular',
-		fontSize: 15,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
-	}
 });
 
