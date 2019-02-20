@@ -1,5 +1,6 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView} from 'react-native';
+import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions} from 'react-native';
+import {Header} from 'react-navigation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -27,6 +28,8 @@ class FixedEvent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { 
+			containerHeight: null,
+
 			title: '',
 			location: '',
 
@@ -118,156 +121,164 @@ class FixedEvent extends React.Component {
 
 	render() {
 		const { title, disabledStartTime, allDay } = this.state;
+		const containerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
 				<ScrollView style={styles.content}>
-					<View style={styles.instruction}>
-						<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-						<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6"/>
-					</View>
-
-					<View style={styles.textInput}>
-						<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
-						<View style={styles.textInputBorder}>
-							<TextInput style={styles.textInputfont} placeholder="Title" onChangeText={(title) => this.setState({title})} value={title}/>
-						</View>
-					</View>
-					<View style={styles.timeSection}>
-						<View style={styles.allDay}>
-							<Text style={styles.blueTitle}>All-Day</Text>
-							<View style={{width: 220, alignItems:'flex-start', paddingLeft: 5}}>
-								<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={'#FF9F1C'} onValueChange={(allDay) => this.setState({allDay: allDay, disabledStartTime: !disabledStartTime, disabledEndTime: true})} value = {allDay} />
-							</View>
-						</View>
-
-						<View style={styles.start}>
-							<Text style={styles.blueTitle}>Start</Text>
-							<DatePicker showIcon={false} 
-								date={this.state.startDate} 
-								mode="date" 
-								style={{width:140}}
-								customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
-								placeholder={this.state.startDate} 
-								format="ddd., MMM DD, YYYY" 
-								minDate={this.state.minStartDate} 
-								maxDate={this.state.maxStartDate}
-								confirmBtnText="Confirm" 
-								cancelBtnText="Cancel" 
-								onDateChange={(startDate) => this.setState({startDate: startDate, disabledEndDate: false, minEndDate: startDate})} />
-								
-							<DatePicker showIcon={false} 
-								time={this.state.startTime} 
-								mode="time" 
-								disabled = {this.state.disabledStartTime}
-								style={{width:80}}
-								customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color: this.state.disabledStartTime ? '#FF0000' :'#565454'}}}
-								placeholder={this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart} 
-								format="HH:mm A" 
-								confirmBtnText="Confirm" 
-								cancelBtnText="Cancel" 
-								is24Hour={false}
-								onDateChange={(startTime) => this.setState({startTime: this.getTwelveHourTime(startTime), amPmStart: '', disabledEndTime: false})} />
-						</View>
-
-						<View style={styles.end}>
-							<Text style={styles.blueTitle}>End</Text>
-							<DatePicker showIcon={false} 
-								date={this.state.endDate} 
-								mode="date" 
-								style={{width:140}}
-								disabled = {this.state.disabledEndDate}
-								customStyles={{ disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular', color: this.state.disabledEndDate ? '#FF0000' :'#565454'}}} 
-								placeholder={this.state.endDate} 
-								format="ddd., MMM DD, YYYY" 
-								minDate={this.state.minEndDate}
-								confirmBtnText="Confirm" 
-								cancelBtnText="Cancel" 
-								onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, minEndTime: this.timeVerification()})} />
-
-							<DatePicker showIcon={false} 
-								time={this.state.endTime} 
-								mode="time" 
-								disabled = {this.state.disabledEndTime}
-								style={{width:80}}
-								customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color: this.state.disabledEndTime ? '#FF0000' :'#565454'}}}
-								placeholder={this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd} 
-								format="HH:mm A" 
-								minDate={this.state.minEndTime}
-								confirmBtnText="Confirm" 
-								cancelBtnText="Cancel" 
-								is24Hour={false}
-								onDateChange={(endTime) => this.setState({endTime: this.getTwelveHourTime(endTime), amPmEnd: ''})} />
-						</View>
-					</View>
-
-					<View style={styles.description}>
-
-						<View style={styles.textInput}>
-							<MaterialIcons name="location-on" size={30} color="#1473E6" />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputfont} placeholder="Location" onChangeText={(location) => this.setState({location})} value={this.state.location}/>
-							</View>
+					<View style={{height:this.state.containerHeight, flex:1, justifyContent:'space-between'}} 
+						onLayout={(event) => {
+							let {height} = event.nativeEvent.layout;
+							if(height < containerHeight) {
+								this.setState({containerHeight});
+							}
+						}}>
+						<View style={styles.instruction}>
+							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
+							<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6"/>
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="text-short" size={30} color="#1473E6" />
+							<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
 							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputfont} placeholder="Description" onChangeText={(description) => this.setState({description})} value={this.state.description}/>
+								<TextInput style={styles.textInputfont} placeholder="Title" onChangeText={(title) => this.setState({title})} value={title}/>
+							</View>
+						</View>
+						<View style={styles.timeSection}>
+							<View style={styles.allDay}>
+								<Text style={styles.blueTitle}>All-Day</Text>
+								<View style={{width: 220, alignItems:'flex-start', paddingLeft: 5}}>
+									<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={'#FF9F1C'} onValueChange={(allDay) => this.setState({allDay: allDay, disabledStartTime: !disabledStartTime, disabledEndTime: true})} value = {allDay} />
+								</View>
+							</View>
+
+							<View style={styles.start}>
+								<Text style={styles.blueTitle}>Start</Text>
+								<DatePicker showIcon={false} 
+									date={this.state.startDate} 
+									mode="date" 
+									style={{width:140}}
+									customStyles={{dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color:'#565454'}}} 
+									placeholder={this.state.startDate} 
+									format="ddd., MMM DD, YYYY" 
+									minDate={this.state.minStartDate} 
+									maxDate={this.state.maxStartDate}
+									confirmBtnText="Confirm" 
+									cancelBtnText="Cancel" 
+									onDateChange={(startDate) => this.setState({startDate: startDate, disabledEndDate: false, minEndDate: startDate})} />
+									
+								<DatePicker showIcon={false} 
+									time={this.state.startTime} 
+									mode="time" 
+									disabled = {this.state.disabledStartTime}
+									style={{width:80}}
+									customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color: this.state.disabledStartTime ? '#FF0000' :'#565454'}}}
+									placeholder={this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart} 
+									format="HH:mm A" 
+									confirmBtnText="Confirm" 
+									cancelBtnText="Cancel" 
+									is24Hour={false}
+									onDateChange={(startTime) => this.setState({startTime: this.getTwelveHourTime(startTime), amPmStart: '', disabledEndTime: false})} />
+							</View>
+
+							<View style={styles.end}>
+								<Text style={styles.blueTitle}>End</Text>
+								<DatePicker showIcon={false} 
+									date={this.state.endDate} 
+									mode="date" 
+									style={{width:140}}
+									disabled = {this.state.disabledEndDate}
+									customStyles={{ disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular', color: this.state.disabledEndDate ? '#FF0000' :'#565454'}}} 
+									placeholder={this.state.endDate} 
+									format="ddd., MMM DD, YYYY" 
+									minDate={this.state.minEndDate}
+									confirmBtnText="Confirm" 
+									cancelBtnText="Cancel" 
+									onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, minEndTime: this.timeVerification()})} />
+
+								<DatePicker showIcon={false} 
+									time={this.state.endTime} 
+									mode="time" 
+									disabled = {this.state.disabledEndTime}
+									style={{width:80}}
+									customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular'}, placeholderText:{color: this.state.disabledEndTime ? '#FF0000' :'#565454'}}}
+									placeholder={this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd} 
+									format="HH:mm A" 
+									minDate={this.state.minEndTime}
+									confirmBtnText="Confirm" 
+									cancelBtnText="Cancel" 
+									is24Hour={false}
+									onDateChange={(endTime) => this.setState({endTime: this.getTwelveHourTime(endTime), amPmEnd: ''})} />
 							</View>
 						</View>
 
-						<View style={styles.textInput}>
-							<Feather name="repeat" size={30} color="#1473E6" />
-							<View style={styles.textInputBorder}>
-								{
-									Platform.OS === 'ios' ? 
-										<Text onPress={this.textOnClick}>{this.state.recurrenceValue}</Text>
-										:	
-										<Picker style={styles.recurrence} selectedValue={this.state.recurrence} onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-											<Picker.Item label="None" value="None" />
-											<Picker.Item label="Everyday" value="everyday" />
-											<Picker.Item label="Weekly" value="weekly" />
-											<Picker.Item label="Monthly" value="monthly" />
-										</Picker>
-								}
+						<View style={styles.description}>
+
+							<View style={styles.textInput}>
+								<MaterialIcons name="location-on" size={30} color="#1473E6" />
+								<View style={styles.textInputBorder}>
+									<TextInput style={styles.textInputfont} placeholder="Location" onChangeText={(location) => this.setState({location})} value={this.state.location}/>
+								</View>
 							</View>
+
+							<View style={styles.textInput}>
+								<MaterialCommunityIcons name="text-short" size={30} color="#1473E6" />
+								<View style={styles.textInputBorder}>
+									<TextInput style={styles.textInputfont} placeholder="Description" onChangeText={(description) => this.setState({description})} value={this.state.description}/>
+								</View>
+							</View>
+
+							<View style={styles.textInput}>
+								<Feather name="repeat" size={30} color="#1473E6" />
+								<View style={styles.textInputBorder}>
+									{
+										Platform.OS === 'ios' ? 
+											<Text onPress={this.textOnClick}>{this.state.recurrenceValue}</Text>
+											:	
+											<Picker style={styles.recurrence} selectedValue={this.state.recurrence} onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
+												<Picker.Item label="None" value="None" />
+												<Picker.Item label="Everyday" value="everyday" />
+												<Picker.Item label="Weekly" value="weekly" />
+												<Picker.Item label="Monthly" value="monthly" />
+											</Picker>
+									}
+								</View>
+							</View>
+
 						</View>
 
-					</View>
-
-					<View style={styles.buttons}>
-						<TouchableOpacity style={styles.buttonEvent}> 
-							<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
-							<Text style={styles.buttonNextText}>NEXT</Text>
-						</TouchableOpacity>
-
-
-					</View>
-
-					<View style={styles.section}>
-						<View style={styles.emptySection}>
-							<Text style={styles.skipButtonText}>Skip</Text>
-						</View>
-						<View style={styles.sectionIconRow}>
-							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
-							<Octicons name="primitive-dot" size={20} color="#1473E6" style={styles.sectionIcon} />
-							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
-							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
-							<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
-						</View>
-							
-						<View style={styles.skipButton}>
-							<TouchableOpacity onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
-								<Text style={styles.skipButtonText}>Skip</Text>
+						<View style={styles.buttons}>
+							<TouchableOpacity style={styles.buttonEvent}> 
+								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
+
+							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
+								<Text style={styles.buttonNextText}>NEXT</Text>
+							</TouchableOpacity>
+
+
+						</View>
+
+						<View style={styles.section}>
+							<View style={styles.emptySection}>
+								<Text style={styles.skipButtonText}>Skip</Text>
+							</View>
+							<View style={styles.sectionIconRow}>
+								<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="#1473E6" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(20, 115, 230, 0.50)" style={styles.sectionIcon} />
+							</View>
+								
+							<View style={styles.skipButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
+									<Text style={styles.skipButtonText}>Skip</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
 					</View>
-
 				</ScrollView>
 
 			</View>
@@ -277,12 +288,11 @@ class FixedEvent extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		justifyContent: 'space-between'
+		flex: 1
 	},
 
 	content: {
-		marginTop: 90,
+		paddingTop: StatusBar.currentHeight + Header.HEIGHT + 10,
 		paddingLeft: 15,
 		paddingRight: 15
 	},
@@ -331,9 +341,7 @@ const styles = StyleSheet.create({
 	},
 	
 	timeSection: {
-		paddingTop: 15,
-		alignItems: 'center',
-		marginLeft: 30
+		alignItems: 'center'
 	},
 
 	allDay: {
@@ -352,7 +360,7 @@ const styles = StyleSheet.create({
 	},
 
 	description: {
-		marginBottom: 30
+		
 	},
 
 	recurrence:{
@@ -406,6 +414,10 @@ const styles = StyleSheet.create({
 	},
 
 	section: {
+		position:'absolute',
+		bottom: 0,
+		left:0,
+		right:0,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
