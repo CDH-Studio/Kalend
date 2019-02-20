@@ -78,7 +78,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 		super(props);
 		this.state = {
 			pageInfo: {
-				has_next_page: false
+				has_next_page: true
 			},
 			images: [],
 			selected: '',
