@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/kalendFullLogo.png" alt="Kalend" width="300"/>
+<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/dark_logo.png" alt="Kalend" width="300"/>
 
 [![CircleCI](https://img.shields.io/circleci/project/github/CDH-Studio/Kalend/master.svg?style=flat&logo=circleci)](https://circleci.com/gh/CDH-Studio/Kalend)
 [![Release Version](https://img.shields.io/github/release/CDH-Studio/Kalend.svg?style=flat)](https://github.com/CDH-Studio/Kalend/releases)
@@ -22,8 +22,12 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://github.com/xgfe/react-native-datepicker
 * React Native App Intro Sliders
   * https://github.com/Jacse/react-native-app-intro-slider
+* React Native Numeric Input
+  * https://www.npmjs.com/package/react-native-numeric-input
 * Jest
   * https://jestjs.io/docs/en/tutorial-react-native
+* React Native Camera
+  * https://github.com/react-native-community/react-native-camera
 
 ## Dependencies
 

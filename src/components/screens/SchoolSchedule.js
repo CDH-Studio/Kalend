@@ -3,7 +3,7 @@ import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, To
 import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { requestStoragePermission } from '../../services/android_permissions';
+import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 
 class SchoolSchedule extends React.Component {
 	static navigationOptions = {
@@ -33,6 +33,20 @@ class SchoolSchedule extends React.Component {
 		}
 	}
 
+	cameraCapture() {
+		if (Platform.OS !== 'ios') {
+			requestCamera().then((accepted) => {
+				console.log(accepted);
+				
+				if (accepted) {
+					this.props.navigation.navigate('SchoolScheduleTakePicture');
+				}
+			});
+		} else {
+			this.props.navigation.navigate('SchoolScheduleTakePicture');
+		}
+	}
+
 	render() {
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
@@ -50,7 +64,7 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonTake} onPress={() => this.props.navigation.navigate('SchoolScheduleTakePicture')}>
+							<TouchableOpacity style={styles.buttonTake} onPress={() => this.cameraCapture()}>
 								<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
 							</TouchableOpacity>
 						</View>
@@ -60,11 +74,11 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.skipButtonText}>Skip</Text>
 							</View>
 							<View style={styles.sectionIconRow}>
-								<Octicons name="primitive-dot" size={35} color="#FFFFFF" style={styles.sectionIconActive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
+								<Octicons name="primitive-dot" size={20} color="#FFFFFF" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
+								<Octicons name="primitive-dot" size={20} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIcon} />
 							</View>
 							
 							<View style={styles.skipButton}>
@@ -93,7 +107,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'space-between',
-		marginTop: 160
+		marginTop: 160,
+		paddingLeft: 35,
+		paddingRight: 35
 	},
 
 	schoolIcon: {
@@ -123,10 +139,9 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#FFFFFF',
 		padding: 17,
+		paddingVertical: 21.15,
 		alignItems: 'center',
 		width: 300,
-		borderWidth: 3,
-		borderColor: '#FFFFFF',
 		elevation: 4
 	},
 
@@ -163,31 +178,21 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginTop: 50,
+		marginTop: 20,
 		marginBottom: 10
 	},
 
 	emptySection: {
-		marginLeft: 20,
 		opacity: 0 //In order to center the bottom section
 	},
 
 	sectionIconRow: {
 		flexDirection: 'row',
-		marginRight: -20
+		marginLeft: 10
 	},
 
-	sectionIconActive: {
-		width: 40,
-	},
-
-	sectionIconInactive: {
-		width: 40,
-	},
-
-	skipButton: {
-		marginRight: 20,
-		marginBottom: 2
+	sectionIcon: {
+		width: 20,
 	},
 
 	skipButtonText: {
