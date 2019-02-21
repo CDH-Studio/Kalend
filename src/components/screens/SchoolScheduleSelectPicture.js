@@ -194,7 +194,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	uploadImage = () => {
 		if (this.state.showFAB) {
 			console.log('Image selected >> ' + this.state.selected);
-     			this.setImage(this.state.selected);
+			this.setImage(this.state.selected);
 			this.props.navigation.navigate('SchoolScheduleCreation');
 		}
 	}
