@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions} from 'react-native';
+import {Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity} from 'react-native';
 import { gradientColors, orangeColor, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import converter from 'number-to-words';
@@ -119,6 +119,7 @@ class Schedule extends React.Component {
 					marginBottom: 10}}>
 					{ordinal.charAt(0).toUpperCase() + ordinal.slice(1)} schedule
 				</Text>
+			<TouchableOpacity onPress={() => this.props.nextScreen()}>
 
 				<View style={{backgroundColor: 'white', 
 					...Platform.select({
@@ -197,6 +198,7 @@ class Schedule extends React.Component {
 
 				</View>
 				
+			</TouchableOpacity>
 			</View>
 		);
 	}
@@ -215,6 +217,10 @@ class ScheduleSelection extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
+
+	nextScreen = () => {
+		this.props.navigation.navigate('ScheduleSelectionDetails');
+	}
 
 	constructor(props) {
 		super(props);
@@ -315,7 +321,7 @@ class ScheduleSelection extends React.Component {
 								<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
 								{ data.ai.map((ai, key) => {
-									return <Schedule ai={ai} data={data} key={key} id={key} numOfLines={6}/>;
+									return <Schedule nextScreen={this.nextScreen} ai={ai} data={data} key={key} id={key} numOfLines={6}/>;
 								})}
 							</View>
 					</ScrollView>

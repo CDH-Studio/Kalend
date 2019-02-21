@@ -12,6 +12,7 @@ import FixedEvent from './src/components/screens/FixedEvent';
 import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
 import ScheduleSelection from './src/components/screens/ScheduleSelection';
+import ScheduleSelectionDetails from './src/components/screens/ScheduleSelectionDetails';
 import ReviewEvent from './src/components/screens/ReviewEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
@@ -60,7 +61,7 @@ const TutorialNavigator = createStackNavigator(
 		NonFixedEvent,
 		ReviewEvent,
 		ScheduleSelection,
-		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
+		ScheduleSelectionDetails
 	}, 
 	{
 		initialRouteName: 'SchoolSchedule'
