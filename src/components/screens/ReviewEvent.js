@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, Button} from 'react-native';
 
 class ReviewEvent extends React.Component {
 	render() {
 		return(
-			<Text>ReviewEvent Screen</Text>
+			<Button title='Next' onPress={()=>this.props.navigation.navigate('ScheduleSelection')}>ReviewEvent Screen</Button>
 		);
 	}
 }

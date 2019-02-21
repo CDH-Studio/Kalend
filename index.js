@@ -115,12 +115,11 @@ const MainNavigator = createSwitchNavigator(
 		LoadingScreen,
 		//Dashboard,
 		LoginNavigator,
-		TutorialNavigator,
-		ScheduleSelection
+		TutorialNavigator
 	},
 	{
 		// headerMode: 'none',
-		initialRouteName: 'ScheduleSelection'
+		initialRouteName: 'LoadingScreen'
 	}
 );
 
