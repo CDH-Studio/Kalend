@@ -106,61 +106,47 @@ class FixedEvent extends React.Component {
 		}
 	}
 
-	beforeStartTime(endTime) {
-		//Start Time
-		let start = this.state.startTime;
-		let tempStart = start.split(' ');
+	beforeStartTime(startTime) {
+		endTime = this.state.endTime;
+
+		// Fix the undefined if you haven't set the end time
+		if (endTime.split(":").length === 3) {
+			endTime = endTime.substr(0, 5) + endTime.substr(8, 3)
+		}
+
+		// Start Time
+		let tempStart = startTime.split(' ');
 		let amOrPmStart = tempStart[1];
 
-		let infoStart = start.split(':');
-		start = new Date();
+		let infoStart = tempStart[0].split(':');
+		let hoursStart = parseInt(infoStart[0]);
+		let minutesStart = parseInt(infoStart[1]);
 
-		start.setHours(parseInt(infoStart[0]));
-		start.setMinutes(parseInt(infoStart[1]));
+		if (amOrPmStart === 'PM' && hoursStart !== 12) {
+			hoursStart += 12;
+		}
 
-		let startHour = start.getHours();
-		let startMinute = start.getMinutes();
+		let start = new Date();
+		start.setHours(hoursStart, minutesStart);
 
-		//End Time
-		let end = endTime;
-		let tempEnd = end.split(' ');
+		// End Time
+		let tempEnd = endTime.split(' ');
 		let amOrPmEnd = tempEnd[1];
 
-		let infoEnd = end.split(':');
-		end = new Date();
+		let infoEnd = tempEnd[0].split(':');
+		let hoursEnd = parseInt(infoEnd[0]);
+		let minutesEnd = parseInt(infoEnd[0]);
 
-		end.setHours(parseInt(infoEnd[0]));
-		end.setMinutes(parseInt(infoEnd[1]));
+		if (amOrPmEnd === 'PM' && hoursEnd !== 12) {
+			hoursEnd += 12;
+		}
 
-		let endHour = end.getHours();
-		let endMinute = end.getMinutes();
+		let end = new Date();
+		end.setHours(hoursEnd, minutesEnd);
 
-		//Comparing start and end time
-		if(startHour == 12 && amOrPmStart == 'PM' && amOrPmEnd == 'PM' && endHour < startHour) {
-			return endTime;
-		} else if(startHour == 12 && amOrPmStart == 'PM' && amOrPmEnd == 'PM' && endHour == startHour && endMinute < startMinute) {
-			endTime = this.state.startTime;
-			return endTime;
-		} else if(startHour == 12 && amOrPmStart == 'PM' && amOrPmEnd == 'AM' && endHour < startHour) {
-			endTime = this.state.startTime;
-			return endTime;
-		} else if(endHour == 12 && amOrPmStart == 'PM' && amOrPmEnd == 'PM' && endHour > startHour) {
-			endTime = this.state.startTime;
-			return endTime;
-		} else if(endHour == 12 && amOrPmStart == 'PM' && amOrPmEnd == 'PM' && endHour > startHour && endMinute < startMinute) {
-			endTime = this.state.startTime;
-			return endTime;
-		} else if(amOrPmStart == 'PM' && amOrPmEnd == 'AM') {
-			endTime = this.state.startTime;
-			return endTime;
-		} else if(startHour == endHour) {
-			if(startMinute > endMinute) {
-				endTime = this.state.startTime;
-				return endTime;
-			}
-		} else if(startHour > endHour) {
-			endTime = this.state.startTime;
-			return endTime;
+		// Comparing start and end time
+		if (start > end) {
+			return startTime;
 		} else {
 			return endTime;
 		}
@@ -277,7 +263,7 @@ class FixedEvent extends React.Component {
 									onDateChange={(startTime) => this.setState({
 										startTime: this.getTwelveHourTime(startTime), 
 										amPmStart: '', 
-										endTime: this.state.disabledEndTime ? startTime : this.beforeStartTime(this.getTwelveHourTime(this.state.endTime)), 
+										endTime: this.state.disabledEndTime ? startTime : this.beforeStartTime(this.getTwelveHourTime(startTime)), 
 										amPmEnd: ''})} />
 							</View>
 
