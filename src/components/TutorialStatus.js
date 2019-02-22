@@ -29,22 +29,26 @@ class TutorialStatus extends React.Component {
 					<Text style={styles.skipButtonText}>Skip</Text>
 				</View>
 				<View style={styles.sectionIconRow}>
-					<Octicons name="primitive-dot" size={20} color={colors[0]} style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={20} color={colors[1]} style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={20} color={colors[2]} style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={20} color={colors[3]} style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={20} color={colors[4]} style={styles.sectionIcon} />
+					<Octicons name="primitive-dot" size={dotSize} color={colors[0]} style={styles.sectionIcon} />
+					<Octicons name="primitive-dot" size={dotSize} color={colors[1]} style={styles.sectionIcon} />
+					<Octicons name="primitive-dot" size={dotSize} color={colors[2]} style={styles.sectionIcon} />
+					<Octicons name="primitive-dot" size={dotSize} color={colors[3]} style={styles.sectionIcon} />
+					<Octicons name="primitive-dot" size={dotSize} color={colors[4]} style={styles.sectionIcon} />
 				</View>
 				
 				<View style={styles.skipButton}>
 					<TouchableOpacity onPress={this.props.skip}>
-						<Text style={styles.skipButtonText}>Skip</Text>
+						<Text style={[styles.skipButtonText, {color:this.props.color}]}>Skip</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
 		);
 	}
 }
+
+const dotSize = 20;
+const sectionMargin = 20;
+export const HEIGHT = dotSize + sectionMargin*2;
 
 export default TutorialStatus;
 
@@ -58,7 +62,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		margin: 20,
+		margin: sectionMargin,
 	},
 
 	emptySection: {
@@ -75,11 +79,7 @@ const styles = StyleSheet.create({
 	},
 
 	skipButtonText: {
-		color: 'white',
-		fontFamily: 'Raleway-Regular',
-		fontSize: 15,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15
 	}
 });

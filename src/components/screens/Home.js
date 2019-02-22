@@ -7,10 +7,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 
 class Home extends React.Component {
+
+	//Constructor and States
 	constructor(props) {
 		super(props);
 	}
 
+	//Methods
 	setUser = (userInfo) => {
 		this.props.dispatch({
 			type:'SIGNED_IN',
@@ -18,7 +21,6 @@ class Home extends React.Component {
 		});
 	}
 	
-	//In order to sign in with Google account
 	signIn = () => {
 		googleSignIn().then((userInfo) => {
 			this.setUser(userInfo);
@@ -26,12 +28,11 @@ class Home extends React.Component {
 		});
 	}
 
+	//Render UI
 	render() {
-
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
-
 					<StatusBar translucent={true} backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>
@@ -42,13 +43,13 @@ class Home extends React.Component {
 
 						<Image style={styles.userIcon} source={require('../../assets/img/loginScreen/userIcon.png')} resizeMode="contain" />
 
-						<GoogleSigninButton style={{
-							width: 312,
-							height: 48
-						}} size={GoogleSigninButton.Size.Wide} color={GoogleSigninButton.Color.Light} onPress={this.signIn} />
+						<GoogleSigninButton 
+							style={styles.signInButton} 
+							size={GoogleSigninButton.Size.Wide} 
+							color={GoogleSigninButton.Color.Light} 
+							onPress={this.signIn} />
 					</View>
-
-				</ImageBackground >
+				</ImageBackground>
 			</LinearGradient>
 		);
 	}
@@ -56,6 +57,7 @@ class Home extends React.Component {
 
 export default connect()(Home);
 
+//StyleSheet
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -64,10 +66,12 @@ const styles = StyleSheet.create({
 	},
 
 	content: {
-		alignItems: 'center',
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'space-evenly'
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
+		paddingLeft: 15,
+		paddingRight: 15
 	},
 
 	logo: {
@@ -76,10 +80,11 @@ const styles = StyleSheet.create({
 	},
 
 	text: {
+		paddingTop: 10,
 		fontFamily: 'Raleway-Regular',
 		color: '#FFFFFF',
 		fontSize: 20,
-		paddingTop: 10,
+		textAlign: 'center',
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
 		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 20
