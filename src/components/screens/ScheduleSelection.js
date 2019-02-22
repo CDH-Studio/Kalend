@@ -1,9 +1,10 @@
 import React from 'react';
-import {Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity} from 'react-native';
+import { Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { Header } from 'react-navigation';
+import { data } from './scheduleInfo';
 import LinearGradient from 'react-native-linear-gradient';
 import converter from 'number-to-words';
-import { Header } from 'react-navigation';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -12,6 +13,14 @@ const lineSpace = 25;
 const lineViewHorizontalPadding = 15;
 const lineViewLeftPadding = 15;
 
+/**
+ * The component of an event on a schedule
+ * 
+ * @prop {String} kind The kind of event (fixed, ai or school)
+ * @prop {Integer} chunks The length of the event (1 chunk represents 1 hour)
+ * @prop {Integer} day The day the event will take place (0 being Sunday) 
+ * @prop {Integer} start The start of the event in terms of the number of chunks
+ */
 class ScheduleEvent extends React.Component {
 
 	constructor(props) {
@@ -49,12 +58,12 @@ class ScheduleEvent extends React.Component {
 	render() {
 		const { height, width, left, top, color, colorInside } = this.state;
 		return (
-			<View style={{borderRadius: 3, 
+			<View style={{ borderRadius: 3, 
 				borderWidth: 2,
+				position: 'absolute', 
 				borderColor: color,
 				backgroundColor: colorInside, 
 				height: height, 
-				position: 'absolute', 
 				width: width,
 				top: top,
 				left: left,
@@ -68,12 +77,21 @@ class ScheduleEvent extends React.Component {
 					android: {
 						elevation: 3,
 					},
-				})  }}>
+				}) }}>
 			</View>
 		);
 	}
 }
 
+
+/**
+ * The component of a schedule which contains ScheduleEvents
+ * 
+ * @prop {Object} data The whole object containing the data
+ * @prop {Array} ai An array of ai events
+ * @prop {Integer} numOfLines The number of lines to be drawn on the schedule
+ * @prop {Integer} id The number of the schedule
+ */
 class Schedule extends React.Component {
 
 	constructor(props) {
@@ -109,57 +127,28 @@ class Schedule extends React.Component {
 	render() {
 		const { weekLetters, ordinal, data, numOfLines, hours, ai } = this.state;
 		return (
-			<View style={{paddingTop: 20}}>
-				<Text style={{fontFamily: 'Raleway-Medium', 
-					color:'white', 
-					fontSize: 18, 
-					marginBottom: 10}}>
+			<View style={styles.scheduleContainer}>
+				<Text style={styles.title}>
 					{ordinal.charAt(0).toUpperCase() + ordinal.slice(1)} schedule
 				</Text>
 				<TouchableOpacity onPress={() => this.props.nextScreen()}>
 
-					<View style={{backgroundColor: 'white', 
-						...Platform.select({
-							ios: {
-								shadowColor: '#000000',
-								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: 0.8,
-								shadowRadius: 2,    
-							},
-							android: {
-								elevation: 5,
-							},
-						}),
-						borderRadius: 3, 
-						paddingTop: 5, 
-						paddingHorizontal: lineViewHorizontalPadding,
-						paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding}}>
+					<View style={styles.card}>
 
-						<View style={{flexDirection: 'row', 
-							justifyContent: 'space-between', 
-							padding: 5, 
-							paddingHorizontal:20 }}>
-							{
-								weekLetters.map((str, id) => {
-									return (
-										<Text key={id} 
-											style={{fontFamily: 'Raleway-Medium', 
-												fontSize: 17, }}>
-											{str}
-										</Text>
-									);
-								})
-							}
+						<View style={styles.weekLetterContainer}>
+							{ weekLetters.map((str, id) => {
+								return (
+									<Text key={id} 
+										style={styles.weekLetters}>
+										{str}
+									</Text>
+								);
+							}) }
 						</View>
-
 
 						<View> 
 
-							<View
-								style={{
-									borderBottomColor: lineColor,
-									borderBottomWidth: lineThickness
-								}} />
+							<View style={styles.thickLine} />
 							
 							{ this.createLines(numOfLines) }
 
@@ -175,20 +164,12 @@ class Schedule extends React.Component {
 								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='ai' />;
 							})}
 
-							<View style={{flexDirection: 'column', 
-								justifyContent: 'space-between', 
-								position: 'absolute',
-								paddingBottom: 10,
-								marginTop: -13.5,
-								marginLeft: -22.5,
-								alignItems: 'center' }}>
-								{
-									hours.map((hour, key) => {
-										return (
-											<Text key={key} style={{paddingVertical: 3.4, opacity: 0.5}}>{hour}</Text>
-										);
-									})
-								}
+							<View style={styles.hoursTextContainer}>
+								{ hours.map((hour, key) => {
+									return (
+										<Text key={key} style={styles.hoursText}>{hour}</Text>
+									);
+								}) }
 							</View>
 						</View>
 
@@ -200,6 +181,9 @@ class Schedule extends React.Component {
 	}
 }
 
+/**
+ * The component which encloses all of the schedules which has been generated
+ */
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
@@ -217,95 +201,8 @@ class ScheduleSelection extends React.Component {
 	nextScreen = () => {
 		this.props.navigation.navigate('ScheduleSelectionDetails');
 	}
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			data: {
-				school: [
-					{
-						chunks: 5,
-						day: 1,
-						start: 4,
-					},
-					{
-						chunks: 7,
-						day: 1,
-						start: 12,
-					},
-					{
-						chunks: 6,
-						day: 2,
-						start: 15,
-					},
-					{
-						chunks: 8,
-						day: 3,
-						start: 11,
-					},
-					{
-						chunks: 10,
-						day: 4,
-						start: 7,
-					},
-				],
-				fixed: [
-					{
-						chunks: 3,
-						day: 0,
-						start: 8,
-					},
-					{
-						chunks: 6,
-						day: 6,
-						start: 9,
-					},
-					{
-						chunks: 4,
-						day: 5,
-						start: 11,
-					},
-				],
-				ai: [
-					[
-						{
-							chunks: 5,
-							day: 3,
-							start: 6,
-						},
-					],
-					[
-						{
-							chunks: 5,
-							day: 2,
-							start: 6,
-						},
-						{
-							chunks: 5,
-							day: 5,
-							start: 6,
-						},
-					],
-					[
-						{
-							chunks: 5,
-							day: 2,
-							start: 6,
-						},
-						{
-							chunks: 5,
-							day: 0,
-							start: 18,
-						},
-					]
-				]
-			}
-		};
-	}
 	
 	render() {
-		const { data } = this.state;
 		return(
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
@@ -319,14 +216,15 @@ class ScheduleSelection extends React.Component {
 							{ data.ai.map((ai, key) => {
 								return <Schedule nextScreen={this.nextScreen} ai={ai} data={data} key={key} id={key} numOfLines={6}/>;
 							})}
+
 						</View>
 					</ScrollView>
+
 				</ImageBackground>
 			</LinearGradient>
 		);
 	}
 }
-
 
 export default ScheduleSelection;
 
@@ -335,7 +233,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		width: '100%',
-		height: '130%' //Fixes pattern bug
+		height: '130%'
 	},
 	content: {
 		padding: containerPadding,
@@ -344,5 +242,59 @@ const styles = StyleSheet.create({
 	description: {
 		color: 'white',
 		fontFamily: 'Raleway-Regular',
+	},
+	hoursTextContainer: {
+		flexDirection: 'column', 
+		justifyContent: 'space-between', 
+		position: 'absolute',
+		paddingBottom: 10,
+		marginTop: -13.5,
+		marginLeft: -22.5,
+		alignItems: 'center'
+	},
+	hoursText: {
+		paddingVertical: 3.4, 
+		opacity: 0.5
+	}, 
+	thickLine: {
+		borderBottomColor: lineColor,
+		borderBottomWidth: lineThickness 
+	},
+	weekLetters: {
+		fontFamily: 'Raleway-Medium', 
+		fontSize: 17, 
+	}, 
+	weekLetterContainer: {
+		flexDirection: 'row', 
+		justifyContent: 'space-between', 
+		padding: 5, 
+		paddingHorizontal:20 
+	},
+	card: {
+		backgroundColor: 'white', 
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.8,
+				shadowRadius: 2,    
+			},
+			android: {
+				elevation: 5,
+			},
+		}),
+		borderRadius: 3, 
+		paddingTop: 5, 
+		paddingHorizontal: lineViewHorizontalPadding,
+		paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding
+	},
+	title: {
+		fontFamily: 'Raleway-Medium', 
+		color:'white', 
+		fontSize: 18, 
+		marginBottom: 10
+	}, 
+	scheduleContainer: {
+		paddingTop: 20
 	}
 });

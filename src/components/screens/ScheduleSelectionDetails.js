@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Platform, StatusBar} from 'react-native';
+import {Text, Platform, StatusBar, View} from 'react-native';
 import { blueColor } from '../../../config';
 
 class ScheduleSelectionDetails extends React.Component {
@@ -17,7 +17,10 @@ class ScheduleSelectionDetails extends React.Component {
 	
 	render() {
 		return(
-			<Text>ScheduleSelectionDetails Screen</Text>
+			<View>
+				<StatusBar translucent={true} backgroundColor={'#105dba'} />
+				<Text>ScheduleSelectionDetails Screen</Text>
+			</View>
 		);
 	}
 }
