@@ -1,9 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import FixedEvent from '../src/components/screens/FixedEvent';
-import {StatusBar, TouchableOpacity, StyleSheet, Text, TextInput, Switch, Picker } from 'react-native';
+import {StatusBar, TouchableOpacity, StyleSheet, Text, TextInput, Switch, Picker} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import DatePicker from 'react-native-datepicker';
 
 // The tests commented out gives erors in Jest since the time changes
 
@@ -72,19 +70,17 @@ test("Buttons render correctly", () => {
 	expect(button).toMatchSnapshot();
 });
 
+// const containerWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
 
-	content: {
-		flexGrow: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-evenly',
-		marginTop: 100,
-		marginLeft: 20,
-		marginRight: 20
-	},
+	// content: {
+	// 	marginTop: StatusBar.currentHeight + Header.HEIGHT,
+	// 	flex: 1
+	// },
 
 	instruction: {
 		flexDirection: 'row',
@@ -105,21 +101,15 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'flex-end',
-		marginRight: 20,
+		marginRight: 5,
 		height: 40
-	},
-
-	textInputFont: {
-		fontFamily: 'OpenSans-Regular',
-		fontSize: 20,
-		color: '#565454'
 	},
 
 	textInputBorder: {
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 20
+		marginLeft: 10,
 	},
 
 	blueTitle: {
@@ -130,50 +120,49 @@ const styles = StyleSheet.create({
 	},
 	
 	timeSection: {
-		paddingTop: 20,
 		alignItems: 'center',
-		marginLeft: 25
+		marginBottom: -20
+		
 	},
 
-	allDay: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
+	// allDay: {
+	// 	justifyContent: 'space-between',
+	// 	flexDirection: 'row',
+	// 	alignItems: 'center',
+	// 	width: containerWidth,
+	// 	paddingLeft: 45,
+	// 	paddingRight: 5
+	// },
 
-	start: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-
-	end: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-
-	description: {
-		marginBottom: 30
-	},
+	// rowTimeSection: {
+	// 	flexDirection: 'row',
+	// 	alignItems: 'center',
+	// 	width: containerWidth,
+	// 	justifyContent: 'space-between',
+	// 	paddingLeft: 45,
+	// 	paddingRight: 5
+	// },
 
 	recurrence:{
 		color: '#565454',
 		height: 40,
 		width: '105%',
-		marginLeft: -5
+		marginLeft: -5,
+		marginBottom:-8
 	},
 
 	buttons: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginTop: 20
 	},
 
 	buttonEvent: {
 		borderRadius: 12,
 		backgroundColor: '#1473E6',
 		width: 150,
-		height: 55,
-		borderWidth: 3,
-		borderColor: '#1473E6',
+		height: 57.9,
 		elevation: 4,
 		marginRight: 25,
 		justifyContent:'center'
@@ -191,7 +180,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: '#FFFFFF',
 		width: 100,
-		height: 55,
+		height: 58,
 		borderWidth: 3,
 		borderColor: '#1473E6',
 		elevation: 4,
@@ -204,45 +193,5 @@ const styles = StyleSheet.create({
 		color: '#1473E6',
 		textAlign: 'center',
 		padding: 8
-	},
-
-	section: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginTop: 20,
-		marginBottom: 10
-	},
-
-	emptySection: {
-		marginLeft: 20,
-		opacity: 0 //In order to center the bottom section
-	},
-
-	sectionIconRow: {
-		flexDirection: 'row',
-		marginRight: -20
-	},
-
-	sectionIconActive: {
-		width: 40,
-	},
-
-	sectionIconInactive: {
-		width: 40,
-	},
-
-	skipButton: {
-		marginRight: 20,
-		marginBottom: 2
-	},
-
-	skipButtonText: {
-		color: '#1473E6',
-		fontFamily: 'Raleway-Regular',
-		fontSize: 15,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
 	}
 });

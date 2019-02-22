@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 const slides = [
 	{
 		key: 'integration',
-		title: 'School Integration',
+		title: 'School Schedule Integration',
 		text: 'Add your school schedule by importing\na picture or a screenshot of your schedule',
 		icon: 'ios-school',
 		colors: gradientColors,
