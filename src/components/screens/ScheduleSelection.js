@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity} from 'react-native';
-import { gradientColors, orangeColor, calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import converter from 'number-to-words';
 import { Header } from 'react-navigation';
@@ -50,28 +50,25 @@ class ScheduleEvent extends React.Component {
 		const { height, width, left, top, color, colorInside } = this.state;
 		return (
 			<View style={{borderRadius: 3, 
-			borderWidth: 2,
-			borderColor: color,
-			// opacity: 0.5,
-			
+				borderWidth: 2,
+				borderColor: color,
 				backgroundColor: colorInside, 
 				height: height, 
 				position: 'absolute', 
 				width: width,
 				top: top,
 				left: left,
-					...Platform.select({
-						ios: {
-							shadowColor: '#000000',
-							shadowOffset: { width: 0, height: 2 },
-							shadowOpacity: 0.8,
-							shadowRadius: 2,    
-						},
-						android: {
-							elevation: 3,
-						},
-					}) 
-					}}>
+				...Platform.select({
+					ios: {
+						shadowColor: '#000000',
+						shadowOffset: { width: 0, height: 2 },
+						shadowOpacity: 0.8,
+						shadowRadius: 2,    
+					},
+					android: {
+						elevation: 3,
+					},
+				})  }}>
 			</View>
 		);
 	}
@@ -119,86 +116,85 @@ class Schedule extends React.Component {
 					marginBottom: 10}}>
 					{ordinal.charAt(0).toUpperCase() + ordinal.slice(1)} schedule
 				</Text>
-			<TouchableOpacity onPress={() => this.props.nextScreen()}>
+				<TouchableOpacity onPress={() => this.props.nextScreen()}>
 
-				<View style={{backgroundColor: 'white', 
-					...Platform.select({
-						ios: {
-							shadowColor: '#000000',
-							shadowOffset: { width: 0, height: 2 },
-							shadowOpacity: 0.8,
-							shadowRadius: 2,    
-						},
-						android: {
-							elevation: 5,
-						},
-					}),
-					borderRadius: 3, 
-					paddingTop: 5, 
-					paddingHorizontal: lineViewHorizontalPadding,
-					paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding}}>
+					<View style={{backgroundColor: 'white', 
+						...Platform.select({
+							ios: {
+								shadowColor: '#000000',
+								shadowOffset: { width: 0, height: 2 },
+								shadowOpacity: 0.8,
+								shadowRadius: 2,    
+							},
+							android: {
+								elevation: 5,
+							},
+						}),
+						borderRadius: 3, 
+						paddingTop: 5, 
+						paddingHorizontal: lineViewHorizontalPadding,
+						paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding}}>
 
-					<View style={{flexDirection: 'row', 
-						justifyContent: 'space-between', 
-						padding: 5, 
-						paddingHorizontal:20 }}>
-						{
-							weekLetters.map((str, id) => {
-								return (
-									<Text key={id} 
-										style={{fontFamily: 'Raleway-Medium', 
-										fontSize: 17, }}>
-											{str}
-									</Text>
-								);
-							})
-						}
-					</View>
-
-
-					<View> 
-
-						<View
-							style={{
-								borderBottomColor: lineColor,
-								borderBottomWidth: lineThickness
-							}} />
-						
-						{ this.createLines(numOfLines) }
-
-						{ data.school.map((info, key) => {
-							return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='school' />;
-						})}
-
-						{ data.fixed.map((info, key) => {
-							return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='fixed' />;
-						})}
-
-						{ ai.map((info, key) => {
-							return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='ai' />;
-						})}
-
-						<View style={{flexDirection: 'column', 
+						<View style={{flexDirection: 'row', 
 							justifyContent: 'space-between', 
-							position: 'absolute',
-							paddingBottom: 10,
-							marginTop: -13.5,
-							marginLeft: -22.5,
-							alignItems: 'center'
-							}}>
+							padding: 5, 
+							paddingHorizontal:20 }}>
 							{
-								hours.map((hour, key) => {
+								weekLetters.map((str, id) => {
 									return (
-										<Text key={key} style={{paddingVertical: 3.4, opacity: 0.5}}>{hour}</Text>
+										<Text key={id} 
+											style={{fontFamily: 'Raleway-Medium', 
+												fontSize: 17, }}>
+											{str}
+										</Text>
 									);
 								})
 							}
 						</View>
-					</View>
 
-				</View>
-				
-			</TouchableOpacity>
+
+						<View> 
+
+							<View
+								style={{
+									borderBottomColor: lineColor,
+									borderBottomWidth: lineThickness
+								}} />
+							
+							{ this.createLines(numOfLines) }
+
+							{ data.school.map((info, key) => {
+								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='school' />;
+							})}
+
+							{ data.fixed.map((info, key) => {
+								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='fixed' />;
+							})}
+
+							{ ai.map((info, key) => {
+								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='ai' />;
+							})}
+
+							<View style={{flexDirection: 'column', 
+								justifyContent: 'space-between', 
+								position: 'absolute',
+								paddingBottom: 10,
+								marginTop: -13.5,
+								marginLeft: -22.5,
+								alignItems: 'center' }}>
+								{
+									hours.map((hour, key) => {
+										return (
+											<Text key={key} style={{paddingVertical: 3.4, opacity: 0.5}}>{hour}</Text>
+										);
+									})
+								}
+							</View>
+						</View>
+
+					</View>
+					
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -316,14 +312,14 @@ class ScheduleSelection extends React.Component {
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
 					<ScrollView >
-							<View style={styles.content}>
+						<View style={styles.content}>
 
-								<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
+							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
-								{ data.ai.map((ai, key) => {
-									return <Schedule nextScreen={this.nextScreen} ai={ai} data={data} key={key} id={key} numOfLines={6}/>;
-								})}
-							</View>
+							{ data.ai.map((ai, key) => {
+								return <Schedule nextScreen={this.nextScreen} ai={ai} data={data} key={key} id={key} numOfLines={6}/>;
+							})}
+						</View>
 					</ScrollView>
 				</ImageBackground>
 			</LinearGradient>
