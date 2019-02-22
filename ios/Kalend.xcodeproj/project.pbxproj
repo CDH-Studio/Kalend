@@ -425,7 +425,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				4748A6643CD040E5A5AC93DF /* libRNGoogleSignin.a in Frameworks */,
 				380AC81E94470E0883FCB8AC /* libPods-Kalend.a in Frameworks */,
-				1286C66ED047489CA2104670 /* libRNImgToBase64.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,7 +671,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				E367A3D5E0FA43CEA3F51748 /* RNGoogleSignin.xcodeproj */,
-				2F73BF3B895F4268BB3BDDD2 /* RNImgToBase64.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1446,7 +1444,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
-					"$(SRCROOT)\..\node_modules\react-native-image-base64\ios",
 				);
 				INFOPLIST_FILE = KalendTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
