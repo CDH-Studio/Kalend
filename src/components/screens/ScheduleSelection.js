@@ -51,12 +51,13 @@ class ScheduleEvent extends React.Component {
 			left: this.props.day * width + 1,
 			top: (this.props.start * lineSpace + this.props.chunks * lineThickness) / 4 + lineThickness + 1,
 			color,
-			colorInside
+			colorInside,
+			showShadow: this.props.showShadow
 		};
 	}
 
 	render() {
-		const { height, width, left, top, color, colorInside } = this.state;
+		const { height, width, left, top, color, colorInside, showShadow } = this.state;
 		return (
 			<View style={{ borderRadius: 3, 
 				borderWidth: 2,
@@ -71,11 +72,11 @@ class ScheduleEvent extends React.Component {
 					ios: {
 						shadowColor: '#000000',
 						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: 0.8,
+						shadowOpacity: this.props.showShadow ? 0.8 : 0,
 						shadowRadius: 2,    
 					},
 					android: {
-						elevation: 3,
+						elevation: this.props.showShadow ? 3 : 0,
 					},
 				}) }}>
 			</View>
@@ -103,7 +104,8 @@ class Schedule extends React.Component {
 			ordinal: converter.toWordsOrdinal(this.props.id+1),
 			data: this.props.data,
 			ai: this.props.ai,
-			numOfLines: this.props.numOfLines
+			numOfLines: this.props.numOfLines,
+			showShadow: true
 		};
 	}
 
@@ -125,15 +127,41 @@ class Schedule extends React.Component {
 	}
 
 	render() {
-		const { weekLetters, ordinal, data, numOfLines, hours, ai } = this.state;
+		const { weekLetters, ordinal, data, numOfLines, hours, ai, showShadow } = this.state;
 		return (
 			<View style={styles.scheduleContainer}>
 				<Text style={styles.title}>
 					{ordinal.charAt(0).toUpperCase() + ordinal.slice(1)} schedule
 				</Text>
-				<TouchableOpacity onPress={() => this.props.nextScreen()}>
+				<TouchableOpacity onPress={() => {
+					this.props.nextScreen();
+				}} 
+				onPressIn={() =>{
+					this.setState({
+						showShadow: false
+					});
+				}}
+				onPressOut={() => {
+					setTimeout(()=>{
+						this.setState({
+							showShadow: true
+						});
+					}, 800);
 
-					<View style={styles.card}>
+				}}>
+
+					<View style={[styles.card, {
+						...Platform.select({
+							ios: {
+								shadowColor: '#000000',
+								shadowOffset: { width: 0, height: 2 },
+								shadowOpacity: showShadow ? 0.8 : 0,
+								shadowRadius: 2,    
+							},
+							android: {
+								elevation: showShadow ? 5 : 0,
+							},
+						}),}]}>
 
 						<View style={styles.weekLetterContainer}>
 							{ weekLetters.map((str, id) => {
@@ -153,15 +181,15 @@ class Schedule extends React.Component {
 							{ this.createLines(numOfLines) }
 
 							{ data.school.map((info, key) => {
-								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='school' />;
+								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='school' />;
 							})}
 
 							{ data.fixed.map((info, key) => {
-								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='fixed' />;
+								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='fixed' />;
 							})}
 
 							{ ai.map((info, key) => {
-								return  <ScheduleEvent key={key} chunks={info.chunks} day={info.day} start={info.start} kind='ai' />;
+								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='ai' />;
 							})}
 
 							<View style={styles.hoursTextContainer}>
@@ -272,17 +300,6 @@ const styles = StyleSheet.create({
 	},
 	card: {
 		backgroundColor: 'white', 
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
 		borderRadius: 3, 
 		paddingTop: 5, 
 		paddingHorizontal: lineViewHorizontalPadding,
