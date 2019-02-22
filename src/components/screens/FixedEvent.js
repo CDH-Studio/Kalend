@@ -106,23 +106,39 @@ class FixedEvent extends React.Component {
 		}
 	}
 
-	beforeStartTime(startTime) {
-		endTime = this.state.endTime;
+	beforeStartTime(startTime, endTime) {
+		let startCheck = true;
+
+		if (endTime === undefined) {
+			endTime = this.state.endTime;
+		}
+		
+		if (startTime === undefined) {
+			startTime = this.state.startTime;
+			startCheck = false;
+		}
 
 		// Fix the undefined if you haven't set the end time
-		if (endTime.split(":").length === 3) {
-			endTime = endTime.substr(0, 5) + endTime.substr(8, 3)
+		if (endTime.split(':').length === 3) {
+			let endTimeSplit = endTime.split(':');
+			let endTimeSplitSpace = endTime.split(' ');
+
+			endTime = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
 		}
 
 		// Start Time
 		let tempStart = startTime.split(' ');
-		let amOrPmStart = tempStart[1];
+		let isPmStart = tempStart[1].trim().toLowerCase() === 'pm';
 
 		let infoStart = tempStart[0].split(':');
 		let hoursStart = parseInt(infoStart[0]);
 		let minutesStart = parseInt(infoStart[1]);
 
-		if (amOrPmStart === 'PM' && hoursStart !== 12) {
+		if (hoursStart > 12) {
+			hoursStart -= 12;
+		}
+
+		if (isPmStart && hoursStart !== 12) {
 			hoursStart += 12;
 		}
 
@@ -131,24 +147,37 @@ class FixedEvent extends React.Component {
 
 		// End Time
 		let tempEnd = endTime.split(' ');
-		let amOrPmEnd = tempEnd[1];
+		let isPmEnd = tempEnd[1].trim().toLowerCase() === 'pm';
 
 		let infoEnd = tempEnd[0].split(':');
 		let hoursEnd = parseInt(infoEnd[0]);
-		let minutesEnd = parseInt(infoEnd[0]);
+		let minutesEnd = parseInt(infoEnd[1]);
 
-		if (amOrPmEnd === 'PM' && hoursEnd !== 12) {
+		if (hoursEnd > 12) {
+			hoursEnd -= 12;
+		}
+
+		if (isPmEnd && hoursEnd !== 12) {
 			hoursEnd += 12;
 		}
 
 		let end = new Date();
 		end.setHours(hoursEnd, minutesEnd);
 
+		this.forceUpdate();
 		// Comparing start and end time
-		if (start > end) {
-			return startTime;
+		if (startCheck) {
+			if (start > end) {
+				return startTime;
+			} else {
+				return endTime;
+			}
 		} else {
-			return endTime;
+			if (end < start) {
+				return endTime;
+			} else {
+				return startTime;
+			}
 		}
 	}
 
@@ -237,11 +266,16 @@ class FixedEvent extends React.Component {
 									maxDate={this.state.maxStartDate}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
-									onDateChange={(startDate) => this.setState({
-										startDate: startDate, 
-										disabledEndDate: false, 
-										minEndDate: startDate, 
-										endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate})} />
+									onDateChange={(startDate) => {
+										this.setState({
+											startDate: startDate, 
+											disabledEndDate: false, 
+											minEndDate: startDate, 
+											endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate})
+											
+										this.forceUpdate(); }
+											 
+											  } />
 									
 								<DatePicker showIcon={false} 
 									time={this.state.startTime} 
@@ -260,11 +294,13 @@ class FixedEvent extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={(startTime) => this.setState({
-										startTime: this.getTwelveHourTime(startTime), 
-										amPmStart: '', 
-										endTime: this.state.disabledEndTime ? startTime : this.beforeStartTime(this.getTwelveHourTime(startTime)), 
-										amPmEnd: ''})} />
+									onDateChange={(startTime) => {
+										this.setState({
+											startTime: this.getTwelveHourTime(startTime), 
+											amPmStart: '', 
+											endTime: (this.state.disabledEndTime || new Date(this.state.startDate) !== new Date(this.state.endDate)) ? startTime : this.beforeStartTime(this.getTwelveHourTime(startTime)), 
+											amPmEnd: ''});
+									} }/>
 							</View>
 
 							<View style={styles.rowTimeSection}>
@@ -309,9 +345,15 @@ class FixedEvent extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={(endTime) => this.setState({
-										endTime: this.beforeStartTime(this.getTwelveHourTime(endTime)), 
-										amPmEnd: ''})} />
+									onDateChange={(endTime) => {
+										let firstDate = new Date(this.state.startDate).getTime();
+										let endDate = new Date(this.state.endDate).getTime();
+										this.setState({
+											startTime: firstDate == endDate ? this.beforeStartTime(undefined, this.getTwelveHourTime(endTime)) : this.state.startTime,
+											endTime: endTime, 
+											amPmEnd: ''
+										});
+									}}/>
 							</View>
 						</View>
 
