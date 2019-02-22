@@ -52,12 +52,11 @@ class ScheduleEvent extends React.Component {
 			top: (this.props.start * lineSpace + this.props.chunks * lineThickness) / 4 + lineThickness + 1,
 			color,
 			colorInside,
-			showShadow: this.props.showShadow
 		};
 	}
 
 	render() {
-		const { height, width, left, top, color, colorInside, showShadow } = this.state;
+		const { height, width, left, top, color, colorInside } = this.state;
 		return (
 			<View style={{ borderRadius: 3, 
 				borderWidth: 2,
@@ -89,7 +88,7 @@ class ScheduleEvent extends React.Component {
  * The component of a schedule which contains ScheduleEvents
  * 
  * @prop {Object} data The whole object containing the data
- * @prop {Array} ai An array of ai events
+ * @prop {Array} aiIndex The index of ai events in the data ai array
  * @prop {Integer} numOfLines The number of lines to be drawn on the schedule
  * @prop {Integer} id The number of the schedule
  */
@@ -98,12 +97,14 @@ class Schedule extends React.Component {
 	constructor(props) {
 		super(props);
 
+		let ordinal = converter.toWordsOrdinal(this.props.id+1);
+
 		this.state = {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			hours: [0, 4, 8, 12, 4, 8, 0],
-			ordinal: converter.toWordsOrdinal(this.props.id+1),
+			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			data: this.props.data,
-			ai: this.props.ai,
+			aiIndex: this.props.id,
 			numOfLines: this.props.numOfLines,
 			showShadow: true
 		};
@@ -127,12 +128,13 @@ class Schedule extends React.Component {
 	}
 
 	render() {
-		const { weekLetters, ordinal, data, numOfLines, hours, ai, showShadow } = this.state;
+		const { weekLetters, ordinal, data, numOfLines, hours, aiIndex, showShadow } = this.state;
 		return (
 			<View style={styles.scheduleContainer}>
 				<Text style={styles.title}>
-					{ordinal.charAt(0).toUpperCase() + ordinal.slice(1)} schedule
+					{ordinal} schedule
 				</Text>
+				
 				<TouchableOpacity onPress={() => {
 					this.props.nextScreen();
 				}} 
@@ -147,7 +149,6 @@ class Schedule extends React.Component {
 							showShadow: true
 						});
 					}, 800);
-
 				}}>
 
 					<View style={[styles.card, {
@@ -175,7 +176,6 @@ class Schedule extends React.Component {
 						</View>
 
 						<View> 
-
 							<View style={styles.thickLine} />
 							
 							{ this.createLines(numOfLines) }
@@ -188,9 +188,10 @@ class Schedule extends React.Component {
 								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='fixed' />;
 							})}
 
-							{ ai.map((info, key) => {
+							{ data.ai[aiIndex].map((info, key) => {
 								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='ai' />;
 							})}
+
 
 							<View style={styles.hoursTextContainer}>
 								{ hours.map((hour, key) => {
@@ -200,7 +201,6 @@ class Schedule extends React.Component {
 								}) }
 							</View>
 						</View>
-
 					</View>
 					
 				</TouchableOpacity>
@@ -242,7 +242,7 @@ class ScheduleSelection extends React.Component {
 							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
 							{ data.ai.map((ai, key) => {
-								return <Schedule nextScreen={this.nextScreen} ai={ai} data={data} key={key} id={key} numOfLines={6}/>;
+								return <Schedule nextScreen={this.nextScreen} data={data} key={key} id={key} numOfLines={6}/>;
 							})}
 
 						</View>
