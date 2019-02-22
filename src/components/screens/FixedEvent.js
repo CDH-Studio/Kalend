@@ -378,7 +378,7 @@ class FixedEvent extends React.Component {
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={2} color={blueColor} skip={this.skip} />
+				<TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />
 			</View>
 		);
 	}

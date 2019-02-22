@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground, StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, Dimensions } from 'react-native';
 import {Header} from 'react-navigation';
-import { gradientColors } from '../../../config';
+import { gradientColors, blueColor } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import TutorialStatus from '../TutorialStatus';
