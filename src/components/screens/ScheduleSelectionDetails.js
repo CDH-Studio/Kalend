@@ -1,6 +1,6 @@
 import React from 'react';
-import {Text, Button, Platform, StatusBar} from 'react-native';
-import { blueColor, orangeColor, calendarEventColors, calendarEventColorsInside } from '../../../config';
+import {Text, Platform, StatusBar} from 'react-native';
+import { blueColor } from '../../../config';
 
 class ScheduleSelectionDetails extends React.Component {
 	static navigationOptions = {
@@ -13,8 +13,8 @@ class ScheduleSelectionDetails extends React.Component {
 			backgroundColor: blueColor,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-    };
-    
+	};
+	
 	render() {
 		return(
 			<Text>ScheduleSelectionDetails Screen</Text>

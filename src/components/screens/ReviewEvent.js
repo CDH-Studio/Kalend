@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Button} from 'react-native';
+import {Button} from 'react-native';
 
 class ReviewEvent extends React.Component {
 	render() {
