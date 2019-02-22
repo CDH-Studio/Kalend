@@ -56,7 +56,7 @@ class SchoolSchedule extends React.Component {
 		} else {
 			this.props.navigation.navigate('SchoolScheduleTakePicture');
 		}
-	}
+	} 
 
 	skip = () => {
 		this.props.navigation.navigate('FixedEvent');
