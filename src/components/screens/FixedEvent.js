@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions} from 'react-native';
 import {Header} from 'react-navigation';
-import { blueColor } from '../../../config';
+import { blueColor, orangeColor, lightOrangeColor } from '../../../config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -14,7 +14,7 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 
 class FixedEvent extends React.Component {
 
-	//Style for Navigation Bar
+	// Style for Navigation Bar
 	static navigationOptions = {
 		title: 'Add Fixed Events',
 		headerTintColor: 'white',
@@ -26,7 +26,7 @@ class FixedEvent extends React.Component {
 		}
 	};
 
-	//Constructor and States
+	// Constructor and States
 	constructor(props) {
 		super(props);
 		this.state = { 
@@ -88,46 +88,50 @@ class FixedEvent extends React.Component {
 		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
 	}
 
+	/**
+	 * Gets the current time AM or PM
+	 */
 	getAmPm() {
 		let hours = new Date().getHours();
 		return (hours >= 12) ? ' PM' : ' AM';
 	}
 
+	/**
+	 * 
+	 */
 	setMinEndTime() {
 		let min = new Date();
 
-		if(this.state.startDate === this.state.endDate) {
+		if (this.state.startDate === this.state.endDate) {
 			this.state.endTime = this.state.startTime;
 			min = min.toLocaleTimeString();
 			min = this.state.startTime;
 			return min;
-		} else {
-			//do nothing
 		}
 	}
 
+	/**
+	 * Analyzes the input times and make sure the ranges make sense
+	 * 
+	 * @param {String} startTime The start time received from the time dialog
+	 * @param {String} endTime The end time received from the time dialog
+	 */
 	beforeStartTime(startTime, endTime) {
-		console.log('Before -----------------');
-
-		console.log(startTime);
-		console.log(endTime);
-
 		let startCheck = true;
 
+		// Check if an end time has been specified, if not, use the state end time
 		if (endTime === undefined) {
 			endTime = this.state.endTime;
 		}
-		
+
+		// Check if an start time has been specified, if not, use the state start time
+		// and specify that the startTime wasn't given by changing the variable startCheck
 		if (startTime === undefined) {
 			startTime = this.state.startTime;
 			startCheck = false;
 		}
-		
 
-		console.log(startTime);
-		console.log(endTime);
-
-		// Fix the undefined if you haven't set the end time
+		// Fix the undefined bug if you haven't set the end time (since the seconds are included in the time)
 		if (endTime.split(':').length === 3) {
 			let endTimeSplit = endTime.split(':');
 			let endTimeSplitSpace = endTime.split(' ');
@@ -135,47 +139,11 @@ class FixedEvent extends React.Component {
 			endTime = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
 		}
 
-		
-		console.log(startTime);
-		console.log(endTime);
-
-		// Start Time
-		let tempStart = startTime.split(' ');
-		let isPmStart = tempStart[1].trim().toLowerCase() === 'pm';
-
-		let infoStart = tempStart[0].split(':');
-		let hoursStart = parseInt(infoStart[0]);
-		let minutesStart = parseInt(infoStart[1]);
-
-		if (hoursStart > 12) {
-			hoursStart -= 12;
-		}
-
-		if (isPmStart && hoursStart !== 12) {
-			hoursStart += 12;
-		}
-
-		let start = new Date();
-		start.setHours(hoursStart, minutesStart);
+		// Analyzes the start time, and converts it to a date
+		let start = this.getDateObject(startTime);
 
 		// End Time
-		let tempEnd = endTime.split(' ');
-		let isPmEnd = tempEnd[1].trim().toLowerCase() === 'pm';
-
-		let infoEnd = tempEnd[0].split(':');
-		let hoursEnd = parseInt(infoEnd[0]);
-		let minutesEnd = parseInt(infoEnd[1]);
-
-		if (hoursEnd > 12) {
-			hoursEnd -= 12;
-		}
-
-		if (isPmEnd && hoursEnd !== 12) {
-			hoursEnd += 12;
-		}
-
-		let end = new Date();
-		end.setHours(hoursEnd, minutesEnd);
+		let end = this.getDateObject(endTime);
 
 		// Comparing start and end time
 		if (startCheck) {
@@ -193,7 +161,41 @@ class FixedEvent extends React.Component {
 		}
 	}
 
-	startTimeOnPress = (startTime) => {
+	/**
+	 * Converts a string formatted like ##:## PM or AM to a JavaScript object
+	 * 
+	 * @param {String} time The string representing the time
+	 * 
+	 * @returns {Date} The JavaScript date object equivalent of the string
+	 */
+	getDateObject = (time) => {
+		// Gets the AM/PM
+		let tempTime = time.split(' ');
+		let isPm = tempTime[1].trim().toLowerCase() === 'pm';
+
+		// Gets the hours and minutes
+		let timeContent = tempTime[0].split(':');
+		let hours = parseInt(timeContent[0]);
+		let minutes = parseInt(timeContent[1]);
+
+		// Adds 12 hours if its PM and not equal to 12
+		if (isPm && hours !== 12) {
+			hours += 12;
+		}
+
+		// Creates a JavaScript object
+		let date = new Date();
+		date.setHours(hours, minutes);
+
+		return date;
+	}
+
+	/**
+	 * The onDateChange of the start time dialog which modifies the appropriate state variables
+	 * 
+	 * @param {String} startTime The time output of the time dialog
+	 */
+	startTimeOnDateChange = (startTime) => {
 		let firstDate = new Date(this.state.startDate).getTime();this.beforeStartTime(this.getTwelveHourTime(startTime));
 		let endDate = new Date(this.state.endDate).getTime();
 
@@ -207,9 +209,6 @@ class FixedEvent extends React.Component {
 		}
 
 		startTime = this.getTwelveHourTime(startTime);
-
-		console.log(startTime);
-		console.log(endTime);
 		this.setState({
 			startTime, 
 			endTime, 
@@ -218,7 +217,12 @@ class FixedEvent extends React.Component {
 		});
 	} 
 
-	endTimeOnPress = (endTime) => {
+	/**
+	 * The onDateChange of the end time dialog which modifies the appropriate state variables
+	 * 
+	 * @param {String} endTime The time output of the time dialog
+	 */
+	endTimeOnDateChange = (endTime) => {
 		let firstDate = new Date(this.state.startDate).getTime();
 		let endDate = new Date(this.state.endDate).getTime();
 
@@ -230,8 +234,6 @@ class FixedEvent extends React.Component {
 		} 
 
 		endTime = this.getTwelveHourTime(endTime);
-
-
 		this.setState({
 			startTime,
 			endTime, 
@@ -239,6 +241,9 @@ class FixedEvent extends React.Component {
 		});
 	}
 
+	/**
+	 * Opens up the iOS action sheet to set the recurrence
+	 */
 	recurrenceOnClick = () => {
 		return ActionSheetIOS.showActionSheetWithOptions(
 			{
@@ -262,6 +267,9 @@ class FixedEvent extends React.Component {
 		);
 	}
 
+	/**
+	 * Goes to the next screen
+	 */
 	skip = () => {
 		this.props.navigation.navigate('NonFixedEvent');
 	}
@@ -283,11 +291,11 @@ class FixedEvent extends React.Component {
 						}}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-							<MaterialCommunityIcons name="calendar-today" size={130} color="#1473E6"/>
+							<MaterialCommunityIcons name="calendar-today" size={130} color={blueColor}/>
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
+							<MaterialCommunityIcons name="format-title" size={30} color={blueColor} />
 							<View style={styles.textInputBorder}>
 								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Title" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
 							</View>
@@ -297,9 +305,9 @@ class FixedEvent extends React.Component {
 								<Text style={styles.blueTitle}>All-Day</Text>
 								<View style={{width: 130, alignItems:'flex-start'}}>
 									<Switch 
-										trackColor={{false: 'lightgray', true: '#FFBF69'}} 
+										trackColor={{false: 'lightgray', true: lightOrangeColor}} 
 										ios_backgroundColor={'lightgray'} 
-										thumbColor={this.state.allDay ? '#FF9F1C' : 'darkgray'} 
+										thumbColor={this.state.allDay ? orangeColor : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
 											allDay: allDay, 
 											disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} 
@@ -349,7 +357,7 @@ class FixedEvent extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={this.startTimeOnPress}/>
+									onDateChange={this.startTimeOnDateChange}/>
 							</View>
 
 							<View style={styles.rowTimeSection}>
@@ -394,28 +402,28 @@ class FixedEvent extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={this.endTimeOnPress}/>
+									onDateChange={this.endTimeOnDateChange}/>
 							</View>
 						</View>
 
 						<View style={styles.description}>
 
 							<View style={styles.textInput}>
-								<MaterialIcons name="location-on" size={30} color="#1473E6" />
+								<MaterialIcons name="location-on" size={30} color={blueColor} />
 								<View style={styles.textInputBorder}>
 									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Location" onChangeText={(location) => this.setState({location})} value={this.state.location}/>
 								</View>
 							</View>
 
 							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="text-short" size={30} color="#1473E6" />
+								<MaterialCommunityIcons name="text-short" size={30} color={blueColor} />
 								<View style={styles.textInputBorder}>
 									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Description" onChangeText={(description) => this.setState({description})} value={this.state.description}/>
 								</View>
 							</View>
 
 							<View style={styles.textInput}>
-								<Feather name="repeat" size={30} color="#1473E6" />
+								<Feather name="repeat" size={30} color={blueColor} />
 								<View style={styles.textInputBorder}>
 									{
 										Platform.OS === 'ios' ? 
@@ -496,7 +504,7 @@ const styles = StyleSheet.create({
 	},
 
 	blueTitle: {
-		color: '#1473E6',
+		color: blueColor,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18,
 		width: 70
@@ -543,7 +551,7 @@ const styles = StyleSheet.create({
 
 	buttonEvent: {
 		borderRadius: 12,
-		backgroundColor: '#1473E6',
+		backgroundColor: blueColor,
 		width: 150,
 		height: 57.9,
 		elevation: 4,
@@ -565,7 +573,7 @@ const styles = StyleSheet.create({
 		width: 100,
 		height: 58,
 		borderWidth: 3,
-		borderColor: '#1473E6',
+		borderColor: blueColor,
 		elevation: 4,
 		justifyContent:'center'
 	},
@@ -573,7 +581,7 @@ const styles = StyleSheet.create({
 	buttonNextText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: '#1473E6',
+		color: blueColor,
 		textAlign: 'center',
 		padding: 8
 	}
