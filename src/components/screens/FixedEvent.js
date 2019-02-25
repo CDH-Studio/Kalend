@@ -7,6 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import {InsertFixedEvent} from '../../services/service';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -58,7 +59,8 @@ class FixedEvent extends React.Component {
 
 			//Other Information
 			location: '',
-			recurrenceValue: 'None'
+			recurrenceValue: 'None',
+			recurrence: 'NONE'
 		};
 	}
 
@@ -284,13 +286,13 @@ class FixedEvent extends React.Component {
 				console.log(buttonIndex);
 				console.log(this.state);
 				if (buttonIndex === 0) {
-					this.state.recurrenceValue = 'None';
+					this.state.recurrenceValue = 'NONE';
 				} else if (buttonIndex === 1) {
-					this.state.recurrenceValue = 'Everyday';
+					this.state.recurrenceValue = 'DAILY';
 				} else if (buttonIndex === 2) {
-					this.state.recurrenceValue = 'Weekly';
+					this.state.recurrenceValue = 'WEEKLY';
 				} else if (buttonIndex === 3) {
-					this.state.recurrenceValue = 'Monthly';
+					this.state.recurrenceValue = 'MONTHLY';
 				}
 				this.forceUpdate();
 			},
@@ -301,7 +303,54 @@ class FixedEvent extends React.Component {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
-		this.props.navigation.navigate('NonFixedEvent');
+		let info = {
+			title: this.state.title,
+			location: this.state.location,
+			description: this.state.description,
+			recurrence: this.state.recurrence,
+			allDay: this.state.allDay,
+			startDate: this.state.startDate,
+			startTime: this.state.startTime,
+			endDate: this.state.endDate,
+			endTime: this.state.endTime
+		};
+		InsertFixedEvent(info).then(success => {
+			if(success) this.props.navigation.navigate('NonFixedEvent');
+		});
+		
+	}
+
+	addAnotherEvent = () => {
+		let info = {
+			title: this.state.title,
+			location: this.state.location,
+			description: this.state.description,
+			recurrence: this.state.recurrence,
+			allDay: this.state.allDay,
+			startDate: this.state.startDate,
+			startTime: this.state.startTime,
+			endDate: this.state.endDate,
+			endTime: this.state.endTime
+		};
+		InsertFixedEvent(info).then(success => {
+			if(success) {
+				this.resetField();
+			}
+		});
+	}
+
+	resetField = () => {
+		this.setState({
+			description: '',
+			allDay: false,
+			recurrence: 'NONE',
+			title: '',
+			location: '',
+			startDate: new Date().toDateString(),
+			endDate: new Date().toDateString(),
+			startTime: new Date().toLocaleTimeString(),
+			endTime: new Date().toLocaleTimeString()
+		});
 	}
 
 	//Render UI
@@ -465,10 +514,10 @@ class FixedEvent extends React.Component {
 											<Picker style={styles.recurrence} 
 												selectedValue={this.state.recurrence} 
 												onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-												<Picker.Item label="None" value="None" />
-												<Picker.Item label="Everyday" value="everyday" />
-												<Picker.Item label="Weekly" value="weekly" />
-												<Picker.Item label="Monthly" value="monthly" />
+												<Picker.Item label="None" value="NONE" />
+												<Picker.Item label="Everyday" value="DAILY" />
+												<Picker.Item label="Weekly" value="WEEKLY" />
+												<Picker.Item label="Monthly" value="MONTHLY" />
 											</Picker>
 									}
 								</View>
@@ -477,7 +526,7 @@ class FixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent}> 
+							<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
