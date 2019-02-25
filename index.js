@@ -11,6 +11,9 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
 import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
+import ScheduleSelection from './src/components/screens/ScheduleSelection';
+import ScheduleSelectionDetails from './src/components/screens/ScheduleSelectionDetails';
+import ReviewEvent from './src/components/screens/ReviewEvent';
 import {name as appName} from './app.json';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
@@ -40,7 +43,7 @@ AppRegistry.registerComponent(appName, () => Main);
 
 const LoginNavigator = createStackNavigator(
 	{
-		Home: Home
+		Home
 	},
 	{
 		headerMode: 'none',
@@ -50,15 +53,15 @@ const LoginNavigator = createStackNavigator(
 
 const TutorialNavigator = createStackNavigator(
 	{
-		SchoolSchedule: SchoolSchedule,
-		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
-		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
-		SchoolScheduleCreation: SchoolScheduleCreation,
-		FixedEvent: FixedEvent,
-		NonFixedEvent: NonFixedEvent,
-		//ReviewEvent: {screen: ReviewEvent},
-		//ScheduleSelection: {screen: ScheduleSelection},
-		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
+		SchoolSchedule,
+		SchoolScheduleSelectPicture,
+		SchoolScheduleTakePicture,
+		SchoolScheduleCreation,
+		FixedEvent,
+		NonFixedEvent,
+		ReviewEvent,
+		ScheduleSelection,
+		ScheduleSelectionDetails
 	}, 
 	{
 		initialRouteName: 'SchoolSchedule'
@@ -109,14 +112,14 @@ const TutorialNavigator = createStackNavigator(
 
 const MainNavigator = createSwitchNavigator(
 	{
-		WelcomeScreen: WelcomeScreen,
-		LoadingScreen: LoadingScreen,
-		//Dashboard: DashboardNavigator,
-		LoginNavigator: LoginNavigator,
-		TutorialNavigator: TutorialNavigator
+		WelcomeScreen,
+		LoadingScreen,
+		//Dashboard,
+		LoginNavigator,
+		TutorialNavigator
 	},
 	{
-		headerMode: 'none',
+		// headerMode: 'none',
 		initialRouteName: 'LoadingScreen'
 	}
 );

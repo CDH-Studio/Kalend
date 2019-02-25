@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Active section icon renders correctly 1`] = `
-<Image
-  style={
-    Object {
-      "height": 240,
-      "width": 320,
-    }
-  }
-/>
-`;
-
 exports[`Buttons render correctly 1`] = `
 <View
   accessible={true}
@@ -25,12 +14,11 @@ exports[`Buttons render correctly 1`] = `
     Object {
       "alignItems": "center",
       "backgroundColor": "#FFFFFF",
-      "borderColor": "#FFFFFF",
       "borderRadius": 12,
-      "borderWidth": 3,
       "elevation": 4,
       "opacity": 1,
       "padding": 17,
+      "paddingVertical": 21.15,
       "width": 300,
     }
   }
@@ -47,6 +35,31 @@ exports[`Buttons render correctly 1`] = `
     SELECT A PICTURE
   </Text>
 </View>
+`;
+
+exports[`Icons render correctly 1`] = `
+<Text
+  allowFontScaling={false}
+  style={
+    Array [
+      Object {
+        "color": "#ffffff",
+        "fontSize": 130,
+      },
+      undefined,
+      Object {
+        "fontFamily": "Font Awesome 5 Free",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      Object {
+        "fontWeight": "700",
+      },
+    ]
+  }
+>
+  
+</Text>
 `;
 
 exports[`Image Background renders correctly 1`] = `
@@ -87,17 +100,6 @@ exports[`Image Background renders correctly 1`] = `
 </View>
 `;
 
-exports[`Inactive section icon renders correctly 1`] = `
-<Image
-  style={
-    Object {
-      "height": 240,
-      "width": 320,
-    }
-  }
-/>
-`;
-
 exports[`Linear Gradient renders correctly 1`] = `
 <BVLinearGradient
   colors={
@@ -127,417 +129,6 @@ exports[`Linear Gradient renders correctly 1`] = `
     }
   }
 />
-`;
-
-exports[`School icon renders correctly 1`] = `
-<Image
-  style={
-    Object {
-      "height": 240,
-      "width": 320,
-    }
-  }
-/>
-`;
-
-exports[`SchoolSchedule renders correctly 1`] = `
-<BVLinearGradient
-  colors={
-    Array [
-      4279530470,
-      4279126954,
-    ]
-  }
-  endPoint={
-    Object {
-      "x": 0.5,
-      "y": 1,
-    }
-  }
-  locations={null}
-  startPoint={
-    Object {
-      "x": 0.5,
-      "y": 0,
-    }
-  }
-  style={
-    Object {
-      "flex": 1,
-      "height": "130%",
-      "width": "100%",
-    }
-  }
->
-  <View
-    accessibilityIgnoresInvertColors={true}
-    style={
-      Object {
-        "flex": 1,
-        "height": "130%",
-        "width": "100%",
-      }
-    }
-  >
-    <Image
-      resizeMode="repeat"
-      source={
-        Object {
-          "testUri": "../../../src/assets/img/loginScreen/backPattern.png",
-        }
-      }
-      style={
-        Array [
-          Object {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          Object {
-            "height": "130%",
-            "width": "100%",
-          },
-          undefined,
-        ]
-      }
-    />
-    <View
-      style={
-        Object {
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "space-between",
-          "marginTop": 160,
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
-        }
-      >
-        <Image
-          resizeMode="contain"
-          source={
-            Object {
-              "testUri": "../../../src/assets/img/schoolSchedule/school.png",
-            }
-          }
-          style={
-            Object {
-              "height": 130,
-              "width": 130,
-            }
-          }
-        />
-        <Text
-          style={
-            Object {
-              "color": "#FFFFFF",
-              "fontFamily": "Raleway-Regular",
-              "fontSize": 20,
-              "paddingLeft": 15,
-              "width": 220,
-            }
-          }
-        >
-          Import your school schedule by importing or taking a picture
-        </Text>
-      </View>
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-          }
-        }
-      >
-        <View
-          accessible={true}
-          isTVSelectable={true}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "#FFFFFF",
-              "borderRadius": 12,
-              "borderWidth": 3,
-              "elevation": 4,
-              "opacity": 1,
-              "padding": 17,
-              "width": 300,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#1473E6",
-                "fontFamily": "Raleway-SemiBold",
-                "fontSize": 15,
-              }
-            }
-          >
-            SELECT A PICTURE
-          </Text>
-        </View>
-        <View
-          accessible={true}
-          isTVSelectable={true}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "transparent",
-              "borderColor": "#FFFFFF",
-              "borderRadius": 12,
-              "borderWidth": 3,
-              "elevation": 4,
-              "marginTop": 20,
-              "opacity": 1,
-              "padding": 17,
-              "width": 300,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#FFFFFF",
-                "fontFamily": "Raleway-SemiBold",
-                "fontSize": 15,
-                "fontWeight": "500",
-                "textShadowColor": "rgba(0, 0, 0, 0.40)",
-                "textShadowOffset": Object {
-                  "height": 1,
-                  "width": -1,
-                },
-                "textShadowRadius": 20,
-              }
-            }
-          >
-            TAKE A PICTURE
-          </Text>
-        </View>
-      </View>
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-            "marginBottom": 10,
-            "marginTop": 50,
-          }
-        }
-      >
-        <View
-          style={
-            Object {
-              "marginLeft": 20,
-              "opacity": 0,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "white",
-                "fontFamily": "Raleway-Regular",
-                "fontSize": 15,
-                "textShadowColor": "rgba(0, 0, 0, 0.40)",
-                "textShadowOffset": Object {
-                  "height": 1,
-                  "width": -1,
-                },
-                "textShadowRadius": 10,
-              }
-            }
-          >
-            Skip
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "flexDirection": "row",
-              "marginRight": -20,
-            }
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": "rgba(255, 255, 255, 0.50)",
-                  "fontSize": 35,
-                },
-                Object {
-                  "width": 40,
-                },
-                Object {
-                  "fontFamily": "Octicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "marginBottom": 2,
-              "marginRight": 20,
-            }
-          }
-        >
-          <View
-            accessible={true}
-            isTVSelectable={true}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "opacity": 1,
-              }
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "color": "white",
-                  "fontFamily": "Raleway-Regular",
-                  "fontSize": 15,
-                  "textShadowColor": "rgba(0, 0, 0, 0.40)",
-                  "textShadowOffset": Object {
-                    "height": 1,
-                    "width": -1,
-                  },
-                  "textShadowRadius": 10,
-                }
-              }
-            >
-              Skip
-            </Text>
-          </View>
-        </View>
-      </View>
-    </View>
-  </View>
-</BVLinearGradient>
 `;
 
 exports[`StatusBar renders correctly 1`] = `null`;

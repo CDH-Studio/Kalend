@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 const slides = [
 	{
 		key: 'integration',
-		title: 'School Integration',
+		title: 'School Schedule Integration',
 		text: 'Add your school schedule by importing\na picture or a screenshot of your schedule',
 		icon: 'ios-school',
 		colors: gradientColors,
@@ -148,11 +148,16 @@ class WelcomeScreen extends React.Component {
 	}
 
 	render() {
-		return <AppIntroSlider slides={slides} 
-			renderItem={this._renderItem} 
-			onDone={this._onDone}
-			renderDoneButton={this._renderDoneButton}
-			renderNextButton={this._renderNextButton}/>;
+		return (
+			<View style={{flex:1}}>
+				<StatusBar translucent={true} backgroundColor={'#00000050'} />
+				<AppIntroSlider slides={slides} 
+					renderItem={this._renderItem} 
+					onDone={this._onDone}
+					renderDoneButton={this._renderDoneButton}
+					renderNextButton={this._renderNextButton}/>
+			</View>
+		);
 	}
 }
 

@@ -1,0 +1,294 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Buttons render correctly 1`] = `
+<View
+  accessible={true}
+  isTVSelectable={true}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#1473E6",
+      "borderRadius": 12,
+      "borderWidth": 3,
+      "elevation": 4,
+      "height": 58,
+      "justifyContent": "center",
+      "opacity": 1,
+      "width": 100,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#1473E6",
+        "fontFamily": "Raleway-SemiBold",
+        "fontSize": 15,
+        "padding": 8,
+        "textAlign": "center",
+      }
+    }
+  >
+    NEXT
+  </Text>
+</View>
+`;
+
+exports[`Icons render correctly 1`] = `
+<Text
+  allowFontScaling={false}
+  style={
+    Array [
+      Object {
+        "color": "#1473E6",
+        "fontSize": 130,
+      },
+      undefined,
+      Object {
+        "fontFamily": "Material Design Icons",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      Object {},
+    ]
+  }
+>
+  
+</Text>
+`;
+
+exports[`NumericInputs render correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "justifyContent": "center",
+      },
+      Object {
+        "borderColor": "lightgray",
+        "height": 88,
+        "width": 220,
+      },
+      Object {
+        "borderRadius": 15.84,
+      },
+      Object {},
+    ]
+  }
+>
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFBF69",
+        "borderBottomLeftRadius": 15.84,
+        "borderTopLeftRadius": 15.84,
+        "borderWidth": 0,
+        "height": 86,
+        "justifyContent": "center",
+        "left": 0,
+        "opacity": 1,
+        "position": "absolute",
+        "width": 66,
+        "zIndex": -1,
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "color": undefined,
+            "fontSize": 33.44,
+          },
+          Array [
+            Object {
+              "backgroundColor": "rgba(0,0,0,0)",
+              "fontWeight": "900",
+            },
+            Object {
+              "color": "white",
+            },
+            Object {},
+            Object {},
+          ],
+          Object {
+            "fontFamily": "Ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "borderLeftColor": "lightgray",
+          "borderLeftWidth": 1,
+          "borderRightColor": "lightgray",
+          "borderRightWidth": 1,
+        },
+      ]
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      editable={true}
+      keyboardType="numeric"
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      onFocus={[Function]}
+      returnKeyType="done"
+      style={
+        Array [
+          Object {
+            "padding": 0,
+            "textAlign": "center",
+          },
+          Object {
+            "borderLeftColor": "lightgray",
+            "borderLeftWidth": 1,
+            "borderRightColor": "lightgray",
+            "borderRightWidth": 1,
+            "color": "#565454",
+            "fontSize": 33.44,
+            "height": 88,
+            "width": 88,
+          },
+          Object {},
+        ]
+      }
+      underlineColorAndroid="rgba(0,0,0,0)"
+      value="0"
+    />
+  </View>
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FF9F1C",
+        "borderBottomRightRadius": 15.84,
+        "borderTopRightRadius": 15.84,
+        "borderWidth": 0,
+        "height": 86,
+        "justifyContent": "center",
+        "opacity": 1,
+        "position": "absolute",
+        "right": 0,
+        "width": 66,
+        "zIndex": -1,
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "color": undefined,
+            "fontSize": 33.44,
+          },
+          Array [
+            Object {
+              "backgroundColor": "rgba(0,0,0,0)",
+              "fontWeight": "900",
+            },
+            Object {
+              "color": "white",
+            },
+            Object {},
+            Object {},
+          ],
+          Object {
+            "fontFamily": "Ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Slider renders correctly 1`] = `
+<RCTSlider
+  disabled={false}
+  enabled={true}
+  maximumValue={1}
+  minimumTrackTintColor="#FFBF69"
+  minimumValue={0}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  step={0.5}
+  style={
+    Object {
+      "height": 40,
+    }
+  }
+  thumbTintColor="#FF9F1C"
+  value={0}
+/>
+`;
+
+exports[`StatusBar renders correctly 1`] = `null`;
+
+exports[`Switch renders correctly 1`] = `
+<RCTSwitch
+  accessibilityRole="button"
+  onChange={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  onTintColor="#FFBF69"
+  style={
+    Array [
+      Object {
+        "height": 31,
+        "width": 51,
+      },
+      Object {
+        "backgroundColor": "lightgray",
+        "borderRadius": 16,
+      },
+    ]
+  }
+  thumbTintColor="#FF9F1C"
+  tintColor="lightgray"
+  value={false}
+/>
+`;

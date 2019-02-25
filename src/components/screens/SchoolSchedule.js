@@ -1,17 +1,19 @@
 import React from 'react';
-import { ImageBackground, StatusBar, StyleSheet, View, Image, Text, Platform, TouchableOpacity } from 'react-native';
+import { ImageBackground, StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, Dimensions } from 'react-native';
+import {Header} from 'react-navigation';
 import { gradientColors } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
-import Octicons from 'react-native-vector-icons/Octicons';
-import { requestStoragePermission } from '../../services/android_permissions';
+import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
+import TutorialStatus from '../TutorialStatus';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 class SchoolSchedule extends React.Component {
+
+	//Style for Navigation Bar
 	static navigationOptions = {
 		title: 'Add School Schedule',
-		headerTintColor: '#fff',
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
+		headerTintColor: 'white',
+		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -19,11 +21,20 @@ class SchoolSchedule extends React.Component {
 		}
 	};
 
+	//Constructor and States
+	constructor(props) {
+		super(props);
+		this.state = { 
+			containerHeight: null,
+		};
+	}
+
+	//Methods
 	selectAPicture() {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				console.log(accepted);
-				
+
 				if (accepted) {
 					this.props.navigation.navigate('SchoolScheduleSelectPicture');
 				}
@@ -33,15 +44,41 @@ class SchoolSchedule extends React.Component {
 		}
 	}
 
+	cameraCapture() {
+		if (Platform.OS !== 'ios') {
+			requestCamera().then((accepted) => {
+				console.log(accepted);
+				
+				if (accepted) {
+					this.props.navigation.navigate('SchoolScheduleTakePicture');
+				}
+			});
+		} else {
+			this.props.navigation.navigate('SchoolScheduleTakePicture');
+		}
+	} 
+
+	skip = () => {
+		this.props.navigation.navigate('FixedEvent');
+	}
+
+	//Render UI
 	render() {
+		const containerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
 					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
-					<View style={styles.content}>
+					<View style={{height:this.state.containerHeight, flex:1, justifyContent:'space-evenly'}} //Inline style in order for the height to work 
+						onLayout={(event) => {
+							let height = event.nativeEvent.layout;
+							if(height < containerHeight) {
+								this.setState({containerHeight});
+							}
+						}}>
 						<View style={styles.instruction}>
-							<Image style={styles.schoolIcon} source={require('../../assets/img/schoolSchedule/school.png')} resizeMode="contain" />
+							<FontAwesome5 name="university" size={130} color='#ffffff'/>
 							<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
 						</View>
 						
@@ -50,29 +87,12 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonTake} onPress={() => this.props.navigation.navigate('SchoolScheduleTakePicture')}>
+							<TouchableOpacity style={styles.buttonTake} onPress={() => this.cameraCapture()}>
 								<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
 							</TouchableOpacity>
 						</View>
 
-						<View style={styles.section}>
-							<View style={styles.emptySection}>
-								<Text style={styles.skipButtonText}>Skip</Text>
-							</View>
-							<View style={styles.sectionIconRow}>
-								<Octicons name="primitive-dot" size={35} color="#FFFFFF" style={styles.sectionIconActive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-								<Octicons name="primitive-dot" size={35} color="rgba(255, 255, 255, 0.50)" style={styles.sectionIconInactive} />
-							</View>
-							
-							<View style={styles.skipButton}>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate('FixedEvent')}>
-									<Text style={styles.skipButtonText}>Skip</Text>
-								</TouchableOpacity>
-							</View>
-						</View>
+						<TutorialStatus active={1} color={'#ffffff'} skip={this.skip} />
 					</View>
 				</ImageBackground>
 			</LinearGradient>
@@ -87,18 +107,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 		height: '130%' //Fixes pattern bug
-	},
-
-	content: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		marginTop: 160
-	},
-
-	schoolIcon: {
-		height: 130,
-		width: 130
 	},
 
 	instruction: {
@@ -116,17 +124,17 @@ const styles = StyleSheet.create({
 	},
 
 	button: {
-		alignItems: 'center'
+		alignItems: 'center',
+		marginTop: -100
 	},
 
 	buttonSelect: {
 		borderRadius: 12,
 		backgroundColor: '#FFFFFF',
 		padding: 17,
+		paddingVertical: 21.15,
 		alignItems: 'center',
 		width: 300,
-		borderWidth: 3,
-		borderColor: '#FFFFFF',
 		elevation: 4
 	},
 
@@ -158,45 +166,5 @@ const styles = StyleSheet.create({
 		textShadowOffset: { width: -1, height: 1 },
 		textShadowRadius: 20
 	},
-
-	section: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginTop: 50,
-		marginBottom: 10
-	},
-
-	emptySection: {
-		marginLeft: 20,
-		opacity: 0 //In order to center the bottom section
-	},
-
-	sectionIconRow: {
-		flexDirection: 'row',
-		marginRight: -20
-	},
-
-	sectionIconActive: {
-		width: 40,
-	},
-
-	sectionIconInactive: {
-		width: 40,
-	},
-
-	skipButton: {
-		marginRight: 20,
-		marginBottom: 2
-	},
-
-	skipButtonText: {
-		color: 'white',
-		fontFamily: 'Raleway-Regular',
-		fontSize: 15,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
-	}
 });
 

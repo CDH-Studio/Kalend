@@ -1,8 +1,9 @@
 import React from 'react';
-import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator } from 'react-native';
+import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import {connect} from 'react-redux';
 
@@ -92,6 +93,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 			prevIndex: '',
 			index: 0,
 			activityIndicatorContent: <ActivityIndicator style={{padding:15}} size="large" color="#ffffff" />,
+			showNoPhotos: false
 		};
 	}
 
@@ -101,6 +103,13 @@ class SchoolScheduleSelectPicture extends React.Component {
 		});
 
 		this.getPhotos();
+
+		if (!this.state.pageInfo.has_next_page && this.state.images.length === 0) {
+			this.setState({
+				activityIndicator: null,
+				showNoPhotos: true
+			});
+		}
 	}
 
 	getPhotos = () => {
@@ -183,13 +192,16 @@ class SchoolScheduleSelectPicture extends React.Component {
 	}
 
 	uploadImage = () => {
-		console.log('Image selected >> ' + this.state.selected);
-		this.setImage(this.state.selected);
-		this.props.navigation.navigate('SchoolScheduleCreation');
+
+		if (this.state.showFAB) {
+			console.log('Image selected >> ' + this.state.selected);
+			this.setImage(this.state.selected);
+			this.props.navigation.navigate('SchoolScheduleCreation');
+		}
 	}
 
 	render() {
-		const { images, showFAB, activityIndicator, selectedStyle } = this.state;
+		const { images, showFAB, activityIndicator, selectedStyle, showNoPhotos } = this.state;
 
 		return (
 			<LinearGradient style={styles.container} 
@@ -220,6 +232,20 @@ class SchoolScheduleSelectPicture extends React.Component {
 								}) }
 
 								{ activityIndicator }
+								{ showNoPhotos ? 
+									<View style={{alignItems:'center', padding: 20, height:Dimensions.get('window').height*0.85, justifyContent: 'center'}}>
+									
+										<Ionicons
+											name="ios-images" 
+											size={50} 
+											color="#fff" />
+										<Text style={{color:'white', padding:20, fontFamily:'Raleway-Regular', fontSize:17, textAlign: 'center'}}>There are no photos on{'\n'}your device</Text>
+										
+									</View>
+									:
+									null
+
+								}
 							</View>
 							
 						</ScrollView>
