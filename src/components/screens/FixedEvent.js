@@ -107,6 +107,11 @@ class FixedEvent extends React.Component {
 	}
 
 	beforeStartTime(startTime, endTime) {
+		console.log('Before -----------------');
+
+		console.log(startTime);
+		console.log(endTime);
+
 		let startCheck = true;
 
 		if (endTime === undefined) {
@@ -117,6 +122,10 @@ class FixedEvent extends React.Component {
 			startTime = this.state.startTime;
 			startCheck = false;
 		}
+		
+
+		console.log(startTime);
+		console.log(endTime);
 
 		// Fix the undefined if you haven't set the end time
 		if (endTime.split(':').length === 3) {
@@ -125,6 +134,10 @@ class FixedEvent extends React.Component {
 
 			endTime = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
 		}
+
+		
+		console.log(startTime);
+		console.log(endTime);
 
 		// Start Time
 		let tempStart = startTime.split(' ');
@@ -164,7 +177,6 @@ class FixedEvent extends React.Component {
 		let end = new Date();
 		end.setHours(hoursEnd, minutesEnd);
 
-		this.forceUpdate();
 		// Comparing start and end time
 		if (startCheck) {
 			if (start > end) {
@@ -179,6 +191,52 @@ class FixedEvent extends React.Component {
 				return startTime;
 			}
 		}
+	}
+
+	startTimeOnPress = (startTime) => {
+		let firstDate = new Date(this.state.startDate).getTime();this.beforeStartTime(this.getTwelveHourTime(startTime));
+		let endDate = new Date(this.state.endDate).getTime();
+
+		let endTime;
+		if (this.state.disabledEndTime) {
+			endTime = startTime;
+		} else if (firstDate === endDate) {
+			endTime = this.beforeStartTime(this.getTwelveHourTime(startTime));
+		} else {
+			endTime = this.state.endTime;
+		}
+
+		startTime = this.getTwelveHourTime(startTime);
+
+		console.log(startTime);
+		console.log(endTime);
+		this.setState({
+			startTime, 
+			endTime, 
+			amPmStart: '', 
+			amPmEnd: ''
+		});
+	} 
+
+	endTimeOnPress = (endTime) => {
+		let firstDate = new Date(this.state.startDate).getTime();
+		let endDate = new Date(this.state.endDate).getTime();
+
+		let startTime;
+		if (firstDate === endDate) {
+			startTime = this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))
+		} else {
+			startTime = this.state.startTime;
+		} 
+
+		endTime = this.getTwelveHourTime(endTime);
+
+
+		this.setState({
+			startTime,
+			endTime, 
+			amPmEnd: ''
+		});
 	}
 
 	recurrenceOnClick = () => {
@@ -271,11 +329,8 @@ class FixedEvent extends React.Component {
 											startDate: startDate, 
 											disabledEndDate: false, 
 											minEndDate: startDate, 
-											endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate})
-											
-										this.forceUpdate(); }
-											 
-											  } />
+											endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate});
+									}} />
 									
 								<DatePicker showIcon={false} 
 									time={this.state.startTime} 
@@ -294,13 +349,7 @@ class FixedEvent extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={(startTime) => {
-										this.setState({
-											startTime: this.getTwelveHourTime(startTime), 
-											amPmStart: '', 
-											endTime: (this.state.disabledEndTime || new Date(this.state.startDate) !== new Date(this.state.endDate)) ? startTime : this.beforeStartTime(this.getTwelveHourTime(startTime)), 
-											amPmEnd: ''});
-									} }/>
+									onDateChange={this.startTimeOnPress}/>
 							</View>
 
 							<View style={styles.rowTimeSection}>
@@ -345,15 +394,7 @@ class FixedEvent extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={(endTime) => {
-										let firstDate = new Date(this.state.startDate).getTime();
-										let endDate = new Date(this.state.endDate).getTime();
-										this.setState({
-											startTime: firstDate == endDate ? this.beforeStartTime(undefined, this.getTwelveHourTime(endTime)) : this.state.startTime,
-											endTime: endTime, 
-											amPmEnd: ''
-										});
-									}}/>
+									onDateChange={this.endTimeOnPress}/>
 							</View>
 						</View>
 
