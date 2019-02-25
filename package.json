@@ -21,6 +21,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-google-signin": "^1.0.2",
+    "react-native-image-base64": "^0.1.3",
     "react-native-linear-gradient": "^2.5.3",
     "react-native-numeric-input": "^1.6.5",
     "react-native-paper": "^2.11.0",

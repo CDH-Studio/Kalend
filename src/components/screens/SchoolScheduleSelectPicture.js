@@ -5,6 +5,7 @@ import { gradientColors } from '../../../config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
+import {connect} from 'react-redux';
 
 class CameraRollImage extends React.Component {
 
@@ -183,10 +184,17 @@ class SchoolScheduleSelectPicture extends React.Component {
 		});
 		this.selectImage(data.index);
 	}
+	setImage(imgURI) {
+		this.props.dispatch({
+			type:'SET_IMG',
+			data: imgURI
+		});
+	}
 
 	uploadImage = () => {
 		if (this.state.showFAB) {
 			console.log('Image selected >> ' + this.state.selected);
+			this.setImage(this.state.selected);
 			this.props.navigation.navigate('SchoolScheduleCreation');
 		}
 	}
@@ -309,4 +317,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolScheduleSelectPicture;
+export default connect()(SchoolScheduleSelectPicture);
