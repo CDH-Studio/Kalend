@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions} from 'react-native';
 import {Header} from 'react-navigation';
-import { blueColor, orangeColor, lightOrangeColor } from '../../../config';
+import { blueColor, orangeColor, lightOrangeColor, statusBlueColor } from '../../../config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -60,9 +60,14 @@ class FixedEvent extends React.Component {
 			location: '',
 			recurrenceValue: 'None'
 		};
+        this.myDiv = React.createRef();
 	}
 
-	//Methods
+	/**
+	 * Returns the time formatted with the AM/PM notation
+	 * 
+	 * @param {String} time The time expressed in the 24 hours format
+	 */
 	getTwelveHourTime(time) {
 		let temp = time.split(' ');
 		let amOrPm = temp[1];
@@ -270,8 +275,12 @@ class FixedEvent extends React.Component {
 	/**
 	 * Goes to the next screen
 	 */
-	skip = () => {
+	nextScreen = () => {
 		this.props.navigation.navigate('NonFixedEvent');
+	}
+
+	componentDidMount () {
+        console.log(this.myDiv.current.viewConfig.NativeProps.height);
 	}
 
 	//Render UI
@@ -279,12 +288,13 @@ class FixedEvent extends React.Component {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		return (
 			<View style={styles.container}>
-				<StatusBar translucent={true} backgroundColor={'#105dba'} />
+				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
+					<View ref={this.myDiv} style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
+							console.log(height, 12);
 							if(height < containerHeight) {
 								this.setState({containerHeight});
 							}
@@ -297,7 +307,10 @@ class FixedEvent extends React.Component {
 						<View style={styles.textInput}>
 							<MaterialCommunityIcons name="format-title" size={30} color={blueColor} />
 							<View style={styles.textInputBorder}>
-								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Title" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
+								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+									placeholder="Title" 
+									onChangeText={(title) => this.setState({title})} 
+									value={this.state.title}/>
 							</View>
 						</View>
 						<View style={styles.timeSection}>
@@ -410,26 +423,37 @@ class FixedEvent extends React.Component {
 
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on" size={30} color={blueColor} />
+
 								<View style={styles.textInputBorder}>
-									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Location" onChangeText={(location) => this.setState({location})} value={this.state.location}/>
+									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+										placeholder="Location" 
+										onChangeText={(location) => this.setState({location})} 
+										value={this.state.location}/>
 								</View>
 							</View>
 
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short" size={30} color={blueColor} />
+
 								<View style={styles.textInputBorder}>
-									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Description" onChangeText={(description) => this.setState({description})} value={this.state.description}/>
+									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+										placeholder="Description" 
+										onChangeText={(description) => this.setState({description})} 
+										value={this.state.description}/>
 								</View>
 							</View>
 
 							<View style={styles.textInput}>
 								<Feather name="repeat" size={30} color={blueColor} />
+
 								<View style={styles.textInputBorder}>
 									{
 										Platform.OS === 'ios' ? 
 											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue}</Text>
 											:	
-											<Picker style={styles.recurrence} selectedValue={this.state.recurrence} onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
+											<Picker style={styles.recurrence} 
+												selectedValue={this.state.recurrence} 
+												onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
 												<Picker.Item label="None" value="None" />
 												<Picker.Item label="Everyday" value="everyday" />
 												<Picker.Item label="Weekly" value="weekly" />
@@ -446,16 +470,14 @@ class FixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
+							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
-
-
 						</View>
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={2} color={blueColor} skip={this.skip} />
+				<TutorialStatus active={2} color={blueColor} skip={this.nextScreen} />
 			</View>
 		);
 	}
