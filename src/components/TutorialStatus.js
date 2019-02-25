@@ -24,7 +24,7 @@ class TutorialStatus extends React.Component {
 	render() {
 		const { colors} = this.state;
 		return(
-			<View style={styles.section}>
+			<View style={[styles.section, {backgroundColor:this.props.backgroundColor}]}>
 				<View style={styles.emptySection}>
 					<Text style={styles.skipButtonText}>Skip</Text>
 				</View>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		margin: sectionMargin,
+		padding: HEIGHT/4,
 	},
 
 	emptySection: {
