@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, StatusBar, StyleSheet, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput} from 'react-native';
-import {Header} from 'react-navigation';
+import Header from 'react-navigation';
 import {blueColor} from '../../../config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -255,13 +255,15 @@ class NonFixedEvent extends React.Component {
 	}
 }
 
+const headerHeight = Header.HEIGHT;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
 
 	content: {
-		marginTop: StatusBar.currentHeight + Header.HEIGHT,
+		marginTop: StatusBar.currentHeight + headerHeight,
 		flex: 1,
 		paddingHorizontal: 15
 	},
