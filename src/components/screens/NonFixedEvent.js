@@ -1,12 +1,12 @@
 import React from 'react';
 import {Platform, StatusBar, StyleSheet, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput} from 'react-native';
 import {Header} from 'react-navigation';
-import { blueColor, orangeColor } from '../../../config';
+import {blueColor} from '../../../config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 
 //TODO
@@ -150,8 +150,7 @@ class NonFixedEvent extends React.Component {
 											borderColor={'lightgray'}
 											textColor={'#565454'}
 											iconStyle={{ color: 'white' }} 
-											onValueChange={(hours) => this.setState({hours})}
-											onChange={(hours) => this.setState({hours})} />
+											onValueChange={(hours) => this.setState({hours})} />
 										<Text style={styles.optionsText}>hour(s)</Text>
 									</View>
 
@@ -165,8 +164,7 @@ class NonFixedEvent extends React.Component {
 											borderColor={'lightgray'}
 											textColor={'#565454'}
 											iconStyle={{ color: 'white' }} 
-											onValueChange={(minutes) => this.setState({minutes})}
-											onChange={(minutes) => this.setState({minutes})} />
+											onValueChange={(minutes) => this.setState({minutes})} />
 										<Text style={styles.optionsText}>minute(s)</Text>
 									</View>
 								</View>
@@ -177,6 +175,7 @@ class NonFixedEvent extends React.Component {
 										radio_props={durationTypes}
 										initial={0}
 										buttonColor={blueColor}
+										buttonSize={15}
 										labelColor={'#565454'}
 										selectedButtonColor={blueColor}
 										selectedLabelColor={'#565454'}
@@ -194,8 +193,7 @@ class NonFixedEvent extends React.Component {
 										borderColor={'lightgray'}
 										textColor={'#565454'}
 										iconStyle={{ color: 'white' }} 
-										onValueChange={(occurrence) => this.setState({occurrence})}
-										onChange={(occurrence) => this.setState({occurrence})} />
+										onValueChange={(occurrence) => this.setState({occurrence})} />
 								</View>
 							</View>
 						</View>
