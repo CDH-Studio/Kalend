@@ -255,8 +255,6 @@ class NonFixedEvent extends React.Component {
 	}
 }
 
-const containerWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
