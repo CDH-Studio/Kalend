@@ -37,9 +37,12 @@ class SchoolScheduleCreation extends React.Component {
 
 	componentWillMount() {
 		ImgToBase64.getBase64String(this.props.imgURI)
-			.then(base64String => 
-				analyzePicture({data: base64String})
-			)
+			.then(base64String => {
+				base64String = base64String.toString();
+				let fakeEscape = base64String.replace(/[+]/g,'PLUS');
+				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
+				analyzePicture({data: fakeEscape});
+			})
 			.catch(err => console.log('eerr', err));
 	}
 

@@ -1,8 +1,8 @@
 import { formatData, getStartDate } from './helper';
 import { insertEvent } from './google_calendar';
 
-//const serverUrl = 'http://52.60.127.46:8080';
-const serverUrl = 'http://172.16.119.156:8080';
+const serverUrl = 'http://52.60.127.46:8080';
+//const serverUrl = 'http://192.168.0.13:8080';
 export const grabSampleData = () =>  {
 	fetch(`${serverUrl}/api/test`)
 		.then(res =>  {
@@ -44,10 +44,8 @@ export const analyzePicture = (base64Data) => {
 		.then(body => {
 			formatData(body.data)
 				.then(data => {
-					console.log('data', data);
 					InsertDataIntoGoogle(data);
 				});
-			//InsertDataIntoGoogle(data)
 		})
 		.catch(error => {
 			console.log('error', error);
@@ -56,31 +54,45 @@ export const analyzePicture = (base64Data) => {
 
 
 export const InsertDataIntoGoogle = (events) => {
-	let obj = {
-		'end': {
-			'timeZone': 'EST'
-		},
-		'start': {
-			'timeZone': 'EST'
-		}
-	};
-
+	
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
-	
-	
-		let day = event.day.substr(0,2).toUpperCase();
+		let obj = {
+			'end': {
+				'timeZone': 'EST'
+			},
+			'start': {
+				'timeZone': 'EST'
+			}
+		};
+			
 		event.courses.forEach(course => {
-			// Splits the time into different arrays for startTime and endTime
-			let d = course.time.split('-').map(i => i.split(' ')).map(i => i.map(i => i.split(':')));
 			let startDate = getStartDate(tempStartDate, event.day);
 			let endDate = getStartDate(tempStartDate, event.day);
-			startDate.setHours((d[0][1][0] === 'pm'  && parseInt(d[0][0][0]) !== 12 ? 12 : 0) + parseInt(d[0][0][0]), parseInt(d[0][0][1]), 0);
-			endDate.setHours((d[1][1][0] === 'pm' && parseInt(d[1][0][0]) !== 12 ? 12 : 0) + parseInt(d[1][0][0]), parseInt(d[1][0][1]), 0);
-
 			let recurrence = [
 				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
 			];
+			let day = event.day.substr(0,2).toUpperCase();
+			// Convert all letters to lowercase for easier formating
+			let d = course.time.toLowerCase();
+			// Split date accordingly if it has '-' or ' '
+			d = (d.indexOf('-') !== -1) ? d.split('-') : d.split(' ');	
+			d = d.map(i => {
+				// Remove spaces
+				i =  i.replace(' ', '');
+				// Get am/pm
+				let period = i.substr(-2);
+				// Fix the case where Tesseract reads PM as PN
+				period = (period == 'pn') ? 'pm': period;
+				// Split on colon
+				i = i.slice(0, -2).split(':');
+				// Add period to the array after split: format['11','20','am']
+				i.push(period);
+				return i;
+			});
+			// Check if startDate, EndDate period is pm, if so add 12 to it to convert it into 24hours clock
+			startDate.setHours((d[0][2] === 'pm'  && parseInt(d[0][0]) !== 12 ? 12 : 0) + parseInt(d[0][0]), parseInt(d[0][1]), 0);
+			endDate.setHours((d[1][2] === 'pm' && parseInt(d[1][0]) !== 12 ? 12 : 0) + parseInt(d[1][0]), parseInt(d[1][1]), 0);
 
 			obj.end.dateTime = endDate.toJSON();
 			obj.start.dateTime = startDate.toJSON();
@@ -97,50 +109,4 @@ export const InsertDataIntoGoogle = (events) => {
 				});
 		});
 	});
-	
 };
-
-/*
-export const InsertDataIntoGoogle = (events) => {
-	let obj = {
-		'end': {
-			'timeZone': 'EST'
-		},
-		'start': {
-			'timeZone': 'EST'
-		}
-	};
-
-	events.forEach( event => {
-		let tempStartDate = new Date('2019-02-01');
-		let startDate = getStartDate(tempStartDate, event.day);
-		console.log('refinedDate', startDate);
-
-		let day = event.day.substr(0,2).toUpperCase();
-		event.courses.forEach(course => {
-			let startTime = convertTimeToGoogle(course.time[0]);
-			let endTime =  convertTimeToGoogle(course.time[1]);
-			let startDateTime = `${startDate}T${startTime}`;
-			let endDateTime = `${startDate}T${endTime}`;
-			let recurrence = [
-				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
-			];
-
-			obj.end.dateTime = endDateTime;
-			obj.start.dateTime = startDateTime;
-			obj.summary = course.name;
-			obj.location = course.location;
-			obj.recurrence = recurrence;
-			
-			// insertEvent('kalend613@gmail.com',obj,{})
-			// 	.then( data => {
-			// 		console.log('data', data);
-			// 	})
-			// 	.catch( err => {
-			// 		console.log('err', err);
-			// 	});
-		});
-	});
-	
-};
-*/
