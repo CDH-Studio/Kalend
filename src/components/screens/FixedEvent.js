@@ -60,7 +60,6 @@ class FixedEvent extends React.Component {
 			location: '',
 			recurrenceValue: 'None'
 		};
-        this.myDiv = React.createRef();
 	}
 
 	/**
@@ -233,7 +232,7 @@ class FixedEvent extends React.Component {
 
 		let startTime;
 		if (firstDate === endDate) {
-			startTime = this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))
+			startTime = this.beforeStartTime(undefined, this.getTwelveHourTime(endTime));
 		} else {
 			startTime = this.state.startTime;
 		} 
@@ -243,6 +242,32 @@ class FixedEvent extends React.Component {
 			startTime,
 			endTime, 
 			amPmEnd: ''
+		});
+	}
+
+	startDateOnDateChange = (startDate) => {
+		if (this.state.startDate !== this.state.endDate && startDate === this.state.endDate) {
+			this.setState({endTime: this.beforeStartTime(this.state.startTime)});
+		}
+
+		this.setState({
+			startDate: startDate, 
+			disabledEndDate: false, 
+			minEndDate: startDate, 
+			endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate
+		});
+	}
+
+	endDateOnDateChange = (endDate) => { 
+		if (this.state.startDate !== this.state.endDate && endDate === this.state.startDate) {
+			this.setState({endTime: this.beforeStartTime(this.state.startTime)});
+		}
+
+		this.setState({
+			endDate: endDate, 
+			maxStartDate: endDate, 
+			minEndTime: this.setMinEndTime(), 
+			disabledEndTime: false
 		});
 	}
 
@@ -279,10 +304,6 @@ class FixedEvent extends React.Component {
 		this.props.navigation.navigate('NonFixedEvent');
 	}
 
-	componentDidMount () {
-        console.log(this.myDiv.current.viewConfig.NativeProps.height);
-	}
-
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -291,7 +312,7 @@ class FixedEvent extends React.Component {
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.content}>
-					<View ref={this.myDiv} style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
+					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
 							console.log(height, 12);
@@ -345,13 +366,7 @@ class FixedEvent extends React.Component {
 									maxDate={this.state.maxStartDate}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
-									onDateChange={(startDate) => {
-										this.setState({
-											startDate: startDate, 
-											disabledEndDate: false, 
-											minEndDate: startDate, 
-											endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate});
-									}} />
+									onDateChange={this.startDateOnDateChange} />
 									
 								<DatePicker showIcon={false} 
 									time={this.state.startTime} 
@@ -391,11 +406,7 @@ class FixedEvent extends React.Component {
 									minDate={this.state.minEndDate}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
-									onDateChange={(endDate) => this.setState({
-										endDate: endDate, 
-										maxStartDate: endDate, 
-										minEndTime: this.setMinEndTime(), 
-										disabledEndTime: false})} />
+									onDateChange={this.endDateOnDateChange} />
 
 								<DatePicker showIcon={false} 
 									time={this.state.endTime} 
