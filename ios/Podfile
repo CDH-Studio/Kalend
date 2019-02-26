@@ -25,6 +25,9 @@ target 'Kalend' do
   pod 'react-native-camera', path: '../node_modules/react-native-camera'
   pod 'Firebase/Core', '~> 5.15.0'
   pod 'Firebase/RemoteConfig', '~> 5.15.0'
+  pod 'Fabric', '~> 1.7.13'
+  pod 'Crashlytics', '~> 3.10.7'
+  pod 'Firebase/Performance', '~> 5.15.0'
 
   target 'Kalend-tvOSTests' do
     inherit! :search_paths

@@ -4,6 +4,10 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage; 
+import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -39,7 +43,11 @@ public class MainApplication extends Application implements ReactApplication {
           new LinearGradientPackage(),
           new RNGoogleSigninPackage(),
           new RNCameraPackage(),
-          new RNFirebaseRemoteConfigPackage() 
+		  new RNFirebaseRemoteConfigPackage(),
+		  new RNFirebaseMessagingPackage(),
+          new RNFirebaseAnalyticsPackage(),
+          new RNFirebaseCrashlyticsPackage(),
+          new RNFirebasePerformancePackage()
       );
     }
 
