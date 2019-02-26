@@ -314,6 +314,7 @@ class FixedEvent extends React.Component {
 		} else {
 			return 'ReviewEvent';
 		}
+	}
 
 	nextScreen = () => {
 		let info = {
