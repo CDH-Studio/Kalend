@@ -16,13 +16,13 @@ class LoadingScreen extends React.Component {
 
 		setTimeout(()=> {
 			this.props.navigation.navigate('WelcomeScreen');
-		}, 4000);
+		}, 3000);
 	}
 
 	componentDidMount() {
 		Animated.timing(this.state.progress, {
 			toValue: 1,
-			duration: 3000,
+			duration: 2250,
 			easing: Easing.linear,
 		}).start();
 
@@ -50,7 +50,7 @@ class LoadingScreen extends React.Component {
 						progress={this.state.progress}
 						source={require('../../assets/logoAnim.json')}
 						loop={false}
-						speed={0.75}
+						speed={1}
 						style={styles.anim} />
 				</View>
 					
