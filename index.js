@@ -1,7 +1,8 @@
 import {AppRegistry, StatusBar} from 'react-native';
 import Home from './src/components/screens/Home';
 import React from 'react';
-import store from './src/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './src/store/index';
 import { Provider } from 'react-redux';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
@@ -35,9 +36,11 @@ const theme = {
 export default function Main() {
 	return (
 		<Provider store={store}>
-			<PaperProvider theme={theme}>
-				<AppContainer/>
-			</PaperProvider>
+			<PersistGate loading={null} persistor={persistor}>
+				<PaperProvider theme={theme}>
+					<AppContainer/>
+				</PaperProvider>
+			</PersistGate>
 		</Provider>
 	);
 }
