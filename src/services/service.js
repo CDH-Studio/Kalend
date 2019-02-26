@@ -110,3 +110,44 @@ export const InsertDataIntoGoogle = (events) => {
 		});
 	});
 };
+
+export const  InsertFixedEvent = (event) => {
+	let obj = {
+		'end': {
+			'timeZone': 'EST'
+		},
+		'start': {
+			'timeZone': 'EST'
+		}
+	};
+
+	if(event.recurrence != 'NONE') {
+		let recurrence = [
+			`RRULE:FREQ=${event.recurrence};`
+		];
+		obj.recurrence = recurrence;
+	}
+	
+	if(event.allDay) {
+		obj.end.date = new Date(event.endDate).toJSON().split('T')[0];
+		obj.start.date =  new Date(event.startDate).toJSON().split('T')[0];
+	} else {
+		obj.end.dateTime = new Date(event.endDate + ` ${event.endTime}`).toJSON();
+		obj.start.dateTime = new Date(event.startDate + ` ${event.startTime}`).toJSON();
+	}
+	obj.summary = event.title;
+	obj.location = event.location;
+	obj.description = event.description;
+
+	return new Promise( function(resolve, reject) {
+		insertEvent('kalend613@gmail.com',obj,{})
+			.then( data => {
+				console.log('data', data);
+				if(data.error) {
+					reject(false);
+				} else {
+					resolve(true);
+				}
+			});
+	});
+};
