@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, StatusBar, StyleSheet, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput} from 'react-native';
-import Header from 'react-navigation';
+import {Header} from 'react-navigation';
 import {blueColor} from '../../../config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -64,6 +64,10 @@ class NonFixedEvent extends React.Component {
 		};
 	}
 
+	skip = () => {
+		this.props.navigation.navigate('ReviewEvent');
+	}
+
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -71,6 +75,15 @@ class NonFixedEvent extends React.Component {
 			{label: 'Per Occurence', value: 0 },
 			{label: 'Of Event', value: 1 }
 		];
+
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+
 		return(
 			<View style={styles.container}>
 				<StatusBar backgroundColor={'#105dba'} />
@@ -243,13 +256,13 @@ class NonFixedEvent extends React.Component {
 							</TouchableOpacity>
 
 							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('ReviewEvent')}>
-								<Text style={styles.buttonNextText}>FINISH</Text>
+								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />	
+				{tutorialStatus}	
 			</View>
 		);
 	}

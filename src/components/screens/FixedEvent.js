@@ -70,6 +70,7 @@ class FixedEvent extends React.Component {
 	 * @param {String} time The time expressed in the 24 hours format
 	 */
 	getTwelveHourTime(time) {
+		console.log(this.state.currentRouteName);
 		let temp = time.split(' ');
 		let amOrPm = temp[1];
 
@@ -299,9 +300,22 @@ class FixedEvent extends React.Component {
 		);
 	}
 
+
 	/**
 	 * Goes to the next screen
 	 */
+	skip = () => {
+		this.props.navigation.navigate('TutorialNonFixedEvent');
+	}
+
+	getNextScreenName = (currentRouteName) => {
+		if(currentRouteName === 'TutorialFixedEvent') {
+			return 'TutorialNonFixedEvent';
+		} else {
+			return 'ReviewEvent';
+		}
+	}
+
 	nextScreen = () => {
 		let info = {
 			title: this.state.title,
@@ -355,7 +369,16 @@ class FixedEvent extends React.Component {
 
 	//Render UI
 	render() {
+		const currentRouteName = this.props.navigation.state.routeName;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+		
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
@@ -530,14 +553,14 @@ class FixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate(this.getNextScreenName(currentRouteName))}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />
+				{tutorialStatus}
 			</View>
 		);
 	}

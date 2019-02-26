@@ -22,7 +22,7 @@ class TutorialStatus extends React.Component {
 	}
 
 	render() {
-		const { colors} = this.state;
+		const {colors} = this.state;
 		return(
 			<View style={[styles.section, {backgroundColor:this.props.backgroundColor}]}>
 				<View style={styles.emptySection}>

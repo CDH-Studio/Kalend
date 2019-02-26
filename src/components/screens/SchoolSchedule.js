@@ -59,12 +59,20 @@ class SchoolSchedule extends React.Component {
 	} 
 
 	skip = () => {
-		this.props.navigation.navigate('FixedEvent');
+		this.props.navigation.navigate('TutorialFixedEvent');
 	}
 
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+			tutorialStatus = <TutorialStatus active={1} color={'#ffffff'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
@@ -92,7 +100,7 @@ class SchoolSchedule extends React.Component {
 							</TouchableOpacity>
 						</View>
 
-						<TutorialStatus active={1} color={'#ffffff'} skip={this.skip} />
+						{tutorialStatus}
 					</View>
 				</ImageBackground>
 			</LinearGradient>

@@ -11,11 +11,16 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
 import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
+import ScheduleCreation from './src/components/screens/ScheduleCreation';
 import ScheduleSelection from './src/components/screens/ScheduleSelection';
 import ScheduleSelectionDetails from './src/components/screens/ScheduleSelectionDetails';
 import ReviewEvent from './src/components/screens/ReviewEvent';
+import Dashboard from './src/components/screens/Dashboard';
+import Chatbot from './src/components/screens/Chatbot';
+import CompareSchedule from './src/components/screens/CompareSchedule';
+import Settings from './src/components/screens/Settings';
 import {name as appName} from './app.json';
-import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator} from 'react-navigation';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 const theme = {
@@ -53,18 +58,19 @@ const LoginNavigator = createStackNavigator(
 
 const TutorialNavigator = createStackNavigator(
 	{
-		SchoolSchedule,
+		TutorialSchoolSchedule: {screen: SchoolSchedule},
 		SchoolScheduleSelectPicture,
 		SchoolScheduleTakePicture,
-		SchoolScheduleCreation,
-		FixedEvent,
-		NonFixedEvent,
+		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
+		TutorialFixedEvent: {screen: FixedEvent},
+		TutorialNonFixedEvent: {screen: NonFixedEvent},
 		ReviewEvent,
+		ScheduleCreation,
 		ScheduleSelection,
 		ScheduleSelectionDetails
 	}, 
 	{
-		initialRouteName: 'SchoolSchedule'
+		initialRouteName: 'TutorialSchoolSchedule'
 	}
 );
 
@@ -78,27 +84,36 @@ const TutorialNavigator = createStackNavigator(
 // 	}
 // );
 
-// const DashboardNavigator = createStackNavigator(
-// 	{
-// 		Dashboard: {screen: Dashboard},
-// 		DashboardOptions: {screen: DashboardOptionsNavigator},
-// 		Chatbot: {screen: Chatbot},
-// 		Settings: {screen: Settings}
-// 	}, 
-// 	{
-// 		initialRouteName: 'Dashboard'
-// 	}
-// );
+const DashboardNavigator = createBottomTabNavigator(
+	{
+		Dashboard,
+		Chatbot,
+		CompareSchedule,
+		Settings
+	}, 
+	{
+		initialRouteName: 'Dashboard'
+	}
+);
 
-// const DashboardOptionsNavigator = createStackNavigator(
-// 	{
-// 		SchoolSchedule: {screen: SchoolScheduleNavigator},
-// 		FixedEvent: {screen: FixedEvent},
-// 		NonFixedEvent: {screen: NonFixedEvent},
-// 		ScheduleSelection: {screen: ScheduleSelectionNavigator},
-// 		CompareSchedule: {screen: CompareScheduleNavigator}
-// 	}
-// );
+const DashboardOptionsNavigator = createStackNavigator(
+	{
+		DashboardNavigator,
+		DashboardSchoolSchedule: SchoolSchedule,
+		SchoolScheduleSelectPicture,
+		SchoolScheduleTakePicture,
+		SchoolScheduleCreation,
+		DashboardFixedEvent: FixedEvent,
+		DashboardNonFixedEvent: NonFixedEvent,
+		ReviewEvent,
+		ScheduleCreation,
+		ScheduleSelection,
+		ScheduleSelectionDetails
+	}, 
+	{
+		initialRouteName: 'DashboardNavigator'
+	}
+);
 
 // const CompareScheduleNavigator = createStackNavigator(
 // 	{
@@ -114,12 +129,11 @@ const MainNavigator = createSwitchNavigator(
 	{
 		WelcomeScreen,
 		LoadingScreen,
-		//Dashboard,
+		DashboardOptionsNavigator,
 		LoginNavigator,
 		TutorialNavigator
 	},
 	{
-		// headerMode: 'none',
 		initialRouteName: 'LoadingScreen'
 	}
 );
