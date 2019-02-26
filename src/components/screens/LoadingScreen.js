@@ -12,10 +12,11 @@ class LoadingScreen extends React.Component {
 		this.state = {
 			colors: [blueColor, blueColor],
 			progress: new Animated.Value(0),
+			nextScreen: 'WelcomeScreen'
 		};
 
 		setTimeout(()=> {
-			this.props.navigation.navigate('WelcomeScreen');
+			this.props.navigation.navigate(this.state.nextScreen);
 		}, 3000);
 	}
 
@@ -29,6 +30,24 @@ class LoadingScreen extends React.Component {
 		this.setState({
 			colors: gradientColors
 		});
+	}
+
+	componentWillMount() {
+		console.log(this.props);
+		switch (this.props.main) {
+			case 'Home':
+				this.setState({
+					nextScreen: 'LoginNavigator'
+				});
+				break;
+			case 'Dashboard':
+				if (this.props.profile !== null) {
+					this.setState({
+						nextScreen: 'DashboardOptionsNavigator'
+					});
+				}
+				break;
+		}
 	}
 
 	render() {
@@ -79,12 +98,12 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-	const imgURI = state.ImageReducer.data;
-	console.log(state);
+	const main = state.NavigationReducer.main;
+	const profile = state.HomeReducer.profile;
 	return {
-		imgURI
+		main, 
+		profile
 	};
 }
-
 
 export default connect(mapStateToProps, null)(LoadingScreen);

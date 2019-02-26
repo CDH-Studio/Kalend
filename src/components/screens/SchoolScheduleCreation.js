@@ -7,6 +7,7 @@ import { Surface } from 'react-native-paper';
 import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
+import updateNavigation from '../NavigationHelper';
 
 class SchoolScheduleCreation extends React.Component {
 	constructor(props) {
@@ -14,6 +15,8 @@ class SchoolScheduleCreation extends React.Component {
 		this.state = {
 			width: 0
 		};
+		
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 
@@ -36,14 +39,16 @@ class SchoolScheduleCreation extends React.Component {
 	}
 
 	componentWillMount() {
-		ImgToBase64.getBase64String(this.props.imgURI)
-			.then(base64String => {
-				base64String = base64String.toString();
-				let fakeEscape = base64String.replace(/[+]/g,'PLUS');
-				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
-				analyzePicture({data: fakeEscape});
-			})
-			.catch(err => console.log('eerr', err));
+		if (this.props.hasImage) {
+			ImgToBase64.getBase64String(this.props.imgURI)
+				.then(base64String => {
+					base64String = base64String.toString();
+					let fakeEscape = base64String.replace(/[+]/g,'PLUS');
+					fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
+					analyzePicture({data: fakeEscape});
+				})
+				.catch(err => console.log('eerr', err));
+		}
 	}
 
 	progressValue() {
@@ -111,8 +116,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 	const imgURI = state.ImageReducer.data;
+	const hasImage = state.ImageReducer.hasImage;
 	return {
-		imgURI
+		imgURI,
+		hasImage
 	};
 }
 

@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import {connect} from 'react-redux';
+import updateNavigation from '../NavigationHelper';
 
 class CameraRollImage extends React.Component {
 
@@ -95,6 +96,8 @@ class SchoolScheduleSelectPicture extends React.Component {
 			activityIndicatorContent: <ActivityIndicator style={{padding:15}} size="large" color="#ffffff" />,
 			showNoPhotos: false
 		};
+		
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentDidMount() {
@@ -187,7 +190,8 @@ class SchoolScheduleSelectPicture extends React.Component {
 	setImage(imgURI) {
 		this.props.dispatch({
 			type:'SET_IMG',
-			data: imgURI
+			data: imgURI,
+			hasImage: true
 		});
 	}
 

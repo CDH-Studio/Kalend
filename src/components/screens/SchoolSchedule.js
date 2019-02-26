@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import TutorialStatus from '../TutorialStatus';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import updateNavigation from '../NavigationHelper';
 
 class SchoolSchedule extends React.Component {
 
@@ -27,6 +28,8 @@ class SchoolSchedule extends React.Component {
 		this.state = { 
 			containerHeight: null,
 		};
+		
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	//Methods

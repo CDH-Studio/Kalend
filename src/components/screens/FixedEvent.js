@@ -8,6 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
+import updateNavigation from '../NavigationHelper';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -62,6 +63,7 @@ class FixedEvent extends React.Component {
 			recurrenceValue: 'None',
 			recurrence: 'NONE'
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	/**
