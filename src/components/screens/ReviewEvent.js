@@ -1,6 +1,7 @@
 import React from 'react';
 import {Platform, StatusBar, StyleSheet, ScrollView, View, Text} from 'react-native';
 import EventOverview from '../EventOverview';
+import { FAB } from 'react-native-paper';
 
 class ReviewEvent extends React.Component {
 
@@ -32,7 +33,7 @@ class ReviewEvent extends React.Component {
 
 		return(
 			<View style={styles.Container}>
-				<StatusBar backgroundColor={'#105dba'} />
+				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
 				<ScrollView contentContainerStyle={styles.content}>
 					<View>
@@ -49,13 +50,16 @@ class ReviewEvent extends React.Component {
 						<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
 						<EventOverview category={nonFixed} eventTitle={'Comp. Sci. Assignment'} date={'Feb 4, 2019'} time={'3h'} />
 					</View>
+
+					<FAB
+						style={styles.fab}
+						icon="check"
+						onPress={() => this.props.navigation.navigate('ScheduleCreation')} />
 				</ScrollView>
 			</View>
 		);
 	}
 }
-
-export default ReviewEvent;
 
 const styles = StyleSheet.create({
 	container: {
@@ -75,4 +79,13 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		marginBottom: 5
 	},
+
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		right: 0,
+		bottom: 0,
+	},
 });
+
+export default ReviewEvent;

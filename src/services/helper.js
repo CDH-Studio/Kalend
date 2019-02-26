@@ -14,15 +14,24 @@ export const formatData = (data) => {
 	let dict = convertToDictionary(data);
 	let events = [];
 	for (const [key,value] of Object.entries(dict)) {
-		console.log(key);
+		console.log(key,'key');
 		if(value.length > 1) {
 			let event = {
 				courses: []
 			};
 			value.forEach(item => {
-				if((item.courseInfo.length == 1)) {
+				// Case where there array indicates a day not course
+				if((item.courseInfo.length <= 2)) {
 					event.day = item.courseInfo[0];
 				} else {
+					// Check for trashy case: Refine this!!
+					// This is where the array size is 5, it breaks the algorithm
+					// Thus turning the array back to size 4 by removing broken data 
+					if(item.courseInfo.length > 4) {
+						let brokenData = item.courseInfo[1];
+						item.courseInfo[0] += brokenData;
+						item.courseInfo.splice(1, 1);
+					}
 					let obj = {
 						name: item.courseInfo[0],
 						time: item.courseInfo[2],
@@ -72,20 +81,21 @@ export const convertTimeToGoogle = (time) => {
  * @param {String} tempDay The day the course is being held on
  */
 export const getStartDate = (date, tempDay) => {
+	let semesterStart = new Date(date.getTime());
 	let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
 	let day = days.indexOf(tempDay) + 1;
 	// Convert time to EST
-	date.setTime(date.getTime()+date.getTimezoneOffset()*60*1000);
-	let startDay = date.getDay();
+	semesterStart.setTime(semesterStart.getTime()+semesterStart.getTimezoneOffset()*60*1000);
+	let startDay = semesterStart.getDay();
 
 	if(day < startDay) {
 		let diff = startDay - day;
-		date.setDate(date.getDate() + (7 - diff));
+		semesterStart.setDate(semesterStart.getDate() + (7 - diff));
 	} else if (day > startDay) {
 		let diff = day - startDay;
-		date.setDate(date.getDate() + diff);
+		semesterStart.setDate(semesterStart.getDate() + diff);
 	}
 
-	let newDate =  new Date(date.getTime());
+	let newDate =  new Date(semesterStart.getTime());
 	return newDate;
 };

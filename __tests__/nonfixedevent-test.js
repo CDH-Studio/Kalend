@@ -1,6 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import NonFixedEvent from '../src/components/screens/NonFixedEvent';
+// import NonFixedEvent from '../src/components/screens/NonFixedEvent';
+// import {Header} from 'react-navigation';
 import {StatusBar, TouchableOpacity, StyleSheet, Text, Switch, Slider} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import DatePicker from 'react-native-datepicker';
@@ -73,22 +74,23 @@ test("Buttons render correctly", () => {
 	expect(button).toMatchSnapshot();
 });
 
+// const headerHeight = Header.HEIGHT;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
 
-	content: {
-		flexGrow: 1,
-		marginTop: 90,
-		paddingLeft: 35,
-		paddingRight: 35
-	},
+	// content: {
+	// 	marginTop: StatusBar.currentHeight + headerHeight,
+	// 	flex: 1,
+	// 	paddingHorizontal: 15
+	// },
 
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center'		
 	},
 
 	instructionText: {
@@ -99,12 +101,26 @@ const styles = StyleSheet.create({
 		marginLeft: 15
 	},
 
+	textInput: {
+		flexDirection: 'row',
+		alignItems: 'flex-end',
+		marginRight: 5,
+		height: 40
+	},
+
+	textInputBorder: {
+		borderBottomColor: 'lightgray',
+		borderBottomWidth: 1,
+		width: '87%',
+		marginLeft: 10,
+	},
+
 	sectionTitle: {
 		fontFamily: 'Raleway-Medium',
 		fontSize: 19,
 		color: '#0A2239',
 		marginBottom: 5,
-		marginTop: 10
+		marginTop: 20
 	},
 
 	blueTitle: {
@@ -128,7 +144,8 @@ const styles = StyleSheet.create({
 	dateRange: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: 5
 	},
 
 	questionLayout: {
@@ -151,23 +168,22 @@ const styles = StyleSheet.create({
 
 	optionsText: {
 		color: '#565454',
-		fontFamily: 'OpenSans-Regular'
+		fontFamily: 'OpenSans-Regular',
+		marginBottom: 5
 	},
 
 	buttons: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 15
+		marginTop: 35
 	},
 
 	buttonEvent: {
 		borderRadius: 12,
 		backgroundColor: '#1473E6',
 		width: 150,
-		height: 58,
-		borderWidth: 3,
-		borderColor: '#1473E6',
+		height: 57.9,
 		elevation: 4,
 		marginRight: 25,
 		justifyContent:'center'
@@ -198,36 +214,5 @@ const styles = StyleSheet.create({
 		color: '#1473E6',
 		textAlign: 'center',
 		padding: 8
-	},
-
-	section: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginTop: 20,
-		marginBottom: 10
-	},
-
-	emptySection: {
-		opacity: 0 //In order to center the bottom section
-	},
-
-	sectionIconRow: {
-		flexDirection: 'row',
-		marginLeft: 10
-	},
-
-	sectionIcon: {
-		width: 20,
-	},
-
-	skipButtonText: {
-		color: '#1473E6',
-		fontFamily: 'Raleway-Regular',
-		fontSize: 15,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
 	}
-
 });
