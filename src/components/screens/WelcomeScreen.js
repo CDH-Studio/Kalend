@@ -4,6 +4,7 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import { gradientColors, orangeColor } from '../../../config';
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import updateNavigation from '../NavigationHelper';
 
 const styles = StyleSheet.create({
 	mainContent: {
@@ -95,6 +96,8 @@ class WelcomeScreen extends React.Component {
 		this.state = {
 			showRealApp: false
 		};
+
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	_renderItem = props => (

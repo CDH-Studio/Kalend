@@ -5,12 +5,14 @@ import { GoogleSigninButton } from 'react-native-google-signin';
 import { googleSignIn } from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
+import updateNavigation from '../NavigationHelper';
 
 class Home extends React.Component {
 
 	//Constructor and States
 	constructor(props) {
 		super(props);
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	//Methods

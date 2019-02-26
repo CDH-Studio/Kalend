@@ -5,7 +5,6 @@ import LottieView from 'lottie-react-native';
 import {connect} from 'react-redux';
 import AnimatedGradient from '../AnimatedGradient';
 
-
 class LoadingScreen extends React.Component {
 
 	constructor(props) {
@@ -15,9 +14,6 @@ class LoadingScreen extends React.Component {
 			progress: new Animated.Value(0),
 		};
 
-		console.log(props);
-		console.log(this.state);
-		
 		setTimeout(()=> {
 			this.props.navigation.navigate('WelcomeScreen');
 		}, 4000);

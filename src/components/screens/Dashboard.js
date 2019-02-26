@@ -1,6 +1,7 @@
 import React from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
+import updateNavigation from '../NavigationHelper';
 
 class Dashboard extends React.Component {
 
@@ -13,6 +14,7 @@ class Dashboard extends React.Component {
 
 			optionsOpen: false,
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	render() {
