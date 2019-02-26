@@ -4,7 +4,8 @@ import { analyzePicture } from '../../services/service';
 import { gradientColors, orangeColor, blueColor } from '../../../config';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
-
+import { connect } from 'react-redux';
+import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
 
 class SchoolScheduleCreation extends React.Component {
@@ -30,9 +31,21 @@ class SchoolScheduleCreation extends React.Component {
 	};
 
 	componentDidMount() {
-		analyzePicture();
+		//analyzePicture(this.state.selected);
 		this.progressValue();
 	}
+
+	componentWillMount() {
+		ImgToBase64.getBase64String(this.props.imgURI)
+			.then(base64String => {
+				base64String = base64String.toString();
+				let fakeEscape = base64String.replace(/[+]/g,'PLUS');
+				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
+				analyzePicture({data: fakeEscape});
+			})
+			.catch(err => console.log('eerr', err));
+	}
+
 	progressValue() {
 		return setInterval(() => {
 			if (this.state.width <= 1) {
@@ -95,4 +108,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolScheduleCreation;
+
+function mapStateToProps(state) {
+	const imgURI = state.ImageReducer.data;
+	return {
+		imgURI
+	};
+}
+
+export default connect(mapStateToProps, null)(SchoolScheduleCreation);

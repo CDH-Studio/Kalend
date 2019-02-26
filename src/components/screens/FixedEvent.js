@@ -7,6 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import {InsertFixedEvent} from '../../services/service';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -58,7 +59,8 @@ class FixedEvent extends React.Component {
 
 			//Other Information
 			location: '',
-			recurrenceValue: 'None'
+			recurrenceValue: 'None',
+			recurrence: 'NONE'
 		};
 	}
 
@@ -68,6 +70,7 @@ class FixedEvent extends React.Component {
 	 * @param {String} time The time expressed in the 24 hours format
 	 */
 	getTwelveHourTime(time) {
+		console.log(this.state.currentRouteName);
 		let temp = time.split(' ');
 		let amOrPm = temp[1];
 
@@ -284,29 +287,98 @@ class FixedEvent extends React.Component {
 				console.log(buttonIndex);
 				console.log(this.state);
 				if (buttonIndex === 0) {
-					this.state.recurrenceValue = 'None';
+					this.state.recurrenceValue = 'NONE';
 				} else if (buttonIndex === 1) {
-					this.state.recurrenceValue = 'Everyday';
+					this.state.recurrenceValue = 'DAILY';
 				} else if (buttonIndex === 2) {
-					this.state.recurrenceValue = 'Weekly';
+					this.state.recurrenceValue = 'WEEKLY';
 				} else if (buttonIndex === 3) {
-					this.state.recurrenceValue = 'Monthly';
+					this.state.recurrenceValue = 'MONTHLY';
 				}
 				this.forceUpdate();
 			},
 		);
 	}
 
+
 	/**
 	 * Goes to the next screen
 	 */
+	skip = () => {
+		this.props.navigation.navigate('TutorialNonFixedEvent');
+	}
+
+	getNextScreenName = (currentRouteName) => {
+		if(currentRouteName === 'TutorialFixedEvent') {
+			return 'TutorialNonFixedEvent';
+		} else {
+			return 'ReviewEvent';
+		}
+	}
+
 	nextScreen = () => {
-		this.props.navigation.navigate('NonFixedEvent');
+		let info = {
+			title: this.state.title,
+			location: this.state.location,
+			description: this.state.description,
+			recurrence: this.state.recurrence,
+			allDay: this.state.allDay,
+			startDate: this.state.startDate,
+			startTime: this.state.startTime,
+			endDate: this.state.endDate,
+			endTime: this.state.endTime
+		};
+		InsertFixedEvent(info).then(success => {
+			if(success) this.props.navigation.navigate('NonFixedEvent');
+		});
+		
+	}
+
+	addAnotherEvent = () => {
+		let info = {
+			title: this.state.title,
+			location: this.state.location,
+			description: this.state.description,
+			recurrence: this.state.recurrence,
+			allDay: this.state.allDay,
+			startDate: this.state.startDate,
+			startTime: this.state.startTime,
+			endDate: this.state.endDate,
+			endTime: this.state.endTime
+		};
+		InsertFixedEvent(info).then(success => {
+			if(success) {
+				this.resetField();
+			}
+		});
+	}
+
+	resetField = () => {
+		this.setState({
+			description: '',
+			allDay: false,
+			recurrence: 'NONE',
+			title: '',
+			location: '',
+			startDate: new Date().toDateString(),
+			endDate: new Date().toDateString(),
+			startTime: new Date().toLocaleTimeString(),
+			endTime: new Date().toLocaleTimeString()
+		});
 	}
 
 	//Render UI
 	render() {
+		const currentRouteName = this.props.navigation.state.routeName;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+		
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
@@ -465,10 +537,10 @@ class FixedEvent extends React.Component {
 											<Picker style={styles.recurrence} 
 												selectedValue={this.state.recurrence} 
 												onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-												<Picker.Item label="None" value="None" />
-												<Picker.Item label="Everyday" value="everyday" />
-												<Picker.Item label="Weekly" value="weekly" />
-												<Picker.Item label="Monthly" value="monthly" />
+												<Picker.Item label="None" value="NONE" />
+												<Picker.Item label="Everyday" value="DAILY" />
+												<Picker.Item label="Weekly" value="WEEKLY" />
+												<Picker.Item label="Monthly" value="MONTHLY" />
 											</Picker>
 									}
 								</View>
@@ -477,18 +549,18 @@ class FixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent}> 
+							<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate(this.getNextScreenName(currentRouteName))}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={2} color={blueColor} skip={this.nextScreen} />
+				{tutorialStatus}
 			</View>
 		);
 	}

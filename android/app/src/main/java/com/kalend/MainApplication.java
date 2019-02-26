@@ -8,6 +8,7 @@ import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage; 
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
+import fr.snapp.imagebase64.RNImgToBase64Package;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
 		  new RNFirebasePackage(),
+          new RNImgToBase64Package(),
           new VectorIconsPackage(),
           new LottiePackage(),
           new RNGestureHandlerPackage(),

@@ -30,6 +30,8 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://github.com/react-native-community/react-native-camera
 * React Native Firebase
   * https://rnfirebase.io/
+* React Native Simple Radio Button
+  * https://www.npmjs.com/package/react-native-simple-radio-button
 
 ## Dependencies
 
