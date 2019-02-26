@@ -54,10 +54,10 @@ class NonFixedEvent extends React.Component {
 			isDividable: false,
 			// durationType: 0,
 
-			occurrence: 0,
+			occurrence: 1,
 
 			//Priority Level Section
-			priority: 0,
+			priority: 1,
 
 			location: '',
 			description: ''
@@ -202,7 +202,7 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
 									<NumericInput occurrence={this.state.occurrence}
-										minValue={0} 
+										minValue={1} 
 										leftButtonBackgroundColor={'#FFBF69'}
 										rightButtonBackgroundColor={'#FF9F1C'}
 										rounded={true}
