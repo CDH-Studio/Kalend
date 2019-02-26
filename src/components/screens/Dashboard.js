@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, Text, StyleSheet, View, Button} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 
 class Dashboard extends React.Component {
