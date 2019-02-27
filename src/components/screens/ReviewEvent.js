@@ -167,15 +167,15 @@ const styles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + headerHeight,
-		paddingHorizontal: 25
+		marginTop: StatusBar.currentHeight + headerHeight
 	},
 
 	content: {
 		flex:1,
 		justifyContent:'space-evenly',
 		height: containerHeight,
-		paddingBottom: tutorialHeight + 16
+		paddingBottom: tutorialHeight + 16,
+		paddingHorizontal: 20
 	},
 
 	sectionTitle: {
