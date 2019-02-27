@@ -24,7 +24,7 @@ class ReviewEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-    updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 		this.state = {
 			//Height of Screen
 			containerHeight: null,
