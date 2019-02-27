@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
-import RadioForm from 'react-native-simple-radio-button';
+// import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 
 //TODO
@@ -51,12 +51,13 @@ class NonFixedEvent extends React.Component {
 
 			hours: 0,
 			minutes: 0,
-			durationType: 0,
+			isDividable: false,
+			// durationType: 0,
 
-			occurrence: 0,
+			occurrence: 1,
 
 			//Priority Level Section
-			priority: 0,
+			priority: 1,
 
 			location: '',
 			description: ''
@@ -71,10 +72,10 @@ class NonFixedEvent extends React.Component {
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-		const durationTypes = [
-			{label: 'Per Occurence', value: 0 },
-			{label: 'Of Event', value: 1 }
-		];
+		// const durationTypes = [
+		// 	{label: 'Per Occurence', value: 0 },
+		// 	{label: 'Of Event', value: 1 }
+		// ];
 
 		let tutorialStatus;
 
@@ -182,8 +183,10 @@ class NonFixedEvent extends React.Component {
 									</View>
 								</View>
 
-								<View style={{flexDirection:'row'}}>
-									<Text style={[styles.blueTitle, {width:150}]}>Duration Type</Text>
+								<View style={{flexDirection:'row', alignItems:'center'}}>
+									<Text style={[styles.blueTitle, {width:150}]}>Is Dividable</Text>
+									<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={this.state.isDividable ? '#FF9F1C' : 'darkgray'} onValueChange={(isDividable) => this.setState({isDividable: isDividable})} value = {this.state.isDividable} />
+									{/* <Text style={[styles.blueTitle, {width:150}]}>Duration Type</Text>
 									<RadioForm
 										radio_props={durationTypes}
 										initial={0}
@@ -193,13 +196,13 @@ class NonFixedEvent extends React.Component {
 										selectedButtonColor={blueColor}
 										selectedLabelColor={'#565454'}
 										style={{fontFamily:'OpenSans-Regular'}}
-										onPress={(durationType) => this.setState({durationType: durationType})}/>
+										onPress={(durationType) => this.setState({durationType: durationType})}/> */}
 								</View>
 
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
 									<NumericInput occurrence={this.state.occurrence}
-										minValue={0} 
+										minValue={1} 
 										leftButtonBackgroundColor={'#FFBF69'}
 										rightButtonBackgroundColor={'#FF9F1C'}
 										rounded={true}

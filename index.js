@@ -64,7 +64,7 @@ const TutorialNavigator = createStackNavigator(
 		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
 		TutorialFixedEvent: {screen: FixedEvent},
 		TutorialNonFixedEvent: {screen: NonFixedEvent},
-		ReviewEvent,
+		TutorialReviewEvent: {screen: ReviewEvent},
 		ScheduleCreation,
 		ScheduleSelection,
 		ScheduleSelectionDetails
