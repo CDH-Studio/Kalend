@@ -1,6 +1,8 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View, Button} from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
+import updateNavigation from '../NavigationHelper';
+import { persistor } from '../../store';
 
 class Dashboard extends React.Component {
 
@@ -13,6 +15,7 @@ class Dashboard extends React.Component {
 
 			optionsOpen: false,
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	render() {
@@ -20,6 +23,8 @@ class Dashboard extends React.Component {
 		return(
 			<View style={{width: '100%', height: '100%'}}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
+
+				<Button title='Purge' onPress={() => persistor.purge()}></Button>
 				
 				<Portal.Host>
 					<FAB.Group

@@ -5,6 +5,7 @@ import { Header } from 'react-navigation';
 import { data } from './scheduleInfo';
 import LinearGradient from 'react-native-linear-gradient';
 import converter from 'number-to-words';
+import updateNavigation from '../NavigationHelper';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -299,6 +300,11 @@ class ScheduleSelection extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
+
+	constructor(props) {
+		super(props);
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
 
 	nextScreen = () => {
 		this.props.navigation.navigate('ScheduleSelectionDetails');

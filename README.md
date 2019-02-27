@@ -32,6 +32,8 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://rnfirebase.io/
 * React Native Simple Radio Button
   * https://www.npmjs.com/package/react-native-simple-radio-button
+* Redux Persists
+  * https://github.com/rt2zz/redux-persist
 
 ## Dependencies
 
