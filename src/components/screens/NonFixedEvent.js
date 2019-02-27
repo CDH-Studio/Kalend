@@ -71,6 +71,11 @@ class NonFixedEvent extends React.Component {
 		this.props.navigation.navigate('ReviewEvent');
 	}
 
+	test = () => {
+
+		console.log('State', this.state);
+	}
+
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -256,7 +261,7 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent}> 
+							<TouchableOpacity style={styles.buttonEvent} onPress={this.test}> 
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 

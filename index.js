@@ -79,16 +79,6 @@ const TutorialNavigator = createStackNavigator(
 	}
 );
 
-// const CreateScheduleNavigator = createStackNavigator(
-// 	{
-// 		CreateSchedule: {screen: CreateSchedule}
-// 	}, 
-// 	{
-// 		headerMode: 'none',
-// 		initialRouteName: 'CreateSchedule'
-// 	}
-// );
-
 const DashboardNavigator = createBottomTabNavigator(
 	{
 		Dashboard,
