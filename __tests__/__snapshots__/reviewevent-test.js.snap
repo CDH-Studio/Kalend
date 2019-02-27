@@ -2,6 +2,7 @@
 
 exports[`FAB renders correclty 1`] = `
 <View
+  pointerEvents="auto"
   style={
     Object {
       "backgroundColor": "#03dac4",
@@ -27,7 +28,6 @@ exports[`FAB renders correclty 1`] = `
       "zIndex": 1,
     }
   }
-  visible={true}
 >
   <View
     accessibilityRole="button"
