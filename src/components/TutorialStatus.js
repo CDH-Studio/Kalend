@@ -8,7 +8,7 @@ class TutorialStatus extends React.Component {
 		super(props);
 
 		let colors = [];
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < 4; i++) {
 			if (i + 1 === this.props.active) {
 				colors[i] = this.props.color;
 			} else {
@@ -23,6 +23,14 @@ class TutorialStatus extends React.Component {
 
 	render() {
 		const {colors} = this.state;
+		let skip;
+
+		if(this.props.skip === undefined) {
+			skip = <Text style={[styles.skipButtonText, {opacity: 0}]}>Skip</Text>;
+		} else {
+			skip = <Text style={[styles.skipButtonText, {color:this.props.color}]}>Skip</Text>;
+		}
+
 		return(
 			<View style={[styles.section, {backgroundColor:this.props.backgroundColor}]}>
 				<View style={styles.emptySection}>
@@ -33,12 +41,11 @@ class TutorialStatus extends React.Component {
 					<Octicons name="primitive-dot" size={dotSize} color={colors[1]} style={styles.sectionIcon} />
 					<Octicons name="primitive-dot" size={dotSize} color={colors[2]} style={styles.sectionIcon} />
 					<Octicons name="primitive-dot" size={dotSize} color={colors[3]} style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={dotSize} color={colors[4]} style={styles.sectionIcon} />
 				</View>
 				
 				<View style={styles.skipButton}>
 					<TouchableOpacity onPress={this.props.skip}>
-						<Text style={[styles.skipButtonText, {color:this.props.color}]}>Skip</Text>
+						{skip}
 					</TouchableOpacity>
 				</View>
 			</View>
