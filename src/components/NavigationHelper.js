@@ -2,8 +2,6 @@ import { store } from '../store';
 import { SET_NAV_SCREEN } from '../constants';
 
 let updateNavigation = (screen, route) => {
-	console.log(screen, " || ", route);
-	console.log(store.getState());
 	let nav = store.getState().NavigationReducer;
 
 	if (screen === 'Home') {
@@ -23,7 +21,6 @@ let updateNavigation = (screen, route) => {
 		route,
 		main: nav.main
 	});
-	console.log(store.getState());
 };
 
 export default updateNavigation;
