@@ -391,6 +391,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F2654EE007E412E5487A868F /* Pods-Kalend-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kalend-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Kalend-tvOSTests/Pods-Kalend-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C2B2A5AFE5F84D41B18A83EB /* Raleway-Medium.ttf */ = {isa = PBXFileReference; name = "Raleway-Medium.ttf"; path = "../src/assets/fonts/Raleway-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -606,6 +607,7 @@
 				915EFF7DB854499D8AA3BA03 /* Raleway-Bold.ttf */,
 				ED161E15E425458687888B8E /* Raleway-Regular.ttf */,
 				1244DE0B54764A6A808C3409 /* Raleway-SemiBold.ttf */,
+				C2B2A5AFE5F84D41B18A83EB /* Raleway-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1198,6 +1200,7 @@
 				288BC2E918C34E8E80685C45 /* Raleway-Bold.ttf in Resources */,
 				A0108C1B0DC94AB3AFC7D4BB /* Raleway-Regular.ttf in Resources */,
 				E9289188EA13494A87D52E67 /* Raleway-SemiBold.ttf in Resources */,
+				A3F46765063646C18FE53427 /* Raleway-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

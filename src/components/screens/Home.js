@@ -5,12 +5,14 @@ import { GoogleSigninButton } from 'react-native-google-signin';
 import { googleSignIn } from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
+import updateNavigation from '../NavigationHelper';
 
 class Home extends React.Component {
 
 	//Constructor and States
 	constructor(props) {
 		super(props);
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	//Methods
@@ -23,8 +25,10 @@ class Home extends React.Component {
 	
 	signIn = () => {
 		googleSignIn().then((userInfo) => {
+			let nextScreen = 'TutorialNavigator';
+
 			this.setUser(userInfo);
-			this.props.navigation.navigate('TutorialNavigator');
+			this.props.navigation.navigate(nextScreen);
 		});
 	}
 
@@ -55,7 +59,18 @@ class Home extends React.Component {
 	}
 }
 
-export default connect()(Home);
+function mapStateToProps(state) {
+	const main = state.NavigationReducer.main;
+	const screen = state.NavigationReducer.screen;
+	const profile = state.NavigationReducer.profile;
+	return {
+		main, 
+		screen,
+		profile
+	};
+}
+
+export default connect(mapStateToProps, null)(Home);
 
 //StyleSheet
 const styles = StyleSheet.create({

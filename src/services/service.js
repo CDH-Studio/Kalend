@@ -1,7 +1,29 @@
 import { formatData, getStartDate } from './helper';
 import { insertEvent } from './google_calendar';
+import firebase from 'react-native-firebase';
 
-const serverUrl = 'http://52.60.127.46:8080';
+let serverUrl = 'http://52.60.127.46:8080';
+
+export let getIp = () => {
+	if (__DEV__) {
+		firebase.config().enableDeveloperMode();
+	}
+	
+	firebase.config().fetch(0)
+		.then(() => {
+			return firebase.config().activateFetched();
+		})
+		.then((activated) => {
+			if (!activated) console.log('Fetched data not activated');
+			return firebase.config().getValue('ipAddress');
+		})
+		.then((snapshot) => {
+			serverUrl = snapshot.val();
+		})
+		.catch(console.error);
+};
+
+// const serverUrl = 'http://52.60.127.46:8080';
 //const serverUrl = 'http://192.168.0.13:8080';
 export const grabSampleData = () =>  {
 	fetch(`${serverUrl}/api/test`)

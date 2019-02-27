@@ -8,6 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
+import updateNavigation from '../NavigationHelper';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -62,6 +63,7 @@ class FixedEvent extends React.Component {
 			recurrenceValue: 'None',
 			recurrence: 'NONE'
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	/**
@@ -70,7 +72,6 @@ class FixedEvent extends React.Component {
 	 * @param {String} time The time expressed in the 24 hours format
 	 */
 	getTwelveHourTime(time) {
-		console.log(this.state.currentRouteName);
 		let temp = time.split(' ');
 		let amOrPm = temp[1];
 
@@ -284,8 +285,6 @@ class FixedEvent extends React.Component {
 				cancelButtonIndex: 4,
 			},
 			(buttonIndex) => {
-				console.log(buttonIndex);
-				console.log(this.state);
 				if (buttonIndex === 0) {
 					this.state.recurrenceValue = 'NONE';
 				} else if (buttonIndex === 1) {
@@ -331,7 +330,6 @@ class FixedEvent extends React.Component {
 		InsertFixedEvent(info).then(success => {
 			if(success) this.props.navigation.navigate('NonFixedEvent');
 		});
-		
 	}
 
 	addAnotherEvent = () => {
@@ -387,7 +385,6 @@ class FixedEvent extends React.Component {
 					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
-							console.log(height, 12);
 							if(height < containerHeight) {
 								this.setState({containerHeight});
 							}

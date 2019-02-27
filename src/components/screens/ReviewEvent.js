@@ -5,6 +5,7 @@ import { FAB } from 'react-native-paper';
 import { blueColor } from '../../../config';
 import EventOverview from '../EventOverview';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import updateNavigation from '../NavigationHelper';
 
 class ReviewEvent extends React.Component {
 
@@ -23,6 +24,7 @@ class ReviewEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
+    updateNavigation(this.constructor.name, props.navigation.state.routeName);
 		this.state = {
 			//Height of Screen
 			containerHeight: null,

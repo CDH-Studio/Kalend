@@ -1,12 +1,11 @@
-import {SET_IMG} from '../constants';
+import {SET_OPENED} from '../constants';
 
 export default function ImageReducer(state = [], action) {
 	switch (action.type) {
-		case SET_IMG:
+		case SET_OPENED:
 			return {
 				...state,
-				data: action.data,
-				hasImage: action.hasImage
+				openedApp: action.openedApp,
 			};
 		default:
 			return state;
