@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
-import { googleSignIn } from '../../services/google_identity';
+import { googleSignIn, googleIsSignedIn } from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
@@ -12,6 +12,11 @@ class Home extends React.Component {
 	//Constructor and States
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			clicked: false
+		};
+    
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -24,12 +29,22 @@ class Home extends React.Component {
 	}
 	
 	signIn = () => {
-		googleSignIn().then((userInfo) => {
-			let nextScreen = 'TutorialNavigator';
-
-			this.setUser(userInfo);
-			this.props.navigation.navigate(nextScreen);
-		});
+		if (!this.state.clicked) {
+			this.state.clicked = true;
+			googleIsSignedIn().then((signedIn) => {
+				if (!signedIn) {
+					googleSignIn().then((userInfo) => {
+						if (userInfo !== null) {
+							this.setUser(userInfo);
+							this.props.navigation.navigate('TutorialNavigator');
+						}
+						this.state.clicked = false;
+					});
+				} else {
+					this.props.navigation.navigate('TutorialNavigator');
+				}
+			});
+		}
 	}
 
 	//Render UI
