@@ -1,8 +1,11 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import {connect} from 'react-redux';
 import { blueColor, orangeColor, redColor } from '../../../config';
 import Entypo from 'react-native-vector-icons/Entypo';
+import updateNavigation from '../NavigationHelper';
+import { analyzePicture } from '../../services/service';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -35,6 +38,8 @@ class SchoolScheduleTakePicture extends React.Component {
 			dismissOpacity: 0,
 			dismissIcon: 0
 		};
+		
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	animation = (opacity, size, icon) => {
@@ -106,6 +111,16 @@ class SchoolScheduleTakePicture extends React.Component {
 				this.enterAnimation(true);
 			} else {
 				console.log('Image selected >> ' + this.state.base64);
+				
+				let fakeEscape = this.state.base64.replace(/[+]/g,'PLUS');
+				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
+				analyzePicture({data: fakeEscape});
+				
+				this.props.dispatch({
+					type:'SET_IMG',
+					hasImage: false
+				});
+
 				this.props.navigation.navigate('SchoolScheduleCreation');
 			}
 		}
@@ -213,4 +228,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SchoolScheduleTakePicture;
+export default connect()(SchoolScheduleTakePicture);

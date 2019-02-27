@@ -8,6 +8,7 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 // import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import updateNavigation from '../NavigationHelper';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -63,10 +64,11 @@ class NonFixedEvent extends React.Component {
 			description: ''
 			
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	skip = () => {
-		this.props.navigation.navigate('ReviewEvent');
+		this.props.navigation.navigate('TutorialReviewEvent');
 	}
 
 	//Render UI
