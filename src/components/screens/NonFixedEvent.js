@@ -68,7 +68,7 @@ class NonFixedEvent extends React.Component {
 	}
 
 	skip = () => {
-		this.props.navigation.navigate('ReviewEvent');
+		this.props.navigation.navigate('TutorialReviewEvent');
 	}
 
 	test = () => {
