@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import SchoolSchedule from '../src/components/screens/SchoolSchedule';
+// import SchoolSchedule from '../src/components/screens/SchoolSchedule';
 import {ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
