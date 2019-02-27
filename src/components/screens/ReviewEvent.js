@@ -1,8 +1,15 @@
 import React from 'react';
 import {StatusBar, Text, StyleSheet, View} from 'react-native';
 import { FAB } from 'react-native-paper';
+import updateNavigation from '../NavigationHelper';
 
 class ReviewEvent extends React.Component {
+	
+	constructor(props) {
+		super(props);
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+	
 	render() {
 		return(
 			<View style={{width: '100%', height: '100%'}}>
