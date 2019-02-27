@@ -9,20 +9,15 @@ GoogleSignin.configure({
 
 let googleSignIn = async () => {
 	try {
+		console.log(1)
 		await GoogleSignin.hasPlayServices();
+		console.log(2)
 		const userInfo = await GoogleSignin.signIn();
+		console.log(3)
 		return userInfo;
 	} catch (error) {
-		if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-			// user cancelled the login flow
-		} else if (error.code === statusCodes.IN_PROGRESS) {
-			// operation (f.e. sign in) is in progress already
-		} else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-			// play services not available or outdated
-		} else {
-			// some other error happened
-		}
-		console.error(error);
+		console.log(30606)
+		return null;
 	}
 };
 
@@ -31,7 +26,7 @@ let googleSignOut = async () => {
 		await GoogleSignin.revokeAccess();
 		await GoogleSignin.signOut();
 	} catch (error) {
-		//console.error(error);
+		console.error(error);
 	}
 };
 
