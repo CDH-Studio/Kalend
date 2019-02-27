@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, Platform, StatusBar, View, StyleSheet} from 'react-native';
 import { blueColor } from '../../../config';
 import { FAB } from 'react-native-paper';
+import updateNavigation from '../NavigationHelper';
 
 class ScheduleSelectionDetails extends React.Component {
 	static navigationOptions = {
@@ -15,6 +16,11 @@ class ScheduleSelectionDetails extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
+
+	constructor(props) {
+		super(props);
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
 	
 	render() {
 		return(

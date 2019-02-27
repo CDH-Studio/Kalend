@@ -1,7 +1,8 @@
 import {AppRegistry, StatusBar} from 'react-native';
 import Home from './src/components/screens/Home';
 import React from 'react';
-import store from './src/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './src/store/index';
 import { Provider } from 'react-redux';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
@@ -35,9 +36,11 @@ const theme = {
 export default function Main() {
 	return (
 		<Provider store={store}>
-			<PaperProvider theme={theme}>
-				<AppContainer/>
-			</PaperProvider>
+			<PersistGate loading={null} persistor={persistor}>
+				<PaperProvider theme={theme}>
+					<AppContainer />
+				</PaperProvider>
+			</PersistGate>
 		</Provider>
 	);
 }
@@ -62,9 +65,14 @@ const TutorialNavigator = createStackNavigator(
 		SchoolScheduleSelectPicture,
 		SchoolScheduleTakePicture,
 		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
-		TutorialFixedEvent: {screen: FixedEvent},
+		TutorialFixedEvent: {
+			screen: FixedEvent
+		},
 		TutorialNonFixedEvent: {screen: NonFixedEvent},
 		TutorialReviewEvent: {screen: ReviewEvent},
+		// EditSchoolSchedule,
+		EditFixedEvent : {screen: FixedEvent},
+		EditNonFixedEvent: {screen: NonFixedEvent},
 		ScheduleCreation,
 		ScheduleSelection,
 		ScheduleSelectionDetails
@@ -131,11 +139,43 @@ const MainNavigator = createSwitchNavigator(
 		LoadingScreen,
 		DashboardOptionsNavigator,
 		LoginNavigator,
-		TutorialNavigator
+		TutorialNavigator: {
+			screen: TutorialNavigator,
+			path: 'fixedEvent'
+		}
 	},
 	{
 		initialRouteName: 'LoadingScreen'
 	}
 );
+
+const defaultGetStateForAction = TutorialNavigator.router.getStateForAction;
+TutorialNavigator.router.getStateForAction = (action, state) => {
+	let nav = store.getState().NavigationReducer;
+
+	if (state && state.routes[state.index].routeName === 'TutorialSchoolSchedule' && nav.routes && !store.getState().StateReducer.openedApp && nav.main === "SchoolSchedule") {
+		const routes = [
+			...nav.routes,
+		];
+		store.dispatch({
+			...nav,
+			type: 'SET_OPENED',
+			openedApp: true
+		});
+		return {
+			...state,
+			routes,
+			index: routes.length - 1,
+		};
+	} else if (state && state.routes) {
+		store.dispatch({
+			...nav,
+			type: 'SET_NAV_SCREEN',
+			routes: state.routes
+		});
+	}
+		
+	return defaultGetStateForAction(action, state);
+};
 
 const AppContainer = createAppContainer(MainNavigator);
