@@ -3,7 +3,8 @@ import {SET_NAV_SCREEN} from '../constants';
 let nav = {
 	screen: null,
 	route: null,
-	main: null
+	main: null,
+	routes: null,
 };
 
 export default function NavigationReducer(state = nav, action) {
@@ -12,7 +13,8 @@ export default function NavigationReducer(state = nav, action) {
 			return {
 				screen: action.screen,
 				route: action.route,
-				main: action.main
+				main: action.main,
+				routes: action.routes,
 			};
 
 		default:

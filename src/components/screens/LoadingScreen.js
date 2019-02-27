@@ -40,6 +40,11 @@ class LoadingScreen extends React.Component {
 					nextScreen: 'LoginNavigator'
 				});
 				break;
+			case 'SchoolSchedule':
+				this.setState({
+					nextScreen: 'TutorialNavigator'
+				});
+				break;
 			case 'Dashboard':
 				if (this.props.profile !== null) {
 					this.setState({
