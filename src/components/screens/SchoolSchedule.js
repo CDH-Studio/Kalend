@@ -8,7 +8,7 @@ import TutorialStatus from '../TutorialStatus';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { IconButton } from 'react-native-paper';
 import { googleSignOut } from '../../services/google_identity';
-import Image from 'react-native-vector-icons/MaterialCommunityIcons'
+import Image from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class SchoolSchedule extends React.Component {
 
@@ -35,7 +35,7 @@ class SchoolSchedule extends React.Component {
 					size={25}
 				/>
 			),
-		}
+		};
 	};
 
 	

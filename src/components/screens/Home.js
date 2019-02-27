@@ -27,7 +27,7 @@ class Home extends React.Component {
 	
 	signIn = () => {
 		if (!this.state.clicked) {
-			console.log("clicked");
+			console.log('clicked');
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
 				console.log(signedIn);
@@ -38,7 +38,7 @@ class Home extends React.Component {
 							console.log(userInfo);
 							this.props.navigation.navigate('TutorialNavigator');
 						}
-						console.log("clicked - reset");
+						console.log('clicked - reset');
 						this.state.clicked = false;
 					});
 				} else {

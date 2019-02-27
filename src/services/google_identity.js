@@ -9,14 +9,14 @@ GoogleSignin.configure({
 
 let googleSignIn = async () => {
 	try {
-		console.log(1)
+		console.log(1);
 		await GoogleSignin.hasPlayServices();
-		console.log(2)
+		console.log(2);
 		const userInfo = await GoogleSignin.signIn();
-		console.log(3)
+		console.log(3);
 		return userInfo;
 	} catch (error) {
-		console.log(30606)
+		console.log(30606);
 		return null;
 	}
 };
