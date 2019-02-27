@@ -9,14 +9,10 @@ GoogleSignin.configure({
 
 let googleSignIn = async () => {
 	try {
-		console.log(1);
 		await GoogleSignin.hasPlayServices();
-		console.log(2);
 		const userInfo = await GoogleSignin.signIn();
-		console.log(3);
 		return userInfo;
 	} catch (error) {
-		console.log(30606);
 		return null;
 	}
 };
@@ -26,7 +22,7 @@ let googleSignOut = async () => {
 		await GoogleSignin.revokeAccess();
 		await GoogleSignin.signOut();
 	} catch (error) {
-		console.error(error);
+		// console.error(error);
 	}
 };
 

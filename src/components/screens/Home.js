@@ -27,18 +27,14 @@ class Home extends React.Component {
 	
 	signIn = () => {
 		if (!this.state.clicked) {
-			console.log('clicked');
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
-				console.log(signedIn);
 				if (!signedIn) {
 					googleSignIn().then((userInfo) => {
 						if (userInfo !== null) {
 							this.setUser(userInfo);
-							console.log(userInfo);
 							this.props.navigation.navigate('TutorialNavigator');
 						}
-						console.log('clicked - reset');
 						this.state.clicked = false;
 					});
 				} else {
