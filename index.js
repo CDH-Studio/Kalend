@@ -137,7 +137,7 @@ const MainNavigator = createSwitchNavigator(
 	{
 		WelcomeScreen,
 		LoadingScreen,
-		// DashboardOptionsNavigator,
+		DashboardOptionsNavigator,
 		LoginNavigator,
 		TutorialNavigator: {
 			screen: TutorialNavigator,
@@ -152,8 +152,6 @@ const MainNavigator = createSwitchNavigator(
 const defaultGetStateForAction = TutorialNavigator.router.getStateForAction;
 TutorialNavigator.router.getStateForAction = (action, state) => {
 	let nav = store.getState().NavigationReducer;
-
-	console.log(state);
 
 	if (state && state.routes[state.index].routeName === 'TutorialSchoolSchedule' && nav.routes && !store.getState().StateReducer.openedApp && nav.main === "SchoolSchedule") {
 		const routes = [
