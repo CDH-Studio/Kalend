@@ -58,7 +58,7 @@ class NonFixedEvent extends React.Component {
 			occurrence: 1,
 
 			//Priority Level Section
-			priority: 1,
+			priority: 0.5,
 
 			location: '',
 			description: ''
@@ -68,7 +68,20 @@ class NonFixedEvent extends React.Component {
 	}
 
 	skip = () => {
-		this.props.navigation.navigate('TutorialReviewEvent');
+		this.props.navigation.navigate('ReviewEvent');
+	}
+
+	getNextScreenName = (currentRouteName) => {
+		if(currentRouteName === 'TutorialNonFixedEvent') {
+			return 'ReviewEvent';
+		} else {
+			return 'ReviewEvent';
+		}
+	}
+
+	test = () => {
+
+		console.log('State', this.state);
 	}
 
 	test = () => {
@@ -79,6 +92,7 @@ class NonFixedEvent extends React.Component {
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
+		const currentRouteName = this.props.navigation.state.routeName;
 		// const durationTypes = [
 		// 	{label: 'Per Occurence', value: 0 },
 		// 	{label: 'Of Event', value: 1 }
@@ -265,7 +279,13 @@ class NonFixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('ReviewEvent')}>
+							<TouchableOpacity style={styles.buttonNext} onPress={() => {
+								if(currentRouteName === 'TutorialFixedEvent') {
+									this.props.navigation.navigate(this.getNextScreenName(currentRouteName));
+								} else {
+									this.props.navigation.pop();
+								}
+							}}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>

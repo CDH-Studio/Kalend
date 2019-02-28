@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
 	},
 
 	eventTitle: {
-		width: 220,
+		width: 180,
 		fontFamily: 'OpenSans-SemiBold',
 		fontSize: 15
 	},
@@ -246,9 +246,9 @@ const styles = StyleSheet.create({
 
 	modalContent: {
 		justifyContent: 'space-between',
-		width: '70%',
 		backgroundColor: 'white',
-		borderRadius: 8
+		borderRadius: 8,
+		marginHorizontal: 20
 	},
 
 	closeModal: {
@@ -331,11 +331,10 @@ const styles = StyleSheet.create({
 	},
 
 	actionsModal: {
-		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 
 	actionIconModal: {

@@ -550,7 +550,13 @@ class FixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate(this.getNextScreenName(currentRouteName))}>
+							<TouchableOpacity style={styles.buttonNext} onPress={() => {
+								if(currentRouteName === 'TutorialFixedEvent') {
+									this.props.navigation.navigate(this.getNextScreenName(currentRouteName));
+								} else {
+									this.props.navigation.pop();
+								}
+							}}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
