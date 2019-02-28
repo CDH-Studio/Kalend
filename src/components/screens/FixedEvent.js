@@ -334,7 +334,6 @@ class FixedEvent extends React.Component {
 	}
 
 	addAnotherEvent = () => {
-		console.log(store.getState())
 		let info = {
 			title: this.state.title,
 			location: this.state.location,
