@@ -1,5 +1,6 @@
 import { formatData, getStartDate } from './helper';
-import { insertEvent } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar } from './google_calendar';
+import { store } from '../store';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -52,31 +53,40 @@ export const grabUserData = () =>  {
 };
 
 export const analyzePicture = (base64Data) => {
-	fetch(`${serverUrl}/api/analyzepicture`, {
-		method:'POST',
-		body: JSON.stringify(base64Data),
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		}
-	})
-		.then(res => {
-			return res.json();
+	return new Promise( function(resolve, reject) { 
+		fetch(`${serverUrl}/api/analyzepicture`, {
+			method:'POST',
+			body: JSON.stringify(base64Data),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
 		})
-		.then(body => {
-			formatData(body.data)
-				.then(data => {
-					InsertDataIntoGoogle(data);
-				});
-		})
-		.catch(error => {
-			console.log('error', error);
-		});
+			.then(res => {
+				return res.json();
+			})
+			.then(body => {
+				formatData(body.data)
+					.then(data => {
+						console.log('data', data);
+					
+						InsertDataIntoGoogle(data)
+							.then((promises) => {
+								if(promises) resolve(true);
+								else reject(false);
+							})
+							.catch(err => {
+								console.log('err', err);
+							});
+					});
+			});
+	});
 };
 
 
 export const InsertDataIntoGoogle = (events) => {
-	
+	let promises = [];
+
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
 		let obj = {
@@ -91,10 +101,11 @@ export const InsertDataIntoGoogle = (events) => {
 		event.courses.forEach(course => {
 			let startDate = getStartDate(tempStartDate, event.day);
 			let endDate = getStartDate(tempStartDate, event.day);
+			let day = event.day.substr(0,2).toUpperCase();
 			let recurrence = [
 				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
 			];
-			let day = event.day.substr(0,2).toUpperCase();
+			
 			// Convert all letters to lowercase for easier formating
 			let d = course.time.toLowerCase();
 			// Split date accordingly if it has '-' or ' '
@@ -121,16 +132,25 @@ export const InsertDataIntoGoogle = (events) => {
 			obj.summary = course.name;
 			obj.location = course.location;
 			obj.recurrence = recurrence;
+			store.dispatch({
+				type: 'ADD_COURSE',
+				event: obj
+			});
 			
-			insertEvent('kalend613@gmail.com',obj,{})
-				.then( data => {
-					console.log('data', data);
-				})
-				.catch( err => {
-					console.log('err', err);
-				});
+			let promise_temp = (calendarID) => {
+				insertEvent(calendarID,obj,{})
+					.then( data => {
+						console.log('data inserted', data);
+						return data;
+					})
+					.catch( err => {
+						console.log('er1', err);
+					});
+			};
+			promises.push(getCalendarID(promise_temp));
 		});
 	});
+	return Promise.all(promises);
 };
 
 export const  InsertFixedEvent = (event) => {
@@ -161,15 +181,35 @@ export const  InsertFixedEvent = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 
-	return new Promise( function(resolve, reject) {
-		insertEvent('kalend613@gmail.com',obj,{})
+	let promise = (calendarID) => {
+		return insertEvent(calendarID,obj,{})
 			.then( data => {
-				console.log('data', data);
 				if(data.error) {
-					reject(false);
+					return false;
 				} else {
-					resolve(true);
+					return true;
 				}
 			});
+	};
+
+	return getCalendarID(promise);
+};
+
+const getCalendarID = (promise) => {
+	return getCalendarList().then((data) => {
+		let calendarID = undefined;
+		for (let i = 0; i < data.items.length; i++) {
+			if (data.items[i].summary === 'Kalend') {
+				calendarID = data.items[i].id;
+			}
+		}
+
+		if (calendarID === undefined) {
+			createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
+				return promise(data.id);
+			});
+		} else {
+			return promise(calendarID);
+		}
 	});
 };

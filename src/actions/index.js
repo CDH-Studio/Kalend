@@ -1,4 +1,4 @@
-import {SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE} from '../constants';
+import {SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE} from '../constants';
 
 export function logonUser (profile) {
 	const action = {
@@ -29,6 +29,15 @@ export function setImageURI (ImageUri) {
 export function AddFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
+		event
+	}; 
+
+	return action;
+}
+
+export function AddCourseEvent (event) {
+	const action = {
+		type: ADD_COURSE,
 		event
 	}; 
 

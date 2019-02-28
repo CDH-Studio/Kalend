@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
 import updateNavigation from '../NavigationHelper';
+import {NavigationActions} from 'react-navigation';
 
 class SchoolScheduleCreation extends React.Component {
 	constructor(props) {
@@ -19,6 +20,9 @@ class SchoolScheduleCreation extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
+	navigateAction = NavigationActions.navigate({
+		action: 'FinishSchoolCreation'
+	})
 
 	static navigationOptions = {
 		title: 'Analysing Schedule',
@@ -39,13 +43,17 @@ class SchoolScheduleCreation extends React.Component {
 	}
 
 	componentWillMount() {
+		
 		if (this.props.hasImage) {
 			ImgToBase64.getBase64String(this.props.imgURI)
 				.then(base64String => {
 					base64String = base64String.toString();
 					let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 					fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
-					analyzePicture({data: fakeEscape});
+					analyzePicture({data: fakeEscape}).then(success => {
+						if(success) this.props.navigation.dispatch(this.navigateAction);
+						else this.props.navigation.pop();
+					});
 				})
 				.catch(err => console.log('eerr', err));
 		}

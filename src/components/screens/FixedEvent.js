@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions} from 'react-native';
 import {Header} from 'react-navigation';
 import { blueColor, orangeColor, lightOrangeColor, statusBlueColor } from '../../../config';
@@ -9,6 +10,11 @@ import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
+import {ADD_FE} from '../../constants';
+//TODO
+//Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
+//Add onSubmit functions for buttons + navigate/resetForm
+
 
 class FixedEvent extends React.Component {
 
@@ -23,7 +29,6 @@ class FixedEvent extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
-
 	// Constructor and States
 	constructor(props) {
 		super(props);
@@ -340,6 +345,10 @@ class FixedEvent extends React.Component {
 		};
 		InsertFixedEvent(info).then(success => {
 			if(success) {
+				this.props.dispatch({
+					type: ADD_FE,
+					state: this.state
+				});
 				this.resetField();
 			}
 		});
@@ -682,4 +691,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default FixedEvent;
+export default connect()(FixedEvent);
