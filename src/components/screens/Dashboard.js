@@ -1,9 +1,9 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View, Button} from 'react-native';
+import {StatusBar, StyleSheet, View, Button, Text} from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { SET_NAV_SCREEN } from '../../constants';
+import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../constants';
 
 class Dashboard extends React.Component {
 
@@ -25,10 +25,39 @@ class Dashboard extends React.Component {
 			<View style={{width: '100%', height: '100%'}}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
-				<Button title='Clear Navigation' onPress={() => {
+				<Text>Redux Management</Text>
+
+				<Button title='Clear NavigationRecuder' onPress={() => {
 					store.dispatch({
 						type: SET_NAV_SCREEN
 					});
+				}}></Button>
+
+				<Button title='Clear ImageReducer' onPress={() => {
+					store.dispatch({
+						type: SET_IMG
+					});
+				}}></Button>
+
+				<Button title='Clear ProfileReducer' onPress={() => {
+					store.dispatch({
+						type: SIGNED_IN
+					});
+				}}></Button>
+				
+				<Button title='Clear FixedReducer' onPress={() => {
+					store.dispatch({
+						type: ADD_FE
+					});
+				}}></Button>
+
+				<Button title='Clear NonFixedReducer' onPress={() => {
+					store.dispatch({
+						type: ADD_NFE
+					});
+				}}></Button>
+
+				<Button title='Go back home' onPress={() => {
 					this.props.navigation.navigate('LoginNavigator');
 				}}></Button>
 				

@@ -335,7 +335,6 @@ class FixedEvent extends React.Component {
 	}
 
 	addAnotherEvent = () => {
-		console.log(store.getState())
 		let info = {
 			title: this.state.title,
 			location: this.state.location,
@@ -348,11 +347,13 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		};
 		InsertFixedEvent(info).then(success => {
+			console.log(success)
 			if(success) {
 				this.props.dispatch({
 					type: ADD_FE,
-					state: this.state
+					event: this.state
 				});
+				console.log(store.getState());
 				this.resetField();
 			}
 		});
