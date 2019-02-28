@@ -2,6 +2,7 @@ import { store } from '../store';
 import { SET_NAV_SCREEN } from '../constants';
 
 let updateNavigation = (screen, route) => {
+	console.log(screen + ' ' + route);
 
 	let nav = store.getState().NavigationReducer;
 
