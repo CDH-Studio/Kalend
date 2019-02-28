@@ -188,7 +188,7 @@ class ScheduleSelectionDetails extends React.Component {
 		}
 	}
 
-	getEventForWeekday = (weekday) => {
+	getEventForWeekday = () => {
 		return this.data;
 	}
 

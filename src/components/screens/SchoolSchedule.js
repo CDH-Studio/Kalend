@@ -41,11 +41,11 @@ class SchoolSchedule extends React.Component {
 
 	
 	componentDidMount() {
-		googleSignOut();
 		this.props.navigation.setParams({ goBack: this.goBack });
 	}
 
 	goBack = () => {
+		googleSignOut();
 		this.props.navigation.navigate('LoginNavigator');
 	}
 
