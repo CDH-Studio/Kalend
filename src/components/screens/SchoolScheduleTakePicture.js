@@ -121,7 +121,11 @@ class SchoolScheduleTakePicture extends React.Component {
 					hasImage: false
 				});
 
-				this.props.navigation.navigate('TutorialSchoolScheduleCreation');
+				if(this.props.navigation.state.routeName === 'TutorialSchoolScheduleTakePicture') {
+					this.props.navigation.navigate('TutorialSchoolScheduleCreation');
+				}else {
+					this.props.navigation.navigate('DashboardSchoolScheduleCreation');
+				}
 			}
 		}
 	}

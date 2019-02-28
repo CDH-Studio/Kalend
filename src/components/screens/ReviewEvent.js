@@ -114,7 +114,19 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		this.props.navigation.navigate(editScreen);
+		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+			this.props.navigation.navigate('TutorialEdit' + editScreen);
+		}else {
+			this.props.navigation.navigate('DashboardEdit' + editScreen);
+		}
+	}
+
+	navigateCreationScreen = () => {
+		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+			this.props.navigation.navigate('TutorialScheduleCreation');
+		}else {
+			this.props.navigation.navigate('DashboardScheduleCreation');
+		}
 	}
 
 	render() {
@@ -166,8 +178,9 @@ class ReviewEvent extends React.Component {
 				<FAB
 					style={styles.fab}
 					icon="check"
+
 					visible={this.state.showFAB}
-					onPress={() => this.props.navigation.navigate('ScheduleCreation')} />
+					onPress={this.navigateCreationScreen} />
 
 				{tutorialStatus}
 			</View>

@@ -17,6 +17,14 @@ class ScheduleCreation extends React.Component {
 		}, 2000);
 	}
 
+	navigateToSelection = () => {
+		if(this.props.navigation.state.routeName === 'TutorialScheduleCreation') {
+			this.props.navigation.navigate('TutorialScheduleSelection');
+		}else {
+			this.props.navigation.navigate('DashboardScheduleSelection');
+		}
+	}
+  
 	render() {
 		return(
 			<LinearGradient style={styles.container} colors={gradientColors}>
