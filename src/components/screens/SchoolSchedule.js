@@ -6,20 +6,48 @@ import LinearGradient from 'react-native-linear-gradient';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import TutorialStatus from '../TutorialStatus';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { IconButton } from 'react-native-paper';
+import { googleSignOut } from '../../services/google_identity';
+import Image from 'react-native-vector-icons/MaterialCommunityIcons';
+import updateNavigation from '../NavigationHelper';
 
 class SchoolSchedule extends React.Component {
 
 	//Style for Navigation Bar
-	static navigationOptions = {
-		title: 'Add School Schedule',
-		headerTintColor: 'white',
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		}
+	static navigationOptions = ({navigation}) => {
+		return {
+			title: 'Add School Schedule',
+			headerTintColor: 'white',
+			headerTitleStyle: {fontFamily: 'Raleway-Regular'},
+			headerTransparent: true,
+			headerStyle: {
+				backgroundColor: 'rgba(0, 0, 0, 0.2)',
+				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			},
+			headerRight: (
+				<IconButton
+					onPress={navigation.getParam('goBack')}
+					icon={({ size, color }) => (
+						<Image name='logout'
+							size={size}
+							color={color} />
+					)}
+					color='white'
+					size={25}
+				/>
+			),
+		};
 	};
+
+	
+	componentDidMount() {
+		googleSignOut();
+		this.props.navigation.setParams({ goBack: this.goBack });
+	}
+
+	goBack = () => {
+		this.props.navigation.navigate('LoginNavigator');
+	}
 
 	//Constructor and States
 	constructor(props) {
@@ -27,6 +55,8 @@ class SchoolSchedule extends React.Component {
 		this.state = { 
 			containerHeight: null,
 		};
+		
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	//Methods
@@ -59,12 +89,20 @@ class SchoolSchedule extends React.Component {
 	} 
 
 	skip = () => {
-		this.props.navigation.navigate('FixedEvent');
+		this.props.navigation.navigate('TutorialFixedEvent');
 	}
 
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+			tutorialStatus = <TutorialStatus active={1} color={'#ffffff'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+
 		return (
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
@@ -92,7 +130,7 @@ class SchoolSchedule extends React.Component {
 							</TouchableOpacity>
 						</View>
 
-						<TutorialStatus active={1} color={'#ffffff'} skip={this.skip} />
+						{tutorialStatus}
 					</View>
 				</ImageBackground>
 			</LinearGradient>

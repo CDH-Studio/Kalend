@@ -8,6 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
+import updateNavigation from '../NavigationHelper';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -62,6 +63,7 @@ class FixedEvent extends React.Component {
 			recurrenceValue: 'None',
 			recurrence: 'NONE'
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	/**
@@ -283,8 +285,6 @@ class FixedEvent extends React.Component {
 				cancelButtonIndex: 4,
 			},
 			(buttonIndex) => {
-				console.log(buttonIndex);
-				console.log(this.state);
 				if (buttonIndex === 0) {
 					this.state.recurrenceValue = 'NONE';
 				} else if (buttonIndex === 1) {
@@ -299,9 +299,22 @@ class FixedEvent extends React.Component {
 		);
 	}
 
+
 	/**
 	 * Goes to the next screen
 	 */
+	skip = () => {
+		this.props.navigation.navigate('TutorialNonFixedEvent');
+	}
+
+	getNextScreenName = (currentRouteName) => {
+		if(currentRouteName === 'TutorialFixedEvent') {
+			return 'TutorialNonFixedEvent';
+		} else {
+			return 'ReviewEvent';
+		}
+	}
+
 	nextScreen = () => {
 		let info = {
 			title: this.state.title,
@@ -317,7 +330,6 @@ class FixedEvent extends React.Component {
 		InsertFixedEvent(info).then(success => {
 			if(success) this.props.navigation.navigate('NonFixedEvent');
 		});
-		
 	}
 
 	addAnotherEvent = () => {
@@ -355,7 +367,16 @@ class FixedEvent extends React.Component {
 
 	//Render UI
 	render() {
+		const currentRouteName = this.props.navigation.state.routeName;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+		
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
@@ -364,7 +385,6 @@ class FixedEvent extends React.Component {
 					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
-							console.log(height, 12);
 							if(height < containerHeight) {
 								this.setState({containerHeight});
 							}
@@ -530,14 +550,20 @@ class FixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+							<TouchableOpacity style={styles.buttonNext} onPress={() => {
+								if(currentRouteName === 'TutorialFixedEvent') {
+									this.props.navigation.navigate(this.getNextScreenName(currentRouteName));
+								} else {
+									this.props.navigation.pop();
+								}
+							}}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />
+				{tutorialStatus}
 			</View>
 		);
 	}

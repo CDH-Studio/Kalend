@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import NonFixedEvent from '../src/components/screens/NonFixedEvent';
-import Header from 'react-navigation';
+// import NonFixedEvent from '../src/components/screens/NonFixedEvent';
+// import {Header} from 'react-navigation';
 import {StatusBar, TouchableOpacity, StyleSheet, Text, Switch, Slider} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import DatePicker from 'react-native-datepicker';
@@ -74,18 +74,18 @@ test("Buttons render correctly", () => {
 	expect(button).toMatchSnapshot();
 });
 
-const headerHeight = Header.HEIGHT;
+// const headerHeight = Header.HEIGHT;
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
 
-	content: {
-		marginTop: StatusBar.currentHeight + headerHeight,
-		flex: 1,
-		paddingHorizontal: 15
-	},
+	// content: {
+	// 	marginTop: StatusBar.currentHeight + headerHeight,
+	// 	flex: 1,
+	// 	paddingHorizontal: 15
+	// },
 
 	instruction: {
 		flexDirection: 'row',

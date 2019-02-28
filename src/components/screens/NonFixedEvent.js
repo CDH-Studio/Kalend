@@ -1,13 +1,14 @@
 import React from 'react';
 import {Platform, StatusBar, StyleSheet, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput} from 'react-native';
-import Header from 'react-navigation';
+import {Header} from 'react-navigation';
 import {blueColor} from '../../../config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
-import RadioForm from 'react-native-simple-radio-button';
+// import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import updateNavigation from '../NavigationHelper';
 
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
@@ -51,26 +52,55 @@ class NonFixedEvent extends React.Component {
 
 			hours: 0,
 			minutes: 0,
-			durationType: 0,
+			isDividable: false,
+			// durationType: 0,
 
-			occurrence: 0,
+			occurrence: 1,
 
 			//Priority Level Section
-			priority: 0,
+			priority: 0.5,
 
 			location: '',
 			description: ''
 			
 		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	skip = () => {
+		this.props.navigation.navigate('ReviewEvent');
+	}
+
+	getNextScreenName = (currentRouteName) => {
+		if(currentRouteName === 'TutorialNonFixedEvent') {
+			return 'ReviewEvent';
+		} else {
+			return 'ReviewEvent';
+		}
+	}
+
+	test = () => {
+
+		console.log('State', this.state);
 	}
 
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-		const durationTypes = [
-			{label: 'Per Occurence', value: 0 },
-			{label: 'Of Event', value: 1 }
-		];
+		const currentRouteName = this.props.navigation.state.routeName;
+		// const durationTypes = [
+		// 	{label: 'Per Occurence', value: 0 },
+		// 	{label: 'Of Event', value: 1 }
+		// ];
+
+		let tutorialStatus;
+
+		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		} else {
+			tutorialStatus = null;
+		}
+
 		return(
 			<View style={styles.container}>
 				<StatusBar backgroundColor={'#105dba'} />
@@ -169,8 +199,10 @@ class NonFixedEvent extends React.Component {
 									</View>
 								</View>
 
-								<View style={{flexDirection:'row'}}>
-									<Text style={[styles.blueTitle, {width:150}]}>Duration Type</Text>
+								<View style={{flexDirection:'row', alignItems:'center'}}>
+									<Text style={[styles.blueTitle, {width:150}]}>Is Dividable</Text>
+									<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={this.state.isDividable ? '#FF9F1C' : 'darkgray'} onValueChange={(isDividable) => this.setState({isDividable: isDividable})} value = {this.state.isDividable} />
+									{/* <Text style={[styles.blueTitle, {width:150}]}>Duration Type</Text>
 									<RadioForm
 										radio_props={durationTypes}
 										initial={0}
@@ -180,13 +212,13 @@ class NonFixedEvent extends React.Component {
 										selectedButtonColor={blueColor}
 										selectedLabelColor={'#565454'}
 										style={{fontFamily:'OpenSans-Regular'}}
-										onPress={(durationType) => this.setState({durationType: durationType})}/>
+										onPress={(durationType) => this.setState({durationType: durationType})}/> */}
 								</View>
 
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
 									<NumericInput occurrence={this.state.occurrence}
-										minValue={0} 
+										minValue={1} 
 										leftButtonBackgroundColor={'#FFBF69'}
 										rightButtonBackgroundColor={'#FF9F1C'}
 										rounded={true}
@@ -238,18 +270,24 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent}> 
+							<TouchableOpacity style={styles.buttonEvent} onPress={this.test}> 
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('ReviewEvent')}>
-								<Text style={styles.buttonNextText}>FINISH</Text>
+							<TouchableOpacity style={styles.buttonNext} onPress={() => {
+								if(currentRouteName === 'TutorialFixedEvent') {
+									this.props.navigation.navigate(this.getNextScreenName(currentRouteName));
+								} else {
+									this.props.navigation.pop();
+								}
+							}}>
+								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 
-				<TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />	
+				{tutorialStatus}	
 			</View>
 		);
 	}
