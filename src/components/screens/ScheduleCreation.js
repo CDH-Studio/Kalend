@@ -1,6 +1,6 @@
 import React from 'react';
 import {StatusBar, Text, StyleSheet, Dimensions, ImageBackground} from 'react-native';
-import { gradientColors, lightBlueColor, blueColor, orangeColor, lightOrangeColor } from '../../../config';
+import { gradientColors, orangeColor, lightOrangeColor } from '../../../config';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
