@@ -1,5 +1,6 @@
 import { formatData, getStartDate } from './helper';
-import { insertEvent } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar } from './google_calendar';
+import { store } from '../store';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -161,15 +162,35 @@ export const  InsertFixedEvent = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 
-	return new Promise( function(resolve, reject) {
-		insertEvent('kalend613@gmail.com',obj,{})
+	let promise = (calendarID) => {
+		return insertEvent(calendarID,obj,{})
 			.then( data => {
-				console.log('data', data);
 				if(data.error) {
-					reject(false);
+					return false;
 				} else {
-					resolve(true);
+					return true;
 				}
 			});
+	};
+
+	return getCalendarID(promise);
+};
+
+const getCalendarID = (promise) => {
+	return getCalendarList().then((data) => {
+		let calendarID = undefined;
+		for (let i = 0; i < data.items.length; i++) {
+			if (data.items[i].summary === 'Kalend') {
+				calendarID = data.items[i].id;
+			}
+		}
+
+		if (calendarID === undefined) {
+			createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
+				return promise(data.id);
+			});
+		} else {
+			return promise(calendarID);
+		}
 	});
 };
