@@ -132,19 +132,22 @@ export const InsertDataIntoGoogle = (events) => {
 			obj.summary = course.name;
 			obj.location = course.location;
 			obj.recurrence = recurrence;
+			store.dispatch({
+				type: 'ADD_COURSE',
+				event: obj
+			});
 			
-			promises.push(new Promise((resolve, reject) => {
-				insertEvent('kalend613@gmail.com',obj,{})
+			let promise_temp = (calendarID) => {
+				insertEvent(calendarID,obj,{})
 					.then( data => {
 						console.log('data inserted', data);
-						if(data.error) reject(data);
-						else resolve(data);
+						return data;
 					})
 					.catch( err => {
 						console.log('er1', err);
 					});
-			})
-			);
+			};
+			promises.push(getCalendarID(promise_temp));
 		});
 	});
 	return Promise.all(promises);

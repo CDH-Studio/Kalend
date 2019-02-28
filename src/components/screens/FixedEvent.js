@@ -29,7 +29,6 @@ class FixedEvent extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
-
 	// Constructor and States
 	constructor(props) {
 		super(props);
