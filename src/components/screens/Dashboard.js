@@ -26,11 +26,9 @@ class Dashboard extends React.Component {
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
 				<Button title='Clear Navigation' onPress={() => {
-					console.log(store.getState())
 					store.dispatch({
 						type: SET_NAV_SCREEN
 					});
-					console.log(store.getState())
 					this.props.navigation.navigate('LoginNavigator');
 				}}></Button>
 				
