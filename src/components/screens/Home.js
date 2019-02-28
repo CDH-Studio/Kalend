@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
-import { googleSignIn, googleIsSignedIn } from '../../services/google_identity';
+import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
@@ -32,13 +32,22 @@ class Home extends React.Component {
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
+				console.log(signedIn);
 				if (!signedIn) {
-					googleSignIn().then((userInfo) => {
-						if (userInfo !== null) {
+					googleGetCurrentUserInfo().then((userInfo) =>{
+						console.log(userInfo);
+						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.props.navigation.navigate('TutorialNavigator');
 						}
-						this.state.clicked = false;
+						googleSignIn().then((userInfo) => {
+							console.log(userInfo);
+							if (userInfo !== null) {
+								this.setUser(userInfo);
+								this.props.navigation.navigate('TutorialNavigator');
+							}
+							this.state.clicked = false;
+						});
 					});
 				} else {
 					this.props.navigation.navigate('TutorialNavigator');
