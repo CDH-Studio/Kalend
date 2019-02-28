@@ -41,11 +41,11 @@ class SchoolSchedule extends React.Component {
 
 	
 	componentDidMount() {
-		googleSignOut();
 		this.props.navigation.setParams({ goBack: this.goBack });
 	}
 
 	goBack = () => {
+		googleSignOut();
 		this.props.navigation.navigate('LoginNavigator');
 	}
 
@@ -66,11 +66,19 @@ class SchoolSchedule extends React.Component {
 				console.log(accepted);
 
 				if (accepted) {
-					this.props.navigation.navigate('SchoolScheduleSelectPicture');
+					if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+						this.props.navigation.navigate('TutorialSchoolScheduleSelectPicture');
+					}else {
+						this.props.navigation.navigate('DashboardSchoolScheduleSelectPicture');
+					}
 				}
 			});
 		} else {
-			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+			if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+				this.props.navigation.navigate('TutorialSchoolScheduleSelectPicture');
+			}else {
+				this.props.navigation.navigate('DashboardSchoolScheduleSelectPicture');
+			}
 		}
 	}
 
@@ -80,13 +88,29 @@ class SchoolSchedule extends React.Component {
 				console.log(accepted);
 				
 				if (accepted) {
-					this.props.navigation.navigate('SchoolScheduleTakePicture');
+					if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+						this.props.navigation.navigate('TutorialSchoolScheduleTakePicture');
+					}else {
+						this.props.navigation.navigate('DashboardSchoolScheduleTakePicture');
+					}
 				}
 			});
 		} else {
-			this.props.navigation.navigate('SchoolScheduleTakePicture');
+			if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+				this.props.navigation.navigate('TutorialSchoolScheduleTakePicture');
+			}else {
+				this.props.navigation.navigate('DashboardSchoolScheduleTakePicture');
+			}
 		}
 	} 
+
+	manualImport() {
+		if(this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+			this.props.navigation.navigate('TutorialAddCourse');
+		}else {
+			this.props.navigation.navigate('DashboardAddCourse');
+		}
+	}
 
 	skip = () => {
 		this.props.navigation.navigate('TutorialFixedEvent');
@@ -128,8 +152,19 @@ class SchoolSchedule extends React.Component {
 							<TouchableOpacity style={styles.buttonTake} onPress={() => this.cameraCapture()}>
 								<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
 							</TouchableOpacity>
+							
+							<View style={styles.manual}>
+								<Text style={styles.textManual}>or import your school schedule </Text>
+
+								<TouchableOpacity onPress={() => this.manualImport()}>
+									<Text style={styles.buttonManual}>manually</Text>
+								</TouchableOpacity>
+							
+								<Text style={styles.textManual}>.</Text>
+							</View>
 						</View>
 
+						
 						{tutorialStatus}
 					</View>
 				</ImageBackground>
@@ -204,5 +239,22 @@ const styles = StyleSheet.create({
 		textShadowOffset: { width: -1, height: 1 },
 		textShadowRadius: 20
 	},
+
+	manual: {
+		flexDirection: 'row',
+		marginTop: 50
+	},
+
+	textManual: {
+		fontFamily: 'Raleway-Regular',
+		color: '#FFFFFF',
+		fontSize: 15,
+	},
+
+	buttonManual: {
+		fontFamily: 'Raleway-SemiBold',
+		color: '#FFFFFF',
+		fontSize: 15,
+	}
 });
 

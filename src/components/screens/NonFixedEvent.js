@@ -68,31 +68,22 @@ class NonFixedEvent extends React.Component {
 	}
 
 	skip = () => {
-		this.props.navigation.navigate('ReviewEvent');
+		this.props.navigation.navigate('TutorialReviewEvent');
 	}
 
-	getNextScreenName = (currentRouteName) => {
-		if(currentRouteName === 'TutorialNonFixedEvent') {
-			return 'ReviewEvent';
-		} else {
-			return 'ReviewEvent';
+	nextScreen = () => {
+		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			this.props.navigation.navigate('TutorialReviewEvent');
+		}else if(this.props.navigation.state.routeName === 'TutorialEditNonFixedEvent') {
+			this.props.navigation.pop();
+		}else {
+			this.props.navigation.pop();
 		}
-	}
-
-	test = () => {
-
-		console.log('State', this.state);
-	}
-
-	test = () => {
-
-		console.log('State', this.state);
 	}
 
 	//Render UI
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-		const currentRouteName = this.props.navigation.state.routeName;
 		// const durationTypes = [
 		// 	{label: 'Per Occurence', value: 0 },
 		// 	{label: 'Of Event', value: 1 }
@@ -279,13 +270,7 @@ class NonFixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={() => {
-								if(currentRouteName === 'TutorialFixedEvent') {
-									this.props.navigation.navigate(this.getNextScreenName(currentRouteName));
-								} else {
-									this.props.navigation.pop();
-								}
-							}}>
+							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>

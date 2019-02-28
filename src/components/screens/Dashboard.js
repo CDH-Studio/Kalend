@@ -32,8 +32,8 @@ class Dashboard extends React.Component {
 						icon={optionsOpen ? 'close' : 'add'}
 						actions={[
 							{ icon: 'school', label: 'Add School Schedule', onPress: () => this.props.navigation.navigate('DashboardSchoolSchedule')},
-							{ icon: 'today', label: 'Add Fixed Event', onPress: () => this.props.navigation.navigate('DashboardFixedEvent') },
-							{ icon: 'face', label: 'Add Non-Fixed Event', onPress: () => this.props.navigation.navigate('DashboardNonFixedEvent') },
+							{ icon: 'today', label: 'Add Fixed Event', onPress: () => this.props.navigation.navigate('DashboardEditFixedEvent') },
+							{ icon: 'face', label: 'Add Non-Fixed Event', onPress: () => this.props.navigation.navigate('DashboardEditNonFixedEvent') },
 						]}
 						onStateChange={() => this.setState({ optionsOpen: !optionsOpen })}
 						style={styles.fab} /></Portal.Host>

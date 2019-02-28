@@ -41,7 +41,7 @@ class EventOverview extends React.Component {
 					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 				</View>;
 
-			editScreen = 'EditSchoolSchedule';
+			editScreen = 'Course';
 		}else if (this.props.category === 'FixedEvent') {
 			categoryColor = calendarEventColors.green;
 			categoryIcon = 'calendar-today';
@@ -62,7 +62,7 @@ class EventOverview extends React.Component {
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
-			editScreen = 'EditFixedEvent';
+			editScreen = 'FixedEvent';
 		}else {
 			categoryColor = calendarEventColors.purple;
 			categoryIcon = 'face';
@@ -85,7 +85,7 @@ class EventOverview extends React.Component {
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 				</View>;
-			editScreen = 'EditNonFixedEvent';
+			editScreen = 'NonFixedEvent';
 		}
 
 		return(

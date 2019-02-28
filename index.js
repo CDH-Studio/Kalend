@@ -15,6 +15,7 @@ import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreat
 import ScheduleCreation from './src/components/screens/ScheduleCreation';
 import ScheduleSelection from './src/components/screens/ScheduleSelection';
 import ScheduleSelectionDetails from './src/components/screens/ScheduleSelectionDetails';
+import Course from './src/components/screens/Course';
 import ReviewEvent from './src/components/screens/ReviewEvent';
 import Dashboard from './src/components/screens/Dashboard';
 import Chatbot from './src/components/screens/Chatbot';
@@ -62,20 +63,19 @@ const LoginNavigator = createStackNavigator(
 const TutorialNavigator = createStackNavigator(
 	{
 		TutorialSchoolSchedule: {screen: SchoolSchedule},
-		SchoolScheduleSelectPicture,
-		SchoolScheduleTakePicture,
+		TutorialSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
+		TutorialSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
+		TutorialAddCourse: {screen: Course},
 		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
-		TutorialFixedEvent: {
-			screen: FixedEvent
-		},
+		TutorialFixedEvent: {screen: FixedEvent},
 		TutorialNonFixedEvent: {screen: NonFixedEvent},
 		TutorialReviewEvent: {screen: ReviewEvent},
-		// EditSchoolSchedule,
-		EditFixedEvent : {screen: FixedEvent},
-		EditNonFixedEvent: {screen: NonFixedEvent},
-		ScheduleCreation,
-		ScheduleSelection,
-		ScheduleSelectionDetails
+		TutorialEditCourse: {screen: Course},
+		TutorialEditFixedEvent: {screen: FixedEvent},
+		TutorialEditNonFixedEvent: {screen: NonFixedEvent},
+		TutorialScheduleCreation: {screen: ScheduleCreation},
+		TutorialScheduleSelection: {screen: ScheduleSelection},
+		TutorialScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 
 	{
 		initialRouteName: 'TutorialSchoolSchedule'
@@ -97,21 +97,22 @@ const DashboardNavigator = createBottomTabNavigator(
 const DashboardOptionsNavigator = createStackNavigator(
 	{
 		DashboardNavigator,
-		DashboardSchoolSchedule: SchoolSchedule,
-		SchoolScheduleSelectPicture,
-		SchoolScheduleTakePicture,
-		SchoolScheduleCreation,
-		DashboardFixedEvent: FixedEvent,
-		DashboardNonFixedEvent: NonFixedEvent,
-		ReviewEvent,
-		ScheduleCreation,
-		ScheduleSelection,
-		ScheduleSelectionDetails
+		DashboardSchoolSchedule: {screen: SchoolSchedule},
+		DashboardSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
+		DashboardSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
+		DashboardAddCourse: {screen: Course},
+		DashboardSchoolScheduleCreation: {screen: SchoolScheduleCreation},
+		DashboardEditCourse: {screen: Course},
+		DashboardEditFixedEvent: {screen: FixedEvent},
+		DashboardEditNonFixedEvent: {screen: NonFixedEvent},
+		DashboardReviewEvent: {screen: ReviewEvent},
+		DashboardScheduleCreation: {screen: ScheduleCreation},
+		DashboardScheduleSelection: {screen: ScheduleSelection},
+		DashboardScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 
 	{
 		initialRouteName: 'DashboardNavigator'
-	}
-);
+	});
 
 // const CompareScheduleNavigator = createStackNavigator(
 // 	{

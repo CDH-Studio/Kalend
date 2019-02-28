@@ -307,7 +307,11 @@ class ScheduleSelection extends React.Component {
 	}
 
 	nextScreen = () => {
-		this.props.navigation.navigate('ScheduleSelectionDetails');
+		if(this.props.navigation.state.routeName === 'TutorialScheduleSelection') {
+			this.props.navigation.navigate('TutorialScheduleSelectionDetails');
+		}else {
+			this.props.navigation.navigate('DashboardScheduleSelectionDetails');
+		}
 	}
 	
 	render() {

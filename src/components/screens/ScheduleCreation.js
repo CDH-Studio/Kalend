@@ -8,6 +8,14 @@ class ScheduleCreation extends React.Component {
 		super(props);
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
+
+	navigateToSelection = () => {
+		if(this.props.navigation.state.routeName === 'TutorialScheduleCreation') {
+			this.props.navigation.navigate('TutorialScheduleSelection');
+		}else {
+			this.props.navigation.navigate('DashboardScheduleSelection');
+		}
+	}
 	
 	render() {
 		return(
@@ -16,7 +24,7 @@ class ScheduleCreation extends React.Component {
 
 				<Text>ScheduleCreation Screen</Text>
 				
-				<Button title={'To ScheduleSelection'} onPress={() => this.props.navigation.navigate('ScheduleSelection')} />
+				<Button title={'To ScheduleSelection'} onPress={this.navigateToSelection} />
 				
 			</View>
 		);
