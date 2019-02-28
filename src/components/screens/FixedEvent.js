@@ -15,6 +15,7 @@ import {ADD_FE} from '../../constants';
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
 
+
 class FixedEvent extends React.Component {
 
 	// Style for Navigation Bar
@@ -307,14 +308,6 @@ class FixedEvent extends React.Component {
 		this.props.navigation.navigate('TutorialNonFixedEvent');
 	}
 
-	getNextScreenName = (currentRouteName) => {
-		if(currentRouteName === 'TutorialFixedEvent') {
-			return 'TutorialNonFixedEvent';
-		} else {
-			return 'ReviewEvent';
-		}
-	}
-
 	nextScreen = () => {
 		let info = {
 			title: this.state.title,
@@ -328,7 +321,13 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		};
 		InsertFixedEvent(info).then(success => {
-			if(success) this.props.navigation.navigate('NonFixedEvent');
+			if(success) {
+				if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+					this.props.navigation.navigate('TutorialNonFixedEvent');
+				}else {
+					this.props.navigation.pop();
+				}
+			}
 		});
 	}
 
@@ -371,7 +370,6 @@ class FixedEvent extends React.Component {
 
 	//Render UI
 	render() {
-		const currentRouteName = this.props.navigation.state.routeName;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		let tutorialStatus;
 
@@ -554,13 +552,7 @@ class FixedEvent extends React.Component {
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonNext} onPress={() => {
-								if(currentRouteName === 'TutorialFixedEvent') {
-									this.props.navigation.navigate(this.getNextScreenName(currentRouteName));
-								} else {
-									this.props.navigation.pop();
-								}
-							}}>
+							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
 								<Text style={styles.buttonNextText}>NEXT</Text>
 							</TouchableOpacity>
 						</View>
