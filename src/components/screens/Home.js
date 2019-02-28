@@ -2,10 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { ImageBackground, StatusBar, StyleSheet, View, Image, Text } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
-import { googleSignIn, googleIsSignedIn } from '../../services/google_identity';
+import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import LinearGradient from 'react-native-linear-gradient';
 import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
+import { store } from '../../store';
 
 class Home extends React.Component {
 
@@ -32,15 +33,27 @@ class Home extends React.Component {
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
-				if (!signedIn) {
-					googleSignIn().then((userInfo) => {
-						if (userInfo !== null) {
+				console.log(signedIn);
+				if (!signedIn || store.getState().HomeReducer.profile === null) {
+					googleGetCurrentUserInfo().then((userInfo) =>{
+						console.log(userInfo);
+						if (userInfo !== undefined) {
 							this.setUser(userInfo);
+							console.log(store.getState());
 							this.props.navigation.navigate('TutorialNavigator');
 						}
-						this.state.clicked = false;
+						googleSignIn().then((userInfo) => {
+							console.log(userInfo);
+							if (userInfo !== null) {
+								this.setUser(userInfo);
+								console.log(store.getState());
+								this.props.navigation.navigate('TutorialNavigator');
+							}
+							this.state.clicked = false;
+						});
 					});
 				} else {
+					console.log(store.getState());
 					this.props.navigation.navigate('TutorialNavigator');
 				}
 			});

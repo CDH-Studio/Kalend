@@ -2,7 +2,8 @@ import React from 'react';
 import {StatusBar, StyleSheet, View, Button} from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import updateNavigation from '../NavigationHelper';
-import { persistor } from '../../store';
+import { store } from '../../store';
+import { SET_NAV_SCREEN } from '../../constants';
 
 class Dashboard extends React.Component {
 
@@ -24,7 +25,12 @@ class Dashboard extends React.Component {
 			<View style={{width: '100%', height: '100%'}}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
-				<Button title='Purge' onPress={() => persistor.purge()}></Button>
+				<Button title='Clear Navigation' onPress={() => {
+					store.dispatch({
+						type: SET_NAV_SCREEN
+					});
+					this.props.navigation.navigate('LoginNavigator');
+				}}></Button>
 				
 				<Portal.Host>
 					<FAB.Group

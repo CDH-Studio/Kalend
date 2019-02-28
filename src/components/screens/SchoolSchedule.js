@@ -41,7 +41,6 @@ class SchoolSchedule extends React.Component {
 
 	
 	componentDidMount() {
-		
 		this.props.navigation.setParams({ goBack: this.goBack });
 	}
 

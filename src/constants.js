@@ -5,3 +5,4 @@ export const ADD_FE = 'ADD_FE';
 export const ADD_NFE = 'ADD_NFE';
 export const SET_OPENED = 'SET_OPENED';
 export const SET_NAV_SCREEN = 'SET_NAV_SCREEN';
+export const SET_SELECTED_SCHEDULE = 'SET_SELECTED_SCHEDULE';

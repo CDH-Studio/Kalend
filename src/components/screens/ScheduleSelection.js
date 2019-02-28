@@ -6,6 +6,8 @@ import { data } from './scheduleInfo';
 import LinearGradient from 'react-native-linear-gradient';
 import converter from 'number-to-words';
 import updateNavigation from '../NavigationHelper';
+import { SET_SELECTED_SCHEDULE } from '../../constants';
+import {connect} from 'react-redux';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -212,7 +214,7 @@ class Schedule extends React.Component {
 				</Text>
 				
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen();
+					this.props.nextScreen(ordinal + ' Schedule');
 				}} 
 				onPressIn={() =>{
 					this.setState({
@@ -306,8 +308,16 @@ class ScheduleSelection extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	nextScreen = () => {
-		this.props.navigation.navigate('ScheduleSelectionDetails');
+	
+	setIndex(index) {
+		this.props.dispatch({
+			type:SET_SELECTED_SCHEDULE,
+			index,
+		});
+	}
+
+	nextScreen = (title) => {
+		this.props.navigation.navigate('ScheduleSelectionDetails', {title});
 	}
 	
 	render() {
@@ -334,7 +344,7 @@ class ScheduleSelection extends React.Component {
 	}
 }
 
-export default ScheduleSelection;
+export default connect()(ScheduleSelection);
 
 const styles = StyleSheet.create({
 	container: {
