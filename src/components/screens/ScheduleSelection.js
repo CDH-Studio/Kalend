@@ -315,6 +315,7 @@ class ScheduleSelection extends React.Component {
 		}else {
 			this.props.navigation.navigate('DashboardScheduleSelectionDetails');
 		}
+	}
 	
 	setIndex(index) {
 		this.props.dispatch({
