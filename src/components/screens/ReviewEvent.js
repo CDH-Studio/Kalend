@@ -28,6 +28,8 @@ class ReviewEvent extends React.Component {
 		this.state = {
 			//Height of Screen
 			containerHeight: null,
+			showFAB: true,
+			currentY: 0,
 
 			schoolScheduleData: [
 				{
@@ -91,6 +93,22 @@ class ReviewEvent extends React.Component {
 			
 		};
 	}
+	
+	// Hides the FAB when scrolling down
+	onScroll = (event) => {
+		event = Math.abs(event.nativeEvent.contentOffset.y);
+		if (event > Math.abs(this.state.currentY)) {
+			this.setState({
+				showFAB: false,
+				currentY: event
+			});
+		} else {
+			this.setState({
+				showFAB: true,
+				currentY: event
+			});
+		}
+	}
 
 	/**
 	 * Goes to the appropriate Edit Screen
@@ -126,7 +144,7 @@ class ReviewEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
-				<ScrollView style={styles.scrollView}>
+				<ScrollView style={styles.scrollView} onScroll={this.onScroll}>
 					<View style={styles.content} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
@@ -160,6 +178,8 @@ class ReviewEvent extends React.Component {
 				<FAB
 					style={styles.fab}
 					icon="check"
+
+					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
 
 				{tutorialStatus}
