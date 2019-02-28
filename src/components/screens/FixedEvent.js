@@ -63,7 +63,8 @@ class FixedEvent extends React.Component {
 			//Other Information
 			location: '',
 			recurrenceValue: 'None',
-			recurrence: 'NONE'
+			recurrence: 'NONE',
+			description: ''
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -345,7 +346,7 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		};
 		InsertFixedEvent(info).then(success => {
-			console.log(success)
+			console.log(success);
 			if(success) {
 				this.props.dispatch({
 					type: ADD_FE,
@@ -369,6 +370,21 @@ class FixedEvent extends React.Component {
 			startTime: new Date().toLocaleTimeString(),
 			endTime: new Date().toLocaleTimeString()
 		});
+	}
+
+	componentWillMount() {
+		console.log(
+			"sdfdsfdsfsdfdsfsd"
+		)
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			console.log(
+				"HEEHEHEHEHEHEHE"
+			)
+			let fixedEvents = store.getState().FixedEventsReducer;
+			let selected = store.getState().NavigationReducer.reviewEventSelected;
+
+			this.setState({...fixedEvents[selected]})
+		}
 	}
 
 	//Render UI

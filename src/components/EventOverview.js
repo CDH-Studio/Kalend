@@ -3,6 +3,8 @@ import {StyleSheet, View, Text, TouchableOpacity, Modal} from 'react-native';
 import { calendarEventColors } from '../../config';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {SET_NAV_SCREEN} from '../constants';
+import { store } from '../store';
 
 class EventOverview extends React.Component {
 
@@ -90,7 +92,14 @@ class EventOverview extends React.Component {
 
 		return(
 			<View style={styles.container}>
-				<TouchableOpacity onPress={() => this.setState({modalVisible: true})}>
+				<TouchableOpacity onPress={() => {
+					this.setState({modalVisible: true});
+						store.dispatch({
+							... store.getState().NavigationReducer,
+							type: SET_NAV_SCREEN,
+							reviewEventSelected: this.props.id
+						});
+					}}>
 					<View style={styles.info}>
 						<View style={[styles.category, {backgroundColor: categoryColor}]}>
 							<Text></Text>
@@ -104,7 +113,15 @@ class EventOverview extends React.Component {
 				</TouchableOpacity>
 
 				<View style={styles.actions}>
-					<TouchableOpacity onPress={() => this.props.navigateEditScreen(editScreen)}>
+					<TouchableOpacity onPress={() => {
+						this.props.navigateEditScreen(editScreen)
+						
+						store.dispatch({
+							... store.getState().NavigationReducer,
+							type: SET_NAV_SCREEN,
+							reviewEventSelected: this.props.id
+						});
+						}>
 						<Feather name="edit" size={30} color="#565454" />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}>
