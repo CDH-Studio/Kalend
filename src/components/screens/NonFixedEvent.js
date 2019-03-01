@@ -11,9 +11,8 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import { ADD_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { connect } from 'react-redux';
-//TODO
-//Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
-//Add onSubmit functions for buttons + navigate/resetForm
+
+const viewHeight = 780.5714111328125;
 
 class NonFixedEvent extends React.Component {
 
@@ -32,9 +31,17 @@ class NonFixedEvent extends React.Component {
 	//Constructor and States
 	constructor(props) {
 		super(props);
+
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = null;
+		
+		if(viewHeight < containerHeightTemp) {
+			containerHeight = containerHeightTemp;
+		}
+
 		this.state = { 
 			//Height of Screen
-			containerHeight: null
+			containerHeight
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -102,7 +109,6 @@ class NonFixedEvent extends React.Component {
 
 	//Render UI
 	render() {
-		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		// const durationTypes = [
 		// 	{label: 'Per Occurence', value: 0 },
 		// 	{label: 'Of Event', value: 1 }
@@ -138,13 +144,7 @@ class NonFixedEvent extends React.Component {
 				<StatusBar backgroundColor={'#105dba'} />
 
 				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom: paddingBottomContainer, justifyContent:'space-evenly'}} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if(height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					<View style={{height: this.state.containerHeight, flex:1, paddingBottom: paddingBottomContainer, justifyContent:'space-evenly'}}>
 						<View style={styles.instruction}>
 							<MaterialCommunityIcons name="face" size={130} color="#1473E6"/>
 							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
