@@ -6,7 +6,15 @@ import { blueColor } from '../../../config';
 import EventOverview from '../EventOverview';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import updateNavigation from '../NavigationHelper';
+import { connect } from 'react-redux';
 import { store } from '../../store';
+
+
+const priorityLevels = {
+	0: 'Low',
+	0.5: 'Normal',
+	1: 'High'
+};
 
 class ReviewEvent extends React.Component {
 
@@ -27,9 +35,36 @@ class ReviewEvent extends React.Component {
 		super(props);
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
-		let fixedEventData = [];
+		this.state = {
+			//Height of Screen
+			containerHeight: null,
+			showFAB: true,
+			currentY: 0,
+		};
+	}
 
-		store.getState().FixedEventsReducer.map((data) => {
+	updateInformation = () =>{
+		let fixedEventData = [];
+		let nonFixedEventData = [];
+		let schoolScheduleData = [
+			{
+				courseCode: 'SEG2505',
+				dayOfWeek: 'Monday',
+				hours: '1PM - 3PM',
+				location: 'CBY 202'
+			},
+		];
+
+		store.CoursesReducer.map((data) => {
+			schoolScheduleData.push({
+				courseCode: data.summary,
+				dayOfWeek: data.day,
+				hours: data.hours.start + ' - ' + data.hours.end,
+				location: data.location
+			});
+		});
+
+		store.FixedEventsReducer.map((data) => {
 			fixedEventData.push({
 				title: data.title,
 				dates: data.startDate + ' - ' + data.endDate,
@@ -40,54 +75,23 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
-		this.state = {
-			//Height of Screen
-			containerHeight: null,
-			showFAB: true,
-			currentY: 0,
+		store.NonFixedEventsReducer.map((data) => {
+			nonFixedEventData.push({
+				title: data.title,
+				location: data.location,
+				priorityLevel: priorityLevels[data.priority],
+				dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
+				description: data.description,
+				occurence: `${data.occurrence} times/week`,
+				duration: `${data.hours}h ${data.minutes}m`
+			});
+		});
 
+		this.setState({
 			fixedEventData,
-
-			schoolScheduleData: [
-				{
-					courseCode: 'SEG2505',
-					dayOfWeek: 'Monday',
-					hours: '1PM - 3PM',
-					location: 'CBY 202'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				}
-			],
-
-			nonFixedEventData: [
-				{
-					title: 'Computer Science Assignmentfgdfgdfgjdfosjgoidfjgoidjfgid',
-					dates: 'Feb 4, 2019',
-					duration: '3h',
-					recurrence: '3 times',
-					priorityLevel: 'Normal',
-					location: 'School',
-					description: 'Assignement on BlockChains'
-				}
-			]
-			
-		};
+			nonFixedEventData,
+			schoolScheduleData
+		});
 	}
 	
 	// Hides the FAB when scrolling down
@@ -125,21 +129,16 @@ class ReviewEvent extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate() {
-		console.log('shouldComponentUpdate');
-	}
-
-	componentDidUpdate() {
-		console.log('componentDidUpdate');
-	}
-
 	componentWillMount() {
-		console.log('componentWillMount');
+		this.updateInformation();
 	}
 
+	componentWillReceiveProps() {
+		this.updateInformation();
+		this.forceUpdate();
+	}
 
 	render() {
-		console.log('RENDERS');
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 		//In order to remove the tutorial status if not needed
@@ -191,7 +190,7 @@ class ReviewEvent extends React.Component {
 									<Text>No non-fixed events added, please go back to add some</Text> : null
 							}
 							{this.state.nonFixedEventData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.recurrence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.occurence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
 						</View>
 					</View>		
@@ -209,6 +208,16 @@ class ReviewEvent extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	const { FixedEventsReducer, NonFixedEventsReducer} = state;
+
+	return {
+		FixedEventsReducer,
+		NonFixedEventsReducer 
+	};
+}
+export default connect(mapStateToProps, null)(ReviewEvent);
 
 const tutorialHeight = HEIGHT;
 const headerHeight = Header.HEIGHT;
@@ -248,5 +257,3 @@ const styles = StyleSheet.create({
 		zIndex: 1 //To make it go on top of the tutorialStatus
 	},
 });
-
-export default ReviewEvent;
