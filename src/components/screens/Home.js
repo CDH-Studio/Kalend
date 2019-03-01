@@ -40,21 +40,21 @@ class Home extends React.Component {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							console.log(store.getState());
-							this.props.navigation.navigate('TutorialNavigator', {show: true});
+							this.props.navigation.navigate('TutorialNavigator');
 						}
 						googleSignIn().then((userInfo) => {
 							console.log(userInfo);
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								console.log(store.getState());
-								this.props.navigation.navigate('TutorialNavigator', {show: true});
+								this.props.navigation.navigate('TutorialNavigator');
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					console.log(store.getState());
-					this.props.navigation.navigate('TutorialNavigator', {show: true});
+					this.props.navigation.navigate('TutorialNavigator');
 				}
 			});
 		}
