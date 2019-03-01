@@ -109,7 +109,6 @@ class NonFixedEvent extends React.Component {
 
 	//Render UI
 	render() {
-		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		// const durationTypes = [
 		// 	{label: 'Per Occurence', value: 0 },
 		// 	{label: 'Of Event', value: 1 }
