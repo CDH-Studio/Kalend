@@ -7,6 +7,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 import updateNavigation from '../NavigationHelper';
 
+const viewHeight = 718.8571166992188;
+
 class Course extends React.Component {
 
 	// Style for Navigation Bar
@@ -24,9 +26,16 @@ class Course extends React.Component {
 	// Constructor and States
 	constructor(props) {
 		super(props);
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = null;
+		
+		if(viewHeight < containerHeightTemp) {
+			containerHeight = containerHeightTemp;
+		}
+
 		this.state = { 
 			//Height of Screen
-			containerHeight: null,
+			containerHeight,
 
 			//Course Code
 			courseCode: '',
@@ -254,13 +263,7 @@ class Course extends React.Component {
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<ScrollView>
-					<View style={styles.content} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if(height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					<View style={styles.content}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
 							<FontAwesome5 name="university" size={130} color={blueColor}/>
