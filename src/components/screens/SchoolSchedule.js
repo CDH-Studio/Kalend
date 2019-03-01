@@ -24,7 +24,7 @@ class SchoolSchedule extends React.Component {
 				backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 			},
-			headerRight: (
+			headerRight: navigation.state.routeName === 'TutorialSchoolSchedule' ? (
 				<IconButton
 					onPress={navigation.getParam('goBack')}
 					icon={({ size, color }) => (
@@ -34,8 +34,8 @@ class SchoolSchedule extends React.Component {
 					)}
 					color='white'
 					size={25}
-				/>
-			),
+				/> 
+			) : null
 		};
 	};
 
