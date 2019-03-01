@@ -113,7 +113,7 @@ class SchoolSchedule extends React.Component {
 	}
 
 	skip = () => {
-		this.props.navigation.navigate('TutorialFixedEvent');
+		this.props.navigation.navigate('TutorialFixedEvent', {update:false});
 	}
 
 	//Render UI

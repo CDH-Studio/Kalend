@@ -11,6 +11,7 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import {ADD_FE} from '../../constants';
+import { store } from '../../store';
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
@@ -19,8 +20,8 @@ import {ADD_FE} from '../../constants';
 class FixedEvent extends React.Component {
 
 	// Style for Navigation Bar
-	static navigationOptions = {
-		title: 'Add Fixed Events',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
 		headerTintColor: 'white',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -28,7 +29,7 @@ class FixedEvent extends React.Component {
 			backgroundColor: blueColor,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
+	});
 	// Constructor and States
 	constructor(props) {
 		super(props);
@@ -62,7 +63,11 @@ class FixedEvent extends React.Component {
 			//Other Information
 			location: '',
 			recurrenceValue: 'None',
-			recurrence: 'NONE'
+			recurrence: 'NONE',
+			description: '',
+
+			// Google Calendar ID
+			eventID: ''
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -305,7 +310,7 @@ class FixedEvent extends React.Component {
 	 * Goes to the next screen
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialNonFixedEvent');
+		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
 	}
 
 	nextScreen = () => {
@@ -323,7 +328,7 @@ class FixedEvent extends React.Component {
 		InsertFixedEvent(info).then(success => {
 			if(success) {
 				if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
-					this.props.navigation.navigate('TutorialNonFixedEvent');
+					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
 				}else {
 					this.props.navigation.pop();
 				}
@@ -343,12 +348,17 @@ class FixedEvent extends React.Component {
 			endDate: this.state.endDate,
 			endTime: this.state.endTime
 		};
-		InsertFixedEvent(info).then(success => {
-			if(success) {
+		InsertFixedEvent(info).then(data => {
+			if(!data.error) {
+				console.log(data);
+				this.setState({
+					eventID: data.id
+				});
 				this.props.dispatch({
 					type: ADD_FE,
-					state: this.state
+					event: this.state
 				});
+				console.log(store.getState());
 				this.resetField();
 			}
 		});
@@ -366,6 +376,21 @@ class FixedEvent extends React.Component {
 			startTime: new Date().toLocaleTimeString(),
 			endTime: new Date().toLocaleTimeString()
 		});
+	}
+
+	componentWillMount() {
+		console.log(
+			'sdfdsfdsfsdfdsfsd'
+		);
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			console.log(
+				'HEEHEHEHEHEHEHE'
+			);
+			let fixedEvents = store.getState().FixedEventsReducer;
+			let selected = store.getState().NavigationReducer.reviewEventSelected;
+
+			this.setState({...fixedEvents[selected]});
+		}
 	}
 
 	//Render UI

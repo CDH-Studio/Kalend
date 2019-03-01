@@ -6,6 +6,7 @@ import { blueColor } from '../../../config';
 import EventOverview from '../EventOverview';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import updateNavigation from '../NavigationHelper';
+import { store } from '../../store';
 
 class ReviewEvent extends React.Component {
 
@@ -25,11 +26,27 @@ class ReviewEvent extends React.Component {
 	constructor(props) {
 		super(props);
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+
+		let fixedEventData = [];
+
+		store.getState().FixedEventsReducer.map((data) => {
+			fixedEventData.push({
+				title: data.title,
+				dates: data.startDate + ' - ' + data.endDate,
+				recurrence: data.recurrenceValue,
+				hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
+				location: data.location,
+				description: data.description
+			});
+		});
+
 		this.state = {
 			//Height of Screen
 			containerHeight: null,
 			showFAB: true,
 			currentY: 0,
+
+			fixedEventData,
 
 			schoolScheduleData: [
 				{
@@ -55,27 +72,6 @@ class ReviewEvent extends React.Component {
 					dayOfWeek: 'Friday',
 					hours: '8:30AM - 11AM',
 					location: 'SITE G104'
-				}
-			],
-
-			fixedEventData: [
-				{
-					title: 'Holidays',
-					dates: 'Dec 25, 2018 - Jan 1, 2019',
-					hours: 'All-Day',
-					location: 'Home',
-					description: 'Time off from school',
-					recurrence: 'None'
-					
-				},
-				{
-					title: 'Holidays',
-					dates: 'Dec 25, 2018 - Jan 1, 2019',
-					hours: 'All-Day',
-					location: 'Home',
-					description: 'Time off from school',
-					recurrence: 'None'
-					
 				}
 			],
 
@@ -115,9 +111,9 @@ class ReviewEvent extends React.Component {
 	 */
 	navigateEditScreen = (editScreen) => {
 		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
-			this.props.navigation.navigate('TutorialEdit' + editScreen);
+			this.props.navigation.navigate('TutorialEdit' + editScreen, {update:true});
 		}else {
-			this.props.navigation.navigate('DashboardEdit' + editScreen);
+			this.props.navigation.navigate('DashboardEdit' + editScreen, {update:true});
 		}
 	}
 
@@ -154,22 +150,34 @@ class ReviewEvent extends React.Component {
 						}}>
 						<View>
 							<Text style={styles.sectionTitle}>School Schedule</Text>
+							{
+								this.state.schoolScheduleData.length === 0 ?
+									<Text>No school schedule added, please go back to add one</Text> : null
+							}
 							{this.state.schoolScheduleData.map((i,key) => {
-								return <EventOverview key={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
 						</View>
 
 						<View>
 							<Text style={styles.sectionTitle}>Fixed Events</Text>
+							{
+								this.state.fixedEventData.length === 0 ?
+									<Text>No fixed events added, please go back to add some</Text> : null
+							}
 							{this.state.fixedEventData.map((i,key) => {
-								return <EventOverview key={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
 						</View>
 
 						<View>
 							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+							{
+								this.state.nonFixedEventData.length === 0 ?
+									<Text>No non-fixed events added, please go back to add some</Text> : null
+							}
 							{this.state.nonFixedEventData.map((i,key) => {
-								return <EventOverview key={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.recurrence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.recurrence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
 						</View>
 					</View>		

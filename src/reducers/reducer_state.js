@@ -1,4 +1,4 @@
-import {SET_OPENED} from '../constants';
+import {SET_OPENED, CLEAR_OPENED} from '../constants';
 
 export default function ImageReducer(state = [], action) {
 	switch (action.type) {
@@ -7,6 +7,8 @@ export default function ImageReducer(state = [], action) {
 				...state,
 				openedApp: action.openedApp,
 			};
+		case CLEAR_OPENED:
+			return {};
 		default:
 			return state;
 	}

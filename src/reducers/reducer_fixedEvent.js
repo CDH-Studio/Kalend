@@ -1,4 +1,4 @@
-import {ADD_FE} from '../constants';
+import {ADD_FE, CLEAR_FE} from '../constants';
 
 export default function FixedEventsReducer(state = [], action) {
 	const { event } = action;
@@ -6,7 +6,8 @@ export default function FixedEventsReducer(state = [], action) {
 	switch (action.type) {
 		case ADD_FE:
 			return  [...state, event];
-
+		case CLEAR_FE:
+			return [];
 		default:
 			return state;
 	}

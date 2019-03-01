@@ -13,7 +13,7 @@ class ScheduleCreation extends React.Component {
 
 	componentWillMount() {
 		setTimeout(() => {
-			this.props.navigation.navigate('ScheduleSelection');
+			this.navigateToSelection();
 		}, 2000);
 	}
 
