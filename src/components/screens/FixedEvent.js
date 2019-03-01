@@ -11,16 +11,19 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import {ADD_FE} from '../../constants';
-import { store } from '../../store';
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 
 class FixedEvent extends React.Component {
 
 	// Style for Navigation Bar
-	static navigationOptions = {
-		title: 'Add Fixed Events',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.params.update ? 'Add Fixed Events' : 'Update Fixed Event',
 		headerTintColor: 'white',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -28,8 +31,7 @@ class FixedEvent extends React.Component {
 			backgroundColor: blueColor,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
-
+	});
 	// Constructor and States
 	constructor(props) {
 		super(props);
@@ -64,7 +66,13 @@ class FixedEvent extends React.Component {
 			location: '',
 			recurrenceValue: 'None',
 			recurrence: 'NONE',
+<<<<<<< HEAD
 			description: ''
+=======
+
+			// Google Calendar ID
+			eventID: ''
+>>>>>>> dev
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -345,9 +353,12 @@ class FixedEvent extends React.Component {
 			endDate: this.state.endDate,
 			endTime: this.state.endTime
 		};
-		InsertFixedEvent(info).then(success => {
-			console.log(success);
-			if(success) {
+		InsertFixedEvent(info).then(data => {
+			if(!data.error) {
+				console.log(data);
+				this.setState({
+					eventID: data.id
+				});
 				this.props.dispatch({
 					type: ADD_FE,
 					event: this.state

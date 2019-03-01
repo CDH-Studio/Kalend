@@ -10,7 +10,10 @@ let accessToken;
  * @param {Object} query Query parameter object to be appended to the URL
  */
 let apiHelperCall = (URL, method, body, query) => {
+	console.log(store.getState());
 	accessToken = store.getState().HomeReducer.profile.user.accessToken;
+	console.log('access', accessToken);
+	//accessToken = "ya29.Glu-BlpDlUfWvL5rkqAwV6WUfx4XCfsGku8G072--YzoPjC3_6yb4Rh4b0pXNI5uxF35W_V_-eOhxYkfIyU3XuHlsN0rkt_32sXKe1zxPv6C6TYr_-idfDxj_cE8"
 
 	let fetchData = {
 		method,

@@ -141,7 +141,9 @@ const defaultGetStateForAction = TutorialNavigator.router.getStateForAction;
 TutorialNavigator.router.getStateForAction = (action, state) => {
 	let nav = store.getState().NavigationReducer;
 
-	if (state && state.routes[state.index].routeName === 'TutorialSchoolSchedule' && nav.routes && !store.getState().StateReducer.openedApp && nav.main === 'SchoolSchedule') {
+	if (state && state.routes[state.index].routeName === 'TutorialSchoolSchedule' 
+		&& nav.routes && !store.getState().StateReducer.openedApp 
+		&& nav.main === 'SchoolSchedule') {
 		const routes = [
 			...nav.routes,
 		];
@@ -156,11 +158,20 @@ TutorialNavigator.router.getStateForAction = (action, state) => {
 			index: routes.length - 1,
 		};
 	} else if (state && state.routes) {
-		store.dispatch({
-			...nav,
-			type: 'SET_NAV_SCREEN',
-			routes: state.routes
-		});
+		if(action && action.action == 'FinishSchoolCreation') {
+			let routes = [{key:'1',routeName:'TutorialSchoolSchedule',param:{}},{key:'2',routeName:'TutorialFixedEvent',param:{}}];
+			return {
+				...state,
+				routes,
+				index: routes.length - 1,
+			};
+		} else {
+			store.dispatch({
+				...nav,
+				type: 'SET_NAV_SCREEN',
+				routes: state.routes
+			});
+		}
 	}
 		
 	return defaultGetStateForAction(action, state);
