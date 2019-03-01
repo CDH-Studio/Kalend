@@ -185,11 +185,6 @@ export const  InsertFixedEvent = (event) => {
 		return insertEvent(calendarID,obj,{})
 			.then( data => {
 				return data;
-				if(data.error) {
-					return false;
-				} else {
-					return true;
-				}
 			});
 	};
 

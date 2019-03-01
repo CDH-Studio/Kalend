@@ -94,12 +94,12 @@ class EventOverview extends React.Component {
 			<View style={styles.container}>
 				<TouchableOpacity onPress={() => {
 					this.setState({modalVisible: true});
-						store.dispatch({
-							... store.getState().NavigationReducer,
-							type: SET_NAV_SCREEN,
-							reviewEventSelected: this.props.id
-						});
-					}}>
+					store.dispatch({
+						... store.getState().NavigationReducer,
+						type: SET_NAV_SCREEN,
+						reviewEventSelected: this.props.id
+					});
+				}}>
 					<View style={styles.info}>
 						<View style={[styles.category, {backgroundColor: categoryColor}]}>
 							<Text></Text>
@@ -114,14 +114,14 @@ class EventOverview extends React.Component {
 
 				<View style={styles.actions}>
 					<TouchableOpacity onPress={() => {
-							this.props.navigateEditScreen(editScreen)
+						this.props.navigateEditScreen(editScreen);
 							
-							store.dispatch({
-								... store.getState().NavigationReducer,
-								type: SET_NAV_SCREEN,
-								reviewEventSelected: this.props.id
-							});
-						}}>
+						store.dispatch({
+							... store.getState().NavigationReducer,
+							type: SET_NAV_SCREEN,
+							reviewEventSelected: this.props.id
+						});
+					}}>
 						<Feather name="edit" size={30} color="#565454" />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}>

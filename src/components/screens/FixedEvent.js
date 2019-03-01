@@ -380,16 +380,16 @@ class FixedEvent extends React.Component {
 
 	componentWillMount() {
 		console.log(
-			"sdfdsfdsfsdfdsfsd"
-		)
+			'sdfdsfdsfsdfdsfsd'
+		);
 		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
 			console.log(
-				"HEEHEHEHEHEHEHE"
-			)
+				'HEEHEHEHEHEHEHE'
+			);
 			let fixedEvents = store.getState().FixedEventsReducer;
 			let selected = store.getState().NavigationReducer.reviewEventSelected;
 
-			this.setState({...fixedEvents[selected]})
+			this.setState({...fixedEvents[selected]});
 		}
 	}
 
