@@ -8,8 +8,9 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 // import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import { ADD_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-
+import { connect } from 'react-redux';
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
@@ -33,38 +34,39 @@ class NonFixedEvent extends React.Component {
 		super(props);
 		this.state = { 
 			//Height of Screen
-			containerHeight: null,
+			containerHeight: null
+		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+	
+	componentWillMount() {
+		this.resetFields();
+	}
 
+
+	resetFields = () => {
+		this.setState({
 			//Title of Event
 			title: '',
-
 			//Availability Section
 			specificDateRange: false,
-
 			startDate: new Date().toDateString(),
 			disabledStartDate: false,
 			minStartDate: new Date().toDateString(),
 			maxStartDate: new Date(8640000000000000),
-
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
-
 			hours: 0,
 			minutes: 0,
 			isDividable: false,
 			// durationType: 0,
-
 			occurrence: 1,
-
 			//Priority Level Section
 			priority: 0.5,
-
 			location: '',
 			description: ''
-			
-		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		});
 	}
 
 	skip = () => {
@@ -72,6 +74,11 @@ class NonFixedEvent extends React.Component {
 	}
 
 	nextScreen = () => {
+		this.props.dispatch({
+			type: ADD_NFE,
+			event: this.state
+		});
+
 		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
 			this.props.navigation.navigate('TutorialReviewEvent');
 		}else if(this.props.navigation.state.routeName === 'TutorialEditNonFixedEvent') {
@@ -79,6 +86,15 @@ class NonFixedEvent extends React.Component {
 		}else {
 			this.props.navigation.pop();
 		}
+	}
+
+	addAnotherEvent = () => {
+		this.props.dispatch({
+			type: ADD_NFE,
+			event: this.state
+		});
+
+		this.resetFields();
 	}
 
 	//Render UI
@@ -185,29 +201,31 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.duration}>
 									<Text style={styles.blueTitle}>Duration</Text>
 									<View style={styles.timePicker}>
-										<NumericInput hours={this.state.hours} 
+										<NumericInput initValue = {this.state.hours}
+											value={this.state.hours}
+											onChange={(hours) => this.setState({hours})}
 											minValue={0} 
 											leftButtonBackgroundColor={'#FFBF69'}
 											rightButtonBackgroundColor={'#FF9F1C'}
 											rounded={true}
 											borderColor={'lightgray'}
 											textColor={'#565454'}
-											iconStyle={{ color: 'white' }} 
-											onValueChange={(hours) => this.setState({hours})} />
+											iconStyle={{ color: 'white' }} />
 										<Text style={styles.optionsText}>hour(s)</Text>
 									</View>
 
 									<View style={styles.timePicker}>
-										<NumericInput minutes={this.state.minutes}
+										<NumericInput
+											initValue = {this.state.minutes}
+											value={this.state.minutes}
+											onChange={(minutes) => this.setState({minutes})}
 											minValue={0} 
-											maxValue={59}
 											leftButtonBackgroundColor={'#FFBF69'}
 											rightButtonBackgroundColor={'#FF9F1C'}
 											rounded={true}
 											borderColor={'lightgray'}
 											textColor={'#565454'}
-											iconStyle={{ color: 'white' }} 
-											onValueChange={(minutes) => this.setState({minutes})} />
+											iconStyle={{ color: 'white' }}  />
 										<Text style={styles.optionsText}>minute(s)</Text>
 									</View>
 								</View>
@@ -230,15 +248,17 @@ class NonFixedEvent extends React.Component {
 
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
-									<NumericInput occurrence={this.state.occurrence}
-										minValue={1} 
+									<NumericInput 
+										initValue = {this.state.occurence}
+										value={this.state.occurence}
+										onChange={(occurence) => this.setState({occurence})}
+										minValue={0} 
 										leftButtonBackgroundColor={'#FFBF69'}
 										rightButtonBackgroundColor={'#FF9F1C'}
 										rounded={true}
 										borderColor={'lightgray'}
 										textColor={'#565454'}
-										iconStyle={{ color: 'white' }} 
-										onValueChange={(occurrence) => this.setState({occurrence})} />
+										iconStyle={{ color: 'white' }}  />
 								</View>
 							</View>
 						</View>
@@ -295,6 +315,8 @@ class NonFixedEvent extends React.Component {
 		);
 	}
 }
+
+export default connect()(NonFixedEvent);
 
 const headerHeight = Header.HEIGHT;
 
@@ -439,5 +461,3 @@ const styles = StyleSheet.create({
 		padding: 8
 	}
 });
-
-export default NonFixedEvent;
