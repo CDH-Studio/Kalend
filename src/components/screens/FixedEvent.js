@@ -372,11 +372,28 @@ class FixedEvent extends React.Component {
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		let tutorialStatus;
+		let addEventButton;
+		let nextButton;
+		let paddingBottomContainer = HEIGHT;
 
 		if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
 			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+			addEventButton = 
+				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
+					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
+				</TouchableOpacity>;
+			nextButton = 
+			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<Text style={styles.buttonNextText}>NEXT</Text>
+			</TouchableOpacity>;
 		} else {
 			tutorialStatus = null;
+			addEventButton = null;
+			nextButton = 
+			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<Text style={styles.buttonNextText}>DONE</Text>
+			</TouchableOpacity>;
+			paddingBottomContainer = null;
 		}
 		
 		return (
@@ -384,7 +401,7 @@ class FixedEvent extends React.Component {
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
+					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:paddingBottomContainer, justifyContent:'space-evenly'}} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
 							if(height < containerHeight) {
@@ -548,13 +565,9 @@ class FixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
-								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-							</TouchableOpacity>
+							{addEventButton}
 
-							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
-								<Text style={styles.buttonNextText}>NEXT</Text>
-							</TouchableOpacity>
+							{nextButton}
 						</View>
 					</View>
 				</ScrollView>
