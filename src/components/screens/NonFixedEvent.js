@@ -106,11 +106,28 @@ class NonFixedEvent extends React.Component {
 		// ];
 
 		let tutorialStatus;
+		let addEventButton;
+		let nextButton;
+		let paddingBottomContainer = HEIGHT;
 
 		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
 			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+			addEventButton = 
+				<TouchableOpacity style={styles.buttonEvent} onPress={this.test}> 
+					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
+				</TouchableOpacity>;
+			nextButton = 
+				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+					<Text style={styles.buttonNextText}>NEXT</Text>
+				</TouchableOpacity>;
 		} else {
 			tutorialStatus = null;
+			addEventButton = null;
+			nextButton = 
+				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+					<Text style={styles.buttonNextText}>DONE</Text>
+				</TouchableOpacity>;
+			paddingBottomContainer = null;
 		}
 
 		return(
@@ -118,7 +135,7 @@ class NonFixedEvent extends React.Component {
 				<StatusBar backgroundColor={'#105dba'} />
 
 				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:HEIGHT, justifyContent:'space-evenly'}} 
+					<View style={{height: this.state.containerHeight, flex:1, paddingBottom: paddingBottomContainer, justifyContent:'space-evenly'}} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
 							if(height < containerHeight) {
@@ -286,13 +303,9 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
-								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-							</TouchableOpacity>
+							{addEventButton}
 
-							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
-								<Text style={styles.buttonNextText}>NEXT</Text>
-							</TouchableOpacity>
+							{nextButton}
 						</View>
 					</View>
 				</ScrollView>
@@ -315,7 +328,8 @@ const styles = StyleSheet.create({
 	content: {
 		marginTop: StatusBar.currentHeight + headerHeight,
 		flex: 1,
-		paddingHorizontal: 15
+		paddingHorizontal: 15,
+		marginBottom: 20
 	},
 
 	instruction: {

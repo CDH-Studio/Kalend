@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
 
 	manual: {
 		flexDirection: 'row',
-		marginTop: 50
+		marginTop: 20
 	},
 
 	textManual: {

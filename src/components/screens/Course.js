@@ -230,6 +230,25 @@ class Course extends React.Component {
 	}
 
 	render() {
+		let addCourseButton;
+		let nextButton;
+
+		if(this.props.navigation.state.routeName === 'TutorialAddCourse') {
+			addCourseButton = 
+				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
+					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}COURSE</Text>
+				</TouchableOpacity>;
+			nextButton = 
+			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<Text style={styles.buttonNextText}>NEXT</Text>
+			</TouchableOpacity>;
+		} else {
+			addCourseButton = null;
+			nextButton = 
+				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+					<Text style={styles.buttonNextText}>DONE</Text>
+				</TouchableOpacity>;
+		}
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
@@ -336,13 +355,9 @@ class Course extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
-								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}COURSE</Text>
-							</TouchableOpacity>
+							{addCourseButton}
 
-							<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
-								<Text style={styles.buttonNextText}>NEXT</Text>
-							</TouchableOpacity>
+							{nextButton}
 						</View>
 					</View>
 				</ScrollView>
