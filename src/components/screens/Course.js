@@ -295,7 +295,10 @@ class Course extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={(startTime) => this.setState({startTime: startTime, disabledEndTime: this.enableEndTime()})}/>
+									onDateChange={(startTime) => {
+										this.setState({startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime))});
+										this.setState({ disabledEndTime: this.enableEndTime()});
+									}}/>
 							</View>
 
 							<View style={styles.time}>
@@ -317,7 +320,7 @@ class Course extends React.Component {
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={() => this.setState({ endTime: this.beforeStartTime(this.state.startTime)})}/>
+									onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
 
 							</View>
 						</View>

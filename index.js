@@ -165,8 +165,7 @@ TutorialNavigator.router.getStateForAction = (action, state) => {
 				routes,
 				index: routes.length - 1,
 			};
-		} 
-		else {
+		} else {
 			store.dispatch({
 				...nav,
 				type: 'SET_NAV_SCREEN',
