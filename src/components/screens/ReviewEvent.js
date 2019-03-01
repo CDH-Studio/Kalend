@@ -125,7 +125,21 @@ class ReviewEvent extends React.Component {
 		}
 	}
 
+	shouldComponentUpdate() {
+		console.log('shouldComponentUpdate');
+	}
+
+	componentDidUpdate() {
+		console.log('componentDidUpdate');
+	}
+
+	componentWillMount() {
+		console.log('componentWillMount');
+	}
+
+
 	render() {
+		console.log('RENDERS');
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 		//In order to remove the tutorial status if not needed

@@ -10,8 +10,9 @@ import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
-import {ADD_FE} from '../../constants';
+import {ADD_FE, CLEAR_FE} from '../../constants';
 import { store } from '../../store';
+
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
@@ -325,15 +326,45 @@ class FixedEvent extends React.Component {
 			endDate: this.state.endDate,
 			endTime: this.state.endTime
 		};
-		InsertFixedEvent(info).then(success => {
-			if(success) {
-				if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
-					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
-				}else {
-					this.props.navigation.pop();
+		
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			let events = store.getState().FixedEventsReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.id === this.state.id) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
 				}
-			}
-		});
+			});
+
+			this.props.dispatch({
+				type: CLEAR_FE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_FE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent');
+		} else {
+			InsertFixedEvent(info).then(data => {
+				if(!data.error) {
+					this.setState({
+						eventID: data.id
+					});
+					this.props.dispatch({
+						type: ADD_FE,
+						event: this.state
+					});
+					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+				}
+			});
+		}
 	}
 
 	addAnotherEvent = () => {
@@ -350,7 +381,6 @@ class FixedEvent extends React.Component {
 		};
 		InsertFixedEvent(info).then(data => {
 			if(!data.error) {
-				console.log(data);
 				this.setState({
 					eventID: data.id
 				});
@@ -358,7 +388,6 @@ class FixedEvent extends React.Component {
 					type: ADD_FE,
 					event: this.state
 				});
-				console.log(store.getState());
 				this.resetField();
 			}
 		});
