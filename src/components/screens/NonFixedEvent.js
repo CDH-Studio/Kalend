@@ -8,8 +8,9 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 // import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import { ADD_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-
+import { connect } from 'react-redux';
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
@@ -33,38 +34,39 @@ class NonFixedEvent extends React.Component {
 		super(props);
 		this.state = { 
 			//Height of Screen
-			containerHeight: null,
+			containerHeight: null
+		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+	
+	componentWillMount() {
+		this.resetFields();
+	}
 
+
+	resetFields = () => {
+		this.setState({
 			//Title of Event
 			title: '',
-
 			//Availability Section
 			specificDateRange: false,
-
 			startDate: new Date().toDateString(),
 			disabledStartDate: false,
 			minStartDate: new Date().toDateString(),
 			maxStartDate: new Date(8640000000000000),
-
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
-
 			hours: 0,
 			minutes: 0,
 			isDividable: false,
 			// durationType: 0,
-
 			occurrence: 1,
-
 			//Priority Level Section
 			priority: 0.5,
-
 			location: '',
 			description: ''
-			
-		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		});
 	}
 
 	skip = () => {
@@ -72,6 +74,11 @@ class NonFixedEvent extends React.Component {
 	}
 
 	nextScreen = () => {
+		this.props.dispatch({
+			type: ADD_NFE,
+			event: this.state
+		});
+
 		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
 			this.props.navigation.navigate('TutorialReviewEvent');
 		}else if(this.props.navigation.state.routeName === 'TutorialEditNonFixedEvent') {
@@ -79,6 +86,15 @@ class NonFixedEvent extends React.Component {
 		}else {
 			this.props.navigation.pop();
 		}
+	}
+
+	addAnotherEvent = () => {
+		this.props.dispatch({
+			type: ADD_NFE,
+			event: this.state
+		});
+
+		this.resetFields();
 	}
 
 	//Render UI
@@ -270,7 +286,7 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonEvent} onPress={this.test}> 
+							<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
 								<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 							</TouchableOpacity>
 
@@ -286,6 +302,8 @@ class NonFixedEvent extends React.Component {
 		);
 	}
 }
+
+export default connect()(NonFixedEvent);
 
 const headerHeight = Header.HEIGHT;
 
@@ -429,5 +447,3 @@ const styles = StyleSheet.create({
 		padding: 8
 	}
 });
-
-export default NonFixedEvent;
