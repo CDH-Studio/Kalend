@@ -19,8 +19,8 @@ import {ADD_FE} from '../../constants';
 class FixedEvent extends React.Component {
 
 	// Style for Navigation Bar
-	static navigationOptions = {
-		title: 'Add Fixed Events',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.params.update ? 'Add Fixed Events' : 'Update Fixed Event',
 		headerTintColor: 'white',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -28,7 +28,7 @@ class FixedEvent extends React.Component {
 			backgroundColor: blueColor,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
+	});
 	// Constructor and States
 	constructor(props) {
 		super(props);
@@ -62,7 +62,10 @@ class FixedEvent extends React.Component {
 			//Other Information
 			location: '',
 			recurrenceValue: 'None',
-			recurrence: 'NONE'
+			recurrence: 'NONE',
+
+			// Google Calendar ID
+			eventID: ''
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -343,8 +346,12 @@ class FixedEvent extends React.Component {
 			endDate: this.state.endDate,
 			endTime: this.state.endTime
 		};
-		InsertFixedEvent(info).then(success => {
-			if(success) {
+		InsertFixedEvent(info).then(data => {
+			if(!data.error) {
+				console.log(data);
+				this.setState({
+					eventID: data.id
+				});
 				this.props.dispatch({
 					type: ADD_FE,
 					state: this.state

@@ -184,6 +184,7 @@ export const  InsertFixedEvent = (event) => {
 	let promise = (calendarID) => {
 		return insertEvent(calendarID,obj,{})
 			.then( data => {
+				return data;
 				if(data.error) {
 					return false;
 				} else {
