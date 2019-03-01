@@ -168,29 +168,31 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.duration}>
 									<Text style={styles.blueTitle}>Duration</Text>
 									<View style={styles.timePicker}>
-										<NumericInput hours={this.state.hours} 
+										<NumericInput initValue = {this.state.hours}
+											value={this.state.hours}
+											onChange={(hours) => this.setState({hours})}
 											minValue={0} 
 											leftButtonBackgroundColor={'#FFBF69'}
 											rightButtonBackgroundColor={'#FF9F1C'}
 											rounded={true}
 											borderColor={'lightgray'}
 											textColor={'#565454'}
-											iconStyle={{ color: 'white' }} 
-											onValueChange={(hours) => this.setState({hours})} />
+											iconStyle={{ color: 'white' }} />
 										<Text style={styles.optionsText}>hour(s)</Text>
 									</View>
 
 									<View style={styles.timePicker}>
-										<NumericInput minutes={this.state.minutes}
+										<NumericInput
+											initValue = {this.state.minutes}
+											value={this.state.minutes}
+											onChange={(minutes) => this.setState({minutes})}
 											minValue={0} 
-											maxValue={59}
 											leftButtonBackgroundColor={'#FFBF69'}
 											rightButtonBackgroundColor={'#FF9F1C'}
 											rounded={true}
 											borderColor={'lightgray'}
 											textColor={'#565454'}
-											iconStyle={{ color: 'white' }} 
-											onValueChange={(minutes) => this.setState({minutes})} />
+											iconStyle={{ color: 'white' }}  />
 										<Text style={styles.optionsText}>minute(s)</Text>
 									</View>
 								</View>
@@ -213,15 +215,17 @@ class NonFixedEvent extends React.Component {
 
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
-									<NumericInput occurrence={this.state.occurrence}
-										minValue={1} 
+									<NumericInput 
+										initValue = {this.state.occurence}
+										value={this.state.occurence}
+										onChange={(occurence) => this.setState({occurence})}
+										minValue={0} 
 										leftButtonBackgroundColor={'#FFBF69'}
 										rightButtonBackgroundColor={'#FF9F1C'}
 										rounded={true}
 										borderColor={'lightgray'}
 										textColor={'#565454'}
-										iconStyle={{ color: 'white' }} 
-										onValueChange={(occurrence) => this.setState({occurrence})} />
+										iconStyle={{ color: 'white' }}  />
 								</View>
 							</View>
 						</View>
