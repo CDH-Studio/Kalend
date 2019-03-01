@@ -11,7 +11,7 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import {ADD_FE} from '../../constants';
-import { store } from '../../store';
+
 //TODO
 //Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
 //Add onSubmit functions for buttons + navigate/resetForm
@@ -36,40 +36,43 @@ class FixedEvent extends React.Component {
 		this.state = { 
 			//Height of Screen
 			containerHeight: null,
+		};
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
 
-			//Title of Event
+	componentWillMount() {
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			this.setState({...this.props.FEditState});
+		} else {
+			this.resetFields();
+		}
+	}
+
+	resetFields = () => {
+		this.setState({
 			title: '',
-			
-			//Time section
 			allDay: false,
-
 			startDate: new Date().toDateString(),
 			minStartDate: new Date().toDateString(),
 			maxStartDate: new Date(8640000000000000),
-
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
-
 			startTime: new Date().toLocaleTimeString(),
 			disabledStartTime : false,
 			amPmStart: this.getAmPm(),
-
 			endTime: new Date().toLocaleTimeString(),
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime : true,
 			amPmEnd: this.getAmPm(),
-
 			//Other Information
 			location: '',
 			recurrenceValue: 'None',
 			recurrence: 'NONE',
 			description: '',
-
 			// Google Calendar ID
 			eventID: ''
-		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		});
 	}
 
 	/**
@@ -358,40 +361,12 @@ class FixedEvent extends React.Component {
 					type: ADD_FE,
 					event: this.state
 				});
-				console.log(store.getState());
-				this.resetField();
+				this.resetFields();
 			}
 		});
 	}
 
-	resetField = () => {
-		this.setState({
-			description: '',
-			allDay: false,
-			recurrence: 'NONE',
-			title: '',
-			location: '',
-			startDate: new Date().toDateString(),
-			endDate: new Date().toDateString(),
-			startTime: new Date().toLocaleTimeString(),
-			endTime: new Date().toLocaleTimeString()
-		});
-	}
 
-	componentWillMount() {
-		console.log(
-			'sdfdsfdsfsdfdsfsd'
-		);
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
-			console.log(
-				'HEEHEHEHEHEHEHE'
-			);
-			let fixedEvents = store.getState().FixedEventsReducer;
-			let selected = store.getState().NavigationReducer.reviewEventSelected;
-
-			this.setState({...fixedEvents[selected]});
-		}
-	}
 
 	//Render UI
 	render() {
@@ -603,6 +578,16 @@ class FixedEvent extends React.Component {
 	}
 }
 
+function mapStateToProps(state) {
+	const { FixedEventsReducer, NavigationReducer } = state;
+	let selected = NavigationReducer.reviewEventSelected;
+
+	return {
+		FEditState: FixedEventsReducer[selected] 
+	};
+}
+export default connect(mapStateToProps, null)(FixedEvent);
+
 const containerWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -728,5 +713,3 @@ const styles = StyleSheet.create({
 		padding: 8
 	}
 });
-
-export default connect()(FixedEvent);

@@ -6,7 +6,7 @@ import { blueColor } from '../../../config';
 import EventOverview from '../EventOverview';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import updateNavigation from '../NavigationHelper';
-import { store } from '../../store';
+import { connect } from 'react-redux';
 
 class ReviewEvent extends React.Component {
 
@@ -28,8 +28,14 @@ class ReviewEvent extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		let fixedEventData = [];
+		let nonFixedEventData = [];
+		let priorityLevels = {
+			0: 'Low',
+			0.5: 'Normal',
+			1: 'High'
+		};
 
-		store.getState().FixedEventsReducer.map((data) => {
+		this.props.FixedEventsReducer.map((data) => {
 			fixedEventData.push({
 				title: data.title,
 				dates: data.startDate + ' - ' + data.endDate,
@@ -40,6 +46,18 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
+		this.props.NonFixedEventsReducer.map((data) => {
+			nonFixedEventData.push({
+				title: data.title,
+				location: data.location,
+				priorityLevel: priorityLevels[data.priority],
+				dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
+				description: data.description,
+				occurence: `${data.occurrence} times/week`,
+				duration: `${data.hours}h ${data.minutes}m`
+			});
+		});
+
 		this.state = {
 			//Height of Screen
 			containerHeight: null,
@@ -47,7 +65,7 @@ class ReviewEvent extends React.Component {
 			currentY: 0,
 
 			fixedEventData,
-
+			nonFixedEventData,
 			schoolScheduleData: [
 				{
 					courseCode: 'SEG2505',
@@ -73,20 +91,7 @@ class ReviewEvent extends React.Component {
 					hours: '8:30AM - 11AM',
 					location: 'SITE G104'
 				}
-			],
-
-			nonFixedEventData: [
-				{
-					title: 'Computer Science Assignmentfgdfgdfgjdfosjgoidfjgoidjfgid',
-					dates: 'Feb 4, 2019',
-					duration: '3h',
-					recurrence: '3 times',
-					priorityLevel: 'Normal',
-					location: 'School',
-					description: 'Assignement on BlockChains'
-				}
 			]
-			
 		};
 	}
 	
@@ -177,7 +182,7 @@ class ReviewEvent extends React.Component {
 									<Text>No non-fixed events added, please go back to add some</Text> : null
 							}
 							{this.state.nonFixedEventData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.recurrence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.occurence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
 						</View>
 					</View>		
@@ -195,6 +200,16 @@ class ReviewEvent extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	const { FixedEventsReducer, NonFixedEventsReducer} = state;
+
+	return {
+		FixedEventsReducer,
+		NonFixedEventsReducer 
+	};
+}
+export default connect(mapStateToProps, null)(ReviewEvent);
 
 const tutorialHeight = HEIGHT;
 const headerHeight = Header.HEIGHT;
@@ -234,5 +249,3 @@ const styles = StyleSheet.create({
 		zIndex: 1 //To make it go on top of the tutorialStatus
 	},
 });
-
-export default ReviewEvent;
