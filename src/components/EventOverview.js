@@ -114,14 +114,14 @@ class EventOverview extends React.Component {
 
 				<View style={styles.actions}>
 					<TouchableOpacity onPress={() => {
-						this.props.navigateEditScreen(editScreen)
-						
-						store.dispatch({
-							... store.getState().NavigationReducer,
-							type: SET_NAV_SCREEN,
-							reviewEventSelected: this.props.id
-						});
-						}>
+							this.props.navigateEditScreen(editScreen)
+							
+							store.dispatch({
+								... store.getState().NavigationReducer,
+								type: SET_NAV_SCREEN,
+								reviewEventSelected: this.props.id
+							});
+						}}>
 						<Feather name="edit" size={30} color="#565454" />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}>

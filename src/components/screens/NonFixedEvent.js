@@ -17,8 +17,8 @@ import updateNavigation from '../NavigationHelper';
 class NonFixedEvent extends React.Component {
 
 	//Style for Navigation Bar
-	static navigationOptions = {
-		title: 'Add Non-Fixed Events',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.params.update ? 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
 		headerTintColor: 'white',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -26,7 +26,7 @@ class NonFixedEvent extends React.Component {
 			backgroundColor: blueColor,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
+	});
 
 	//Constructor and States
 	constructor(props) {

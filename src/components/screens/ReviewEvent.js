@@ -111,9 +111,9 @@ class ReviewEvent extends React.Component {
 	 */
 	navigateEditScreen = (editScreen) => {
 		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
-			this.props.navigation.navigate('TutorialEdit' + editScreen);
+			this.props.navigation.navigate('TutorialEdit' + editScreen, {update:true});
 		}else {
-			this.props.navigation.navigate('DashboardEdit' + editScreen);
+			this.props.navigation.navigate('DashboardEdit' + editScreen, {update:true});
 		}
 	}
 
@@ -150,6 +150,10 @@ class ReviewEvent extends React.Component {
 						}}>
 						<View>
 							<Text style={styles.sectionTitle}>School Schedule</Text>
+							{
+								this.state.schoolScheduleData.length === 0 ?
+									<Text>No school schedule added, please go back to add one</Text> : null
+							}
 							{this.state.schoolScheduleData.map((i,key) => {
 								return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
@@ -157,6 +161,10 @@ class ReviewEvent extends React.Component {
 
 						<View>
 							<Text style={styles.sectionTitle}>Fixed Events</Text>
+							{
+								this.state.fixedEventData.length === 0 ?
+									<Text>No fixed events added, please go back to add some</Text> : null
+							}
 							{this.state.fixedEventData.map((i,key) => {
 								return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} />;
 							})}
@@ -164,6 +172,10 @@ class ReviewEvent extends React.Component {
 
 						<View>
 							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+							{
+								this.state.nonFixedEventData.length === 0 ?
+									<Text>No non-fixed events added, please go back to add some</Text> : null
+							}
 							{this.state.nonFixedEventData.map((i,key) => {
 								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.recurrence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
 							})}

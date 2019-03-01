@@ -2,7 +2,7 @@ import React from 'react';
 import {StatusBar, StyleSheet, View, Button, Text} from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import updateNavigation from '../NavigationHelper';
-import { store } from '../../store';
+import { store, persistor } from '../../store';
 import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../constants';
 
 class Dashboard extends React.Component {
@@ -26,6 +26,9 @@ class Dashboard extends React.Component {
 				<StatusBar translucent={true} backgroundColor={'#105dba'} />
 
 				<Text>Redux Management</Text>
+				<Button title='Purge' onPress={() => {
+					persistor.purge();
+				}}></Button>
 
 				<Button title='Clear NavigationRecuder' onPress={() => {
 					store.dispatch({
