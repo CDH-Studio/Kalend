@@ -39,11 +39,14 @@ class NonFixedEvent extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 	
-	componentWillMount() {
-		this.resetFields();
+	componentWillMount() {	
+		if(this.props.navigation.state.routeName !== 'TutorialNonFixedEvent') {
+			this.setState({...this.props.NFEditState});
+		} else  {
+			this.resetFields();
+		}
 	}
-
-
+	
 	resetFields = () => {
 		this.setState({
 			//Title of Event
@@ -302,8 +305,15 @@ class NonFixedEvent extends React.Component {
 		);
 	}
 }
+function mapStateToProps(state) {
+	const { NonFixedEventsReducer, NavigationReducer } = state;
+	let selected = NavigationReducer.reviewEventSelected;
 
-export default connect()(NonFixedEvent);
+	return {
+		NFEditState: NonFixedEventsReducer[selected] 
+	};
+}
+export default connect(mapStateToProps, null)(NonFixedEvent);
 
 const headerHeight = Header.HEIGHT;
 
