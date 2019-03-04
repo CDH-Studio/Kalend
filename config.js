@@ -8,6 +8,7 @@ export const lightOrangeColor = '#FFBF69';
 export const orangeColor = '#FF9F1C';
 export const darkOrangeColor = '#FF621C';
 export const redColor = '#b80000';
+export const statusBarDark = '#00000050';
 export const calendarEventColors = {
 	red: '#E57B73',
 	green: '#36B478',
@@ -19,3 +20,36 @@ export const calendarEventColorsInside = {
 	purple: '#9DA6D8'
 };
 export const gradientColors = [blueColor, darkBlueColor];
+export const slides = [
+	{
+		key: 'integration',
+		title: 'School Schedule Integration',
+		text: 'Add your school schedule by importing\na picture or a screenshot of your schedule',
+		icon: 'ios-school',
+		colors: gradientColors,
+		color: '#CBE0FA'
+	},
+	{
+		key: 'generator',
+		title: 'Schedule Generator',
+		text: 'Add your events and the activities you\nwould like to do and let the application\ngenerate the best schedules for you',
+		icon: 'ios-calendar',
+		colors: [orangeColor,'#FF621C'],
+		color: '#FFE0B6'
+	},
+	{
+		key: 'compare',
+		title: 'Compare Schedule',
+		text: 'Find availabilities by comparing schedules\nwith your friends and colleagues',
+		icon: 'ios-people',
+		colors: gradientColors,
+		color: '#CBE0FA'
+	},
+	{
+		key: 'done',
+		title: 'Start right now\nwith Kalend!',
+		text: '',
+		icon: '',
+		colors: [orangeColor,'#FF621C'],
+	}
+];
