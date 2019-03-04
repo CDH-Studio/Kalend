@@ -35,39 +35,7 @@ class FixedEvent extends React.Component {
 		
 		this.state = { 
 			//Height of Screen
-			containerHeight,
-
-			//Title of Event
-			title: '',
-			
-			//Time section
-			allDay: false,
-
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-
-			startTime: new Date().toLocaleTimeString(),
-			disabledStartTime : false,
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime : true,
-			amPmEnd: this.getAmPm(),
-
-			//Other Information
-			location: '',
-			recurrenceValue: 'None',
-			recurrence: 'NONE',
-			description: '',
-
-			// Google Calendar ID
-			eventID: ''
+			containerHeight
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -76,7 +44,7 @@ class FixedEvent extends React.Component {
 		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
 			this.setState({...this.props.FEditState});
 		} else {
-			this.resetFields();
+			this.resetField();
 		}
 	}
 
@@ -403,15 +371,37 @@ class FixedEvent extends React.Component {
 
 	resetField = () => {
 		this.setState({
-			description: '',
-			allDay: false,
-			recurrence: 'NONE',
+			//Title of Event
 			title: '',
-			location: '',
+				
+			//Time section
+			allDay: false,
+
 			startDate: new Date().toDateString(),
+			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
+
 			endDate: new Date().toDateString(),
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+
 			startTime: new Date().toLocaleTimeString(),
-			endTime: new Date().toLocaleTimeString()
+			disabledStartTime : false,
+			amPmStart: this.getAmPm(),
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime : true,
+			amPmEnd: this.getAmPm(),
+
+			//Other Information
+			location: '',
+			recurrenceValue: 'None',
+			recurrence: 'NONE',
+			description: '',
+
+			// Google Calendar ID
+			eventID: ''
 		});
 	}
 
