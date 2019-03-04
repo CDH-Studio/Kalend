@@ -7,6 +7,14 @@ import EventOverview from '../EventOverview';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import updateNavigation from '../NavigationHelper';
 import { connect } from 'react-redux';
+import { store } from '../../store';
+
+
+const priorityLevels = {
+	0: 'Low',
+	0.5: 'Normal',
+	1: 'High'
+};
 
 class ReviewEvent extends React.Component {
 
@@ -27,15 +35,36 @@ class ReviewEvent extends React.Component {
 		super(props);
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
+		this.state = {
+			//Height of Screen
+			containerHeight: null,
+			showFAB: true,
+			currentY: 0,
+		};
+	}
+
+	updateInformation = () =>{
 		let fixedEventData = [];
 		let nonFixedEventData = [];
-		let priorityLevels = {
-			0: 'Low',
-			0.5: 'Normal',
-			1: 'High'
-		};
+		let schoolScheduleData = [
+			{
+				courseCode: 'SEG2505',
+				dayOfWeek: 'Monday',
+				hours: '1PM - 3PM',
+				location: 'CBY 202'
+			},
+		];
 
-		this.props.FixedEventsReducer.map((data) => {
+		store.CoursesReducer.map((data) => {
+			schoolScheduleData.push({
+				courseCode: data.summary,
+				dayOfWeek: data.day,
+				hours: data.hours.start + ' - ' + data.hours.end,
+				location: data.location
+			});
+		});
+
+		store.FixedEventsReducer.map((data) => {
 			fixedEventData.push({
 				title: data.title,
 				dates: data.startDate + ' - ' + data.endDate,
@@ -46,7 +75,7 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
-		this.props.NonFixedEventsReducer.map((data) => {
+		store.NonFixedEventsReducer.map((data) => {
 			nonFixedEventData.push({
 				title: data.title,
 				location: data.location,
@@ -58,41 +87,11 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
-		this.state = {
-			//Height of Screen
-			containerHeight: null,
-			showFAB: true,
-			currentY: 0,
-
+		this.setState({
 			fixedEventData,
 			nonFixedEventData,
-			schoolScheduleData: [
-				{
-					courseCode: 'SEG2505',
-					dayOfWeek: 'Monday',
-					hours: '1PM - 3PM',
-					location: 'CBY 202'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				}
-			]
-		};
+			schoolScheduleData
+		});
 	}
 	
 	// Hides the FAB when scrolling down
@@ -128,6 +127,15 @@ class ReviewEvent extends React.Component {
 		}else {
 			this.props.navigation.navigate('DashboardScheduleCreation');
 		}
+	}
+
+	componentWillMount() {
+		this.updateInformation();
+	}
+
+	componentWillReceiveProps() {
+		this.updateInformation();
+		this.forceUpdate();
 	}
 
 	render() {

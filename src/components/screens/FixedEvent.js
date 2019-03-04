@@ -10,7 +10,7 @@ import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
-import {ADD_FE} from '../../constants';
+import {ADD_FE, CLEAR_FE} from '../../constants';
 import { store } from '../../store';
 
 const viewHeight = 519.1428833007812;
@@ -330,16 +330,47 @@ class FixedEvent extends React.Component {
 			startTime: this.state.startTime,
 			endDate: this.state.endDate,
 			endTime: this.state.endTime
-		};
-		InsertFixedEvent(info).then(success => {
-			if(success) {
-				if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
-					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
-				}else {
-					this.props.navigation.pop();
+		}; 
+
+		
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			let events = this.props.FixedEventsReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.id === this.state.id) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
 				}
-			}
-		});
+			});
+
+			this.props.dispatch({
+				type: CLEAR_FE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_FE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+		} else {
+			InsertFixedEvent(info).then(data => {
+				if(!data.error) {
+					this.setState({
+						eventID: data.id
+					});
+					this.props.dispatch({
+						type: ADD_FE,
+						event: this.state
+					});
+					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+				}
+			});
+		}
 	}
 
 	addAnotherEvent = () => {
@@ -356,7 +387,6 @@ class FixedEvent extends React.Component {
 		};
 		InsertFixedEvent(info).then(data => {
 			if(!data.error) {
-				console.log(data);
 				this.setState({
 					eventID: data.id
 				});
@@ -364,7 +394,6 @@ class FixedEvent extends React.Component {
 					type: ADD_FE,
 					event: this.state
 				});
-				console.log(store.getState());
 				this.resetField();
 			}
 		});
@@ -596,6 +625,17 @@ class FixedEvent extends React.Component {
 	}
 }
 
+function mapStateToProps(state) {
+	const { FixedEventsReducer, NavigationReducer } = state;
+	let selected = NavigationReducer.reviewEventSelected;
+
+	return {
+		FEditState: FixedEventsReducer[selected],
+		FixedEventsReducer
+	};
+}
+export default connect(mapStateToProps, null)(FixedEvent);
+
 const containerWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -721,5 +761,3 @@ const styles = StyleSheet.create({
 		padding: 8
 	}
 });
-
-export default connect()(FixedEvent);
