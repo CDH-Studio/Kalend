@@ -46,23 +46,24 @@ class ReviewEvent extends React.Component {
 	updateInformation = () =>{
 		let fixedEventData = [];
 		let nonFixedEventData = [];
-		let schoolScheduleData = [
-			// {
-			// 	courseCode: 'SEG2505',
-			// 	dayOfWeek: 'Monday',
-			// 	hours: '1PM - 3PM',
-			// 	location: 'CBY 202'
-			// },
-		];
+		let schoolScheduleData = [];
 
-		console.log(store.getState())
+		console.log(store.getState());
 
 		if (store.getState().CoursesReducer !== undefined) {
 			store.getState().CoursesReducer.map((data) => {
+				let hours;
+
+				if (data.startTime === undefined) {
+					hours = data.hours.start + ' - ' + data.hours.end;
+				} else {
+					hours = data.startTime + ' - ' + data.endTime;
+				}
+
 				schoolScheduleData.push({
-					courseCode: data.summary,
-					dayOfWeek: data.day,
-					hours: data.hours.start + ' - ' + data.hours.end,
+					courseCode: data.summary || data.courseCode,
+					dayOfWeek: data.day || data.dayOfWeek,
+					hours,
 					location: data.location
 				});
 			});

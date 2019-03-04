@@ -7,7 +7,7 @@ export default function CoursesReducer(state = [], action) {
 		case ADD_COURSE: 
 			return  [...state, event];
 		case CLEAR_COURSE: 
-			return  [...state, event];
+			return  [];
 
 		default:
 			return state;
