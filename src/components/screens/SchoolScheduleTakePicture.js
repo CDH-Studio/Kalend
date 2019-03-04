@@ -1,18 +1,20 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import {connect} from 'react-redux';
-import { blueColor, orangeColor, redColor } from '../../../config';
+import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
+import { blueColor, orangeColor, redColor } from '../../../config';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-
+/**
+ * The camera screen which allows the user to take a picture of their schedule
+ * and upload it to the server to extract the information about their school schedule
+ */
 class SchoolScheduleTakePicture extends React.Component {
 
 	static navigationOptions = {
@@ -39,7 +41,15 @@ class SchoolScheduleTakePicture extends React.Component {
 			dismissIcon: 0
 		};
 		
+		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+	
+	componentDidMount() {
+		// Creates an entrance animation for the blue button after the 
+		setTimeout(()=>{
+			this.enterAnimation(false);
+		}, 800);
 	}
 
 	animation = (opacity, size, icon) => {
@@ -82,20 +92,23 @@ class SchoolScheduleTakePicture extends React.Component {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	enterAnimation = (icon) => {
 		this.animation(1, 35, icon);
 	}
 
+	/**
+	 * 
+	 */
 	exitAnimation = (icon) => {
 		this.animation(0, 0, icon);
 	}
 
-	componentDidMount() {
-		setTimeout(()=>{
-			this.enterAnimation(false);
-		}, 800);
-	}
-
+	/**
+	 * 
+	 */
 	takePicture = async () => {
 		if (this.camera) {
 			if (!this.state.changeIcon) {
@@ -130,6 +143,9 @@ class SchoolScheduleTakePicture extends React.Component {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	cancelPicture = () => {
 		this.exitAnimation(true);
 		this.camera.resumePreview();
@@ -143,8 +159,8 @@ class SchoolScheduleTakePicture extends React.Component {
 		const { changeIcon, takePictureOpacity, dismissOpacity, takePictureIcon, dismissIcon } = this.state;
 		return (
 			<View style={styles.container}>
-
-				<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.6)'} />
+				<StatusBar translucent={true} 
+					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 
 				<RNCamera captureAudio={false}
 					ref={ref => {
@@ -155,38 +171,33 @@ class SchoolScheduleTakePicture extends React.Component {
 					flashMode={RNCamera.Constants.FlashMode.auto} />
 
 				<View style={[styles.buttonContainer, {flexDirection: changeIcon ? 'row' : 'column'}]}>
-
 					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
 							style={[styles.capture, { backgroundColor: redColor}]}>
-
 							<Entypo name='cross' 
 								size={dismissIcon}
 								color="#FFFFFF" 
 								style={styles.icon} />
-
 						</TouchableOpacity>
 					</View>
 
 					<View style={{opacity: takePictureOpacity}}>
 						<TouchableOpacity onPress={this.takePicture}
 							style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor }]}>
-
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
 								color="#FFFFFF" 
 								style={styles.icon} />
-
 						</TouchableOpacity>
 					</View>
-
 				</View>
-
 			</View>
 		);
 	}
 }
+
+export default connect()(SchoolScheduleTakePicture);
 
 const styles = StyleSheet.create({
 	container: {
@@ -231,5 +242,3 @@ const styles = StyleSheet.create({
 		bottom: 0 
 	}
 });
-
-export default connect()(SchoolScheduleTakePicture);

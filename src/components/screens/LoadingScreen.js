@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, StatusBar, View, Animated, Easing} from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
 import { gradientColors, blueColor, statusBarDark } from '../../../config';
