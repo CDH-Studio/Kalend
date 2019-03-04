@@ -11,7 +11,6 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import {ADD_FE, CLEAR_FE} from '../../constants';
-import { store } from '../../store';
 
 const viewHeight = 519.1428833007812;
 
