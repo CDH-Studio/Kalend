@@ -142,7 +142,7 @@ class EventOverview extends React.Component {
 								<Feather name="x" size={30} color="#565454" />
 							</TouchableOpacity>
 
-							<Text style={styles.modalTitle}>{this.props.eventTitle}</Text>
+							<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
 
 							<View style={styles.modalInfoView}>
 								<View>
@@ -235,7 +235,10 @@ const styles = StyleSheet.create({
 	category: {
 		width: 20,
 		height: 70,
-		marginRight: 15
+		marginLeft: -10,
+		marginRight: 10,
+		borderBottomLeftRadius: 8, 
+		borderTopLeftRadius: 8
 	},
 
 	actions: {
@@ -247,11 +250,13 @@ const styles = StyleSheet.create({
 	eventTitle: {
 		width: 180,
 		fontFamily: 'OpenSans-SemiBold',
-		fontSize: 15
+		fontSize: 15,
+		color: '#565454'
 	},
 
 	eventInfo: {
-		fontFamily: 'OpenSans-Regular'
+		fontFamily: 'OpenSans-Regular',
+		color: '#565454'
 	},
 
 	modalView: {
@@ -296,7 +301,6 @@ const styles = StyleSheet.create({
 	},
 
 	modalTitle: {
-		backgroundColor: '#FF9F1C',
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',
@@ -316,13 +320,15 @@ const styles = StyleSheet.create({
 	modalInfoTitle: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
-		paddingVertical: 3
+		paddingVertical: 3,
+		color: '#565454'
 	},
 
 	modalInfoText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
-		paddingVertical: 3
+		paddingVertical: 3,
+		color: '#565454'
 	},
 
 	modalDetailsView: {
@@ -333,19 +339,22 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		textDecorationLine: 'underline',
 		fontFamily: 'Raleway-SemiBold',
-		paddingVertical: 1
+		paddingVertical: 1,
+		color: '#565454'
 	},
 	
 	modalDetailsSubtitle: {
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold',
-		paddingVertical: 1
+		paddingVertical: 1,
+		color: '#565454'
 	},
 
 	modalDetailsText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
-		paddingVertical: 1
+		paddingVertical: 1,
+		color: '#565454'
 	},
 
 	actionsModal: {
@@ -380,7 +389,8 @@ const styles = StyleSheet.create({
 	deleteDialogQuestion: {
 		fontSize: 20,
 		fontFamily: 'Raleway-SemiBold',
-		marginLeft: 10
+		marginLeft: 10,
+		color: '#565454'
 	},
 
 	deleteDialogOptions: {
@@ -390,7 +400,8 @@ const styles = StyleSheet.create({
 
 	deleteDialogCancel: {
 		fontFamily: 'Raleway-SemiBold',
-		fontSize:16
+		fontSize:16,
+		color: '#565454'
 	},
 
 	deleteDialogYes: {

@@ -8,12 +8,11 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 // import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
-import { ADD_NFE } from '../../constants';
+import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { connect } from 'react-redux';
-//TODO
-//Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
-//Add onSubmit functions for buttons + navigate/resetForm
+
+const viewHeight = 780.5714111328125;
 
 class NonFixedEvent extends React.Component {
 
@@ -32,9 +31,18 @@ class NonFixedEvent extends React.Component {
 	//Constructor and States
 	constructor(props) {
 		super(props);
+
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = null;
+		
+		if(viewHeight < containerHeightTemp) {
+			containerHeight = containerHeightTemp;
+		}
+
 		this.state = { 
 			//Height of Screen
-			containerHeight: null
+			containerHeight,
+			eventID: Date.now()
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -77,17 +85,37 @@ class NonFixedEvent extends React.Component {
 	}
 
 	nextScreen = () => {
-		this.props.dispatch({
-			type: ADD_NFE,
-			event: this.state
-		});
 
-		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			this.props.dispatch({
+				type: ADD_NFE,
+				event: this.state
+			});
 			this.props.navigation.navigate('TutorialReviewEvent');
-		}else if(this.props.navigation.state.routeName === 'TutorialEditNonFixedEvent') {
-			this.props.navigation.pop();
-		}else {
-			this.props.navigation.pop();
+		} else {
+			let events = this.props.NonFixedEventsReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.eventID === this.state.eventID) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
+				}
+			});
+
+			this.props.dispatch({
+				type: CLEAR_NFE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_NFE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
 		}
 	}
 
@@ -101,7 +129,6 @@ class NonFixedEvent extends React.Component {
 
 	//Render UI
 	render() {
-		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		// const durationTypes = [
 		// 	{label: 'Per Occurence', value: 0 },
 		// 	{label: 'Of Event', value: 1 }
@@ -137,13 +164,7 @@ class NonFixedEvent extends React.Component {
 				<StatusBar backgroundColor={'#105dba'} />
 
 				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom: paddingBottomContainer, justifyContent:'space-evenly'}} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if(height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					<View style={{height: this.state.containerHeight, flex:1, paddingBottom: paddingBottomContainer, justifyContent:'space-evenly'}}>
 						<View style={styles.instruction}>
 							<MaterialCommunityIcons name="face" size={130} color="#1473E6"/>
 							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
@@ -322,7 +343,8 @@ function mapStateToProps(state) {
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
-		NFEditState: NonFixedEventsReducer[selected] 
+		NFEditState: NonFixedEventsReducer[selected],
+		NonFixedEventsReducer
 	};
 }
 export default connect(mapStateToProps, null)(NonFixedEvent);

@@ -6,6 +6,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 import updateNavigation from '../NavigationHelper';
+import {ADD_COURSE, CLEAR_COURSE} from '../../constants';
+import { connect } from 'react-redux';
+import { store } from '../../store';
+
+const viewHeight = 718.8571166992188;
 
 class Course extends React.Component {
 
@@ -24,29 +29,30 @@ class Course extends React.Component {
 	// Constructor and States
 	constructor(props) {
 		super(props);
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = null;
+		
+		if(viewHeight < containerHeightTemp) {
+			containerHeight = containerHeightTemp;
+		}
+
 		this.state = { 
 			//Height of Screen
-			containerHeight: null,
-
-			//Course Code
-			courseCode: '',
-			
-			//Time section
-			dayOfWeek: 'Monday',
-			dayOfWeekValue: 'MONDAY',
-
-			startTime: new Date().toLocaleTimeString(),
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime: true,
-			amPmEnd: this.getAmPm(),
-
-			//Other Information
-			location: ''
+			containerHeight,
+			eventID: Date.now()
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentWillMount() {
+		if (this.props.navigation.state.routeName !== 'TutorialAddCourse') {
+			let courses = store.getState().CoursesReducer;
+			let selected = store.getState().NavigationReducer.reviewEventSelected;
+
+			this.setState({...courses[selected]});
+		} else {
+			this.resetField();
+		}	
 	}
 
 	/**
@@ -222,11 +228,65 @@ class Course extends React.Component {
 
 
 	nextScreen = () => {
-		if(this.props.navigation.state.routeName === 'TutorialAddCourse') {
-			this.props.navigation.navigate('TutorialFixedEvent');
-		}else {
-			this.props.navigation.pop();
+		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
+			this.addAnotherEvent();
+			this.props.navigation.navigate('TutorialFixedEvent', {update:false});
+		} else {
+			let events = this.props.CoursesReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.eventID === this.state.eventID) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
+				}
+			});
+
+			this.props.dispatch({
+				type: CLEAR_COURSE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_COURSE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
 		}
+	}
+
+	addAnotherEvent = () => {
+		this.props.dispatch({
+			type: ADD_COURSE,
+			event: this.state
+		});
+		this.resetField();
+	}
+
+	
+	resetField = () => {
+		this.setState({
+			//Course Code
+			courseCode: '',
+			
+			//Time section
+			dayOfWeek: 'Monday',
+			dayOfWeekValue: 'MONDAY',
+
+			startTime: new Date().toLocaleTimeString(),
+			amPmStart: this.getAmPm(),
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime: true,
+			amPmEnd: this.getAmPm(),
+
+			//Other Information
+			location: ''
+		});
 	}
 
 	render() {
@@ -254,13 +314,7 @@ class Course extends React.Component {
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<ScrollView>
-					<View style={styles.content} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if(height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					<View style={styles.content}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
 							<FontAwesome5 name="university" size={130} color={blueColor}/>
@@ -494,4 +548,13 @@ const styles = StyleSheet.create({
 });
 
 
-export default Course;
+function mapStateToProps(state) {
+	const { CoursesReducer, NavigationReducer } = state;
+	let selected = NavigationReducer.reviewEventSelected;
+
+	return {
+		CourseState: CoursesReducer[selected],
+		CoursesReducer
+	};
+}
+export default connect(mapStateToProps, null)(Course);

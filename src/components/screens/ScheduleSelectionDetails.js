@@ -36,7 +36,7 @@ class ScheduleEvent extends React.Component  {
 		return (
 			<View style={styles.eventContainer}>
 				<View style={{
-					width: 35,
+					width: 20,
 					borderBottomLeftRadius: 5, 
 					borderTopLeftRadius: 5,
 					backgroundColor: calendarEventColors[color]

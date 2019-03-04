@@ -10,12 +10,10 @@ import DatePicker from 'react-native-datepicker';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
-import {ADD_FE} from '../../constants';
+import {ADD_FE, CLEAR_FE} from '../../constants';
+import { store } from '../../store';
 
-//TODO
-//Add onPress={() => } for Add Another Event button - Removed for now to avoid missing function error
-//Add onSubmit functions for buttons + navigate/resetForm
-
+const viewHeight = 519.1428833007812;
 
 class FixedEvent extends React.Component {
 
@@ -33,47 +31,54 @@ class FixedEvent extends React.Component {
 	// Constructor and States
 	constructor(props) {
 		super(props);
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+		
 		this.state = { 
 			//Height of Screen
-			containerHeight: null,
+			containerHeight,
+
+			//Title of Event
+			title: '',
+			
+			//Time section
+			allDay: false,
+
+			startDate: new Date().toDateString(),
+			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
+
+			endDate: new Date().toDateString(),
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+
+			startTime: new Date().toLocaleTimeString(),
+			disabledStartTime : false,
+			amPmStart: this.getAmPm(),
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime : true,
+			amPmEnd: this.getAmPm(),
+
+			//Other Information
+			location: '',
+			recurrenceValue: 'None',
+			recurrence: 'NONE',
+			description: '',
+
+			// Google Calendar ID
+			eventID: ''
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	
 	componentWillMount() {
 		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
 			this.setState({...this.props.FEditState});
 		} else {
 			this.resetFields();
 		}
-	}
-
-	resetFields = () => {
-		this.setState({
-			title: '',
-			allDay: false,
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			startTime: new Date().toLocaleTimeString(),
-			disabledStartTime : false,
-			amPmStart: this.getAmPm(),
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime : true,
-			amPmEnd: this.getAmPm(),
-			//Other Information
-			location: '',
-			recurrenceValue: 'None',
-			recurrence: 'NONE',
-			description: '',
-			// Google Calendar ID
-			eventID: ''
-		});
 	}
 
 	/**
@@ -328,16 +333,47 @@ class FixedEvent extends React.Component {
 			startTime: this.state.startTime,
 			endDate: this.state.endDate,
 			endTime: this.state.endTime
-		};
-		InsertFixedEvent(info).then(success => {
-			if(success) {
-				if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
-					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
-				}else {
-					this.props.navigation.pop();
+		}; 
+
+		
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			let events = this.props.FixedEventsReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.eventID === this.state.eventID) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
 				}
-			}
-		});
+			});
+
+			this.props.dispatch({
+				type: CLEAR_FE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_FE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+		} else {
+			InsertFixedEvent(info).then(data => {
+				if(!data.error) {
+					this.setState({
+						eventID: data.id
+					});
+					this.props.dispatch({
+						type: ADD_FE,
+						event: this.state
+					});
+					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+				}
+			});
+		}
 	}
 
 	addAnotherEvent = () => {
@@ -354,7 +390,6 @@ class FixedEvent extends React.Component {
 		};
 		InsertFixedEvent(info).then(data => {
 			if(!data.error) {
-				console.log(data);
 				this.setState({
 					eventID: data.id
 				});
@@ -362,16 +397,36 @@ class FixedEvent extends React.Component {
 					type: ADD_FE,
 					event: this.state
 				});
-				this.resetFields();
+				this.resetField();
 			}
 		});
 	}
 
+	resetField = () => {
+		this.setState({
+			description: '',
+			allDay: false,
+			recurrence: 'NONE',
+			title: '',
+			location: '',
+			startDate: new Date().toDateString(),
+			endDate: new Date().toDateString(),
+			startTime: new Date().toLocaleTimeString(),
+			endTime: new Date().toLocaleTimeString()
+		});
+	}
 
+	componentWillMount() {
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			let fixedEvents = store.getState().FixedEventsReducer;
+			let selected = store.getState().NavigationReducer.reviewEventSelected;
+
+			this.setState({...fixedEvents[selected]});
+		}
+	}
 
 	//Render UI
 	render() {
-		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 		let tutorialStatus;
 		let addEventButton;
 		let nextButton;
@@ -402,13 +457,7 @@ class FixedEvent extends React.Component {
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:paddingBottomContainer, justifyContent:'space-evenly'}} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if(height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:paddingBottomContainer, justifyContent:'space-evenly'}}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 							<MaterialCommunityIcons name="calendar-today" size={130} color={blueColor}/>
@@ -584,7 +633,8 @@ function mapStateToProps(state) {
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
-		FEditState: FixedEventsReducer[selected] 
+		FEditState: FixedEventsReducer[selected],
+		FixedEventsReducer
 	};
 }
 export default connect(mapStateToProps, null)(FixedEvent);
