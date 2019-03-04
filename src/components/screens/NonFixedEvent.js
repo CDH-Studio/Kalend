@@ -8,7 +8,7 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 // import RadioForm from 'react-native-simple-radio-button';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
-import { ADD_NFE } from '../../constants';
+import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { connect } from 'react-redux';
 
@@ -41,7 +41,8 @@ class NonFixedEvent extends React.Component {
 
 		this.state = { 
 			//Height of Screen
-			containerHeight
+			containerHeight,
+			eventID: Date.now()
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -84,17 +85,37 @@ class NonFixedEvent extends React.Component {
 	}
 
 	nextScreen = () => {
-		this.props.dispatch({
-			type: ADD_NFE,
-			event: this.state
-		});
 
-		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			this.props.dispatch({
+				type: ADD_NFE,
+				event: this.state
+			});
 			this.props.navigation.navigate('TutorialReviewEvent');
-		}else if(this.props.navigation.state.routeName === 'TutorialEditNonFixedEvent') {
-			this.props.navigation.pop();
-		}else {
-			this.props.navigation.pop();
+		} else {
+			let events = this.props.NonFixedEventsReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.eventID === this.state.eventID) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
+				}
+			});
+
+			this.props.dispatch({
+				type: CLEAR_NFE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_NFE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
 		}
 	}
 
@@ -323,7 +344,8 @@ function mapStateToProps(state) {
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
-		NFEditState: NonFixedEventsReducer[selected] 
+		NFEditState: NonFixedEventsReducer[selected],
+		NonFixedEventsReducer
 	};
 }
 export default connect(mapStateToProps, null)(NonFixedEvent);

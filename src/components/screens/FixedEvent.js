@@ -338,7 +338,7 @@ class FixedEvent extends React.Component {
 			let arr = [];
 
 			events.map((event) => {
-				if (event.id === this.state.id) {
+				if (event.eventID === this.state.eventID) {
 					arr.push(this.state);
 				} else {
 					arr.push(event);

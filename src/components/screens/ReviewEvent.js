@@ -47,45 +47,53 @@ class ReviewEvent extends React.Component {
 		let fixedEventData = [];
 		let nonFixedEventData = [];
 		let schoolScheduleData = [
-			{
-				courseCode: 'SEG2505',
-				dayOfWeek: 'Monday',
-				hours: '1PM - 3PM',
-				location: 'CBY 202'
-			},
+			// {
+			// 	courseCode: 'SEG2505',
+			// 	dayOfWeek: 'Monday',
+			// 	hours: '1PM - 3PM',
+			// 	location: 'CBY 202'
+			// },
 		];
 
-		store.CoursesReducer.map((data) => {
-			schoolScheduleData.push({
-				courseCode: data.summary,
-				dayOfWeek: data.day,
-				hours: data.hours.start + ' - ' + data.hours.end,
-				location: data.location
-			});
-		});
+		console.log(store.getState())
 
-		store.FixedEventsReducer.map((data) => {
-			fixedEventData.push({
-				title: data.title,
-				dates: data.startDate + ' - ' + data.endDate,
-				recurrence: data.recurrenceValue,
-				hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
-				location: data.location,
-				description: data.description
+		if (store.getState().CoursesReducer !== undefined) {
+			store.getState().CoursesReducer.map((data) => {
+				schoolScheduleData.push({
+					courseCode: data.summary,
+					dayOfWeek: data.day,
+					hours: data.hours.start + ' - ' + data.hours.end,
+					location: data.location
+				});
 			});
-		});
+		}
 
-		store.NonFixedEventsReducer.map((data) => {
-			nonFixedEventData.push({
-				title: data.title,
-				location: data.location,
-				priorityLevel: priorityLevels[data.priority],
-				dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
-				description: data.description,
-				occurence: `${data.occurrence} times/week`,
-				duration: `${data.hours}h ${data.minutes}m`
+		if (store.getState().FixedEventsReducer !== undefined) {
+			store.getState().FixedEventsReducer.map((data) => {
+				fixedEventData.push({
+					title: data.title,
+					dates: data.startDate + ' - ' + data.endDate,
+					recurrence: data.recurrenceValue,
+					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
+					location: data.location,
+					description: data.description
+				});
 			});
-		});
+		}
+
+		if (store.getState().NonFixedEventsReducer !== undefined) {
+			store.getState().NonFixedEventsReducer.map((data) => {
+				nonFixedEventData.push({
+					title: data.title,
+					location: data.location,
+					priorityLevel: priorityLevels[data.priority],
+					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
+					description: data.description,
+					occurence: `${data.occurrence} times/week`,
+					duration: `${data.hours}h ${data.minutes}m`
+				});
+			});
+		}
 
 		this.setState({
 			fixedEventData,
@@ -165,33 +173,33 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>School Schedule</Text>
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text>No school schedule added, please go back to add one</Text> : null
+									<Text>No school schedule added, please go back to add one</Text> : 
+									this.state.schoolScheduleData.map((i,key) => {
+										return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} />;
+									})
 							}
-							{this.state.schoolScheduleData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} />;
-							})}
 						</View>
 
 						<View>
 							<Text style={styles.sectionTitle}>Fixed Events</Text>
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text>No fixed events added, please go back to add some</Text> : null
+									<Text>No fixed events added, please go back to add some</Text> : 
+									this.state.fixedEventData.map((i,key) => {
+										return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} />;
+									})
 							}
-							{this.state.fixedEventData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} />;
-							})}
 						</View>
 
 						<View>
 							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text>No non-fixed events added, please go back to add some</Text> : null
+									<Text>No non-fixed events added, please go back to add some</Text> : 
+									this.state.nonFixedEventData.map((i,key) => {
+										return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.occurence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
+									})
 							}
-							{this.state.nonFixedEventData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.occurence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
-							})}
 						</View>
 					</View>		
 				</ScrollView>
