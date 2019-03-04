@@ -1,23 +1,26 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {StatusBar, StyleSheet, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions} from 'react-native';
-import {Header} from 'react-navigation';
-import { blueColor, orangeColor, lightOrangeColor, statusBlueColor } from '../../../config';
+import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import DatePicker from 'react-native-datepicker';
+import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import DatePicker from 'react-native-datepicker';
-import TutorialStatus, {HEIGHT} from '../TutorialStatus';
-import {InsertFixedEvent} from '../../services/service';
+import { Header } from 'react-navigation';
+import { connect } from 'react-redux';
+import { blueColor, orangeColor, lightOrangeColor, statusBlueColor, grayColor } from '../../../config';
+import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import {ADD_FE, CLEAR_FE} from '../../constants';
+import { InsertFixedEvent } from '../../services/service';
 import { store } from '../../store';
+import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import {fixedEventStyles as styles} from '../../styles';
 
 const viewHeight = 519.1428833007812;
+const containerWidth = Dimensions.get('window').width;
 
+/**
+ * Permits the user to add their fixed events such as meetings and appointments. */
 class FixedEvent extends React.Component {
 
-	// Style for Navigation Bar
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
 		headerTintColor: 'white',
@@ -28,25 +31,22 @@ class FixedEvent extends React.Component {
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
-	// Constructor and States
+
 	constructor(props) {
 		super(props);
 
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
 		let containerHeight = null;
 		
-		if(viewHeight < containerHeightTemp) {
+		if (viewHeight < containerHeightTemp) {
 			containerHeight = containerHeightTemp;
 		}
 		
 		this.state = { 
-			//Height of Screen
 			containerHeight,
 
-			//Title of Event
 			title: '',
 			
-			//Time section
 			allDay: false,
 
 			startDate: new Date().toDateString(),
@@ -66,16 +66,24 @@ class FixedEvent extends React.Component {
 			disabledEndTime : true,
 			amPmEnd: this.getAmPm(),
 
-			//Other Information
 			location: '',
 			recurrenceValue: 'None',
 			recurrence: 'NONE',
 			description: '',
 
-			// Google Calendar ID
 			eventID: ''
 		};
+
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentWillMount() {
+		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			let fixedEvents = store.getState().FixedEventsReducer;
+			let selected = store.getState().NavigationReducer.reviewEventSelected;
+
+			this.setState({...fixedEvents[selected]});
+		}
 	}
 
 	/**
@@ -117,7 +125,7 @@ class FixedEvent extends React.Component {
 	}
 
 	/**
-	 * 
+	 * Sets the min end time on iOS
 	 */
 	setMinEndTime() {
 		let min = new Date();
@@ -261,6 +269,11 @@ class FixedEvent extends React.Component {
 		});
 	}
 
+	/**
+	 * The onDateChange of the start date dialog which modifies the appropriate state variables
+	 * 
+	 * @param {String} startDate The date output of the date dialog
+	 */
 	startDateOnDateChange = (startDate) => {
 		if (this.state.startDate !== this.state.endDate && startDate === this.state.endDate) {
 			this.setState({endTime: this.beforeStartTime(this.state.startTime)});
@@ -274,6 +287,11 @@ class FixedEvent extends React.Component {
 		});
 	}
 
+	/**
+	 * The onDateChange of the end date dialog which modifies the appropriate state variables
+	 * 
+	 * @param {String} endDate The date output of the date dialog
+	 */
 	endDateOnDateChange = (endDate) => { 
 		if (this.state.startDate !== this.state.endDate && endDate === this.state.startDate) {
 			this.setState({endTime: this.beforeStartTime(this.state.startTime)});
@@ -313,12 +331,15 @@ class FixedEvent extends React.Component {
 
 
 	/**
-	 * Goes to the next screen
+	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
 		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
 	}
 
+	/**
+	 * Adds the event in the calendar
+	 */
 	nextScreen = () => {
 		let info = {
 			title: this.state.title,
@@ -332,8 +353,7 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		}; 
 
-		
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
 			let events = this.props.FixedEventsReducer;
 			let arr = [];
 
@@ -359,7 +379,7 @@ class FixedEvent extends React.Component {
 			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
 		} else {
 			InsertFixedEvent(info).then(data => {
-				if(!data.error) {
+				if (!data.error) {
 					this.setState({
 						eventID: data.id
 					});
@@ -373,6 +393,9 @@ class FixedEvent extends React.Component {
 		}
 	}
 
+	/**
+	 * Adds the event to the calendar and resets the fields
+	 */
 	addAnotherEvent = () => {
 		let info = {
 			title: this.state.title,
@@ -386,7 +409,7 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		};
 		InsertFixedEvent(info).then(data => {
-			if(!data.error) {
+			if (!data.error) {
 				this.setState({
 					eventID: data.id
 				});
@@ -399,6 +422,9 @@ class FixedEvent extends React.Component {
 		});
 	}
 
+	/**
+	 * Reset the fields of the form
+	 */
 	resetField = () => {
 		this.setState({
 			description: '',
@@ -413,39 +439,38 @@ class FixedEvent extends React.Component {
 		});
 	}
 
-	componentWillMount() {
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
-			let fixedEvents = store.getState().FixedEventsReducer;
-			let selected = store.getState().NavigationReducer.reviewEventSelected;
-
-			this.setState({...fixedEvents[selected]});
-		}
-	}
-
-	//Render UI
 	render() {
+		const {containerHeight} = this.state;
 		let tutorialStatus;
 		let addEventButton;
 		let nextButton;
 		let paddingBottomContainer = HEIGHT;
 
-		if(this.props.navigation.state.routeName === 'TutorialFixedEvent') {
-			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		/**
+		 * In order to show components based on current route
+		 */
+		if (this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'#ffffff'} skip={this.skip} />;
+
 			addEventButton = 
 				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 				</TouchableOpacity>;
+
 			nextButton = 
 			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
 				<Text style={styles.buttonNextText}>NEXT</Text>
 			</TouchableOpacity>;
 		} else {
 			tutorialStatus = null;
+
 			addEventButton = null;
+
 			nextButton = 
 			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
 				<Text style={styles.buttonNextText}>DONE</Text>
 			</TouchableOpacity>;
+
 			paddingBottomContainer = null;
 		}
 		
@@ -453,8 +478,8 @@ class FixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom:paddingBottomContainer, justifyContent:'space-evenly'}}>
+				<ScrollView style={[styles.scrollView, {marginTop: StatusBar.currentHeight + Header.HEIGHT}]}>
+					<View style={[styles.content, {height: containerHeight, paddingBottom:paddingBottomContainer}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 							<MaterialCommunityIcons name="calendar-today" size={130} color={blueColor}/>
@@ -463,16 +488,16 @@ class FixedEvent extends React.Component {
 						<View style={styles.textInput}>
 							<MaterialCommunityIcons name="format-title" size={30} color={blueColor} />
 							<View style={styles.textInputBorder}>
-								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+								<TextInput style={styles.textInputText}
 									placeholder="Title" 
-									onChangeText={(title) => this.setState({title})} 
+									onChangeText={(title) => this.setState({title})}
 									value={this.state.title}/>
 							</View>
 						</View>
 						<View style={styles.timeSection}>
-							<View style={styles.allDay}>
+							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
-								<View style={{width: 130, alignItems:'flex-start'}}>
+								<View style={styles.switch}>
 									<Switch 
 										trackColor={{false: 'lightgray', true: lightOrangeColor}} 
 										ios_backgroundColor={'lightgray'} 
@@ -482,10 +507,10 @@ class FixedEvent extends React.Component {
 											disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} 
 										value = {this.state.allDay} />
 								</View>
-								<Text style={{width:65.8, opacity:0}}>empty</Text>
+								<Text style={styles.empty}>empty</Text>
 							</View>
 
-							<View style={styles.rowTimeSection}>
+							<View style={[styles.rowTimeSection, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>Start</Text>
 								<DatePicker showIcon={false} 
 									date={this.state.startDate} 
@@ -494,7 +519,7 @@ class FixedEvent extends React.Component {
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
-										placeholderText:{color:'#565454'}}} 
+										placeholderText:{color:grayColor}}} 
 									placeholder={this.state.startDate} 
 									format="ddd., MMM DD, YYYY" 
 									minDate={this.state.minStartDate} 
@@ -513,7 +538,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color:'#565454', 
+											color: grayColor, 
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
@@ -523,7 +548,7 @@ class FixedEvent extends React.Component {
 									onDateChange={this.startTimeOnDateChange}/>
 							</View>
 
-							<View style={styles.rowTimeSection}>
+							<View style={[styles.rowTimeSection, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>End</Text>
 								<DatePicker showIcon={false} 
 									date={this.state.endDate} 
@@ -553,7 +578,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color:'#565454', 
+											color: grayColor, 
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 									format="HH:mm A" 
@@ -566,12 +591,11 @@ class FixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.description}>
-
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on" size={30} color={blueColor} />
 
 								<View style={styles.textInputBorder}>
-									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+									<TextInput style={styles.textInputText} 
 										placeholder="Location" 
 										onChangeText={(location) => this.setState({location})} 
 										value={this.state.location}/>
@@ -582,7 +606,7 @@ class FixedEvent extends React.Component {
 								<MaterialCommunityIcons name="text-short" size={30} color={blueColor} />
 
 								<View style={styles.textInputBorder}>
-									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+									<TextInput style={styles.textInputText} 
 										placeholder="Description" 
 										onChangeText={(description) => this.setState({description})} 
 										value={this.state.description}/>
@@ -608,7 +632,6 @@ class FixedEvent extends React.Component {
 									}
 								</View>
 							</View>
-
 						</View>
 
 						<View style={styles.buttons}>
@@ -634,130 +657,5 @@ function mapStateToProps(state) {
 		FixedEventsReducer
 	};
 }
+
 export default connect(mapStateToProps, null)(FixedEvent);
-
-const containerWidth = Dimensions.get('window').width;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-
-	content: {
-		marginTop: StatusBar.currentHeight + Header.HEIGHT,
-		flex: 1
-	},
-
-	instruction: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-
-	text: {
-		fontFamily: 'Raleway-Regular',
-		color: '#565454',
-		fontSize: 20,
-		width: 220,
-		textAlign: 'right',
-		paddingRight: 15
-	},
-
-	textInput: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'flex-end',
-		marginRight: 5,
-		height: 40
-	},
-
-	textInputBorder: {
-		borderBottomColor: 'lightgray',
-		borderBottomWidth: 1,
-		width: '87%',
-		marginLeft: 10,
-	},
-
-	blueTitle: {
-		color: blueColor,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 18,
-		width: 70
-	},
-	
-	timeSection: {
-		alignItems: 'center',
-		marginBottom: -20
-		
-	},
-
-	allDay: {
-		justifyContent: 'space-between',
-		flexDirection: 'row',
-		alignItems: 'center',
-		width: containerWidth,
-		paddingLeft: 45,
-		paddingRight: 5
-	},
-
-	rowTimeSection: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		width: containerWidth,
-		justifyContent: 'space-between',
-		paddingLeft: 45,
-		paddingRight: 5
-	},
-
-	recurrence:{
-		color: '#565454',
-		height: 40,
-		width: '105%',
-		marginLeft: -5,
-		marginBottom:-8
-	},
-
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 20
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: blueColor,
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: blueColor,
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blueColor,
-		textAlign: 'center',
-		padding: 8
-	}
-});

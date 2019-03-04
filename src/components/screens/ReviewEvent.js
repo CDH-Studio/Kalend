@@ -1,49 +1,62 @@
 import React from 'react';
-import {Platform, StatusBar, StyleSheet, ScrollView, View, Text, Dimensions} from 'react-native';
-import {Header} from 'react-navigation';
+import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { blueColor } from '../../../config';
-import EventOverview from '../EventOverview';
-import TutorialStatus, {HEIGHT} from '../TutorialStatus';
-import updateNavigation from '../NavigationHelper';
+import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
+import { blueColor, statusBlueColor } from '../../../config';
+import EventOverview from '../EventOverview';
+import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-
+import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import {reviewEventStyles as styles} from '../../styles';
 
 const priorityLevels = {
 	0: 'Low',
 	0.5: 'Normal',
 	1: 'High'
 };
+const tutorialHeight = HEIGHT;
+const headerHeight = Header.HEIGHT;
+const containerHeight = containerHeight;
 
+/**
+ * Permits users to verify and edit the events they added
+ */
 class ReviewEvent extends React.Component {
 
 	static navigationOptions = {
 		title: 'Review Events',
-		headerTintColor: '#fff',
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
+		headerTintColor: '#ffffff',
+		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: '#1473E6',
+			backgroundColor: blueColor,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 
 	constructor(props) {
 		super(props);
+
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		this.state = {
-			//Height of Screen
 			containerHeight: null,
 			showFAB: true,
-			currentY: 0,
+			currentY: 0
 		};
 	}
 
-	updateInformation = () =>{
+	componentWillMount() {
+		this.updateInformation();
+	}
+
+	componentWillReceiveProps() {
+		this.updateInformation();
+		this.forceUpdate();
+	}
+
+	updateInformation = () => {
 		let fixedEventData = [];
 		let nonFixedEventData = [];
 		let schoolScheduleData = [
@@ -94,7 +107,8 @@ class ReviewEvent extends React.Component {
 		});
 	}
 	
-	// Hides the FAB when scrolling down
+	/**
+	 * Hides the FAB when scrolling down */ 
 	onScroll = (event) => {
 		event = Math.abs(event.nativeEvent.contentOffset.y);
 		if (event > Math.abs(this.state.currentY)) {
@@ -114,50 +128,46 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
 			this.props.navigation.navigate('TutorialEdit' + editScreen, {update:true});
-		}else {
+		} else {
 			this.props.navigation.navigate('DashboardEdit' + editScreen, {update:true});
 		}
 	}
 
+	/**
+	 * Goes to the appropriate Schedule Creation Screen
+	 */
 	navigateCreationScreen = () => {
-		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
 			this.props.navigation.navigate('TutorialScheduleCreation');
-		}else {
+		} else {
 			this.props.navigation.navigate('DashboardScheduleCreation');
 		}
-	}
-
-	componentWillMount() {
-		this.updateInformation();
-	}
-
-	componentWillReceiveProps() {
-		this.updateInformation();
-		this.forceUpdate();
 	}
 
 	render() {
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
-		//In order to remove the tutorial status if not needed
+		/**
+		 * In order to remove the tutorial status if not needed */
 		let tutorialStatus;
-		if(this.props.navigation.state.routeName === 'TutorialReviewEvent') {
-			tutorialStatus = <TutorialStatus active={4} color={blueColor} backgroundColor={'white'} />;
+
+		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+			tutorialStatus = <TutorialStatus active={4} color={blueColor} backgroundColor={'#ffffff'} />;
 		} else {
 			tutorialStatus = null;
 		}
 
 		return(
 			<View style={styles.container}>
-				<StatusBar translucent={true} backgroundColor={'#105dba'} />
+				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.scrollView} onScroll={this.onScroll}>
-					<View style={styles.content} 
+				<ScrollView style={[styles.scrollView, {marginTop: StatusBar.currentHeight + headerHeight}]} onScroll={this.onScroll}>
+					<View style={[styles.content, {height: containerHeight, paddingBottom: tutorialHeight + 16}]} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
-							if(height < containerHeight) {
+							if (height < containerHeight) {
 								this.setState({containerHeight});
 							}
 						}}>
@@ -199,7 +209,6 @@ class ReviewEvent extends React.Component {
 				<FAB
 					style={styles.fab}
 					icon="check"
-
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
 
@@ -217,43 +226,5 @@ function mapStateToProps(state) {
 		NonFixedEventsReducer 
 	};
 }
+
 export default connect(mapStateToProps, null)(ReviewEvent);
-
-const tutorialHeight = HEIGHT;
-const headerHeight = Header.HEIGHT;
-const containerHeight = containerHeight;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-
-	scrollView: {
-		flex: 1,
-		marginTop: StatusBar.currentHeight + headerHeight
-	},
-
-	content: {
-		flex:1,
-		justifyContent:'space-evenly',
-		height: containerHeight,
-		paddingBottom: tutorialHeight + 16,
-		paddingHorizontal: 20
-	},
-
-	sectionTitle: {
-		color: '#565454',
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 20,
-		marginTop: 20,
-		marginBottom: 5
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		right: 0,
-		bottom: 0,
-		zIndex: 1 //To make it go on top of the tutorialStatus
-	},
-});
