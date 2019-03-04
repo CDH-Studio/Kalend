@@ -7,6 +7,7 @@ import EventOverview from '../EventOverview';
 import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import updateNavigation from '../NavigationHelper';
 import { connect } from 'react-redux';
+import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 
 class ReviewEvent extends React.Component {
 
@@ -26,17 +27,39 @@ class ReviewEvent extends React.Component {
 	constructor(props) {
 		super(props);
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		this.deleteEvent = this.deleteEvent.bind(this);
 
-		let fixedEventData = [];
-		let nonFixedEventData = [];
-		let priorityLevels = {
-			0: 'Low',
-			0.5: 'Normal',
-			1: 'High'
+		this.state = {
+			//Height of Screen
+			containerHeight: null,
+			showFAB: true,
+			currentY: 0,
+			priorityLevels: {
+				0: 'Low',
+				0.5: 'Normal',
+				1: 'High'
+			},
+			fixedEventData: [],
+			nonFixedEventData: [],
+			schoolScheduleData: []
 		};
+	}
+
+	componentWillMount() {
+		this.props.NonFixedEventsReducer.map((data) => {
+			this.state.nonFixedEventData.push({
+				title: data.title,
+				location: data.location,
+				priorityLevel: this.state.priorityLevels[data.priority],
+				dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
+				description: data.description,
+				occurence: `${data.occurrence} times/week`,
+				duration: `${data.hours}h ${data.minutes}m`
+			});
+		});
 
 		this.props.FixedEventsReducer.map((data) => {
-			fixedEventData.push({
+			this.state.fixedEventData.push({
 				title: data.title,
 				dates: data.startDate + ' - ' + data.endDate,
 				recurrence: data.recurrenceValue,
@@ -46,53 +69,14 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
-		this.props.NonFixedEventsReducer.map((data) => {
-			nonFixedEventData.push({
-				title: data.title,
+		this.props.CoursesReducer.map((data) => {
+			this.state.schoolScheduleData.push({
+				courseCode: data.summary,
+				dayOfWeek: data.dayOfWeek,
 				location: data.location,
-				priorityLevel: priorityLevels[data.priority],
-				dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
-				description: data.description,
-				occurence: `${data.occurrence} times/week`,
-				duration: `${data.hours}h ${data.minutes}m`
+				hours: `${data.hours[0][0]}:${data.hours[0][1]} ${data.hours[0][2]} - ${data.hours[1][0]}:${data.hours[1][1]} ${data.hours[1][2]}`
 			});
 		});
-
-		this.state = {
-			//Height of Screen
-			containerHeight: null,
-			showFAB: true,
-			currentY: 0,
-
-			fixedEventData,
-			nonFixedEventData,
-			schoolScheduleData: [
-				{
-					courseCode: 'SEG2505',
-					dayOfWeek: 'Monday',
-					hours: '1PM - 3PM',
-					location: 'CBY 202'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				},
-				{
-					courseCode: 'ITI1500',
-					dayOfWeek: 'Friday',
-					hours: '8:30AM - 11AM',
-					location: 'SITE G104'
-				}
-			]
-		};
 	}
 	
 	// Hides the FAB when scrolling down
@@ -109,6 +93,40 @@ class ReviewEvent extends React.Component {
 				currentY: event
 			});
 		}
+	}
+	
+	deleteEvent(id, category) {
+		let newEvents;
+		let eventType;
+		let objectToChange;
+
+		switch(category) {
+			case 'SchoolSchedule':
+				eventType = DELETE_COURSE;
+				newEvents = this.state.schoolScheduleData;
+				objectToChange = 'schoolScheduleData';
+				break;
+			case 'FixedEvent':
+				eventType = DELETE_FE;
+				newEvents = this.state.fixedEventData;
+				objectToChange = 'fixedEventData';
+				break;
+			case 'NonFixedEvent':
+				eventType = DELETE_NFE;
+				newEvents = this.state.nonFixedEventData;
+				objectToChange = 'nonFixedEventData';
+				break;
+				
+			default:
+				break;
+		}
+
+		newEvents = newEvents.filter((event,index) => {
+			if(index != id) return event;
+		});
+
+		this.props.dispatch({type: eventType, event: newEvents});
+		this.setState({[objectToChange]: newEvents});
 	}
 
 	/**
@@ -160,7 +178,7 @@ class ReviewEvent extends React.Component {
 									<Text>No school schedule added, please go back to add one</Text> : null
 							}
 							{this.state.schoolScheduleData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} action={this.deleteEvent} />;
 							})}
 						</View>
 
@@ -171,7 +189,7 @@ class ReviewEvent extends React.Component {
 									<Text>No fixed events added, please go back to add some</Text> : null
 							}
 							{this.state.fixedEventData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} action={this.deleteEvent} />;
 							})}
 						</View>
 
@@ -182,7 +200,19 @@ class ReviewEvent extends React.Component {
 									<Text>No non-fixed events added, please go back to add some</Text> : null
 							}
 							{this.state.nonFixedEventData.map((i,key) => {
-								return <EventOverview key={key} id={key} category={'NonFixedEvent'} eventTitle={i.title} date={i.dates} time={i.duration} recurrence={i.occurence} priorityLevel={i.priorityLevel} location={i.location} description={i.description} navigateEditScreen = {this.navigateEditScreen} />;
+								return <EventOverview 
+									key={key} id={key} 
+									category={'NonFixedEvent'} 
+									eventTitle={i.title} 
+									date={i.dates} 
+									time={i.duration} 
+									recurrence={i.occurence} 
+									priorityLevel={i.priorityLevel} 
+									location={i.location} 
+									description={i.description} 
+									navigateEditScreen={this.navigateEditScreen}
+									action={this.deleteEvent}
+								/>;
 							})}
 						</View>
 					</View>		
@@ -202,11 +232,12 @@ class ReviewEvent extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const { FixedEventsReducer, NonFixedEventsReducer} = state;
+	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer} = state;
 
 	return {
 		FixedEventsReducer,
-		NonFixedEventsReducer 
+		NonFixedEventsReducer,
+		CoursesReducer 
 	};
 }
 export default connect(mapStateToProps, null)(ReviewEvent);

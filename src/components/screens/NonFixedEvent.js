@@ -96,7 +96,6 @@ class NonFixedEvent extends React.Component {
 			type: ADD_NFE,
 			event: this.state
 		});
-
 		this.resetFields();
 	}
 
@@ -116,7 +115,7 @@ class NonFixedEvent extends React.Component {
 		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
 			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
 			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent} onPress={this.test}> 
+				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 				</TouchableOpacity>;
 			nextButton = 

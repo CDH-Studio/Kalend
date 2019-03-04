@@ -26,6 +26,7 @@ class EventOverview extends React.Component {
 	deleteEvent = () => {
 		//TODO Add method to delete event (component and database)
 		this.setState({deleteDialogVisible: false, modalVisible: false});
+		this.props.action(this.props.id, this.props.category);
 	}
 
 	render() {

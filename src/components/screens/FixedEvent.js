@@ -40,6 +40,7 @@ class FixedEvent extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
+	
 	componentWillMount() {
 		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
 			this.setState({...this.props.FEditState});
