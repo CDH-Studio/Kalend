@@ -47,7 +47,7 @@ class CameraRollImage extends React.Component {
 
 					<Icon style={[styles.checkIcon, {opacity: selectedStyle}]} 
 						name="check" 
-						size={selectedIconSize} 
+						size={selectedIconSize - 10} 
 						color={imageRollCheck} />
 				</TouchableOpacity>
 			</View>

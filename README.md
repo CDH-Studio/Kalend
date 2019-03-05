@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/master/src/assets/img/dark_logo.png" alt="Kalend" width="300"/>
+<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/dev/src/assets/img/dark_logo.png" alt="Kalend" width="300"/>
 
 [![CircleCI](https://img.shields.io/circleci/project/github/CDH-Studio/Kalend/master.svg?style=flat&logo=circleci)](https://circleci.com/gh/CDH-Studio/Kalend)
 [![Release Version](https://img.shields.io/github/release/CDH-Studio/Kalend.svg?style=flat)](https://github.com/CDH-Studio/Kalend/releases)
