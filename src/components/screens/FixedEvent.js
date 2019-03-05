@@ -11,7 +11,6 @@ import TutorialStatus, {HEIGHT} from '../TutorialStatus';
 import {InsertFixedEvent} from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import {ADD_FE, CLEAR_FE} from '../../constants';
-import { store } from '../../store';
 
 const viewHeight = 519.1428833007812;
 
@@ -31,51 +30,22 @@ class FixedEvent extends React.Component {
 	// Constructor and States
 	constructor(props) {
 		super(props);
-
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
-		let containerHeight = null;
-		
-		if(viewHeight < containerHeightTemp) {
-			containerHeight = containerHeightTemp;
-		}
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 		
 		this.state = { 
 			//Height of Screen
-			containerHeight,
-
-			//Title of Event
-			title: '',
-			
-			//Time section
-			allDay: false,
-
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-
-			startTime: new Date().toLocaleTimeString(),
-			disabledStartTime : false,
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime : true,
-			amPmEnd: this.getAmPm(),
-
-			//Other Information
-			location: '',
-			recurrenceValue: 'None',
-			recurrence: 'NONE',
-			description: '',
-
-			// Google Calendar ID
-			eventID: ''
+			containerHeight
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentWillMount() {
+		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+			this.setState({...this.props.FEditState});
+		} else {
+			this.resetField();
+		}
 	}
 
 	/**
@@ -338,7 +308,7 @@ class FixedEvent extends React.Component {
 			let arr = [];
 
 			events.map((event) => {
-				if (event.id === this.state.id) {
+				if (event.eventID === this.state.eventID) {
 					arr.push(this.state);
 				} else {
 					arr.push(event);
@@ -401,26 +371,41 @@ class FixedEvent extends React.Component {
 
 	resetField = () => {
 		this.setState({
-			description: '',
-			allDay: false,
-			recurrence: 'NONE',
+			//Title of Event
 			title: '',
-			location: '',
+				
+			//Time section
+			allDay: false,
+
 			startDate: new Date().toDateString(),
+			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
+
 			endDate: new Date().toDateString(),
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+
 			startTime: new Date().toLocaleTimeString(),
-			endTime: new Date().toLocaleTimeString()
+			disabledStartTime : false,
+			amPmStart: this.getAmPm(),
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime : true,
+			amPmEnd: this.getAmPm(),
+
+			//Other Information
+			location: '',
+			recurrenceValue: 'None',
+			recurrence: 'NONE',
+			description: '',
+
+			// Google Calendar ID
+			eventID: ''
 		});
 	}
 
-	componentWillMount() {
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
-			let fixedEvents = store.getState().FixedEventsReducer;
-			let selected = store.getState().NavigationReducer.reviewEventSelected;
 
-			this.setState({...fixedEvents[selected]});
-		}
-	}
 
 	//Render UI
 	render() {

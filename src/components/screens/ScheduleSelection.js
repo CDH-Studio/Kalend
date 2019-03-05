@@ -259,7 +259,14 @@ class Schedule extends React.Component {
 							{ this.createLines(numOfLines) }
 
 							{ data.school.map((info, key) => {
-								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='school' timeInterval={timeInterval} startOffset={startOffset} />;
+								return  <ScheduleEvent key={key} 
+									showShadow={showShadow} 
+									chunks={info.chunks} 
+									day={info.day} 
+									start={info.start} 
+									kind='school' 
+									timeInterval={timeInterval} 
+									startOffset={startOffset} />;
 							})}
 
 							{ data.fixed.map((info, key) => {
@@ -279,7 +286,6 @@ class Schedule extends React.Component {
 							</View>
 						</View>
 					</View>
-					
 				</TouchableOpacity>
 			</View>
 		);

@@ -1,4 +1,4 @@
-import { ADD_COURSE, CLEAR_COURSE } from '../constants';
+import { ADD_COURSE, CLEAR_COURSE, DELETE_COURSE } from '../constants';
 
 export default function CoursesReducer(state = [], action) {
 	const { event } = action;
@@ -6,8 +6,10 @@ export default function CoursesReducer(state = [], action) {
 	
 		case ADD_COURSE: 
 			return  [...state, event];
+		case DELETE_COURSE:
+			return event;
 		case CLEAR_COURSE: 
-			return  [...state, event];
+			return  [];
 
 		default:
 			return state;
