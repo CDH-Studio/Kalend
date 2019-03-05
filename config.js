@@ -10,6 +10,7 @@ export const imageRollCheck = '#764D16';
 export const darkOrangeColor = '#FF621C';
 export const redColor = '#b80000';
 export const statusBarDark = '#00000050';
+export const grayColor = '#565454';
 export const calendarEventColors = {
 	red: '#E57B73',
 	green: '#36B478',

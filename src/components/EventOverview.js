@@ -1,30 +1,48 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Modal} from 'react-native';
-import { calendarEventColors } from '../../config';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {SET_NAV_SCREEN} from '../constants';
+import { calendarEventColors, grayColor } from '../../config';
+import { SET_NAV_SCREEN } from '../constants';
 import { store } from '../store';
+import { eventOverviewStyles as styles } from '../styles';
 
+/**
+ * Permits the user to get more information on their events in the Review Events screen
+ * @prop {Number} key The key of the event
+ * @prop {Number} id The id of the event
+ * @prop {String} category The category of the event
+ * @prop {String} eventTitle The title of the event
+ * @prop {String} date The dates of the event
+ * @prop {String} time The time of the event
+ * @prop {String} location The location of the event
+ * @prop {String} description The description of the event
+ * @prop {String} recurrence The recurrence of the event
+ * @prop {String} priorityLevel The priority level of the event
+ * @prop {String} navigateEditScreen The appropriate edit screen for the event
+ * @prop {function} action The function to be executed when delete is triggered
+ */
 class EventOverview extends React.Component {
 
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			modalVisible: false,
 			deleteDialogVisible: false,
 		};
 	}
-
-	//In order for the info modal to not stay open when on edit screen
+	
+	/**
+	 * In order for the info modal to not stay open when on edit screen */
 	navigateAndCloseModal = (editScreen) => {
 		this.setState({modalVisible: false});
 		this.props.navigateEditScreen(editScreen);
 	}
 
-	//To delete the event from the database and delete the component
+	/**
+	 * To delete the event from the database and delete the component */
 	deleteEvent = () => {
-		//TODO Add method to delete event (component and database)
 		this.setState({deleteDialogVisible: false, modalVisible: false});
 		this.props.action(this.props.id, this.props.category);
 	}
@@ -35,7 +53,7 @@ class EventOverview extends React.Component {
 		let details;
 		let editScreen;
 
-		if(this.props.category === 'SchoolSchedule') {
+		if (this.props.category === 'SchoolSchedule') {
 			categoryColor = calendarEventColors.red;
 			categoryIcon = 'school';
 			details = 
@@ -45,7 +63,7 @@ class EventOverview extends React.Component {
 				</View>;
 
 			editScreen = 'Course';
-		}else if (this.props.category === 'FixedEvent') {
+		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = calendarEventColors.green;
 			categoryIcon = 'calendar-today';
 			details = 
@@ -66,7 +84,7 @@ class EventOverview extends React.Component {
 					</View>
 				</View>;
 			editScreen = 'FixedEvent';
-		}else {
+		} else {
 			categoryColor = calendarEventColors.purple;
 			categoryIcon = 'face';
 			details = 
@@ -106,7 +124,8 @@ class EventOverview extends React.Component {
 							<Text></Text>
 						</View>
 						<View>
-							<Text style={styles.eventTitle} numberOfLines={1}>{this.props.eventTitle}</Text>
+							<Text style={styles.eventTitle}
+								numberOfLines={1}>{this.props.eventTitle}</Text>
 							<Text style={styles.eventInfo}>{this.props.date}</Text>
 							<Text style={styles.eventInfo}>{this.props.time}</Text>
 						</View>
@@ -123,10 +142,14 @@ class EventOverview extends React.Component {
 							reviewEventSelected: this.props.id
 						});
 					}}>
-						<Feather name="edit" size={30} color="#565454" />
+						<Feather name="edit"
+							size={30}
+							color={grayColor} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}>
-						<Feather name="trash" size={30} color="#565454" />
+						<Feather name="trash"
+							size={30}
+							color={grayColor} />
 					</TouchableOpacity>
 				</View>
 
@@ -138,8 +161,11 @@ class EventOverview extends React.Component {
 					animationType={'slide'}>
 					<View style={styles.modalView}>
 						<View style={styles.modalContent}>
-							<TouchableOpacity style={styles.closeModal} onPress={() => this.setState({modalVisible: false})}>
-								<Feather name="x" size={30} color="#565454" />
+							<TouchableOpacity style={styles.closeModal}
+								onPress={() => this.setState({modalVisible: false})}>
+								<Feather name="x"
+									size={30}
+									color={grayColor} />
 							</TouchableOpacity>
 
 							<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
@@ -156,7 +182,9 @@ class EventOverview extends React.Component {
 									</View>
 								</View>
 								
-								<MaterialCommunityIcons name={categoryIcon} size={80} color="#565454"/>
+								<MaterialCommunityIcons name={categoryIcon}
+									size={80}
+									color={grayColor} />
 							</View>
 
 							<View style={styles.modalDetailsView}>
@@ -165,12 +193,18 @@ class EventOverview extends React.Component {
 							</View>
 							
 							<View style={styles.actionsModal}>
-								<TouchableOpacity style={styles.actionIconModal} onPress={() => this.navigateAndCloseModal(editScreen)}>
-									<Feather name="edit" size={40} color="#565454" />
+								<TouchableOpacity style={styles.actionIconModal}
+									onPress={() => this.navigateAndCloseModal(editScreen)}>
+									<Feather name="edit"
+										size={40}
+										color={grayColor} />
 								</TouchableOpacity>
 
-								<TouchableOpacity style={styles.actionIconModal} onPress={() => this.setState({deleteDialogVisible: true})}>
-									<Feather name="trash" size={40} color="#565454" />
+								<TouchableOpacity style={styles.actionIconModal}
+									onPress={() => this.setState({deleteDialogVisible: true})}>
+									<Feather name="trash"
+										size={40}
+										color={grayColor} />
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -186,7 +220,9 @@ class EventOverview extends React.Component {
 					<View style={styles.modalView}>
 						<View style={styles.deleteDialogContent}>
 							<View style={styles.deleteDialogMainRow}>
-								<Feather name="trash" size={80} color="#565454" />
+								<Feather name="trash"
+									size={80}
+									color={grayColor} />
 
 								<View style={styles.deleteDialogRightCol}>
 									<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
@@ -211,204 +247,3 @@ class EventOverview extends React.Component {
 }
 
 export default EventOverview;
-
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-		height: 70,
-		marginVertical: 10,
-		paddingHorizontal: 10,
-		borderRadius: 8,
-		backgroundColor: '#FFFFFF',
-		elevation: 4
-	},
-
-	info: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		alignItems: 'center'
-	},
-
-	category: {
-		width: 20,
-		height: 70,
-		marginLeft: -10,
-		marginRight: 10,
-		borderBottomLeftRadius: 8, 
-		borderTopLeftRadius: 8
-	},
-
-	actions: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		width: 70
-	},
-
-	eventTitle: {
-		width: 180,
-		fontFamily: 'OpenSans-SemiBold',
-		fontSize: 15,
-		color: '#565454'
-	},
-
-	eventInfo: {
-		fontFamily: 'OpenSans-Regular',
-		color: '#565454'
-	},
-
-	modalView: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#00000080',
-	},
-
-	modalContent: {
-		justifyContent: 'space-between',
-		backgroundColor: 'white',
-		borderRadius: 8,
-		marginHorizontal: 20
-	},
-
-	closeModal: {
-		flexDirection:'row',
-		justifyContent:'flex-end',
-		paddingHorizontal: 15,
-		paddingVertical: 10
-	},
-
-	modalInfoDate: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		flexWrap: 'wrap',
-		width: 160
-	},
-
-	modalInfoTime: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		flexWrap: 'wrap'
-	},
-
-	modalDetailView: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		alignItems: 'center'
-	},
-
-	modalTitle: {
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		flexWrap: 'wrap',
-		fontSize: 18,
-		fontFamily: 'OpenSans-SemiBold',
-		color: 'white'
-	},
-
-	modalInfoView: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingVertical: 5,
-		paddingHorizontal: 20
-	},
-
-	modalInfoTitle: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
-		paddingVertical: 3,
-		color: '#565454'
-	},
-
-	modalInfoText: {
-		fontSize: 15,
-		fontFamily: 'OpenSans-Regular',
-		paddingVertical: 3,
-		color: '#565454'
-	},
-
-	modalDetailsView: {
-		paddingHorizontal: 20
-	},
-
-	modalDetailsTitle: {
-		fontSize: 16,
-		textDecorationLine: 'underline',
-		fontFamily: 'Raleway-SemiBold',
-		paddingVertical: 1,
-		color: '#565454'
-	},
-	
-	modalDetailsSubtitle: {
-		fontSize: 15,
-		fontFamily: 'Raleway-SemiBold',
-		paddingVertical: 1,
-		color: '#565454'
-	},
-
-	modalDetailsText: {
-		fontSize: 15,
-		fontFamily: 'OpenSans-Regular',
-		paddingVertical: 1,
-		color: '#565454'
-	},
-
-	actionsModal: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginVertical: 10,
-		backgroundColor: 'white',
-	},
-
-	actionIconModal: {
-		paddingHorizontal: 20
-	},
-
-	deleteDialogContent: {
-		backgroundColor: 'white',
-		borderRadius: 8,
-		justifyContent: 'space-between',
-		padding: 10
-	},
-
-	deleteDialogMainRow: {
-		flexDirection: 'row'
-	},
-
-	deleteDialogRightCol: {
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		paddingVertical: 10,
-		paddingRight: 10
-	},
-
-	deleteDialogQuestion: {
-		fontSize: 20,
-		fontFamily: 'Raleway-SemiBold',
-		marginLeft: 10,
-		color: '#565454'
-	},
-
-	deleteDialogOptions: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end'
-	},
-
-	deleteDialogCancel: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize:16,
-		color: '#565454'
-	},
-
-	deleteDialogYes: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
-		color: 'red',
-		marginLeft: 20
-	}
-
-});
