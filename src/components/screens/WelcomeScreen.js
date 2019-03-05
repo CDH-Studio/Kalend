@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions, StatusBar } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import updateNavigation from '../NavigationHelper';
 import { slides, statusBarDark } from '../../../config';
+import { welcomeStyles as styles } from '../../styles';
 
 const slidesIconSize = 200;
 const nextIconSize = 24;
@@ -105,66 +106,3 @@ class WelcomeScreen extends React.Component {
 }
 
 export default WelcomeScreen;
-
-const styles = StyleSheet.create({
-	mainContent: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'space-around',
-		height: Dimensions.get('window').height + StatusBar.currentHeight,
-		width: Dimensions.get('window').width
-	},
-
-	image: {
-		width: 320,
-		height: 320,
-	},
-
-	text: {
-		fontSize: 16,
-		color: 'rgba(255, 255, 255, 0.8)',
-		backgroundColor: 'transparent',
-		textAlign: 'center',
-		paddingHorizontal: 16,
-		fontFamily: 'Raleway-Regular',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10 
-	},
-
-	title: {
-		fontSize: 24,
-		color: 'white',
-		backgroundColor: 'transparent',
-		textAlign: 'center',
-		marginBottom: 16,
-		fontFamily: 'Raleway-Bold',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10 
-	},
-
-	buttonCircle: {
-		width: 40,
-		height: 40,
-		backgroundColor: 'rgba(0, 0, 0, .2)',
-		borderRadius: 20,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-
-	icon: {
-		backgroundColor: 'transparent', 
-		textShadowColor: 'rgba(0, 0, 0, 0.20)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 20 
-	},
-
-	ionicons: { 
-		backgroundColor: 'transparent'
-	},
-	
-	container: {
-		flex: 1
-	}
-});

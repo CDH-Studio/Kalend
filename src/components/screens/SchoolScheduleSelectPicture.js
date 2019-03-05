@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, StyleSheet, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Text } from 'react-native';
+import { CameraRoll, ScrollView, View, StatusBar, Platform, ImageBackground, ActivityIndicator, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { gradientColors } from '../../../config';
 import CameraRollImage from '../CameraRollImage';
+import { selectPictureStyles as styles } from '../../styles';
 
-const iamgesPerLoad = 99;
+const imagesPerLoad = 99;
 
 /**
  * Camera roll screen to let the user select a schedule
@@ -37,7 +38,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 			images: [],
 			selected: '',
 			fetchParams: { 
-				first: iamgesPerLoad, 
+				first: imagesPerLoad, 
 				assetType: 'Photos',
 			},
 			showFAB: false,
@@ -256,49 +257,3 @@ class SchoolScheduleSelectPicture extends React.Component {
 }
 
 export default connect()(SchoolScheduleSelectPicture);
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		width: '100%',
-		height: '130%', //Fixes pattern bug
-	},
-
-	imageGrid: {
-		padding: 5,
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'center',
-		paddingBottom: 88 + 5
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		right: 0,
-		bottom: 0,
-	},
-
-	content: {
-		flex: 1,
-	},
-
-	scroll: {
-		paddingTop: 88,
-	},
-
-	emptyText: {
-		color: 'white', 
-		padding: 20, 
-		fontFamily: 'Raleway-Regular', 
-		fontSize: 17, 
-		textAlign: 'center'
-	},
-	
-	emptyView: {
-		alignItems: 'center', 
-		padding: 20, 
-		height: Dimensions.get('window').height*0.85, 
-		justifyContent: 'center'
-	}
-});

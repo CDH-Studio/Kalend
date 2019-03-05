@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
+import { TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { blueColor, orangeColor, redColor } from '../../../config';
+import { takePictureStyles as styles } from '../../styles';
 
 const iconColor = 'white';
 
@@ -211,51 +212,3 @@ class SchoolScheduleTakePicture extends React.Component {
 }
 
 export default connect()(SchoolScheduleTakePicture);
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		backgroundColor: 'black'
-	},
-
-	preview: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		alignItems: 'center'
-	},
-
-	capture: {
-		flex: 0,
-		padding: 15,
-		borderRadius: 50,
-		margin: 20,
-		alignSelf: 'center',
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-	},
-
-	icon: {
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
-	}, 
-	
-	buttonContainer: { 
-		justifyContent: 'center', 
-		alignItems: 'center',
-		position: 'absolute',
-		right: 0,
-		left: 0,
-		bottom: 0 
-	}
-});

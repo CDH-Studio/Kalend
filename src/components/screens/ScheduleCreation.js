@@ -1,9 +1,10 @@
 import React from 'react';
-import { StatusBar, Text, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import { StatusBar, Text, ImageBackground } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { gradientColors, orangeColor, lightOrangeColor } from '../../../config';
+import { scheduleCreateStyles as styles } from '../../styles';
 
 /**
  * The loading screen shown after the user reviewed their events
@@ -63,40 +64,3 @@ class ScheduleCreation extends React.Component {
 }
 
 export default ScheduleCreation;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-		height: '130%' //Fixes pattern bug
-	},
-
-	surface: {
-		padding: 8,
-		height: 110,
-		width: Dimensions.get('window').width * 0.8,
-		borderRadius: 4,
-		justifyContent: 'center',
-		elevation: 3,
-	},
-
-	title: {
-		fontSize: 20,
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center'
-	},
-
-	subtitle: {
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center',
-		paddingTop: 5,
-		paddingBottom: 10
-	},
-
-	progressBar: {
-		alignSelf:'center'
-	}
-});

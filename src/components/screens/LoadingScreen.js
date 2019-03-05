@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, Animated, Easing} from 'react-native';
+import { StatusBar, View, Animated, Easing} from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
 import { gradientColors, blueColor, statusBarDark } from '../../../config';
+import { loadingStyles as styles } from '../../styles';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
@@ -102,24 +103,3 @@ let mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(LoadingScreen);
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-
-	animView: {
-		position:'absolute',
-		justifyContent: 'center',
-		alignItems: 'center',
-		height:'100%',
-		width:'100%'
-	},
-	
-	anim: {
-		height:350, 
-		width:350,
-		flex: 1,
-		alignSelf:'center' 
-	}
-});
