@@ -1,25 +1,27 @@
 import React from 'react';
-import {Platform, StatusBar, StyleSheet, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput} from 'react-native';
-import {Header} from 'react-navigation';
-import {blueColor} from '../../../config';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Platform, StatusBar, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
-// import RadioForm from 'react-native-simple-radio-button';
-import TutorialStatus, {HEIGHT} from '../TutorialStatus';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Header } from 'react-navigation';
+import { connect } from 'react-redux';
+import { blueColor, statusBlueColor, grayColor, lightOrangeColor, orangeColor } from '../../../config';
 import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { connect } from 'react-redux';
+import { nonFixedEventStyles as styles } from '../../styles';
+import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 
 const viewHeight = 780.5714111328125;
 
+/**
+ * Permits the user to add Non-Fixed events i.e. events that can be moved around in the calendar
+ */
 class NonFixedEvent extends React.Component {
 
-	//Style for Navigation Bar
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.update ? 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
-		headerTintColor: 'white',
+		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
@@ -28,38 +30,39 @@ class NonFixedEvent extends React.Component {
 		}
 	});
 
-	//Constructor and States
 	constructor(props) {
 		super(props);
 
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
 		let containerHeight = null;
 		
-		if(viewHeight < containerHeightTemp) {
+		if (viewHeight < containerHeightTemp) {
 			containerHeight = containerHeightTemp;
 		}
 
 		this.state = { 
-			//Height of Screen
 			containerHeight,
 			eventID: Date.now()
 		};
+		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 	
 	componentWillMount() {	
-		if(this.props.navigation.state.routeName !== 'TutorialNonFixedEvent') {
+		if (this.props.navigation.state.routeName !== 'TutorialNonFixedEvent') {
 			this.setState({...this.props.NFEditState});
 		} else  {
 			this.resetFields();
 		}
 	}
 	
+	/**
+	 * Reset the fields of the form
+	 */
 	resetFields = () => {
 		this.setState({
-			//Title of Event
 			title: '',
-			//Availability Section
+
 			specificDateRange: false,
 			startDate: new Date().toDateString(),
 			disabledStartDate: false,
@@ -68,22 +71,29 @@ class NonFixedEvent extends React.Component {
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
+
 			hours: 0,
 			minutes: 0,
 			isDividable: false,
 			// durationType: 0,
 			occurrence: 1,
-			//Priority Level Section
+
 			priority: 0.5,
 			location: '',
 			description: ''
 		});
 	}
 
+	/**
+	 * To go to the next screen without entering any information
+	 */
 	skip = () => {
 		this.props.navigation.navigate('TutorialReviewEvent');
 	}
 
+	/**
+	 * Adds the event in the database
+	 */
 	nextScreen = () => {
 
 		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
@@ -119,6 +129,9 @@ class NonFixedEvent extends React.Component {
 		}
 	}
 
+	/**
+	 * Adds the event to the database and resets the fields
+	 */
 	addAnotherEvent = () => {
 		this.props.dispatch({
 			type: ADD_NFE,
@@ -127,53 +140,72 @@ class NonFixedEvent extends React.Component {
 		this.resetFields();
 	}
 
-	//Render UI
 	render() {
-		// const durationTypes = [
-		// 	{label: 'Per Occurence', value: 0 },
-		// 	{label: 'Of Event', value: 1 }
-		// ];
+		const {containerHeight} = this.state;
 
 		let tutorialStatus;
 		let addEventButton;
 		let nextButton;
 		let paddingBottomContainer = HEIGHT;
 
-		if(this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
-			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'white'} skip={this.skip} />;
+		/**
+		 * In order to show components based on current route
+		 */
+		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			tutorialStatus = <TutorialStatus active={3}
+				color={blueColor}
+				backgroundColor={'#ffffff'}
+				skip={this.skip} />;
+
 			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
+				<TouchableOpacity style={styles.buttonEvent}
+					onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 				</TouchableOpacity>;
+
 			nextButton = 
-				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<TouchableOpacity style={styles.buttonNext}
+					onPress={this.nextScreen}>
 					<Text style={styles.buttonNextText}>NEXT</Text>
 				</TouchableOpacity>;
 		} else {
 			tutorialStatus = null;
+
 			addEventButton = null;
+
 			nextButton = 
-				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<TouchableOpacity style={styles.buttonNext}
+					onPress={this.nextScreen}>
 					<Text style={styles.buttonNextText}>DONE</Text>
 				</TouchableOpacity>;
+
 			paddingBottomContainer = null;
 		}
 
 		return(
 			<View style={styles.container}>
-				<StatusBar backgroundColor={'#105dba'} />
+				<StatusBar backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.content}>
-					<View style={{height: this.state.containerHeight, flex:1, paddingBottom: paddingBottomContainer, justifyContent:'space-evenly'}}>
+				<ScrollView style={styles.scrollView}>
+					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
 						<View style={styles.instruction}>
-							<MaterialCommunityIcons name="face" size={130} color="#1473E6"/>
+							<MaterialCommunityIcons name="face"
+								size={130}
+								color={blueColor} />
+
 							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title" size={30} color="#1473E6" />
+							<MaterialCommunityIcons name="format-title"
+								size={30}
+								color={blueColor} />
+
 							<View style={styles.textInputBorder}>
-								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Title" onChangeText={(title) => this.setState({title})} value={this.state.title}/>
+								<TextInput style={styles.textInputText} 
+									placeholder="Title" 
+									onChangeText={(title) => this.setState({title})} 
+									value={this.state.title}/>
 							</View>
 						</View>
 						
@@ -183,36 +215,57 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.timeSection}>
 								<View style={styles.dateRange}>
 									<Text style={styles.blueTitleLong}>Specific Date Range</Text>
-									<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={this.state.specificDateRange ? '#FF9F1C' : 'darkgray'} onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})} value = {this.state.specificDateRange} />
+
+									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}}
+										ios_backgroundColor={'lightgray'}
+										thumbColor={this.state.specificDateRange ? orangeColor : 'darkgray'}
+										onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
+										value = {this.state.specificDateRange} />
 								</View>
 								
 								{this.state.specificDateRange ? /*To hide/show the date*/
 									<View style={styles.questionLayout}>
 										<Text style={styles.blueTitle}>Start Date</Text>
+
 										<DatePicker showIcon={false} 
 											date={this.state.startDate} 
 											mode="date" 
 											style={{width:140}}
 											disabled={this.state.disabledStartDate}
-											customStyles={{disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular', color: this.state.disabledStartDate ? '#FF0000' :'#565454'}}} 
+											customStyles={{
+												disabled:{backgroundColor: 'transparent'},
+												dateInput:{borderWidth: 0},
+												dateText:{
+													fontFamily: 'OpenSans-Regular',
+													color: this.state.disabledStartDate ? '#FF0000' : grayColor}}} 
 											placeholder={this.state.startDate} 
 											format="ddd., MMM DD, YYYY" 
 											minDate={this.state.minStartDate} 
 											maxDate={this.state.maxStartDate}
 											confirmBtnText="Confirm" 
 											cancelBtnText="Cancel" 
-											onDateChange={(startDate) => this.setState({startDate: startDate, endDate: startDate, disabledEndDate: false, minEndDate: startDate})} />
+											onDateChange={(startDate) => this.setState({
+												startDate: startDate,
+												endDate: startDate,
+												disabledEndDate: false,
+												minEndDate: startDate})} />
 									</View> : null}
 									
 								{this.state.specificDateRange ? /*To hide/show the date*/
 									<View style={styles.questionLayout}>
 										<Text style={styles.blueTitle}>End Date</Text>
+
 										<DatePicker showIcon={false} 
 											date={this.state.endDate} 
 											mode="date" 
 											style={{width:140}}
 											disabled={this.state.disabledEndDate}
-											customStyles={{ disabled:{backgroundColor: 'transparent'}, dateInput:{borderWidth: 0}, dateText:{fontFamily: 'OpenSans-Regular', color:'#565454', textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
+											customStyles={{
+												disabled:{backgroundColor: 'transparent'},
+												dateInput:{borderWidth: 0},
+												dateText:{fontFamily: 'OpenSans-Regular',
+													color: grayColor,
+													textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 											placeholder={this.state.endDate} 
 											format="ddd., MMM DD, YYYY" 
 											minDate={this.state.minEndDate}
@@ -223,65 +276,59 @@ class NonFixedEvent extends React.Component {
 
 								<View style={styles.duration}>
 									<Text style={styles.blueTitle}>Duration</Text>
+
 									<View style={styles.timePicker}>
 										<NumericInput initValue = {this.state.hours}
 											value={this.state.hours}
 											onChange={(hours) => this.setState({hours})}
 											minValue={0} 
-											leftButtonBackgroundColor={'#FFBF69'}
-											rightButtonBackgroundColor={'#FF9F1C'}
+											leftButtonBackgroundColor={lightOrangeColor}
+											rightButtonBackgroundColor={orangeColor}
 											rounded={true}
 											borderColor={'lightgray'}
-											textColor={'#565454'}
-											iconStyle={{ color: 'white' }} />
+											textColor={grayColor}
+											iconStyle={{color: '#ffffff'}} />
 										<Text style={styles.optionsText}>hour(s)</Text>
 									</View>
 
 									<View style={styles.timePicker}>
-										<NumericInput
-											initValue = {this.state.minutes}
+										<NumericInput initValue={this.state.minutes}
 											value={this.state.minutes}
 											onChange={(minutes) => this.setState({minutes})}
 											minValue={0} 
-											leftButtonBackgroundColor={'#FFBF69'}
-											rightButtonBackgroundColor={'#FF9F1C'}
+											leftButtonBackgroundColor={lightOrangeColor}
+											rightButtonBackgroundColor={orangeColor}
 											rounded={true}
 											borderColor={'lightgray'}
-											textColor={'#565454'}
-											iconStyle={{ color: 'white' }}  />
+											textColor={grayColor}
+											iconStyle={{color: '#ffffff'}}  />
 										<Text style={styles.optionsText}>minute(s)</Text>
 									</View>
 								</View>
 
-								<View style={{flexDirection:'row', alignItems:'center'}}>
+								<View style={styles.switch}>
 									<Text style={[styles.blueTitle, {width:150}]}>Is Dividable</Text>
-									<Switch trackColor={{false: 'lightgray', true: '#FFBF69'}} ios_backgroundColor={'lightgray'} thumbColor={this.state.isDividable ? '#FF9F1C' : 'darkgray'} onValueChange={(isDividable) => this.setState({isDividable: isDividable})} value = {this.state.isDividable} />
-									{/* <Text style={[styles.blueTitle, {width:150}]}>Duration Type</Text>
-									<RadioForm
-										radio_props={durationTypes}
-										initial={0}
-										buttonColor={blueColor}
-										buttonSize={15}
-										labelColor={'#565454'}
-										selectedButtonColor={blueColor}
-										selectedLabelColor={'#565454'}
-										style={{fontFamily:'OpenSans-Regular'}}
-										onPress={(durationType) => this.setState({durationType: durationType})}/> */}
+
+									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}}
+										ios_backgroundColor={'lightgray'}
+										thumbColor={this.state.isDividable ? orangeColor : 'darkgray'}
+										onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
+										value = {this.state.isDividable} />
 								</View>
 
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
-									<NumericInput 
-										initValue = {this.state.occurence}
+
+									<NumericInput initValue={this.state.occurence}
 										value={this.state.occurence}
 										onChange={(occurence) => this.setState({occurence})}
 										minValue={0} 
-										leftButtonBackgroundColor={'#FFBF69'}
-										rightButtonBackgroundColor={'#FF9F1C'}
+										leftButtonBackgroundColor={lightOrangeColor}
+										rightButtonBackgroundColor={orangeColor}
 										rounded={true}
 										borderColor={'lightgray'}
-										textColor={'#565454'}
-										iconStyle={{ color: 'white' }}  />
+										textColor={grayColor}
+										iconStyle={{color: '#ffffff'}}  />
 								</View>
 							</View>
 						</View>
@@ -289,18 +336,19 @@ class NonFixedEvent extends React.Component {
 						<View>
 							<Text style={styles.sectionTitle}>Priority Level</Text>
 
-							<Slider 
-								value={this.state.priority}
+							<Slider value={this.state.priority}
 								minimumValue={0}
 								maximumValue={1} 
 								step={0.5}
-								thumbTintColor={'#FF9F1C'}
-								minimumTrackTintColor={'#FFBF69'}
+								thumbTintColor={orangeColor}
+								minimumTrackTintColor={lightOrangeColor}
 								onValueChange={(priority) => this.setState({priority: priority})} />
 
 							<View style={styles.questionLayout}>
 								<Text style={styles.optionsText}>Low</Text>
+
 								<Text style={styles.optionsText}>Normal</Text>
+
 								<Text style={styles.optionsText}>High</Text>
 							</View>
 						</View>
@@ -308,19 +356,28 @@ class NonFixedEvent extends React.Component {
 							<Text style={styles.sectionTitle}>Details</Text>
 
 							<View style={styles.textInput}>
-								<MaterialIcons name="location-on" size={30} color="#1473E6" />
+								<MaterialIcons name="location-on"
+									size={30}
+									color={blueColor} />
 
 								<View style={styles.textInputBorder}>
-									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Location" onChangeText={(location) => this.setState({location})} value={this.state.location}/>
+									<TextInput style={styles.textInputText} 
+										placeholder="Location"
+										onChangeText={(location) => this.setState({location})}
+										value={this.state.location}/>
 								</View>
 							</View>
 						
-
 							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="text-short" size={30} color="#1473E6" />
+								<MaterialCommunityIcons name="text-short"
+									size={30}
+									color={blueColor} />
 								
 								<View style={styles.textInputBorder}>
-									<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} placeholder="Description" onChangeText={(description) => this.setState({description})} value={this.state.description}/>
+									<TextInput style={styles.textInputText} 
+										placeholder="Description"
+										onChangeText={(description) => this.setState({description})}
+										value={this.state.description}/>
 								</View>
 							</View>
 						</View>
@@ -338,6 +395,7 @@ class NonFixedEvent extends React.Component {
 		);
 	}
 }
+
 function mapStateToProps(state) {
 	const { NonFixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
@@ -347,148 +405,5 @@ function mapStateToProps(state) {
 		NonFixedEventsReducer
 	};
 }
+
 export default connect(mapStateToProps, null)(NonFixedEvent);
-
-const headerHeight = Header.HEIGHT;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-
-	content: {
-		marginTop: StatusBar.currentHeight + headerHeight,
-		flex: 1,
-		paddingHorizontal: 15,
-		marginBottom: 20
-	},
-
-	instruction: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'		
-	},
-
-	instructionText: {
-		fontFamily: 'Raleway-Regular',
-		color: '#565454',
-		fontSize: 20,
-		width: 205,
-		marginLeft: 15
-	},
-
-	textInput: {
-		flexDirection: 'row',
-		alignItems: 'flex-end',
-		marginRight: 5,
-		height: 40
-	},
-
-	textInputBorder: {
-		borderBottomColor: 'lightgray',
-		borderBottomWidth: 1,
-		width: '87%',
-		marginLeft: 10,
-	},
-
-	sectionTitle: {
-		fontFamily: 'Raleway-Medium',
-		fontSize: 19,
-		color: '#0A2239',
-		marginBottom: 5,
-		marginTop: 20
-	},
-
-	blueTitle: {
-		color: '#1473E6',
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 17,
-		width: 88
-	},
-
-	blueTitleLong: {
-		color: '#1473E6',
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 17,
-		width: 200
-	},
-
-	timeSection: {
-		marginLeft: 10
-	},
-
-	dateRange: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginBottom: 5
-	},
-
-	questionLayout: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-
-	duration: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginBottom: 5
-	},
-
-	timePicker: {
-		flexDirection: 'column',
-		alignItems: 'center'
-	},
-
-	optionsText: {
-		color: '#565454',
-		fontFamily: 'OpenSans-Regular',
-		marginBottom: 5
-	},
-
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 35
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: '#1473E6',
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: '#1473E6',
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#1473E6',
-		textAlign: 'center',
-		padding: 8
-	}
-});

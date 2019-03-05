@@ -8,6 +8,7 @@ export const lightOrangeColor = '#FFBF69';
 export const orangeColor = '#FF9F1C';
 export const darkOrangeColor = '#FF621C';
 export const redColor = '#b80000';
+export const grayColor = '#565454';
 export const calendarEventColors = {
 	red: '#E57B73',
 	green: '#36B478',
