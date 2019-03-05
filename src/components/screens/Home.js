@@ -41,27 +41,21 @@ class Home extends React.Component {
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
-				console.log(signedIn);
 				if (!signedIn || store.getState().HomeReducer.profile === null) {
 					googleGetCurrentUserInfo().then((userInfo) =>{
-						console.log(userInfo);
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
-							console.log(store.getState());
 							this.props.navigation.navigate('TutorialNavigator');
 						}
 						googleSignIn().then((userInfo) => {
-							console.log(userInfo);
 							if (userInfo !== null) {
 								this.setUser(userInfo);
-								console.log(store.getState());
 								this.props.navigation.navigate('TutorialNavigator');
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
-					console.log(store.getState());
 					this.props.navigation.navigate('TutorialNavigator');
 				}
 			});

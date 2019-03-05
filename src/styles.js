@@ -3,6 +3,19 @@ import { Header } from 'react-navigation';
 import { blueColor, grayColor, orangeColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
 
+export const white = '#FFF';
+export const black = '#000';
+export const blue = '#1473E6';
+export const statusBlueColor = '#105dba';
+export const dark_blue = '#0E4BAA';
+export const lightOrange = '#FFBF69';
+export const orange = '#FF9F1C';
+export const imageRollCheck = '#764D16';
+export const darkOrange = '#FF621C';
+export const red = '#b80000';
+export const statusBarDark = '#00000050';
+export const gray = '#565454';
+
 export const loadingStyles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -52,7 +65,7 @@ export const welcomeStyles = StyleSheet.create({
 
 	title: {
 		fontSize: 24,
-		color: 'white',
+		color: white,
 		backgroundColor: 'transparent',
 		textAlign: 'center',
 		marginBottom: 16,
@@ -235,7 +248,7 @@ export const selectPictureStyles = StyleSheet.create({
 	},
 
 	emptyText: {
-		color: 'white', 
+		color: white, 
 		padding: 20, 
 		fontFamily: 'Raleway-Regular', 
 		fontSize: 17, 
@@ -271,7 +284,7 @@ export const takePictureStyles = StyleSheet.create({
 		alignSelf: 'center',
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.8,
 				shadowRadius: 2,    
@@ -821,7 +834,7 @@ export const eventOverviewStyles = StyleSheet.create({
 
 	modalContent: {
 		justifyContent: 'space-between',
-		backgroundColor: 'white',
+		backgroundColor: white,
 		borderRadius: 8,
 		marginHorizontal: 20
 	},
@@ -914,7 +927,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: 'white',
+		backgroundColor: white,
 	},
 
 	actionIconModal: {
@@ -922,7 +935,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	deleteDialogContent: {
-		backgroundColor: 'white',
+		backgroundColor: white,
 		borderRadius: 8,
 		justifyContent: 'space-between',
 		padding: 10
