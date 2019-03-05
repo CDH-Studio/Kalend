@@ -9,6 +9,18 @@ import { eventOverviewStyles as styles } from '../styles';
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
+ * @prop {Number} key The key of the event
+ * @prop {Number} id The id of the event
+ * @prop {String} category The category of the event
+ * @prop {String} eventTitle The title of the event
+ * @prop {String} date The dates of the event
+ * @prop {String} time The time of the event
+ * @prop {String} location The location of the event
+ * @prop {String} description The description of the event
+ * @prop {String} recurrence The recurrence of the event
+ * @prop {String} priorityLevel The priority level of the event
+ * @prop {String} navigateEditScreen The appropriate edit screen for the event
+ * @prop {function} action The function to be executed when delete is triggered
  */
 class EventOverview extends React.Component {
 
