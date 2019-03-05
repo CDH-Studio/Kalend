@@ -6,6 +6,7 @@ export const statusBlueColor = '#105dba';
 export const darkBlueColor = '#0E4BAA';
 export const lightOrangeColor = '#FFBF69';
 export const orangeColor = '#FF9F1C';
+export const imageRollCheck = '#764D16';
 export const darkOrangeColor = '#FF621C';
 export const redColor = '#b80000';
 export const statusBarDark = '#00000050';

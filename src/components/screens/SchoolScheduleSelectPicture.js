@@ -1,68 +1,20 @@
 import React from 'react';
-import { CameraRoll, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Text } from 'react-native';
+import { CameraRoll, ScrollView, StyleSheet, View, StatusBar, Platform, Dimensions, ImageBackground, ActivityIndicator, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { gradientColors } from '../../../config';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
+import { gradientColors } from '../../../config';
+import CameraRollImage from '../CameraRollImage';
 
-class CameraRollImage extends React.Component {
+const iamgesPerLoad = 99;
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			image: this.props.image,
-			index: this.props.index,
-			selectedStyle: this.props.selectedStyle
-		};
-	}
-
-	update = (selected, index) => {
-		console.log(this.props.selectedStyle);
-		this.props.onUpdate({selected, index});
-	}
-
-	render () {
-		
-		const {image, index, selectedStyle} = this.props;
-		return (
-			<View>
-				<View style={
-					[styles.image, styles.touch, {backgroundColor:'#232323',
-						position:'absolute', 
-						opacity: 0.4}]}/>
-				<TouchableOpacity
-					style={[styles.touch, {transform: [{scaleX: 1 - 0.2 * selectedStyle}, {scaleY: 1 - 0.2 * selectedStyle}]}]} 
-					onPress={() => this.update(image.uri, index)}
-					activeOpacity={0.7}>
-
-					<Image style={styles.image} 
-						source={{ uri: image.uri }} >
-					</Image>
-
-					<Icon style={[styles.icon, 
-						{opacity: selectedStyle,
-							textShadowColor: 'rgba(0, 0, 0, 0.40)',
-							textShadowOffset: {width: -1, height: 1},
-							textShadowRadius: 20}]} 
-					name="checkbox-blank-circle" 
-					size={35} 
-					color="#FF9F1C" />
-					<Icon style={[styles.icon, {opacity: selectedStyle, bottom: -10, right: -10, }]} 
-						name="check" 
-						size={25} 
-						color="#764D16" />
-
-				</TouchableOpacity>
-			</View>
-		);
-	}
-}
-
+/**
+ * Camera roll screen to let the user select a schedule
+ */
 class SchoolScheduleSelectPicture extends React.Component {
+
 	static navigationOptions = {
 		title: 'Select Picture',
 		headerTintColor: '#fff',
@@ -85,7 +37,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 			images: [],
 			selected: '',
 			fetchParams: { 
-				first: 99, 
+				first: iamgesPerLoad, 
 				assetType: 'Photos',
 			},
 			showFAB: false,
@@ -97,16 +49,20 @@ class SchoolScheduleSelectPicture extends React.Component {
 			showNoPhotos: false
 		};
 		
+		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentDidMount() {
+		// Shows the loading 
 		this.setState({
 			activityIndicator: this.state.activityIndicatorContent
 		});
 
+		// Loads the photos
 		this.getPhotos();
 
+		// Checks if there are photos that loaded
 		if (!this.state.pageInfo.has_next_page && this.state.images.length === 0) {
 			this.setState({
 				activityIndicator: null,
@@ -115,14 +71,23 @@ class SchoolScheduleSelectPicture extends React.Component {
 		}
 	}
 
+	/**
+	 * Gets the photos URI and more information about the number of 
+	 * images from the phone and stores it in the state
+	 */
 	getPhotos = () => {
 		CameraRoll.getPhotos(this.state.fetchParams)
 			.then((data) => {
+				
+				// Adds to the existing array of images the newly fetched images
 				let images = this.state.images;
 				images.push.apply(images, data.edges.map((edge) => edge.node.image));
 
+				// Adds the same number of newly fetched images to the selectedStyle array
+				// to keep track of the images that has been pressed
 				this.state.selectedStyle.push.apply(this.state.selectedStyle, Array(data.edges.length).fill(0));
 
+				// Updates the information in the state related to the phones camera roll
 				this.setState({
 					images,
 					pageInfo: data.page_info,
@@ -137,6 +102,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 			.catch((error) => console.log(error));
 	}
 
+	/**
+	 * Scroll listener to know when the user is at the bottom of the scrollView
+	 */
 	scrollListener = (event) => {
 		event = event.nativeEvent;
 		if (parseInt(event.contentOffset.y + event.layoutMeasurement.height) === parseInt(event.contentSize.height)) {
@@ -145,12 +113,20 @@ class SchoolScheduleSelectPicture extends React.Component {
 		this.atTheBottom(false);
 	}
 
+	/**
+	 * Loads more photos if the user is at the bottom of the scrollView and there are other photos
+	 * 
+	 * @param {Boolean} bool True if the user is at the bottom of the scrollView, false otherwise
+	 */
 	atTheBottom = (bool) => {
 		if (bool && this.state.pageInfo.has_next_page) {
 			this.getPhotos();
 		}
 	}
 	
+	/**
+	 * Handles every situation when the user selects an image
+	 */
 	selectImage = (index) => {
 		if (this.state.prevIndex !== '') {
 			if (index === this.state.prevIndex) {
@@ -180,6 +156,13 @@ class SchoolScheduleSelectPicture extends React.Component {
 		});
 	}
 
+	/**
+	 * Method passed to child image component to update which image has been selected
+	 * 
+	 * @param {Object} data The object with the newly information
+	 * @param {String} data.selected The image URI that has been selected
+	 * @param {Integer} data.index The id of the image that has been selected
+	 */
 	onUpdate = (data) => {
 		this.setState({
 			selected: data.selected,
@@ -187,7 +170,13 @@ class SchoolScheduleSelectPicture extends React.Component {
 		});
 		this.selectImage(data.index);
 	}
-	setImage(imgURI) {
+
+	/**
+	 * Updates the content in redux with the selected image URI
+	 * 
+	 * @param {String} imgURI The URI of the image that will be stored in redux
+	 */
+	setImage = (imgURI) => {
 		this.props.dispatch({
 			type:'SET_IMG',
 			data: imgURI,
@@ -195,8 +184,10 @@ class SchoolScheduleSelectPicture extends React.Component {
 		});
 	}
 
-	uploadImage = () => {
-		console.log('Image selected >> ' + this.state.selected);
+	/**
+	 * Goes to the next screen
+	 */
+	nextScreen = () => {
 		this.setImage(this.state.selected);
 		
 		if(this.props.navigation.state.routeName === 'TutorialSchoolScheduleSelectPicture') {
@@ -212,13 +203,10 @@ class SchoolScheduleSelectPicture extends React.Component {
 		return (
 			<LinearGradient style={styles.container} 
 				colors={gradientColors}>
-
 				<ImageBackground style={styles.container} 
 					source={require('../../assets/img/loginScreen/backPattern.png')} 
 					resizeMode="repeat">
-
 					<View style={styles.content}>
-
 						<StatusBar translucent={true} 
 							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 							
@@ -226,49 +214,48 @@ class SchoolScheduleSelectPicture extends React.Component {
 							onScroll={this.scrollListener}>
 
 							<View style={styles.imageGrid}>
-
-								{ images.map((image, index) => {
-									return (
-										<CameraRollImage key={index}
-											image={image} 
-											index={index} 
-											onUpdate={this.onUpdate}
-											selectedStyle={selectedStyle[index]} />
-									);
-								}) }
+								{ 
+									images.map((image, index) => {
+										return (
+											<CameraRollImage key={index}
+												image={image} 
+												index={index} 
+												onUpdate={this.onUpdate}
+												selectedStyle={selectedStyle[index]} />
+										);
+									}) 
+								}
 
 								{ activityIndicator }
-								{ showNoPhotos ? 
-									<View style={{alignItems:'center', padding: 20, height:Dimensions.get('window').height*0.85, justifyContent: 'center'}}>
-									
-										<Ionicons
-											name="ios-images" 
-											size={50} 
-											color="#fff" />
-										<Text style={{color:'white', padding:20, fontFamily:'Raleway-Regular', fontSize:17, textAlign: 'center'}}>There are no photos on{'\n'}your device</Text>
-										
-									</View>
-									:
-									null
 
+								{ 
+									showNoPhotos ? 
+										<View style={styles.emptyView}>
+											<Ionicons
+												name="ios-images" 
+												size={50} 
+												color="#fff" />
+
+											<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
+										</View>
+										:
+										null
 								}
 							</View>
-							
 						</ScrollView>
 						
 						<FAB style={styles.fab}
 							icon="file-upload"
 							visible={showFAB}
-							onPress={this.uploadImage} />
-
+							onPress={this.nextScreen} />
 					</View>
-
 				</ImageBackground>
-				
 			</LinearGradient>
 		);
 	}
 }
+
+export default connect()(SchoolScheduleSelectPicture);
 
 const styles = StyleSheet.create({
 	container: {
@@ -283,27 +270,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingBottom: 88 + 5
 	},
-	image: {
-		width: Dimensions.get('window').width/3 - 14,
-		height: Dimensions.get('window').width/3 - 14,
-		borderRadius: 5,
-		backgroundColor: '#000',
-	},
-	touch: {
-		margin: 5,
-		borderRadius: 5,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-	},
 	fab: {
 		position: 'absolute',
 		margin: 16,
@@ -316,12 +282,17 @@ const styles = StyleSheet.create({
 	scroll: {
 		paddingTop: 88,
 	},
-	icon: {
-		position: 'absolute', 
-		bottom: -15, 
-		right: -15, 
-		padding: 5,
+	emptyText: {
+		color: 'white', 
+		padding: 20, 
+		fontFamily: 'Raleway-Regular', 
+		fontSize: 17, 
+		textAlign: 'center'
+	},
+	emptyView: {
+		alignItems: 'center', 
+		padding: 20, 
+		height: Dimensions.get('window').height*0.85, 
+		justifyContent: 'center'
 	}
 });
-
-export default connect()(SchoolScheduleSelectPicture);
