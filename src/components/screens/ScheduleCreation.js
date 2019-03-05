@@ -27,7 +27,7 @@ class ScheduleCreation extends React.Component {
 	 * Goes to the next screen
 	 */
 	navigateToSelection = () => {
-		if(this.props.navigation.state.routeName === 'TutorialScheduleCreation') {
+		if (this.props.navigation.state.routeName === 'TutorialScheduleCreation') {
 			this.props.navigation.navigate('TutorialScheduleSelection');
 		}else {
 			this.props.navigation.navigate('DashboardScheduleSelection');
