@@ -356,7 +356,7 @@ class Course extends React.Component {
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>Start Time</Text>
 								<DatePicker showIcon={false} 
-									time={this.state.startTime} 
+									date={this.state.startTime} 
 									mode="time" 
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
@@ -377,7 +377,7 @@ class Course extends React.Component {
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>End Time</Text>
 								<DatePicker showIcon={false} 
-									time={this.state.endTime} 
+									date={this.state.endTime} 
 									mode="time" 
 									disabled= {this.state.disabledEndTime}
 									customStyles={{

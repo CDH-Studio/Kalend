@@ -743,7 +743,6 @@ export const reviewEventStyles = StyleSheet.create({
 
 	content: {
 		flex:1,
-		justifyContent:'space-evenly',
 		paddingHorizontal: 20
 	},
 

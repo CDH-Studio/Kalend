@@ -106,7 +106,6 @@ class FixedEvent extends React.Component {
 		if (currentMinute < 10) {
 			currentMinute = '0' + currentMinute;
 		}
-
 		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
 	}
 
@@ -218,7 +217,7 @@ class FixedEvent extends React.Component {
 	 * @param {String} startTime The time output of the time dialog
 	 */
 	startTimeOnDateChange = (startTime) => {
-		let firstDate = new Date(this.state.startDate).getTime();this.beforeStartTime(this.getTwelveHourTime(startTime));
+		let firstDate = new Date(this.state.startDate).getTime();
 		let endDate = new Date(this.state.endDate).getTime();
 
 		let endTime;
@@ -231,6 +230,7 @@ class FixedEvent extends React.Component {
 		}
 
 		startTime = this.getTwelveHourTime(startTime);
+		console.log(startTime);
 		this.setState({
 			startTime, 
 			endTime, 
@@ -551,14 +551,15 @@ class FixedEvent extends React.Component {
 									onDateChange={this.startDateOnDateChange} />
 									
 								<DatePicker showIcon={false} 
-									time={this.state.startTime} 
+									date={this.state.startTime} 
 									mode="time" 
 									disabled = {this.state.disabledStartTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}, 
 										placeholderText:{
 											color: grayColor, 
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
@@ -591,14 +592,15 @@ class FixedEvent extends React.Component {
 									onDateChange={this.endDateOnDateChange} />
 
 								<DatePicker showIcon={false} 
-									time={this.state.endTime} 
+									date={this.state.endTime} 
 									mode="time" 
 									disabled = {this.state.disabledEndTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
 										placeholderText:{
 											color: grayColor, 
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
