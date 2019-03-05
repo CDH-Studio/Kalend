@@ -8,7 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { blueColor, statusBlueColor, grayColor, lightOrangeColor, orangeColor } from '../../../config';
-import { ADD_NFE } from '../../constants';
+import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import {nonFixedEventStyles as styles} from '../../styles';
@@ -43,7 +43,8 @@ class NonFixedEvent extends React.Component {
 		}
 
 		this.state = { 
-			containerHeight
+			containerHeight,
+			eventID: Date.now()
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -96,17 +97,37 @@ class NonFixedEvent extends React.Component {
 	 * Adds the event in the database
 	 */
 	nextScreen = () => {
-		this.props.dispatch({
-			type: ADD_NFE,
-			event: this.state
-		});
 
 		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+			this.props.dispatch({
+				type: ADD_NFE,
+				event: this.state
+			});
 			this.props.navigation.navigate('TutorialReviewEvent');
-		} else if (this.props.navigation.state.routeName === 'TutorialEditNonFixedEvent') {
-			this.props.navigation.pop();
 		} else {
-			this.props.navigation.pop();
+			let events = this.props.NonFixedEventsReducer;
+			let arr = [];
+
+			events.map((event) => {
+				if (event.eventID === this.state.eventID) {
+					arr.push(this.state);
+				} else {
+					arr.push(event);
+				}
+			});
+
+			this.props.dispatch({
+				type: CLEAR_NFE,
+			});
+
+			arr.map((event) => {
+				this.props.dispatch({
+					type: ADD_NFE,
+					event
+				});
+			});
+
+			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
 		}
 	}
 
@@ -118,7 +139,6 @@ class NonFixedEvent extends React.Component {
 			type: ADD_NFE,
 			event: this.state
 		});
-
 		this.resetFields();
 	}
 
@@ -141,7 +161,7 @@ class NonFixedEvent extends React.Component {
 			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'#ffffff'} skip={this.skip} />;
 
 			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent} onPress={this.test}> 
+				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 				</TouchableOpacity>;
 
@@ -376,7 +396,8 @@ function mapStateToProps(state) {
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
-		NFEditState: NonFixedEventsReducer[selected] 
+		NFEditState: NonFixedEventsReducer[selected],
+		NonFixedEventsReducer
 	};
 }
 

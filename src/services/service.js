@@ -39,19 +39,6 @@ export const grabSampleData = () =>  {
 		});
 }; 
 
-export const grabUserData = () =>  {
-	fetch(`${serverUrl}/api/users`)
-		.then(res =>  {
-			return res.json();
-		})
-		.then( data => {
-			console.log('data', data);
-			return data;
-		}).catch(error => {
-			console.log('error', error);
-		});
-};
-
 export const analyzePicture = (base64Data) => {
 	return new Promise( function(resolve, reject) { 
 		fetch(`${serverUrl}/api/analyzepicture`, {
@@ -63,13 +50,12 @@ export const analyzePicture = (base64Data) => {
 			}
 		})
 			.then(res => {
+				
 				return res.json();
 			})
 			.then(body => {
 				formatData(body.data)
 					.then(data => {
-						console.log('data', data);
-					
 						InsertDataIntoGoogle(data)
 							.then((promises) => {
 								if(promises) resolve(true);
@@ -132,9 +118,14 @@ export const InsertDataIntoGoogle = (events) => {
 			obj.summary = course.name;
 			obj.location = course.location;
 			obj.recurrence = recurrence;
+			
+			let courseReduxObj = obj;
+			courseReduxObj.dayOfWeek = event.day;
+			courseReduxObj.hours = d;
+
 			store.dispatch({
 				type: 'ADD_COURSE',
-				event: obj
+				event: courseReduxObj
 			});
 			
 			let promise_temp = (calendarID) => {
