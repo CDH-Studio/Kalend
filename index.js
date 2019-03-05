@@ -5,7 +5,7 @@ import { createStackNavigator, createAppContainer, createSwitchNavigator, create
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { name as appName } from './app.json';
-import { blueColor, orangeColor } from 'config';
+import { blueColor, orangeColor } from './config';
 import { store, persistor } from './src/store/index';
 import Home from './src/components/screens/Home';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
@@ -139,7 +139,13 @@ TutorialNavigator.router.getStateForAction = (action, state) => {
 		};
 	} else if (state && state.routes) {
 		if(action && action.action == 'FinishSchoolCreation') {
-			let routes = [{key:'1',routeName:'TutorialSchoolSchedule',params:{}},{key:'2',routeName:'TutorialFixedEvent',params:{update:false}}];
+			let routes = [
+				{key: '1',
+					routeName: 'TutorialSchoolSchedule',
+					params:{}},
+				{key: '2',
+					routeName: 'TutorialFixedEvent',
+					params:{update:false}}];
 			return {
 				...state,
 				routes,
@@ -160,7 +166,8 @@ TutorialNavigator.router.getStateForAction = (action, state) => {
 export default function Main() {
 	return (
 		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
+			<PersistGate loading={null}
+				persistor={persistor}>
 				<PaperProvider theme={theme}>
 					<AppContainer />
 				</PaperProvider>

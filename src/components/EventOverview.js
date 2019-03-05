@@ -43,9 +43,7 @@ class EventOverview extends React.Component {
 
 		if (this.props.category === 'SchoolSchedule') {
 			categoryColor = calendarEventColors.red;
-
 			categoryIcon = 'school';
-
 			details = 
 				<View style={styles.modalDetailView}>
 					<Text style={styles.modalDetailsSubtitle}>Location: </Text>
@@ -55,9 +53,7 @@ class EventOverview extends React.Component {
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = calendarEventColors.green;
-
 			categoryIcon = 'calendar-today';
-
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
@@ -78,9 +74,7 @@ class EventOverview extends React.Component {
 			editScreen = 'FixedEvent';
 		} else {
 			categoryColor = calendarEventColors.purple;
-
 			categoryIcon = 'face';
-
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
@@ -118,7 +112,8 @@ class EventOverview extends React.Component {
 							<Text></Text>
 						</View>
 						<View>
-							<Text style={styles.eventTitle} numberOfLines={1}>{this.props.eventTitle}</Text>
+							<Text style={styles.eventTitle}
+								numberOfLines={1}>{this.props.eventTitle}</Text>
 							<Text style={styles.eventInfo}>{this.props.date}</Text>
 							<Text style={styles.eventInfo}>{this.props.time}</Text>
 						</View>
@@ -135,10 +130,14 @@ class EventOverview extends React.Component {
 							reviewEventSelected: this.props.id
 						});
 					}}>
-						<Feather name="edit" size={30} color={grayColor} />
+						<Feather name="edit"
+							size={30}
+							color={grayColor} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}>
-						<Feather name="trash" size={30} color={grayColor} />
+						<Feather name="trash"
+							size={30}
+							color={grayColor} />
 					</TouchableOpacity>
 				</View>
 
@@ -150,8 +149,11 @@ class EventOverview extends React.Component {
 					animationType={'slide'}>
 					<View style={styles.modalView}>
 						<View style={styles.modalContent}>
-							<TouchableOpacity style={styles.closeModal} onPress={() => this.setState({modalVisible: false})}>
-								<Feather name="x" size={30} color={grayColor} />
+							<TouchableOpacity style={styles.closeModal}
+								onPress={() => this.setState({modalVisible: false})}>
+								<Feather name="x"
+									size={30}
+									color={grayColor} />
 							</TouchableOpacity>
 
 							<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
@@ -168,7 +170,9 @@ class EventOverview extends React.Component {
 									</View>
 								</View>
 								
-								<MaterialCommunityIcons name={categoryIcon} size={80} color={grayColor} />
+								<MaterialCommunityIcons name={categoryIcon}
+									size={80}
+									color={grayColor} />
 							</View>
 
 							<View style={styles.modalDetailsView}>
@@ -177,12 +181,18 @@ class EventOverview extends React.Component {
 							</View>
 							
 							<View style={styles.actionsModal}>
-								<TouchableOpacity style={styles.actionIconModal} onPress={() => this.navigateAndCloseModal(editScreen)}>
-									<Feather name="edit" size={40} color={grayColor} />
+								<TouchableOpacity style={styles.actionIconModal}
+									onPress={() => this.navigateAndCloseModal(editScreen)}>
+									<Feather name="edit"
+										size={40}
+										color={grayColor} />
 								</TouchableOpacity>
 
-								<TouchableOpacity style={styles.actionIconModal} onPress={() => this.setState({deleteDialogVisible: true})}>
-									<Feather name="trash" size={40} color={grayColor} />
+								<TouchableOpacity style={styles.actionIconModal}
+									onPress={() => this.setState({deleteDialogVisible: true})}>
+									<Feather name="trash"
+										size={40}
+										color={grayColor} />
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -198,7 +208,9 @@ class EventOverview extends React.Component {
 					<View style={styles.modalView}>
 						<View style={styles.deleteDialogContent}>
 							<View style={styles.deleteDialogMainRow}>
-								<Feather name="trash" size={80} color={grayColor} />
+								<Feather name="trash"
+									size={80}
+									color={grayColor} />
 
 								<View style={styles.deleteDialogRightCol}>
 									<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>

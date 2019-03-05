@@ -70,11 +70,13 @@ class Home extends React.Component {
 
 	render() {
 		return (
-			<LinearGradient style={styles.container} colors={gradientColors}>
+			<LinearGradient style={styles.container}
+				colors={gradientColors}>
 				<ImageBackground style={styles.container} 
 					source={require('../../assets/img/loginScreen/backPattern.png')}
 					resizeMode="repeat">
-					<StatusBar translucent={true} backgroundColor={'#00000050'} />
+					<StatusBar translucent={true} 
+						backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>
 						<View>

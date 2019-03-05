@@ -8,8 +8,8 @@ import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { reviewEventStyles as styles } from '../../styles';
+import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 
 const priorityLevels = {
 	0: 'Low',
@@ -17,7 +17,6 @@ const priorityLevels = {
 	1: 'High'
 };
 const tutorialHeight = HEIGHT;
-const headerHeight = Header.HEIGHT;
 const containerHeight = containerHeight;
 
 /**
@@ -134,7 +133,7 @@ class ReviewEvent extends React.Component {
 		let eventType;
 		let objectToChange;
 
-		switch(category) {
+		switch (category) {
 			case 'SchoolSchedule':
 				eventType = DELETE_COURSE;
 				newEvents = this.state.schoolScheduleData;
@@ -156,7 +155,7 @@ class ReviewEvent extends React.Component {
 		}
 
 		newEvents = newEvents.filter((event,index) => {
-			if(index != id) return event;
+			if (index != id) return event;
 		});
 
 		this.props.dispatch({type: eventType, event: newEvents});
@@ -193,16 +192,20 @@ class ReviewEvent extends React.Component {
 		let tutorialStatus;
 
 		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
-			tutorialStatus = <TutorialStatus active={4} color={blueColor} backgroundColor={'#ffffff'} />;
+			tutorialStatus = <TutorialStatus active={4}
+				color={blueColor}
+				backgroundColor={'#ffffff'} />;
 		} else {
 			tutorialStatus = null;
 		}
 
 		return(
 			<View style={styles.container}>
-				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
+				<StatusBar translucent={true}
+					backgroundColor={statusBlueColor} />
 
-				<ScrollView style={[styles.scrollView, {marginTop: StatusBar.currentHeight + headerHeight}]} onScroll={this.onScroll}>
+				<ScrollView style={styles.scrollView}
+					onScroll={this.onScroll}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: tutorialHeight + 16}]} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
@@ -216,7 +219,15 @@ class ReviewEvent extends React.Component {
 								this.state.schoolScheduleData.length === 0 ?
 									<Text>No school schedule added, please go back to add one</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
-										return <EventOverview key={key} id={key} category={'SchoolSchedule'} eventTitle={i.courseCode} date={i.dayOfWeek} time={i.hours} location={i.location} navigateEditScreen = {this.navigateEditScreen} action={this.deleteEvent} />;
+										return <EventOverview key={key}
+											id={key}
+											category={'SchoolSchedule'}
+											eventTitle={i.courseCode}
+											date={i.dayOfWeek}
+											time={i.hours}
+											location={i.location}
+											navigateEditScreen={this.navigateEditScreen}
+											action={this.deleteEvent} />;
 									})
 							}
 						</View>
@@ -227,7 +238,17 @@ class ReviewEvent extends React.Component {
 								this.state.fixedEventData.length === 0 ?
 									<Text>No fixed events added, please go back to add some</Text> : 
 									this.state.fixedEventData.map((i,key) => {
-										return <EventOverview key={key} id={key} category={'FixedEvent'} eventTitle={i.title} date={i.dates} time={i.hours} location={i.location} description={i.description} recurrence={i.recurrence} navigateEditScreen = {this.navigateEditScreen} action={this.deleteEvent} />;
+										return <EventOverview key={key}
+											id={key}
+											category={'FixedEvent'}
+											eventTitle={i.title}
+											date={i.dates}
+											time={i.hours}
+											location={i.location}
+											description={i.description}
+											recurrence={i.recurrence}
+											navigateEditScreen={this.navigateEditScreen}
+											action={this.deleteEvent} />;
 									})
 							}
 						</View>
@@ -238,8 +259,8 @@ class ReviewEvent extends React.Component {
 								this.state.nonFixedEventData.length === 0 ?
 									<Text>No non-fixed events added, please go back to add some</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
-										return <EventOverview 
-											key={key} id={key} 
+										return <EventOverview key={key}
+											id={key} 
 											category={'NonFixedEvent'} 
 											eventTitle={i.title} 
 											date={i.dates} 
@@ -257,8 +278,7 @@ class ReviewEvent extends React.Component {
 					</View>		
 				</ScrollView>
 
-				<FAB
-					style={styles.fab}
+				<FAB style={styles.fab}
 					icon="check"
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />

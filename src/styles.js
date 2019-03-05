@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
+import { Header } from 'react-navigation';
 import { blueColor, grayColor, orangeColor } from '../config';
 
 export const homeStyles = StyleSheet.create({
@@ -138,7 +139,8 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	scrollView: {
-		flex: 1
+		flex: 1,
+		marginTop: StatusBar.currentHeight + Header.HEIGHT
 	},
 
 	content: {
@@ -282,7 +284,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 	scrollView: {
 		flex: 1,
 		paddingHorizontal: 15,
-		marginBottom: 20
+		marginBottom: 20,
+		marginTop: StatusBar.currentHeight + Header.HEIGHT
 	},
 
 	content: {
@@ -438,7 +441,8 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	scrollView: {
-		flex: 1
+		flex: 1,
+		marginTop: StatusBar.currentHeight + Header.HEIGHT
 	},
 
 	content: {
@@ -662,5 +666,38 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 16,
 		color: '#ff0000',
 		marginLeft: 20
+	}
+});
+
+export const dashboardStyles = StyleSheet.create({
+	content: {
+		width: '100%',
+		height: '100%'
+	},
+
+	fab: {
+		position: 'absolute',
+		right: 0
+	}
+});
+
+export const chatbotStyles = StyleSheet.create({
+	content: {
+		width: '100%',
+		height: '100%'
+	}
+});
+
+export const compareScheduleStyles = StyleSheet.create({
+	content: {
+		width: '100%',
+		height: '100%'
+	}
+});
+
+export const settingsStyles = StyleSheet.create({
+	content: {
+		width: '100%',
+		height: '100%'
 	}
 });

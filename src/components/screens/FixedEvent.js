@@ -10,9 +10,8 @@ import { blueColor, orangeColor, lightOrangeColor, statusBlueColor, grayColor } 
 import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
-import { store } from '../../store';
+import { fixedEventStyles as styles } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
-import {fixedEventStyles as styles} from '../../styles';
 
 const viewHeight = 519.1428833007812;
 const containerWidth = Dimensions.get('window').width;
@@ -23,7 +22,7 @@ class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
-		headerTintColor: 'white',
+		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
@@ -34,6 +33,7 @@ class FixedEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
+
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 		
@@ -98,12 +98,12 @@ class FixedEvent extends React.Component {
 		let currentHour = time.getHours();
 		let currentMinute = time.getMinutes();
 
-		if(currentHour > 12) {
+		if (currentHour > 12) {
 			currentHour = currentHour % 12;
 			time.setHours(currentHour);
 		}
 
-		if(currentMinute < 10) {
+		if (currentMinute < 10) {
 			currentMinute = '0' + currentMinute;
 		}
 
@@ -421,10 +421,8 @@ class FixedEvent extends React.Component {
 	 */
 	resetField = () => {
 		this.setState({
-			//Title of Event
 			title: '',
-				
-			//Time section
+
 			allDay: false,
 
 			startDate: new Date().toDateString(),
@@ -444,13 +442,11 @@ class FixedEvent extends React.Component {
 			disabledEndTime : true,
 			amPmEnd: this.getAmPm(),
 
-			//Other Information
 			location: '',
 			recurrenceValue: 'None',
 			recurrence: 'NONE',
 			description: '',
 
-			// Google Calendar ID
 			eventID: ''
 		});
 	}
@@ -466,15 +462,20 @@ class FixedEvent extends React.Component {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === 'TutorialFixedEvent') {
-			tutorialStatus = <TutorialStatus active={2} color={blueColor} backgroundColor={'#ffffff'} skip={this.skip} />;
+			tutorialStatus = <TutorialStatus active={2}
+				color={blueColor}
+				backgroundColor={'#ffffff'}
+				skip={this.skip} />;
 
 			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
+				<TouchableOpacity style={styles.buttonEvent}
+					onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 				</TouchableOpacity>;
 
 			nextButton = 
-			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+			<TouchableOpacity style={styles.buttonNext}
+				onPress={this.nextScreen}>
 				<Text style={styles.buttonNextText}>NEXT</Text>
 			</TouchableOpacity>;
 		} else {
@@ -483,7 +484,8 @@ class FixedEvent extends React.Component {
 			addEventButton = null;
 
 			nextButton = 
-			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+			<TouchableOpacity style={styles.buttonNext}
+				onPress={this.nextScreen}>
 				<Text style={styles.buttonNextText}>DONE</Text>
 			</TouchableOpacity>;
 
@@ -492,17 +494,22 @@ class FixedEvent extends React.Component {
 		
 		return (
 			<View style={styles.container}>
-				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
+				<StatusBar translucent={true}
+					backgroundColor={statusBlueColor} />
 
-				<ScrollView style={[styles.scrollView, {marginTop: StatusBar.currentHeight + Header.HEIGHT}]}>
+				<ScrollView style={styles.scrollView}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom:paddingBottomContainer}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-							<MaterialCommunityIcons name="calendar-today" size={130} color={blueColor}/>
+							<MaterialCommunityIcons name="calendar-today"
+								size={130}
+								color={blueColor}/>
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title" size={30} color={blueColor} />
+							<MaterialCommunityIcons name="format-title"
+								size={30}
+								color={blueColor} />
 							<View style={styles.textInputBorder}>
 								<TextInput style={styles.textInputText}
 									placeholder="Title" 
@@ -514,8 +521,7 @@ class FixedEvent extends React.Component {
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
 								<View style={styles.switch}>
-									<Switch 
-										trackColor={{false: 'lightgray', true: lightOrangeColor}} 
+									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}} 
 										ios_backgroundColor={'lightgray'} 
 										thumbColor={this.state.allDay ? orangeColor : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
@@ -608,7 +614,9 @@ class FixedEvent extends React.Component {
 
 						<View style={styles.description}>
 							<View style={styles.textInput}>
-								<MaterialIcons name="location-on" size={30} color={blueColor} />
+								<MaterialIcons name="location-on"
+									size={30}
+									color={blueColor} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -619,7 +627,9 @@ class FixedEvent extends React.Component {
 							</View>
 
 							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="text-short" size={30} color={blueColor} />
+								<MaterialCommunityIcons name="text-short"
+									size={30}
+									color={blueColor} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -630,7 +640,9 @@ class FixedEvent extends React.Component {
 							</View>
 
 							<View style={styles.textInput}>
-								<Feather name="repeat" size={30} color={blueColor} />
+								<Feather name="repeat"
+									size={30}
+									color={blueColor} />
 
 								<View style={styles.textInputBorder}>
 									{

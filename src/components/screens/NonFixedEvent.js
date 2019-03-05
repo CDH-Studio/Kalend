@@ -2,7 +2,6 @@ import React from 'react';
 import { Platform, StatusBar, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
-// import RadioForm from 'react-native-simple-radio-button';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
@@ -10,11 +9,10 @@ import { connect } from 'react-redux';
 import { blueColor, statusBlueColor, grayColor, lightOrangeColor, orangeColor } from '../../../config';
 import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
+import { nonFixedEventStyles as styles } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
-import {nonFixedEventStyles as styles} from '../../styles';
 
 const viewHeight = 780.5714111328125;
-const headerHeight = Header.HEIGHT;
 
 /**
  * Permits the user to add Non-Fixed events i.e. events that can be moved around in the calendar
@@ -144,10 +142,6 @@ class NonFixedEvent extends React.Component {
 
 	render() {
 		const {containerHeight} = this.state;
-		// const durationTypes = [
-		// 	{label: 'Per Occurence', value: 0 },
-		// 	{label: 'Of Event', value: 1 }
-		// ];
 
 		let tutorialStatus;
 		let addEventButton;
@@ -158,15 +152,20 @@ class NonFixedEvent extends React.Component {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
-			tutorialStatus = <TutorialStatus active={3} color={blueColor} backgroundColor={'#ffffff'} skip={this.skip} />;
+			tutorialStatus = <TutorialStatus active={3}
+				color={blueColor}
+				backgroundColor={'#ffffff'}
+				skip={this.skip} />;
 
 			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
+				<TouchableOpacity style={styles.buttonEvent}
+					onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
 				</TouchableOpacity>;
 
 			nextButton = 
-				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<TouchableOpacity style={styles.buttonNext}
+					onPress={this.nextScreen}>
 					<Text style={styles.buttonNextText}>NEXT</Text>
 				</TouchableOpacity>;
 		} else {
@@ -175,7 +174,8 @@ class NonFixedEvent extends React.Component {
 			addEventButton = null;
 
 			nextButton = 
-				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<TouchableOpacity style={styles.buttonNext}
+					onPress={this.nextScreen}>
 					<Text style={styles.buttonNextText}>DONE</Text>
 				</TouchableOpacity>;
 
@@ -186,16 +186,20 @@ class NonFixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar backgroundColor={statusBlueColor} />
 
-				<ScrollView style={[styles.scrollView, {marginTop: StatusBar.currentHeight + headerHeight}]}>
+				<ScrollView style={styles.scrollView}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
 						<View style={styles.instruction}>
-							<MaterialCommunityIcons name="face" size={130} color={blueColor} />
+							<MaterialCommunityIcons name="face"
+								size={130}
+								color={blueColor} />
 
 							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title" size={30} color={blueColor} />
+							<MaterialCommunityIcons name="format-title"
+								size={30}
+								color={blueColor} />
 
 							<View style={styles.textInputBorder}>
 								<TextInput style={styles.textInputText} 
@@ -288,8 +292,7 @@ class NonFixedEvent extends React.Component {
 									</View>
 
 									<View style={styles.timePicker}>
-										<NumericInput
-											initValue = {this.state.minutes}
+										<NumericInput initValue={this.state.minutes}
 											value={this.state.minutes}
 											onChange={(minutes) => this.setState({minutes})}
 											minValue={0} 
@@ -316,8 +319,7 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
 
-									<NumericInput 
-										initValue = {this.state.occurence}
+									<NumericInput initValue={this.state.occurence}
 										value={this.state.occurence}
 										onChange={(occurence) => this.setState({occurence})}
 										minValue={0} 
@@ -334,8 +336,7 @@ class NonFixedEvent extends React.Component {
 						<View>
 							<Text style={styles.sectionTitle}>Priority Level</Text>
 
-							<Slider 
-								value={this.state.priority}
+							<Slider value={this.state.priority}
 								minimumValue={0}
 								maximumValue={1} 
 								step={0.5}
@@ -355,7 +356,9 @@ class NonFixedEvent extends React.Component {
 							<Text style={styles.sectionTitle}>Details</Text>
 
 							<View style={styles.textInput}>
-								<MaterialIcons name="location-on" size={30} color={blueColor} />
+								<MaterialIcons name="location-on"
+									size={30}
+									color={blueColor} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -366,7 +369,9 @@ class NonFixedEvent extends React.Component {
 							</View>
 						
 							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="text-short" size={30} color={blueColor} />
+								<MaterialCommunityIcons name="text-short"
+									size={30}
+									color={blueColor} />
 								
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 

@@ -1,11 +1,13 @@
 import React from 'react';
-import {StatusBar, Text, View} from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
+import { blueColor } from '../../../config';
+import { settingsStyles as styles } from '../../styles';
 
 class Settings extends React.Component {
 	render() {
 		return(
-			<View style={{width: '100%', height: '100%'}}>
-				<StatusBar translucent={true} backgroundColor={'#105dba'} />
+			<View style={styles.content}>
+				<StatusBar translucent={true} backgroundColor={blueColor} />
 
 				<Text>Settings Screen</Text>
 				

@@ -9,8 +9,8 @@ import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import { googleSignOut } from '../../services/google_identity';
-import TutorialStatus from '../TutorialStatus';
 import { schoolScheduleStyles as styles } from '../../styles';
+import TutorialStatus from '../TutorialStatus';
 
 const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 
@@ -32,7 +32,7 @@ class SchoolSchedule extends React.Component {
 			headerRight: navigation.state.routeName === 'TutorialSchoolSchedule' ? (
 				<IconButton
 					onPress={navigation.getParam('goBack')}
-					icon={({ size, color }) => (
+					icon={({size, color}) => (
 						<Image name='logout'
 							size={size}
 							color={color} />
@@ -54,7 +54,7 @@ class SchoolSchedule extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.navigation.setParams({ goBack: this.goBack });
+		this.props.navigation.setParams({goBack: this.goBack});
 	}
 
 	goBack = () => {
@@ -127,15 +127,21 @@ class SchoolSchedule extends React.Component {
 		let tutorialStatus;
 
 		if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
-			tutorialStatus = <TutorialStatus active={1} color={'#ffffff'} skip={this.skip} />;
+			tutorialStatus = <TutorialStatus active={1}
+				color={'#ffffff'}
+				skip={this.skip} />;
 		} else {
 			tutorialStatus = null;
 		}
 
 		return (
-			<LinearGradient style={styles.container} colors={gradientColors}>
-				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
-					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+			<LinearGradient style={styles.container}
+				colors={gradientColors}>
+				<ImageBackground style={styles.container}
+					source={require('../../assets/img/loginScreen/backPattern.png')} 
+					resizeMode="repeat">
+					<StatusBar translucent={true}
+						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
 					<View style={[styles.content, {height:containerHeight}]}
 						onLayout={(event) => {
@@ -145,23 +151,28 @@ class SchoolSchedule extends React.Component {
 							}
 						}}>
 						<View style={styles.instruction}>
-							<FontAwesome5 name="university" size={130} color='#ffffff'/>
+							<FontAwesome5 name="university"
+								size={130}
+								color='#ffffff'/>
 							<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
 						</View>
 						
 						<View style={styles.button}>
-							<TouchableOpacity style={styles.buttonSelect} onPress={() => this.selectAPicture()}>
+							<TouchableOpacity style={styles.buttonSelect}
+								onPress={() => this.selectAPicture()}>
 								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonTake} onPress={() => this.cameraCapture()}>
+							<TouchableOpacity style={styles.buttonTake}
+								onPress={() => this.cameraCapture()}>
 								<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
 							</TouchableOpacity>
 							
 							<Text style={styles.manual}>
 								<Text style={styles.textManual}>or import your school schedule </Text>
 								
-								<Text style={styles.buttonManual} onPress={() => this.manualImport()}>manually</Text>
+								<Text style={styles.buttonManual}
+									onPress={() => this.manualImport()}>manually</Text>
 
 								<Text style={styles.textManual}>.</Text>
 							</Text>
@@ -176,4 +187,3 @@ class SchoolSchedule extends React.Component {
 }
 
 export default SchoolSchedule;
-
