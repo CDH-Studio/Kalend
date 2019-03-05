@@ -8,27 +8,34 @@ const sectionMargin = 20;
 export const HEIGHT = dotSize + sectionMargin * 2;
 
 /**
+ * The bottom dots in the tutorial screens indicating where 
+ * the user is in the tutorial setup procedure
  * 
+ * @param {Integer} active The index of the active dot
+ * @param {String} color The color of the TutorialStatus
+ * @param {Function} skip The method that will be executed when skip is pressed
  */
 class TutorialStatus extends React.Component {
 
 	constructor(props) {
 		super(props);
 
+		// According to active index, darken that dot
 		let colors = [];
 		for (let i = 0; i < 4; i++) {
-			if (i + 1 === this.props.active) {
-				colors[i] = this.props.color;
+			if (i + 1 === props.active) {
+				colors[i] = props.color;
 			} else {
-				colors[i] = this.props.color + '9C';
+				colors[i] = props.color + '9C';
 			}
 		}
 
+		// If no skip function has been passed, do not show the skip button/text
 		let skip;
-		if(this.props.skip === undefined) {
+		if (props.skip === undefined) {
 			skip = <Text style={[styles.skipButtonText, {opacity: 0}]}>Skip</Text>;
 		} else {
-			skip = <Text style={[styles.skipButtonText, {color: this.props.color}]}>Skip</Text>;
+			skip = <Text style={[styles.skipButtonText, {color: props.color}]}>Skip</Text>;
 		}
 
 		this.state = {
@@ -37,6 +44,9 @@ class TutorialStatus extends React.Component {
 		};
 	}
 
+	/**
+	 * Creates the dots at the bottom
+	 */
 	createDots = () => {
 		let dots = [];
 		const { colors } = this.state;
