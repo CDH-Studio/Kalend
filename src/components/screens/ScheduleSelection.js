@@ -1,13 +1,13 @@
 import React from 'react';
 import { Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { Header } from 'react-navigation';
-import { data } from './scheduleInfo';
 import LinearGradient from 'react-native-linear-gradient';
+import { connect } from 'react-redux';
 import converter from 'number-to-words';
+import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { data } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { SET_SELECTED_SCHEDULE } from '../../constants';
-import {connect} from 'react-redux';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -23,6 +23,9 @@ const lineViewLeftPadding = 15;
  * @prop {Integer} chunks The length of the event (1 chunk represents 1 hour)
  * @prop {Integer} day The day the event will take place (0 being Sunday) 
  * @prop {Integer} start The start of the event in terms of the number of chunks
+ * @prop {Boolean} showShadow Shows shadow if true, doesn't otherwise
+ * @prop {Integer} timeInterval The number of hours there is between two lines (max 4 hours, min 1 hour)
+ * @prop {Boolean} startOffset The number of hours offset if the startTime is not equal to 0
  */
 class ScheduleEvent extends React.Component {
 
@@ -35,6 +38,7 @@ class ScheduleEvent extends React.Component {
 		let color;
 		let colorInside;
 
+		// Gets the appropriate color for the event
 		switch (kind) {
 			case 'fixed':
 				color = calendarEventColors.red;
@@ -50,6 +54,7 @@ class ScheduleEvent extends React.Component {
 				break;
 		}
 
+		// Calculates the size of the event view on the screen
 		this.state = {
 			height: (chunks * lineSpace + chunks * lineThickness) / timeInterval - lineThickness - 1,
 			width: width - 2,
@@ -88,12 +93,11 @@ class ScheduleEvent extends React.Component {
 	}
 }
 
-
 /**
  * The component of a schedule which contains ScheduleEvents
  * 
  * @prop {Object} data The whole object containing the data
- * @prop {Array} aiIndex The index of ai events in the data ai array
+ * @prop {Function} nextScreen The parent function to go to the next screen
  * @prop {Integer} numOfLines The number of lines to be drawn on the schedule
  * @prop {Integer} id The number of the schedule
  */
@@ -102,23 +106,23 @@ class Schedule extends React.Component {
 	constructor(props) {
 		super(props);
 
+		// Gets the ordinal word thanks to an existing library and the schedule index
 		let ordinal = converter.toWordsOrdinal(this.props.id+1);
 
 		this.state = {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
-			data: this.props.data,
-			aiIndex: this.props.id,
-			numOfLines: this.props.numOfLines,
 			showShadow: true
 		};
-
 	}
 
 	componentWillMount() {
 		this.createTimes();
 	}
 
+	/**
+	 * Creates the time intervals between two lines according to the events that are present in the calendar
+	 */
 	createTimes = () => {
 		let hours = [];
 
@@ -181,6 +185,7 @@ class Schedule extends React.Component {
 			}
 		}		
 
+		// Saves the information in the state
 		this.setState({
 			hours,
 			startOffset: earliestHour,
@@ -188,33 +193,38 @@ class Schedule extends React.Component {
 		});
 	}
 
+	/**
+	 * Helper method to create the lines dynamically
+	 * 
+	 * @param {Integer} num The number of lines to be displayed on the schedule
+	 */
 	createLines = (num) => {
 		let lines = [];
 		for (let i = 0; i < num; i++) {
 			lines.push(
 				<View key={i}
-					style={{
-						borderBottomColor: lineColor,
-						borderBottomWidth: lineThickness,
-						opacity:0.3,
-						marginTop: lineSpace ,
+					style={[styles.line, {
 						marginBottom: (i === num-1) ? lineSpace / 1.5 : 0
-					}}/>
+					}]}/>
 			);
 		}
 		return lines;
 	}
 
 	render() {
-		const { weekLetters, ordinal, data, numOfLines, hours, aiIndex, showShadow, startOffset, timeInterval } = this.state;
+		const { data, numOfLines, id } = this.props;
+		const { weekLetters, ordinal, hours, showShadow, startOffset, timeInterval } = this.state;
+
 		return (
 			<View style={styles.scheduleContainer}>
 				<Text style={styles.title}>
 					{ordinal} schedule
 				</Text>
 				
+				{/* The onPressIn and onPressOut helps eliminating the weird
+					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' Schedule');
+					this.props.nextScreen(ordinal + ' Schedule', id);
 				}} 
 				onPressIn={() =>{
 					this.setState({
@@ -243,14 +253,16 @@ class Schedule extends React.Component {
 						}),}]}>
 
 						<View style={styles.weekLetterContainer}>
-							{ weekLetters.map((str, id) => {
-								return (
-									<Text key={id} 
-										style={styles.weekLetters}>
-										{str}
-									</Text>
-								);
-							}) }
+							{ 
+								weekLetters.map((str, id) => {
+									return (
+										<Text key={id} 
+											style={styles.weekLetters}>
+											{str}
+										</Text>
+									);
+								}) 
+							}
 						</View>
 
 						<View> 
@@ -258,31 +270,56 @@ class Schedule extends React.Component {
 							
 							{ this.createLines(numOfLines) }
 
-							{ data.school.map((info, key) => {
-								return  <ScheduleEvent key={key} 
-									showShadow={showShadow} 
-									chunks={info.chunks} 
-									day={info.day} 
-									start={info.start} 
-									kind='school' 
-									timeInterval={timeInterval} 
-									startOffset={startOffset} />;
-							})}
+							{ 
+								data.school.map((info, key) => {
+									return  <ScheduleEvent key={key} 
+										showShadow={showShadow} 
+										chunks={info.chunks} 
+										day={info.day} 
+										start={info.start} 
+										kind='school' 
+										timeInterval={timeInterval} 
+										startOffset={startOffset} />;
+								})
+							}
 
-							{ data.fixed.map((info, key) => {
-								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='fixed' timeInterval={timeInterval} startOffset={startOffset} />;
-							})}
+							{ 
+								data.fixed.map((info, key) => {
+									return  <ScheduleEvent key={key} 
+										showShadow={showShadow} 
+										chunks={info.chunks} 
+										day={info.day} 
+										start={info.start} 
+										kind='fixed' 
+										timeInterval={timeInterval} 
+										startOffset={startOffset} />;
+								})
+							}
 
-							{ data.ai[aiIndex].map((info, key) => {
-								return  <ScheduleEvent key={key} showShadow={showShadow} chunks={info.chunks} day={info.day} start={info.start} kind='ai' timeInterval={timeInterval} startOffset={startOffset} />;
-							})}
+							{ 
+								data.ai[id].map((info, key) => {
+									return  <ScheduleEvent key={key} 
+										showShadow={showShadow} 
+										chunks={info.chunks} 
+										day={info.day} 
+										start={info.start} 
+										kind='ai' 
+										timeInterval={timeInterval} 
+										startOffset={startOffset} />;
+								})
+							}
 
 							<View style={styles.hoursTextContainer}>
-								{ hours.map((hour, key) => {
-									return (
-										<Text key={key} style={styles.hoursText}>{hour}</Text>
-									);
-								}) }
+								{ 
+									hours.map((hour, key) => {
+										return (
+											<Text key={key} 
+												style={styles.hoursText}>
+												{hour}
+											</Text>
+										);
+									}) 
+								}
 							</View>
 						</View>
 					</View>
@@ -311,43 +348,64 @@ class ScheduleSelection extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-
-	nextScreen = (title) => {
-		if(this.props.navigation.state.routeName === 'TutorialScheduleSelection') {
+	/**
+	 * Goes to the next screen
+	 * 
+	 * @param {String} title The header title for the next screen
+	 * @param {Integer} index The index of the selected school schedule
+	 */
+	nextScreen = (title, index) => {
+		this.setIndex(index);
+		if (this.props.navigation.state.routeName === 'TutorialScheduleSelection') {
 			this.props.navigation.navigate('TutorialScheduleSelectionDetails', {title});
-		}else {
+		} else {
 			this.props.navigation.navigate('DashboardScheduleSelectionDetails', {title});
 		}
 	}
 	
-	setIndex(index) {
+	/**
+	 * Saves the information about the selected school schedule in redux
+	 * 
+	 * @param {Integer} index The index of the selected school schedule
+	 */
+	setIndex = (index) => {
 		this.props.dispatch({
-			type:SET_SELECTED_SCHEDULE,
+			type: SET_SELECTED_SCHEDULE,
 			index,
 		});
 	}
 	
 	render() {
 		return(
-			<LinearGradient style={styles.container} colors={gradientColors}>
-				<ImageBackground style={styles.container} source={require('../../assets/img/loginScreen/backPattern.png')} resizeMode="repeat">
-					<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+			<LinearGradient style={styles.container} 
+				colors={gradientColors}>
+				<ImageBackground style={styles.container} 
+					source={require('../../assets/img/loginScreen/backPattern.png')} 
+					resizeMode="repeat">
+					<StatusBar translucent={true} 
+						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
 					<ScrollView >
 						<View style={styles.content}>
-
 							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
-							{ data.ai.map((ai, key) => {
-								return <Schedule nextScreen={this.nextScreen} data={data} key={key} id={key} numOfLines={6}/>;
-							})}
+							{ 
+								data.ai.map((ai, key) => {
+									return <Schedule nextScreen={this.nextScreen} 
+										data={data} 
+										key={key} 
+										id={key} 
+										numOfLines={6} />;
+								})
+							}
 
 						</View>
 					</ScrollView>
-
 				</ImageBackground>
 			</LinearGradient>
 		);
@@ -363,14 +421,17 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '130%'
 	},
+
 	content: {
 		padding: containerPadding,
 		paddingTop: StatusBar.currentHeight + Header.HEIGHT + 10,
 	},
+
 	description: {
 		color: 'white',
 		fontFamily: 'Raleway-Regular',
 	},
+
 	hoursTextContainer: {
 		flexDirection: 'column', 
 		justifyContent: 'space-between', 
@@ -380,24 +441,29 @@ const styles = StyleSheet.create({
 		marginLeft: -22.5,
 		alignItems: 'center'
 	},
+
 	hoursText: {
 		paddingVertical: 3.4, 
 		opacity: 0.5
 	}, 
+
 	thickLine: {
 		borderBottomColor: lineColor,
 		borderBottomWidth: lineThickness 
 	},
+
 	weekLetters: {
 		fontFamily: 'Raleway-Medium', 
 		fontSize: 17, 
 	}, 
+
 	weekLetterContainer: {
 		flexDirection: 'row', 
 		justifyContent: 'space-between', 
 		padding: 5, 
-		paddingHorizontal:20 
+		paddingHorizontal: 20 
 	},
+
 	card: {
 		backgroundColor: 'white', 
 		borderRadius: 3, 
@@ -405,13 +471,22 @@ const styles = StyleSheet.create({
 		paddingHorizontal: lineViewHorizontalPadding,
 		paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding
 	},
+
 	title: {
 		fontFamily: 'Raleway-Medium', 
 		color:'white', 
 		fontSize: 18, 
 		marginBottom: 10
 	}, 
+
 	scheduleContainer: {
 		paddingTop: 20
+	},
+
+	line: {
+		borderBottomColor: lineColor,
+		borderBottomWidth: lineThickness,
+		opacity: 0.3,
+		marginTop: lineSpace ,
 	}
 });

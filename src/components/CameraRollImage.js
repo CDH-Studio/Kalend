@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, View, Platform, Dimensions } from 'react-native';
+import { Image, TouchableOpacity, View, Platform, Dimensions, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { orangeColor, imageRollCheck } from '../../config';
 
@@ -7,6 +7,10 @@ const selectedIconSize = 35;
 
 /**
  * The image component that populates the camera roll screen
+ * 
+ * @prop {String} image The URI of the image
+ * @prop {Integer} index The index of the picture in the camera roll
+ * @prop {Integer} selectedStyle A number either 1 or 0, defining if it is selected
  */
 class CameraRollImage extends React.Component {
 
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
 		right: -10, 
 		padding: 5,
 	},
-	
+
 	shadow : {
 		backgroundColor:'#232323',
 		position:'absolute', 
