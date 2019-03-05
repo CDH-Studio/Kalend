@@ -133,6 +133,136 @@ export const schoolScheduleStyles = StyleSheet.create({
 	}
 });
 
+export const courseStyles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+
+	content: {
+		flex:1,
+		justifyContent:'space-evenly',
+		marginTop: StatusBar.currentHeight + Header.HEIGHT,
+		paddingHorizontal: 20
+	},
+
+	instruction: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+
+	text: {
+		width: 210,
+		paddingRight: 15,
+		fontFamily: 'Raleway-Regular',
+		color: grayColor,
+		fontSize: 20,
+		textAlign: 'right'
+	},
+
+	textInput: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'flex-end',
+		marginRight: 5,
+		height: 40
+	},
+
+	textInputText: {
+		fontFamily: 'OpenSans-Regular',
+		fontSize: 15,
+		color: grayColor,
+		paddingBottom: 0
+	},
+
+	textInputBorder: {
+		borderBottomColor: 'lightgray',
+		borderBottomWidth: 1,
+		width: '87%',
+		marginLeft: 10,
+	},
+
+	dayOfWeekBorder: {
+		borderBottomColor: 'lightgray',
+		borderBottomWidth: 1,
+		width: '65%',
+		marginLeft: 10,
+	},
+
+	dayOfWeekTitle: {
+		color: blueColor,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 17,
+		marginRight: 5,
+		marginLeft: 5
+	},
+
+	blueTitle: {
+		color: blueColor,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 17,
+		width: 88
+	},
+
+	dayOfWeekValues:{
+		color: grayColor,
+		height: 40,
+		width: '105%',
+		marginLeft: -5,
+		marginBottom:-8
+	},
+
+	time: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginLeft: 10
+	},
+
+	buttons: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 20
+	},
+
+	buttonEvent: {
+		borderRadius: 12,
+		backgroundColor: blueColor,
+		width: 150,
+		height: 57.9,
+		elevation: 4,
+		marginRight: 25,
+		justifyContent:'center'
+	},
+
+	buttonEventText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		textAlign: 'center',
+		padding: 8
+	},
+
+	buttonNext: {
+		borderRadius: 12,
+		backgroundColor: '#FFFFFF',
+		width: 100,
+		height: 58,
+		borderWidth: 3,
+		borderColor: blueColor,
+		elevation: 4,
+		justifyContent:'center'
+	},
+
+	buttonNextText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: blueColor,
+		textAlign: 'center',
+		padding: 8
+	}
+});
+
 export const fixedEventStyles = StyleSheet.create({
 	container: {
 		flex: 1
