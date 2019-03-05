@@ -8,7 +8,7 @@ import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
-import {reviewEventStyles as styles} from '../../styles';
+import { reviewEventStyles as styles } from '../../styles';
 
 const priorityLevels = {
 	0: 'Low',

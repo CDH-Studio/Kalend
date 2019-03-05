@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { calendarEventColors, grayColor } from '../../config';
 import { SET_NAV_SCREEN } from '../constants';
 import { store } from '../store';
-import {eventOverviewStyles as styles} from '../styles';
+import { eventOverviewStyles as styles } from '../styles';
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
@@ -75,7 +75,7 @@ class EventOverview extends React.Component {
 					</View>
 				</View>;
 			editScreen = 'FixedEvent';
-		}else {
+		} else {
 			categoryColor = calendarEventColors.purple;
 
 			categoryIcon = 'face';

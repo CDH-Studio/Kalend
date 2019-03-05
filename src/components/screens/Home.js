@@ -7,7 +7,7 @@ import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { store } from '../../store';
-import {homeStyles as styles} from '../../styles';
+import { homeStyles as styles } from '../../styles';
 
 /** 
  * Home/Login screen of the app.

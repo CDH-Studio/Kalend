@@ -10,7 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import { googleSignOut } from '../../services/google_identity';
 import TutorialStatus from '../TutorialStatus';
-import {schoolScheduleStyles as styles} from '../../styles';
+import { schoolScheduleStyles as styles } from '../../styles';
 
 const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 
