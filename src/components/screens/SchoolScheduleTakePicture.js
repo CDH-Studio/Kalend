@@ -218,11 +218,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		backgroundColor: 'black'
 	},
+
 	preview: {
 		flex: 1,
 		justifyContent: 'flex-end',
 		alignItems: 'center'
 	},
+
 	capture: {
 		flex: 0,
 		padding: 15,
@@ -241,11 +243,13 @@ const styles = StyleSheet.create({
 			},
 		}),
 	},
+
 	icon: {
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
 		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 10
 	}, 
+	
 	buttonContainer: { 
 		justifyContent: 'center', 
 		alignItems: 'center',

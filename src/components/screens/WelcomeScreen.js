@@ -114,10 +114,12 @@ const styles = StyleSheet.create({
 		height: Dimensions.get('window').height + StatusBar.currentHeight,
 		width: Dimensions.get('window').width
 	},
+
 	image: {
 		width: 320,
 		height: 320,
 	},
+
 	text: {
 		fontSize: 16,
 		color: 'rgba(255, 255, 255, 0.8)',
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
 		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 10 
 	},
+
 	title: {
 		fontSize: 24,
 		color: 'white',
@@ -140,6 +143,7 @@ const styles = StyleSheet.create({
 		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 10 
 	},
+
 	buttonCircle: {
 		width: 40,
 		height: 40,
@@ -148,15 +152,18 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+
 	icon: {
 		backgroundColor: 'transparent', 
 		textShadowColor: 'rgba(0, 0, 0, 0.20)',
 		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 20 
 	},
+
 	ionicons: { 
 		backgroundColor: 'transparent'
 	},
+	
 	container: {
 		flex: 1
 	}

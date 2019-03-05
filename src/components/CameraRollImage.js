@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		backgroundColor: 'black',
 	},
+
 	touch: {
 		margin: 5,
 		borderRadius: 5,
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
 			},
 		}),
 	},
+
 	circleIcon: {
 		position: 'absolute', 
 		bottom: -15, 
@@ -83,12 +85,14 @@ const styles = StyleSheet.create({
 		textShadowOffset: {width: -1, height: 1},
 		textShadowRadius: 20
 	},
+
 	checkIcon: {
 		position: 'absolute', 
 		bottom: -10, 
 		right: -10, 
 		padding: 5,
 	},
+	
 	shadow : {
 		backgroundColor:'#232323',
 		position:'absolute', 

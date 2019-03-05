@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+
 	animView: {
 		position:'absolute',
 		justifyContent: 'center',
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
 		height:'100%',
 		width:'100%'
 	},
+	
 	anim: {
 		height:350, 
 		width:350,

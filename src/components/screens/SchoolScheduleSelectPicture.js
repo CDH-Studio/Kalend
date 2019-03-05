@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '130%', //Fixes pattern bug
 	},
+
 	imageGrid: {
 		padding: 5,
 		flexDirection: 'row',
@@ -270,18 +271,22 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingBottom: 88 + 5
 	},
+
 	fab: {
 		position: 'absolute',
 		margin: 16,
 		right: 0,
 		bottom: 0,
 	},
+
 	content: {
 		flex: 1,
 	},
+
 	scroll: {
 		paddingTop: 88,
 	},
+
 	emptyText: {
 		color: 'white', 
 		padding: 20, 
@@ -289,6 +294,7 @@ const styles = StyleSheet.create({
 		fontSize: 17, 
 		textAlign: 'center'
 	},
+	
 	emptyView: {
 		alignItems: 'center', 
 		padding: 20, 
