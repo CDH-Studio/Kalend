@@ -1,18 +1,23 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
+import { TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import {connect} from 'react-redux';
-import { blueColor, orangeColor, redColor } from '../../../config';
+import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
+import { blueColor, orangeColor, redColor } from '../../../config';
+import { takePictureStyles as styles } from '../../styles';
+
+const iconColor = 'white';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-
+/**
+ * The camera screen which allows the user to take a picture of their schedule
+ * and upload it to the server to extract the information about their school schedule
+ */
 class SchoolScheduleTakePicture extends React.Component {
 
 	static navigationOptions = {
@@ -39,9 +44,24 @@ class SchoolScheduleTakePicture extends React.Component {
 			dismissIcon: 0
 		};
 		
+		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
+	
+	componentDidMount() {
+		// Creates an entrance animation for the blue button after the 
+		setTimeout(()=>{
+			this.enterAnimation(false);
+		}, 800);
+	}
 
+	/**
+	 * Animates the bottom icons
+	 * 
+	 * @param {Integer} opacity The desired opacity, which will be animated
+	 * @param {Integer} size The desired size, which will be animated
+	 * @param {Boolean} icon True if the two icons are animated, only one is animated otherwise
+	 */
 	animation = (opacity, size, icon) => {
 		if (icon) {
 			if (opacity === 1) {
@@ -82,20 +102,28 @@ class SchoolScheduleTakePicture extends React.Component {
 		}
 	}
 
+	/**
+	 * Helper method to animate an icon(s) on entrance
+	 * 
+	 * @param {Boolean} icon True if the two icons are animated, only one is animated otherwise
+	 */
 	enterAnimation = (icon) => {
 		this.animation(1, 35, icon);
 	}
 
+	/**
+	 * Helper method to animate an icon(s) on exit
+	 * 
+	 * @param {Boolean} icon True if the two icons are animated, only one is animated otherwise
+	 */
 	exitAnimation = (icon) => {
 		this.animation(0, 0, icon);
 	}
 
-	componentDidMount() {
-		setTimeout(()=>{
-			this.enterAnimation(false);
-		}, 800);
-	}
-
+	/**
+	 * Either takes the picture and saves it in the state or 
+	 * converts the image to Python friendly BASE64, saves it in redux, then goes to the next screen
+	 */
 	takePicture = async () => {
 		if (this.camera) {
 			if (!this.state.changeIcon) {
@@ -110,8 +138,6 @@ class SchoolScheduleTakePicture extends React.Component {
 
 				this.enterAnimation(true);
 			} else {
-				console.log('Image selected >> ' + this.state.base64);
-				
 				let fakeEscape = this.state.base64.replace(/[+]/g,'PLUS');
 				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 				analyzePicture({data: fakeEscape});
@@ -130,6 +156,10 @@ class SchoolScheduleTakePicture extends React.Component {
 		}
 	}
 
+	/**
+	 * The cancel button onPress, which animates the removal of the two 
+	 * icons (upload and dismiss) and the entrance of the take a picture icon
+	 */
 	cancelPicture = () => {
 		this.exitAnimation(true);
 		this.camera.resumePreview();
@@ -143,8 +173,8 @@ class SchoolScheduleTakePicture extends React.Component {
 		const { changeIcon, takePictureOpacity, dismissOpacity, takePictureIcon, dismissIcon } = this.state;
 		return (
 			<View style={styles.container}>
-
-				<StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.6)'} />
+				<StatusBar translucent={true} 
+					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 
 				<RNCamera captureAudio={false}
 					ref={ref => {
@@ -155,81 +185,30 @@ class SchoolScheduleTakePicture extends React.Component {
 					flashMode={RNCamera.Constants.FlashMode.auto} />
 
 				<View style={[styles.buttonContainer, {flexDirection: changeIcon ? 'row' : 'column'}]}>
-
 					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, { backgroundColor: redColor}]}>
-
+							style={[styles.capture, {backgroundColor: redColor}]}>
 							<Entypo name='cross' 
 								size={dismissIcon}
-								color="#FFFFFF" 
+								color={iconColor} 
 								style={styles.icon} />
-
 						</TouchableOpacity>
 					</View>
 
 					<View style={{opacity: takePictureOpacity}}>
 						<TouchableOpacity onPress={this.takePicture}
 							style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor }]}>
-
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
-								color="#FFFFFF" 
+								color={iconColor} 
 								style={styles.icon} />
-
 						</TouchableOpacity>
 					</View>
-
 				</View>
-
 			</View>
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		backgroundColor: 'black'
-	},
-	preview: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		alignItems: 'center'
-	},
-	capture: {
-		flex: 0,
-		padding: 15,
-		borderRadius: 50,
-		margin: 20,
-		alignSelf: 'center',
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-	},
-	icon: {
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
-	}, 
-	buttonContainer: { 
-		justifyContent: 'center', 
-		alignItems: 'center',
-		position: 'absolute',
-		right: 0,
-		left: 0,
-		bottom: 0 
-	}
-});
 
 export default connect()(SchoolScheduleTakePicture);

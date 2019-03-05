@@ -38,7 +38,6 @@ export default class AnimatedGradient extends React.Component {
 
 	render() {
 		const { tweener, prevColors, colors } = this.state;
-	
 		const { style } = this.props;
 	
 		const color1Interp = tweener.interpolate({
