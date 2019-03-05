@@ -65,9 +65,10 @@ class TutorialStatus extends React.Component {
 
 	render() {
 		const { skip } = this.state;
+		const { backgroundColor } = this.props;
 
 		return(
-			<View style={[styles.section, {backgroundColor: this.props.backgroundColor}]}>
+			<View style={[styles.section, {backgroundColor: backgroundColor}]}>
 				<View style={styles.emptySection}>
 					<Text style={styles.skipButtonText}>Skip</Text>
 				</View>

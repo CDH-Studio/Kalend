@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import {StatusBar, StyleSheet} from 'react-native';
 import {Header} from 'react-navigation';
 import { FAB } from 'react-native-paper';
-import {HEIGHT} from '../src/components/TutorialStatus';
+// import {HEIGHT} from '../src/components/TutorialStatus';
 
 // test("ReviewEvent renders correctly", () => {
 //     const tree = renderer.create(<ReviewEvent />).toJSON();
