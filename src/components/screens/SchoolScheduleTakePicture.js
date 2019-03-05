@@ -7,6 +7,8 @@ import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { blueColor, orangeColor, redColor } from '../../../config';
 
+const iconColor = 'white';
+
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -52,6 +54,13 @@ class SchoolScheduleTakePicture extends React.Component {
 		}, 800);
 	}
 
+	/**
+	 * Animates the bottom icons
+	 * 
+	 * @param {Integer} opacity The desired opacity, which will be animated
+	 * @param {Integer} size The desired size, which will be animated
+	 * @param {Boolean} icon True if the two icons are animated, only one is animated otherwise
+	 */
 	animation = (opacity, size, icon) => {
 		if (icon) {
 			if (opacity === 1) {
@@ -93,21 +102,26 @@ class SchoolScheduleTakePicture extends React.Component {
 	}
 
 	/**
+	 * Helper method to animate an icon(s) on entrance
 	 * 
+	 * @param {Boolean} icon True if the two icons are animated, only one is animated otherwise
 	 */
 	enterAnimation = (icon) => {
 		this.animation(1, 35, icon);
 	}
 
 	/**
+	 * Helper method to animate an icon(s) on exit
 	 * 
+	 * @param {Boolean} icon True if the two icons are animated, only one is animated otherwise
 	 */
 	exitAnimation = (icon) => {
 		this.animation(0, 0, icon);
 	}
 
 	/**
-	 * 
+	 * Either takes the picture and saves it in the state or 
+	 * converts the image to Python friendly BASE64, saves it in redux, then goes to the next screen
 	 */
 	takePicture = async () => {
 		if (this.camera) {
@@ -123,8 +137,6 @@ class SchoolScheduleTakePicture extends React.Component {
 
 				this.enterAnimation(true);
 			} else {
-				console.log('Image selected >> ' + this.state.base64);
-				
 				let fakeEscape = this.state.base64.replace(/[+]/g,'PLUS');
 				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 				analyzePicture({data: fakeEscape});
@@ -144,7 +156,8 @@ class SchoolScheduleTakePicture extends React.Component {
 	}
 
 	/**
-	 * 
+	 * The cancel button onPress, which animates the removal of the two 
+	 * icons (upload and dismiss) and the entrance of the take a picture icon
 	 */
 	cancelPicture = () => {
 		this.exitAnimation(true);
@@ -174,10 +187,10 @@ class SchoolScheduleTakePicture extends React.Component {
 					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, { backgroundColor: redColor}]}>
+							style={[styles.capture, {backgroundColor: redColor}]}>
 							<Entypo name='cross' 
 								size={dismissIcon}
-								color="#FFFFFF" 
+								color={iconColor} 
 								style={styles.icon} />
 						</TouchableOpacity>
 					</View>
@@ -187,7 +200,7 @@ class SchoolScheduleTakePicture extends React.Component {
 							style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor }]}>
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
-								color="#FFFFFF" 
+								color={iconColor} 
 								style={styles.icon} />
 						</TouchableOpacity>
 					</View>
