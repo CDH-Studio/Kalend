@@ -24,20 +24,37 @@ class TutorialStatus extends React.Component {
 			}
 		}
 
-		this.state = {
-			colors
-		};
-	}
-
-	render() {
-		const {colors} = this.state;
 		let skip;
-
 		if(this.props.skip === undefined) {
 			skip = <Text style={[styles.skipButtonText, {opacity: 0}]}>Skip</Text>;
 		} else {
 			skip = <Text style={[styles.skipButtonText, {color: this.props.color}]}>Skip</Text>;
 		}
+
+		this.state = {
+			colors,
+			skip
+		};
+	}
+
+	createDots = () => {
+		let dots = [];
+		const { colors } = this.state;
+
+		for (let i = 0; i < 4; i++) {
+			dots.push(
+				<Octicons name="primitive-dot" 
+					key={i}
+					size={dotSize} 
+					color={colors[i]} 
+					style={styles.sectionIcon} />);
+		}
+
+		return dots;
+	}
+
+	render() {
+		const { skip } = this.state;
 
 		return(
 			<View style={[styles.section, {backgroundColor: this.props.backgroundColor}]}>
@@ -45,16 +62,7 @@ class TutorialStatus extends React.Component {
 					<Text style={styles.skipButtonText}>Skip</Text>
 				</View>
 				<View style={styles.sectionIconRow}>
-					<Octicons name="primitive-dot" 
-						size={dotSize} 
-						color={colors[0]} 
-						style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" 
-						size={dotSize} 
-						color={colors[1]} 
-						style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={dotSize} color={colors[2]} style={styles.sectionIcon} />
-					<Octicons name="primitive-dot" size={dotSize} color={colors[3]} style={styles.sectionIcon} />
+					{this.createDots()}
 				</View>
 				
 				<View style={styles.skipButton}>

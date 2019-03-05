@@ -131,7 +131,7 @@ class Schedule extends React.Component {
 		let latestHour = 12;
 		Object.entries(data).map((i, index) => {
 			if (index === 2) {
-				i[1] = i[1][this.state.aiIndex];
+				i[1] = i[1][this.state.id];
 			}
 
 			i[1].map((i) => {
