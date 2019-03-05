@@ -32,6 +32,7 @@ class EventOverview extends React.Component {
 	 * To delete the event from the database and delete the component */
 	deleteEvent = () => {
 		this.setState({deleteDialogVisible: false, modalVisible: false});
+		this.props.action(this.props.id, this.props.category);
 	}
 
 	render() {
@@ -153,7 +154,7 @@ class EventOverview extends React.Component {
 								<Feather name="x" size={30} color={grayColor} />
 							</TouchableOpacity>
 
-							<Text style={styles.modalTitle}>{this.props.eventTitle}</Text>
+							<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
 
 							<View style={styles.modalInfoView}>
 								<View>

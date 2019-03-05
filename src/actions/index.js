@@ -1,4 +1,4 @@
-import {SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE} from '../constants';
+import {SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE} from '../constants';
 
 export function logonUser (profile) {
 	const action = {
@@ -38,6 +38,33 @@ export function AddFixedEvent (event) {
 export function AddCourseEvent (event) {
 	const action = {
 		type: ADD_COURSE,
+		event
+	}; 
+
+	return action;
+}
+
+export function DeleteNonFixedEvent (event) {
+	const action = {
+		type: DELETE_NFE,
+		event
+	}; 
+
+	return action;
+}
+
+export function DeleteFixedEvent (event) {
+	const action = {
+		type: DELETE_FE,
+		event
+	}; 
+
+	return action;
+}
+
+export function DeleteCourseEvent (event) {
+	const action = {
+		type: DELETE_COURSE,
 		event
 	}; 
 

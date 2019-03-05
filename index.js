@@ -138,8 +138,8 @@ TutorialNavigator.router.getStateForAction = (action, state) => {
 			index: routes.length - 1,
 		};
 	} else if (state && state.routes) {
-		if (action && action.action == 'FinishSchoolCreation') {
-			let routes = [{key:'1',routeName:'TutorialSchoolSchedule',param:{}},{key:'2',routeName:'TutorialFixedEvent',param:{}}];
+		if(action && action.action == 'FinishSchoolCreation') {
+			let routes = [{key:'1',routeName:'TutorialSchoolSchedule',params:{}},{key:'2',routeName:'TutorialFixedEvent',params:{update:false}}];
 			return {
 				...state,
 				routes,
