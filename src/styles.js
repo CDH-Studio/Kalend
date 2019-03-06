@@ -436,14 +436,13 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		paddingHorizontal: 15,
-		marginBottom: 20,
 		marginTop: StatusBar.currentHeight + Header.HEIGHT
 	},
 
 	content: {
 		flex: 1,
-		justifyContent:'space-evenly'
+		justifyContent:'space-evenly',
+		paddingHorizontal: 20
 	},
 
 	instruction: {
@@ -460,6 +459,22 @@ export const nonFixedEventStyles = StyleSheet.create({
 		fontSize: 20
 	},
 
+	errorTitle: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 40
+	},
+
+	errorEndDate: {
+		color: 'red',
+		fontSize: 12,
+		alignSelf: 'flex-start'
+	},
+	
+	errorDuration: {
+		color: 'red',
+		fontSize: 12
+	},
 	textInput: {
 		flexDirection: 'row',
 		alignItems: 'flex-end',
