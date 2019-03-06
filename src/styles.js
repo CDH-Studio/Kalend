@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
-import { blueColor, grayColor, orangeColor } from '../config';
+import { blueColor, grayColor, orangeColor, darkOrangeColor, darkBlueColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
@@ -95,14 +95,7 @@ export const tutorialStatusStyles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
 		padding: HEIGHT / 4,
-	},
-
-	emptySection: {
-		opacity: 0 //In order to center the bottom section
 	},
 
 	sectionIconRow: {
@@ -114,10 +107,13 @@ export const tutorialStatusStyles = StyleSheet.create({
 		width: 20,
 	},
 
-	skipButtonText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15
-	}
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		marginBottom: 14,
+		right: 0,
+		bottom: 0,
+	},
 });
 
 export const cameraRollImageStyles = StyleSheet.create({
@@ -448,7 +444,8 @@ export const fixedEventStyles = StyleSheet.create({
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: -200
 	},
 
 	text: {
@@ -530,19 +527,49 @@ export const fixedEventStyles = StyleSheet.create({
 
 	buttons: {
 		flexDirection: 'row',
-		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 20
 	},
 
 	buttonEvent: {
 		justifyContent:'center',
-		marginRight: 25,
 		width: 150,
 		height: 57.9,
 		borderRadius: 12,
 		backgroundColor: blueColor,
 		elevation: 4
+	},
+
+	buttonAdd: {
+		backgroundColor: blueColor,
+		color:'white',
+		width: '80%',
+		marginHorizontal: '10%',
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 5,
+			},
+		}),
+	},	
+
+	buttonAddIcon: {
+		padding: 8,
+		textAlign: 'center'
+	},
+
+	buttonAddText: {
+		padding: 8,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		textAlign: 'center'
 	},
 
 	buttonEventText: {

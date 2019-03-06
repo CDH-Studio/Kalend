@@ -45,15 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new VectorIconsPackage(),
-            new LinearGradientPackage(),
-            new RNImgToBase64Package(),
-            new RNGoogleSigninPackage(),
-            new RNGestureHandlerPackage(),
-            new RNCameraPackage(),
-            new LottiePackage(),
-            new RNFirebasePackage(),
-		  new RNFirebasePackage(),
+		      new RNFirebasePackage(),
           new RNImgToBase64Package(),
           new VectorIconsPackage(),
           new LottiePackage(),
@@ -61,8 +53,8 @@ public class MainApplication extends Application implements ReactApplication {
           new LinearGradientPackage(),
           new RNGoogleSigninPackage(),
           new RNCameraPackage(),
-		  new RNFirebaseRemoteConfigPackage(),
-		  new RNFirebaseMessagingPackage(),
+          new RNFirebaseRemoteConfigPackage(),
+          new RNFirebaseMessagingPackage(),
           new RNFirebaseAnalyticsPackage(),
           new RNFirebaseCrashlyticsPackage(),
           new RNFirebasePerformancePackage()

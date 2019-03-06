@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions, Button } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,8 +12,9 @@ import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-const viewHeight = 519.1428833007812;
+const viewHeight = 436.5;
 const containerWidth = Dimensions.get('window').width;
 
 /**
@@ -34,8 +35,14 @@ class FixedEvent extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - HEIGHT - getStatusBarHeight();
+		console.log("Height", Dimensions.get('window').height);
+		console.log("Header", Header.HEIGHT);
+		console.log("Tutorial", HEIGHT);
+		console.log("Status", getStatusBarHeight());
+		console.log("TOT", containerHeightTemp);
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+		let scrollable = true;
 		
 		this.state = { 
 			containerHeight,
@@ -66,7 +73,9 @@ class FixedEvent extends React.Component {
 			recurrence: 'NONE',
 			description: '',
 
-			eventID: ''
+			eventID: '',
+
+			scrollable,
 		};
 
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -447,12 +456,23 @@ class FixedEvent extends React.Component {
 			recurrence: 'NONE',
 			description: '',
 
-			eventID: ''
+			eventID: '',
+
+			showTutShadow: true,
 		});
 	}
 
+	onScroll = (event) => {
+		event = event.nativeEvent;
+		if (parseInt(event.contentOffset.y + event.layoutMeasurement.height) >= parseInt(event.contentSize.height)) {
+			this.setState({showTutShadow : false});
+		} else if (!this.state.showTutShadow) {
+			this.setState({showTutShadow : true});
+		}
+	}
+
 	render() {
-		const {containerHeight} = this.state;
+		const {containerHeight, scrollable} = this.state;
 		let tutorialStatus;
 		let addEventButton;
 		let nextButton;
@@ -465,19 +485,12 @@ class FixedEvent extends React.Component {
 			tutorialStatus = <TutorialStatus active={2}
 				color={blueColor}
 				backgroundColor={'#ffffff'}
-				skip={this.skip} />;
+				skip={this.skip}
+				showTutShadow={this.state.showTutShadow} />;
 
-			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-				</TouchableOpacity>;
+			addEventButton = null;
 
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>NEXT</Text>
-			</TouchableOpacity>;
+			nextButton = null;
 		} else {
 			tutorialStatus = null;
 
@@ -498,8 +511,13 @@ class FixedEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 				
 
-				<ScrollView style={styles.scrollView}>
-					<View style={[styles.content, {height: containerHeight, paddingBottom:paddingBottomContainer}]}>
+				<ScrollView style={styles.scrollView}
+					onScroll={this.onScroll}
+					scrollEnabled={scrollable}
+					scrollEventThrottle={100}>
+					<View style={[styles.content, {height: containerHeight}]} onLayout={(event) => {
+						console.log(event.nativeEvent.layout.height);
+					}}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 							<MaterialCommunityIcons name="calendar-today"
@@ -662,16 +680,24 @@ class FixedEvent extends React.Component {
 								</View>
 							</View>
 						</View>
-
 						<View style={styles.buttons}>
-							{addEventButton}
+							<TouchableOpacity style={styles.buttonAdd}>
+								{/* <MaterialIcons style={styles.buttonAddIcon}
+									name="add"
+									size={25}
+									color='white'
+								/> */}
 
-							{nextButton}
+								<Text style={styles.buttonAddText}>
+									Add
+								</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 
 				{tutorialStatus}
+
 			</View>
 		);
 	}

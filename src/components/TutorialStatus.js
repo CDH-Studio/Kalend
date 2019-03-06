@@ -1,8 +1,10 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Platform} from 'react-native';
+import { Text, View, Platform, Animated } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { tutorialStatusStyles as styles } from '../styles';
+import { FAB } from 'react-native-paper';
+import { darkBlueColor } from '../../config';
 
 const dotSize = 20;
 const sectionMargin = 20;
@@ -14,7 +16,9 @@ export const HEIGHT = dotSize + sectionMargin * 2;
  * 
  * @param {Integer} active The index of the active dot
  * @param {String} color The color of the TutorialStatus
- * @param {Function} skip The method that will be executed when skip is pressed
+ * @param {Function} next The method that will be executed when next is pressed
+ * @param {Boolean} showTutShadow Shows the shadow of the tutorial status if true, there's none otherwise
+ * @param {String} backgroundColor The background color of the tutorial status
  */
 class TutorialStatus extends React.Component {
 
@@ -31,17 +35,31 @@ class TutorialStatus extends React.Component {
 			}
 		}
 
-		// If no skip function has been passed, do not show the skip button/text
-		let skip;
+		// If no next function has been passed, do not show the next button/text
+		let next;
 		if (props.skip === undefined) {
-			skip = <Text style={[styles.skipButtonText, {opacity: 0}]}>Skip</Text>;
+			next =  <FAB style={[styles.fab, {opacity: 0}]}
+				small
+				icon="arrow-forward" />;
 		} else {
-			skip = <Text style={[styles.skipButtonText, {color: props.color}]}>Skip</Text>;
+			if (props.color === '#ffffff') {
+				next = <FAB style={[styles.fab, {backgroundColor: props.color}]}
+					small
+					color={darkBlueColor}
+					icon="arrow-forward"
+					onPress={props.skip} />;
+			} else {
+				next = <FAB style={[styles.fab, {backgroundColor: props.color}]}
+					small
+					icon="arrow-forward"
+					onPress={props.skip} />;
+			}
 		}
 
 		this.state = {
 			colors,
-			skip
+			next,
+			shadowOpacity: new Animated.Value(0)
 		};
 	}
 
@@ -64,9 +82,34 @@ class TutorialStatus extends React.Component {
 		return dots;
 	}
 
+	// componentWillReceiveProps(newProps) {
+	// 	if (newProps.showTutShadow) {
+	// 		if (this.state.shadowOpacity._value != 1) {
+	// 			Animated.timing(
+	// 				this.state.shadowOpacity,
+	// 				{ 
+	// 					toValue: 1,
+	// 					useNativeDriver: true,
+	// 				},
+	// 			).start(); 
+	// 		}
+	// 	} else {
+	// 		if (this.state.shadowOpacity._value != 0) {
+	// 			Animated.timing(
+	// 				this.state.shadowOpacity,
+	// 				{ 
+	// 					toValue: 0,
+	// 					useNativeDriver: true,
+	// 				},
+	// 			).start(); 
+	// 		}
+	// 	}
+	// 	console.log(newProps.showTutShadow);
+	// }
+
 	render() {
-		const { skip } = this.state;
-		const { backgroundColor } = this.props;
+		const { next } = this.state;
+		const { backgroundColor } = this.props;	
 
 		return(
 			<View style={[styles.section, {
@@ -76,25 +119,23 @@ class TutorialStatus extends React.Component {
 					ios: {
 						shadowColor: 'black',
 						shadowOffset: { width: 0, height: -2 },
-						shadowOpacity: 0.3,
+						shadowOpacity: this.state.shadowOpacity._value * 0.3,
 						shadowRadius: 3,    
 					},
 					android: {
-						elevation: 5,
+						elevation: this.state.shadowOpacity._value *  3,
 					},
 				}),}]}>
-				<View style={styles.emptySection}>
-					<Text style={styles.skipButtonText}>Skip</Text>
-				</View>
-				<View style={styles.sectionIconRow}>
-					{this.createDots()}
+				<View style={{flex:1, 
+					flexDirection: 'row',
+					justifyContent: 'center',
+					alignItems: 'center',}}>
+					<View style={styles.sectionIconRow}>
+						{this.createDots()}
+					</View>
 				</View>
 				
-				<View style={styles.skipButton}>
-					<TouchableOpacity onPress={this.props.skip}>
-						{skip}
-					</TouchableOpacity>
-				</View>
+				{ next }
 			</View>
 		);
 	}
