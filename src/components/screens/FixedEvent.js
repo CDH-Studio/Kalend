@@ -552,8 +552,8 @@ class FixedEvent extends React.Component {
 									
 								<DatePicker showIcon={false} 
 									date={this.state.startTime} 
-									mode="time" 
-									disabled = {this.state.disabledStartTime}
+									mode="time"
+									disabled={this.state.disabledStartTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
@@ -564,7 +564,7 @@ class FixedEvent extends React.Component {
 											color: grayColor, 
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="HH:mm A" 
+									format="H:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
@@ -605,7 +605,7 @@ class FixedEvent extends React.Component {
 											color: grayColor, 
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="HH:mm A" 
+									format="H:mm A" 
 									minDate={this.state.minEndTime}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
