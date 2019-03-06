@@ -8,6 +8,8 @@ import { gradientColors, calendarEventColors, calendarEventColorsInside } from '
 import { data } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { SET_SELECTED_SCHEDULE } from '../../constants';
+import { white, black } from '../../styles';
+import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -79,7 +81,7 @@ class ScheduleEvent extends React.Component {
 				left: left,
 				...Platform.select({
 					ios: {
-						shadowColor: '#000000',
+						shadowColor: black,
 						shadowOffset: { width: 0, height: 2 },
 						shadowOpacity: this.props.showShadow ? 0.8 : 0,
 						shadowRadius: 2,    
@@ -242,7 +244,7 @@ class Schedule extends React.Component {
 					<View style={[styles.card, {
 						...Platform.select({
 							ios: {
-								shadowColor: '#000000',
+								shadowColor: black,
 								shadowOffset: { width: 0, height: 2 },
 								shadowOpacity: showShadow ? 0.8 : 0,
 								shadowRadius: 2,    
@@ -335,7 +337,7 @@ class Schedule extends React.Component {
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
-		headerTintColor: '#fff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
@@ -361,10 +363,10 @@ class ScheduleSelection extends React.Component {
 	 */
 	nextScreen = (title, index) => {
 		this.setIndex(index);
-		if (this.props.navigation.state.routeName === 'TutorialScheduleSelection') {
-			this.props.navigation.navigate('TutorialScheduleSelectionDetails', {title});
+		if (this.props.navigation.state.routeName === TutorialScheduleSelection) {
+			this.props.navigation.navigate(TutorialScheduleSelectionDetails, {title});
 		} else {
-			this.props.navigation.navigate('DashboardScheduleSelectionDetails', {title});
+			this.props.navigation.navigate(DashboardScheduleSelectionDetails, {title});
 		}
 	}
 	
@@ -428,7 +430,7 @@ const styles = StyleSheet.create({
 	},
 
 	description: {
-		color: 'white',
+		color: white,
 		fontFamily: 'Raleway-Regular',
 	},
 
@@ -465,7 +467,7 @@ const styles = StyleSheet.create({
 	},
 
 	card: {
-		backgroundColor: 'white', 
+		backgroundColor: white, 
 		borderRadius: 3, 
 		paddingTop: 5, 
 		paddingHorizontal: lineViewHorizontalPadding,
@@ -474,7 +476,7 @@ const styles = StyleSheet.create({
 
 	title: {
 		fontFamily: 'Raleway-Medium', 
-		color:'white', 
+		color: white, 
 		fontSize: 18, 
 		marginBottom: 10
 	}, 

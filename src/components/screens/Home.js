@@ -8,6 +8,9 @@ import updateNavigation from '../NavigationHelper';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { store } from '../../store';
 import { homeStyles as styles } from '../../styles';
+import { SIGNED_IN } from '../../constants';
+import { TutorialNavigator } from '../../constants/screenNames';
+
 
 /** 
  * Home/Login screen of the app.
@@ -16,11 +19,9 @@ class Home extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			clicked: false
 		};
-    
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -29,7 +30,7 @@ class Home extends React.Component {
 	 */
 	setUser = (userInfo) => {
 		this.props.dispatch({
-			type:'SIGNED_IN',
+			type: SIGNED_IN,
 			user: userInfo
 		});
 	}
@@ -42,21 +43,21 @@ class Home extends React.Component {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
 				if (!signedIn || store.getState().HomeReducer.profile === null) {
-					googleGetCurrentUserInfo().then((userInfo) =>{
+					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
-							this.props.navigation.navigate('TutorialNavigator');
+							this.props.navigation.navigate(TutorialNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
-								this.props.navigation.navigate('TutorialNavigator');
+								this.props.navigation.navigate(TutorialNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
-					this.props.navigation.navigate('TutorialNavigator');
+					this.props.navigation.navigate(TutorialNavigator);
 				}
 			});
 		}

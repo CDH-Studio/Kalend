@@ -4,12 +4,12 @@ import { Surface } from 'react-native-paper';
 import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
-import {NavigationActions} from 'react-navigation';
-import {ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text} from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import { ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text } from 'react-native';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { gradientColors, orangeColor, blueColor } from '../../../config';
-
+import { gradientColors } from '../../../config';
+import { white, orange, blue } from '../../styles';
 /**
  * The loading screen after the User uploads a picture
  * Displays 'Analyzing picture' with a progress bar.
@@ -30,7 +30,7 @@ class SchoolScheduleCreation extends React.Component {
 
 	static navigationOptions = {
 		title: 'Analysing Schedule',
-		headerTintColor: '#fff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
@@ -73,10 +73,10 @@ class SchoolScheduleCreation extends React.Component {
 						<Progress.Bar style={{alignSelf:'center'}} 
 							indeterminate={true} 
 							width={200} 
-							color={blueColor} 
+							color={blue} 
 							useNativeDriver={true} 
 							borderWidth={0} 
-							unfilledColor={orangeColor}
+							unfilledColor={orange}
 						/>
 					</Surface>
 				</ImageBackground>

@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { gradientColors } from '../../../config';
 import CameraRollImage from '../CameraRollImage';
-import { selectPictureStyles as styles } from '../../styles';
+import { selectPictureStyles as styles, white } from '../../styles';
+import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
 
 const imagesPerLoad = 99;
 
@@ -18,7 +19,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTintColor: '#fff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
@@ -46,7 +47,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 			selectedStyle: [],
 			prevIndex: '',
 			index: 0,
-			activityIndicatorContent: <ActivityIndicator style={{padding:15}} size="large" color="#ffffff" />,
+			activityIndicatorContent: <ActivityIndicator style={{padding:15}} size="large" color={white} />,
 			showNoPhotos: false
 		};
 		
@@ -191,10 +192,10 @@ class SchoolScheduleSelectPicture extends React.Component {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 		
-		if(this.props.navigation.state.routeName === 'TutorialSchoolScheduleSelectPicture') {
-			this.props.navigation.navigate('TutorialSchoolScheduleCreation');
+		if(this.props.navigation.state.routeName === TutorialSchoolScheduleSelectPicture) {
+			this.props.navigation.navigate(TutorialSchoolScheduleCreation);
 		}else {
-			this.props.navigation.navigate('DashboardSchoolScheduleCreation');
+			this.props.navigation.navigate(DashboardSchoolScheduleCreation);
 		}
 	}
 
@@ -235,7 +236,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 											<Ionicons
 												name="ios-images" 
 												size={50} 
-												color="#fff" />
+												color={white} />
 
 											<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
 										</View>

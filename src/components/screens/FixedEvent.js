@@ -12,6 +12,7 @@ import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
 const viewHeight = 519.1428833007812;
 const containerWidth = Dimensions.get('window').width;
@@ -44,7 +45,7 @@ class FixedEvent extends React.Component {
 	}
 
 	componentWillMount() {
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if(this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			this.setState({...this.props.FEditState});
 		} else {
 			this.resetField();
@@ -299,7 +300,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+		this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
 	}
 
 	/**
@@ -318,7 +319,7 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		}; 
 
-		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			let events = this.props.FixedEventsReducer;
 			let arr = [];
 
@@ -341,7 +342,7 @@ class FixedEvent extends React.Component {
 				});
 			});
 
-			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		} else {
 			InsertFixedEvent(info).then(data => {
 				if (!data.error) {
@@ -352,7 +353,7 @@ class FixedEvent extends React.Component {
 						type: ADD_FE,
 						event: this.state
 					});
-					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
 				}
 			});
 		}
@@ -432,7 +433,7 @@ class FixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
 			tutorialStatus = <TutorialStatus active={2}
 				color={blue}
 				backgroundColor={white}

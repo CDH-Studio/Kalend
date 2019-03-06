@@ -1,20 +1,20 @@
 import { StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
-import { blueColor, grayColor, orangeColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
 
-export const white = '#FFF';
+export const white = '#FFFFFF';
 export const black = '#000';
 export const blue = '#1473E6';
-export const statusBlueColor = '#105dba';
+export const statusBlueColor = '#105DBA';
 export const dark_blue = '#0E4BAA';
 export const lightOrange = '#FFBF69';
 export const orange = '#FF9F1C';
 export const imageRollCheck = '#764D16';
 export const darkOrange = '#FF621C';
-export const red = '#b80000';
+export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
+
 
 export const loadingStyles = StyleSheet.create({
 	container: {
@@ -137,7 +137,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 		width: Dimensions.get('window').width/3 - 14,
 		height: Dimensions.get('window').width/3 - 14,
 		borderRadius: 5,
-		backgroundColor: 'black',
+		backgroundColor: black,
 	},
 
 	touch: {
@@ -145,7 +145,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 		borderRadius: 5,
 		...Platform.select({
 			ios: {
-				shadowColor: 'black',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.8,
 				shadowRadius: 2,    
@@ -267,7 +267,7 @@ export const takePictureStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: 'black'
+		backgroundColor: black
 	},
 
 	preview: {
@@ -335,7 +335,7 @@ export const homeStyles = StyleSheet.create({
 	text: {
 		paddingTop: 10,
 		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 20,
 		textAlign: 'center',
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
@@ -375,7 +375,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 		width: 220,
 		paddingLeft: 15,
 		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 20
 	},
 
@@ -386,7 +386,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	buttonSelect: {
 		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
+		backgroundColor: white,
 		padding: 17,
 		paddingVertical: 21.15,
 		alignItems: 'center',
@@ -397,7 +397,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		
 	},
 
@@ -405,7 +405,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: 'transparent',
 		borderWidth: 3,
-		borderColor: '#FFFFFF',
+		borderColor: white,
 		padding: 17,
 		alignItems: 'center',
 		marginTop: 20,
@@ -416,7 +416,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonTakeText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: '#FFFFFF',
+		color: white,
 		fontWeight:'500',
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
 		textShadowOffset: { width: -1, height: 1 },
@@ -431,13 +431,13 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	textManual: {
 		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 15,
 	},
 
 	buttonManual: {
 		fontFamily: 'Raleway-SemiBold',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 15,
 	}
 });
@@ -467,7 +467,7 @@ export const fixedEventStyles = StyleSheet.create({
 		width: 220,
 		paddingRight: 15,
 		fontFamily: 'Raleway-Regular',
-		color: grayColor,
+		color: gray,
 		fontSize: 20,
 		textAlign: 'right'
 	},
@@ -483,7 +483,7 @@ export const fixedEventStyles = StyleSheet.create({
 	textInputText: {
 		fontFamily: 'OpenSans-Regular',
 		fontSize: 15,
-		color: grayColor,
+		color: gray,
 		paddingBottom: 0
 	},
 
@@ -496,7 +496,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	blueTitle: {
 		width: 70,
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18
 	},
@@ -537,7 +537,7 @@ export const fixedEventStyles = StyleSheet.create({
 		width: '105%',
 		marginLeft: -5,
 		marginBottom: -8,
-		color: grayColor
+		color: gray
 	},
 
 	buttons: {
@@ -553,7 +553,7 @@ export const fixedEventStyles = StyleSheet.create({
 		width: 150,
 		height: 57.9,
 		borderRadius: 12,
-		backgroundColor: blueColor,
+		backgroundColor: blue,
 		elevation: 4
 	},
 
@@ -572,7 +572,7 @@ export const fixedEventStyles = StyleSheet.create({
 		backgroundColor: '#FFFFFF',
 		borderRadius: 12,
 		borderWidth: 3,
-		borderColor: blueColor,
+		borderColor: blue,
 		elevation: 4
 	},
 
@@ -580,7 +580,7 @@ export const fixedEventStyles = StyleSheet.create({
 		padding: 8,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		textAlign: 'center'
 	}
 });
@@ -612,7 +612,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		width: 205,
 		marginLeft: 15,
 		fontFamily: 'Raleway-Regular',
-		color: grayColor,
+		color: gray,
 		fontSize: 20
 	},
 
@@ -626,7 +626,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	textInputText: {
 		fontFamily: 'OpenSans-Regular',
 		fontSize: 15,
-		color: grayColor,
+		color: gray,
 		paddingBottom: 0
 	},
 
@@ -646,14 +646,14 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	blueTitle: {
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 88
 	},
 
 	blueTitleLong: {
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 200
@@ -694,7 +694,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	optionsText: {
-		color: grayColor,
+		color: gray,
 		fontFamily: 'OpenSans-Regular',
 		marginBottom: 5
 	},
@@ -708,7 +708,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	buttonEvent: {
 		borderRadius: 12,
-		backgroundColor: blueColor,
+		backgroundColor: blue,
 		width: 150,
 		height: 57.9,
 		elevation: 4,
@@ -730,7 +730,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		width: 100,
 		height: 58,
 		borderWidth: 3,
-		borderColor: blueColor,
+		borderColor: blue,
 		elevation: 4,
 		justifyContent:'center'
 	},
@@ -738,7 +738,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	buttonNextText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		textAlign: 'center',
 		padding: 8
 	}
@@ -761,7 +761,7 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	sectionTitle: {
-		color: grayColor,
+		color: gray,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
 		marginTop: 20,
@@ -816,12 +816,12 @@ export const eventOverviewStyles = StyleSheet.create({
 		width: 180,
 		fontFamily: 'OpenSans-SemiBold',
 		fontSize: 15,
-		color: grayColor
+		color: gray
 	},
 
 	eventInfo: {
 		fontFamily: 'OpenSans-Regular',
-		color: grayColor
+		color: gray
 	},
 
 	modalView: {
@@ -866,7 +866,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalTitle: {
-		backgroundColor: orangeColor,
+		backgroundColor: orange,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',
@@ -887,14 +887,14 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
 		paddingVertical: 3,
-		color: grayColor
+		color: gray
 	},
 
 	modalInfoText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 3,
-		color: grayColor
+		color: gray
 	},
 
 	modalDetailsView: {
@@ -906,21 +906,21 @@ export const eventOverviewStyles = StyleSheet.create({
 		textDecorationLine: 'underline',
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: grayColor
+		color: gray
 	},
 	
 	modalDetailsSubtitle: {
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: grayColor
+		color: gray
 	},
 
 	modalDetailsText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 1,
-		color: grayColor
+		color: gray
 	},
 
 	actionsModal: {
@@ -956,7 +956,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 20,
 		fontFamily: 'Raleway-SemiBold',
 		marginLeft: 10,
-		color: grayColor
+		color: gray
 	},
 
 	deleteDialogOptions: {
@@ -967,7 +967,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	deleteDialogCancel: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize:16,
-		color: grayColor
+		color: gray
 	},
 
 	deleteDialogYes: {
