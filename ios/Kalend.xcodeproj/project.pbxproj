@@ -45,6 +45,7 @@
 		5EB7F3802215B948002096F9 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB7F3292215B7FE002096F9 /* libRCTCameraRoll.a */; };
 		6D5AF45C4A4846C896118055 /* libPods-KalendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFC1AEC0D07A891A7BE7D56B /* libPods-KalendTests.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8793D1B0D83D4EA0A2D1B647 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C8A3DB20D064516BB78CC7D /* Raleway-Medium.ttf */; };
 		A0108C1B0DC94AB3AFC7D4BB /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED161E15E425458687888B8E /* Raleway-Regular.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		DA28457DA85A4249926708CE /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 87BF800A009645EA9E66B2EC /* OpenSans-Regular.ttf */; };
@@ -386,6 +387,7 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		5EB7F31F2215B7FD002096F9 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		6B96BE309C844EADBFD545B3 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		6C8A3DB20D064516BB78CC7D /* Raleway-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Medium.ttf"; path = "../src/assets/fonts/Raleway-Medium.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		87BF800A009645EA9E66B2EC /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../src/assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -394,7 +396,6 @@
 		95064AC3353B35EC1EA588E7 /* Pods-Kalend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kalend.release.xcconfig"; path = "Target Support Files/Pods-Kalend/Pods-Kalend.release.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AFC1AEC0D07A891A7BE7D56B /* libPods-KalendTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KalendTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2B2A5AFE5F84D41B18A83EB /* Raleway-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Medium.ttf"; path = "../src/assets/fonts/Raleway-Medium.ttf"; sourceTree = "<group>"; };
 		C9B20EB517B065AC85F9A764 /* Pods-Kalend-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kalend-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Kalend-tvOSTests/Pods-Kalend-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		E367A3D5E0FA43CEA3F51748 /* RNGoogleSignin.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGoogleSignin.xcodeproj; path = "../node_modules/react-native-google-signin/ios/RNGoogleSignin.xcodeproj"; sourceTree = "<group>"; };
 		E97E04B7433198E3893D2942 /* libPods-Kalend.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kalend.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -619,7 +620,7 @@
 				915EFF7DB854499D8AA3BA03 /* Raleway-Bold.ttf */,
 				ED161E15E425458687888B8E /* Raleway-Regular.ttf */,
 				1244DE0B54764A6A808C3409 /* Raleway-SemiBold.ttf */,
-				C2B2A5AFE5F84D41B18A83EB /* Raleway-Medium.ttf */,
+				6C8A3DB20D064516BB78CC7D /* Raleway-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1233,6 +1234,7 @@
 				288BC2E918C34E8E80685C45 /* Raleway-Bold.ttf in Resources */,
 				A0108C1B0DC94AB3AFC7D4BB /* Raleway-Regular.ttf in Resources */,
 				E9289188EA13494A87D52E67 /* Raleway-SemiBold.ttf in Resources */,
+				8793D1B0D83D4EA0A2D1B647 /* Raleway-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

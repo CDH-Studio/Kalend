@@ -4,10 +4,11 @@ import { Header } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import converter from 'number-to-words';
-import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { gradientColors, calendarEventColors, calendarEventColorsInside, grayColor } from '../../../config';
 import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { SET_SELECTED_SCHEDULE } from '../../constants';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -81,8 +82,8 @@ class ScheduleEvent extends React.Component {
 					ios: {
 						shadowColor: '#000000',
 						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: this.props.showShadow ? 0.8 : 0,
-						shadowRadius: 2,    
+						shadowOpacity: this.props.showShadow ? 0.2 : 0,
+						shadowRadius: 1,    
 					},
 					android: {
 						elevation: this.props.showShadow ? 3 : 0,
@@ -244,8 +245,8 @@ class Schedule extends React.Component {
 							ios: {
 								shadowColor: '#000000',
 								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: showShadow ? 0.8 : 0,
-								shadowRadius: 2,    
+								shadowOpacity: showShadow ? 0.4 : 0,
+								shadowRadius: 5,    
 							},
 							android: {
 								elevation: showShadow ? 5 : 0,
@@ -342,7 +343,7 @@ class ScheduleSelection extends React.Component {
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			marginTop: Platform.OS === 'ios' ? StatusBar.currentHeight : StatusBar.currentHeight
 		}
 	};
 
@@ -379,8 +380,11 @@ class ScheduleSelection extends React.Component {
 			index,
 		});
 	}
-	
+
 	render() {
+		console.log("NavigationHeader", Header.HEIGHT);
+		console.log("StatusBar", StatusBar.HEIGHT);
+
 		return(
 			<LinearGradient style={styles.container} 
 				colors={gradientColors}>
@@ -424,7 +428,7 @@ const styles = StyleSheet.create({
 
 	content: {
 		padding: containerPadding,
-		paddingTop: StatusBar.currentHeight + Header.HEIGHT + 10,
+		paddingTop: getStatusBarHeight() + Header.HEIGHT + 10,
 	},
 
 	description: {
@@ -455,6 +459,7 @@ const styles = StyleSheet.create({
 	weekLetters: {
 		fontFamily: 'Raleway-Medium', 
 		fontSize: 17, 
+		color: grayColor
 	}, 
 
 	weekLetterContainer: {

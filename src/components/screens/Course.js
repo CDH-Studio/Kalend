@@ -1,12 +1,13 @@
 import React from 'react';
-import {Platform, Dimensions, StyleSheet, StatusBar, Text, View, ScrollView, TextInput, Picker, TouchableOpacity, ActionSheetIOS} from 'react-native';
-import {Header} from 'react-navigation';
-import { blueColor, statusBlueColor } from '../../../config';
+import { Platform, Dimensions, StyleSheet, StatusBar, Text, View, ScrollView, TextInput, Picker, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import { Header } from 'react-navigation';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 import updateNavigation from '../NavigationHelper';
-import {ADD_COURSE, CLEAR_COURSE} from '../../constants';
+import { blueColor, statusBlueColor } from '../../../config';
+import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 
@@ -421,7 +422,7 @@ class Course extends React.Component {
 }
 
 const headerHeight = Header.HEIGHT;
-const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
+const containerHeight = Dimensions.get('window').height - Header.HEIGHT - getStatusBarHeight();
 
 const styles = StyleSheet.create({
 	container: {
@@ -432,7 +433,7 @@ const styles = StyleSheet.create({
 		flex:1,
 		justifyContent:'space-evenly',
 		height: containerHeight,
-		marginTop: StatusBar.currentHeight + headerHeight,
+		marginTop: getStatusBarHeight() + headerHeight,
 		paddingHorizontal: 20
 	},
 

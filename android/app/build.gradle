@@ -181,6 +181,13 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-linear-gradient')
+    compile project(':react-native-image-base64')
+    compile project(':react-native-google-signin')
+    compile project(':react-native-gesture-handler')
+    compile project(':react-native-camera')
+    compile project(':lottie-react-native')
     compile project(':react-native-firebase')
     implementation project(':react-native-firebase')
     implementation project(':react-native-vector-icons')

@@ -496,6 +496,7 @@ class FixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
+				
 
 				<ScrollView style={styles.scrollView}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom:paddingBottomContainer}]}>

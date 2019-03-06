@@ -1,7 +1,8 @@
-import { StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { blueColor, grayColor, orangeColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const loadingStyles = StyleSheet.create({
 	container: {
@@ -29,7 +30,7 @@ export const welcomeStyles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		height: Dimensions.get('window').height + StatusBar.currentHeight,
+		height: Dimensions.get('window').height + getStatusBarHeight(),
 		width: Dimensions.get('window').width
 	},
 
@@ -436,7 +437,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -581,7 +582,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 15,
 		marginBottom: 20,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -738,7 +739,7 @@ export const reviewEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {

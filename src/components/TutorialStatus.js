@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Platform} from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { tutorialStatusStyles as styles } from '../styles';
 
 const dotSize = 20;
@@ -68,7 +69,20 @@ class TutorialStatus extends React.Component {
 		const { backgroundColor } = this.props;
 
 		return(
-			<View style={[styles.section, {backgroundColor: backgroundColor}]}>
+			<View style={[styles.section, {
+				backgroundColor: backgroundColor, 
+				paddingBottom: ifIphoneX() ? 20 : 20,
+				...Platform.select({
+					ios: {
+						shadowColor: 'black',
+						shadowOffset: { width: 0, height: -2 },
+						shadowOpacity: 0.3,
+						shadowRadius: 3,    
+					},
+					android: {
+						elevation: 5,
+					},
+				}),}]}>
 				<View style={styles.emptySection}>
 					<Text style={styles.skipButtonText}>Skip</Text>
 				</View>

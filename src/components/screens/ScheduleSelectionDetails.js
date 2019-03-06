@@ -3,7 +3,7 @@ import { Text, Platform, StatusBar, View, StyleSheet, ScrollView } from 'react-n
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { blueColor, calendarEventColors, statusBlueColor } from '../../../config';
+import { blueColor, calendarEventColors, statusBlueColor, grayColor } from '../../../config';
 
 const containerPadding = 10;
 const data = {
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
 	},
 	
 	content: {
-		padding: containerPadding,
+		padding: containerPadding
 	},
 
 	dayContainer: {
@@ -285,7 +285,8 @@ const styles = StyleSheet.create({
 	dayTitle: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
-		marginVertical: 7
+		marginVertical: 7,
+		color: grayColor
 	},
 
 	eventContainer: {
@@ -293,8 +294,8 @@ const styles = StyleSheet.create({
 			ios: {
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
 			},
 			android: {
 				elevation: 5,
@@ -313,6 +314,15 @@ const styles = StyleSheet.create({
 
 	eventTitle: {
 		fontFamily: 'Raleway-Bold',
+		color: grayColor
+	},
+
+	eventTime : {
+		color: grayColor
+	},
+
+	eventLocation : {
+		color: grayColor
 	},
 
 	scheduleEventColor: {
