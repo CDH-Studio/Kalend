@@ -234,19 +234,23 @@ class Course extends React.Component {
 	 * Validates the CourseCode and EndTime fields
 	 */
 	fieldValidation = () => {
+		let validated = true;
+
 		if (this.state.courseCode === '') {
 			this.setState({courseCodeValidated: false});
-			console.log('courseCode:' + this.state.courseCode);
-			console.log('courseCodeValidated' + this.state.courseCodeValidated);
-		} else if (this.state.disabledEndTime === true) {
-			this.setState({endTimeValidated: false});
-			console.log('disabledEndTime:' + this.state.disabledEndTime);
-			console.log('endTimeValidated' + this.state.endTimeValidated);
+			validated = false;
 		} else {
-			this.setState({courseCodeValidated: true, endTimeValidated: true});
-			console.log('courseCodeValidated' + this.state.courseCodeValidated);
-			console.log('endTimeValidated' + this.state.endTimeValidated);
+			this.setState({courseCodeValidated: true});
 		}
+		
+		if (this.state.disabledEndTime === true) {
+			this.setState({endTimeValidated: false});
+			validated = false;
+		} else {
+			this.setState({endTimeValidated: true});
+		}
+
+		return validated;
 	}
 
 	/**
@@ -254,14 +258,12 @@ class Course extends React.Component {
 	 */
 	nextScreen = () => {
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
-			this.addAnotherEvent;
-			if (this.state.courseCodeValidated === false || this.state.endTimeValidated === false) {
-				return;
+			if (this.addAnotherEvent()) {
+				this.props.navigation.navigate('TutorialFixedEvent', {update:false});
 			}
-			this.props.navigation.navigate('TutorialFixedEvent', {update:false});
 		} else {
-			this.fieldValidation;
-			if (this.state.courseCodeValidated === false || this.state.endTimeValidated === false) {
+			let validated = this.fieldValidation();
+			if (!validated) {
 				return;
 			}
 			
@@ -295,16 +297,20 @@ class Course extends React.Component {
 	 * Adds the event to the calendar and resets the fields
 	 */
 	addAnotherEvent = () => {
-		this.fieldValidation;
-		if (this.state.courseCodeValidated === false || this.state.endTimeValidated === false) {
-			return;
+		let validated = this.fieldValidation();
+		if (!validated) {
+			return false;
 		}
 
 		this.props.dispatch({
 			type: ADD_COURSE,
 			event: this.state
 		});
-		this.resetField();
+
+		if(validated) {
+			this.resetField();
+		}
+		return validated;
 	}
 
 	/**
@@ -313,7 +319,7 @@ class Course extends React.Component {
 	resetField = () => {
 		this.setState({
 			courseCode: '',
-			courseCodeValidated: false,
+			courseCodeValidated: true,
 			
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'MONDAY',
@@ -325,7 +331,7 @@ class Course extends React.Component {
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime: true,
 			amPmEnd: this.getAmPm(),
-			endTimeValidated: false,
+			endTimeValidated: true,
 
 			location: ''
 		});
@@ -334,6 +340,21 @@ class Course extends React.Component {
 	render() {
 		let addCourseButton;
 		let nextButton;
+		let errorCourseCode;
+		let errorEndTime;
+
+		if (!this.state.courseCodeValidated) {
+			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
+		} else {
+			errorCourseCode = null;
+		}
+
+		if (!this.state.endTimeValidated) {
+			errorEndTime = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
+		} else {
+			errorEndTime = null;
+		}
+		
 
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
 			addCourseButton = 
@@ -368,17 +389,21 @@ class Course extends React.Component {
 								size={130}
 								color={blueColor}/>
 						</View>
+						<View>
+							<View style={styles.textInput}>
+								<MaterialIcons name="class"
+									size={30}
+									color={blueColor} />
 
-						<View style={styles.textInput}>
-							<MaterialIcons name="class"
-								size={30}
-								color={blueColor} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText} 
-									placeholder="Course Code" 
-									onChangeText={(courseCode) => this.setState({courseCode})} 
-									value={this.state.courseCode}/>
+								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<TextInput style={styles.textInputText} 
+										placeholder="Course Code" 
+										onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
+										value={this.state.courseCode} />
+								</View>
 							</View>
+
+							{errorCourseCode}
 						</View>
 
 						<View style={styles.textInput}>
@@ -403,7 +428,7 @@ class Course extends React.Component {
 								}
 							</View>
 						</View>
-						<View style={styles.timeSection}>
+						<View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>Start Time</Text>
 								<DatePicker showIcon={false} 
@@ -415,7 +440,7 @@ class Course extends React.Component {
 											fontFamily: 'OpenSans-Regular',
 											color: grayColor
 										}, 
-										placeholderText:{color: grayColor}
+										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : grayColor}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
@@ -423,32 +448,35 @@ class Course extends React.Component {
 									cancelBtnText="Cancel" 
 									is24Hour={false}
 									onDateChange={(startTime) => {
-										this.setState({startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime))});
+										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime))});
 										this.setState({ disabledEndTime: this.enableEndTime()});
 									}}/>
 							</View>
 
-							<View style={styles.time}>
-								<Text style={styles.blueTitle}>End Time</Text>
-								<DatePicker showIcon={false} 
-									time={this.state.endTime} 
-									mode="time" 
-									disabled= {this.state.disabledEndTime}
-									customStyles={{
-										disabled:{backgroundColor: 'transparent'}, 
-										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
-										placeholderText:{
-											color: grayColor,
-											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
-									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="HH:mm A" 
-									minDate={this.state.minEndTime}
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									is24Hour={false}
-									onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+							<View>
+								<View style={styles.time}>
+									<Text style={styles.blueTitle}>End Time</Text>
+									<DatePicker showIcon={false} 
+										time={this.state.endTime} 
+										mode="time" 
+										disabled= {this.state.disabledEndTime}
+										customStyles={{
+											disabled:{backgroundColor: 'transparent'}, 
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular'}, 
+											placeholderText:{
+												color: !this.state.endTimeValidated ? '#ff0000' : grayColor,
+												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
+										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
+										format="HH:mm A" 
+										minDate={this.state.minEndTime}
+										confirmBtnText="Confirm" 
+										cancelBtnText="Cancel" 
+										is24Hour={false}
+										onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+								</View>
 
+								{errorEndTime}
 							</View>
 						</View>
 

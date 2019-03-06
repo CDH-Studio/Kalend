@@ -160,6 +160,17 @@ export const courseStyles = StyleSheet.create({
 		textAlign: 'right'
 	},
 
+	errorCourseCode: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 40
+	},
+
+	errorEndTime: {
+		color: 'red',
+		fontSize: 12
+	},
+
 	textInput: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -176,7 +187,6 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	textInputBorder: {
-		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: '87%',
 		marginLeft: 10,
@@ -185,7 +195,7 @@ export const courseStyles = StyleSheet.create({
 	dayOfWeekBorder: {
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
-		width: '65%',
+		width: '60%',
 		marginLeft: 10,
 	},
 
@@ -193,15 +203,14 @@ export const courseStyles = StyleSheet.create({
 		color: blueColor,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
-		marginRight: 5,
-		marginLeft: 5
+		marginRight: 5
 	},
 
 	blueTitle: {
 		color: blueColor,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
-		width: 88
+		width: 93
 	},
 
 	dayOfWeekValues:{
@@ -214,8 +223,7 @@ export const courseStyles = StyleSheet.create({
 
 	time: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginLeft: 10
+		alignItems: 'center'
 	},
 
 	buttons: {
