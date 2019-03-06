@@ -70,7 +70,7 @@ class LoadingScreen extends React.Component {
 	}
 
 	render() {
-		const { colors, progress } = this.state;
+		const { colors, animProgress } = this.state;
 		return(
 			<View style={styles.container}>
 				<AnimatedGradient
@@ -84,7 +84,7 @@ class LoadingScreen extends React.Component {
 				
 				<View style={styles.animView}>
 					<LottieView
-						progress={progress}
+						progress={animProgress}
 						source={logoFile}
 						loop={false}
 						speed={1}
