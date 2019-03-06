@@ -50,6 +50,15 @@ class ReviewEvent extends React.Component {
 		};
 	}
 
+	componentWillMount() {
+		this.updateInformation();
+	}
+
+	componentWillReceiveProps() {
+		this.updateInformation();
+		this.forceUpdate();
+	}
+
 	updateInformation = () => {
 		let fixedEventData = [];
 		let nonFixedEventData = [];
