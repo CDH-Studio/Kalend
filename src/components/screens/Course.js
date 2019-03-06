@@ -389,6 +389,7 @@ class Course extends React.Component {
 								size={130}
 								color={blueColor}/>
 						</View>
+						
 						<View>
 							<View style={styles.textInput}>
 								<MaterialIcons name="class"
@@ -428,7 +429,7 @@ class Course extends React.Component {
 								}
 							</View>
 						</View>
-						<View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+						<View>
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>Start Time</Text>
 								<DatePicker showIcon={false} 

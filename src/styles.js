@@ -163,7 +163,7 @@ export const courseStyles = StyleSheet.create({
 	errorCourseCode: {
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 40
+		marginLeft: 45
 	},
 
 	errorEndTime: {
@@ -187,6 +187,7 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	textInputBorder: {
+		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
 		marginLeft: 10,
@@ -283,13 +284,27 @@ export const fixedEventStyles = StyleSheet.create({
 
 	content: {
 		flex: 1,
-		justifyContent: 'space-evenly'
+		justifyContent: 'space-evenly',
+		paddingHorizontal: 20
 	},
 
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+
+	errorTitle: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 45
+	},
+
+	errorEnd: {
+		color: 'red',
+		fontSize: 12,
+		alignSelf: 'flex-start',
+		marginLeft: 10
 	},
 
 	text: {
@@ -317,7 +332,7 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	textInputBorder: {
-		borderBottomColor: 'lightgray',
+		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
 		marginLeft: 10,
@@ -349,7 +364,7 @@ export const fixedEventStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingLeft: 45,
+		paddingLeft: 30,
 		paddingRight: 5
 	},
 
@@ -357,7 +372,7 @@ export const fixedEventStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingLeft: 45,
+		paddingLeft: 30,
 		paddingRight: 5
 	},
 
