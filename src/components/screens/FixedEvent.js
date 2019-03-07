@@ -320,20 +320,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		const { location, title, description, recurrence, allDay } = this.state;
-		if (location !== '' || title !== '' || description !== '' || recurrence !== 'NONE' || allDay) {
-			Alert.alert(
-				'Save event?',
-				'You are going to the next screen. Do you want to save this event?',
-				[
-					{text: 'Save', onPress: () => this.addAnotherEvent(), style: 'cancel',},
-					{text: 'Discard', onPress: () => this.props.navigation.navigate('TutorialNonFixedEvent', {update:false})},
-				],
-				{cancelable: false},
-			);
-		} else {
-			this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
-		}
+		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
 	}
 
 	/**

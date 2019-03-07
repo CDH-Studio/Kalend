@@ -189,9 +189,9 @@ class NonFixedEvent extends React.Component {
 	render() {
 		const {containerHeight} = this.state;
 
+		let addEventButtonText;
+		let addEventButtonFunction;
 		let tutorialStatus;
-		let addEventButton;
-		let nextButton;
 		let paddingBottomContainer = HEIGHT;
 		let errorTitle;
 		let errorEndDate;
@@ -228,27 +228,13 @@ class NonFixedEvent extends React.Component {
 				backgroundColor={white}
 				skip={this.skip} />;
 
-			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-				</TouchableOpacity>;
-
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>NEXT</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
 		} else {
 			tutorialStatus = null;
 
-			addEventButton = null;
-
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>DONE</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
 
 			paddingBottomContainer = null;
 		}
@@ -465,9 +451,12 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							{addEventButton}
-
-							{nextButton}
+							<TouchableOpacity style={styles.buttonAdd}
+								onPress={addEventButtonFunction}>
+								<Text style={styles.buttonAddText}>
+									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>

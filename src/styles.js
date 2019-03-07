@@ -26,8 +26,7 @@ export const bottomButtonsStyles = StyleSheet.create({
 	buttonAdd: {
 		backgroundColor: blue,
 		color:'white',
-		width: '80%',
-		marginHorizontal: '10%',
+		width: '100%',
 		borderRadius: 5,
 		...Platform.select({
 			ios: {
@@ -870,50 +869,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 		fontFamily: 'OpenSans-Regular',
 		marginBottom: 5
 	},
-
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 35
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: blue,
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: blue,
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blue,
-		textAlign: 'center',
-		padding: 8
-	}
+	
+	...bottomButtonsStyles
 });
 
 export const reviewEventStyles = StyleSheet.create({
