@@ -609,7 +609,7 @@ class FixedEvent extends React.Component {
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
 											color: grayColor, 
-											opacity: this.state.disabledStartTime ? 0 : 1}}}
+											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
