@@ -6,11 +6,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor, blueColor, grayColor } from '../../../config';
 import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
-import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray } from '../../styles';
+import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
@@ -552,7 +551,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="format-title"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText}
@@ -608,7 +607,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color: grayColor, 
+											color: gray, 
 											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
@@ -631,7 +630,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
-											color: !this.state.endDateValidated ? '#ff0000' : grayColor,
+											color: !this.state.endDateValidated ? '#ff0000' : gray,
 											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 									placeholder={this.state.endDate} 
 									format="ddd., MMM DD, YYYY" 
@@ -650,7 +649,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color: !this.state.endTimeValidated ? '#ff0000' : grayColor, 
+											color: !this.state.endTimeValidated ? '#ff0000' : gray, 
 											opacity: this.state.allDay ? 0 : 1,
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 

@@ -3,12 +3,11 @@ import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-n
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor } from '../../../config';
 import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
 

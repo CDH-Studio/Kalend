@@ -1,6 +1,5 @@
 import { StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
-import { blueColor, grayColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
 
 export const white = '#FFFFFF';

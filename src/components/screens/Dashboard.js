@@ -1,11 +1,10 @@
 import React from 'react';
 import { StatusBar, View, Button, Text } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
-import { blueColor } from '../../../config';
 import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store, persistor } from '../../store';
-import { dashboardStyles as styles } from '../../styles';
+import { dashboardStyles as styles, blue } from '../../styles';
 import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent } from '../../constants/screenNames';
 
 /**
@@ -29,7 +28,7 @@ class Dashboard extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true}
-					backgroundColor={blueColor} />
+					backgroundColor={blue} />
 
 				<Text>Redux Management</Text>
 				<Button title='Purge' 

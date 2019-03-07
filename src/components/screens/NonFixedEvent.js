@@ -6,10 +6,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor, blueColor, grayColor, lightOrangeColor, orangeColor } from '../../../config';
 import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange } from '../../styles';
+import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
@@ -272,7 +271,7 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="format-title"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText} 
@@ -314,7 +313,7 @@ class NonFixedEvent extends React.Component {
 													dateInput:{borderWidth: 0},
 													dateText:{
 														fontFamily: 'OpenSans-Regular',
-														color: !this.state.endDateValidated ? '#FF0000' : grayColor}}} 
+														color: !this.state.endDateValidated ? '#FF0000' : gray}}} 
 												placeholder={this.state.startDate} 
 												format="ddd., MMM DD, YYYY" 
 												minDate={this.state.minStartDate} 
@@ -340,7 +339,7 @@ class NonFixedEvent extends React.Component {
 													disabled:{backgroundColor: 'transparent'},
 													dateInput:{borderWidth: 0},
 													dateText:{fontFamily: 'OpenSans-Regular',
-														color: !this.state.endDateValidated ? '#ff0000' : grayColor,
+														color: !this.state.endDateValidated ? '#ff0000' : gray,
 														textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 												placeholder={this.state.endDate} 
 												format="ddd., MMM DD, YYYY" 
@@ -362,11 +361,11 @@ class NonFixedEvent extends React.Component {
 												value={this.state.hours}
 												onChange={(hours) => this.setState({hours, durationValidated: true})}
 												minValue={0} 
-												leftButtonBackgroundColor={lightOrangeColor}
-												rightButtonBackgroundColor={orangeColor}
+												leftButtonBackgroundColor={lightOrange}
+												rightButtonBackgroundColor={orange}
 												rounded={true}
 												borderColor={'lightgray'}
-												textColor={!this.state.durationValidated ? '#ff0000' : grayColor}
+												textColor={!this.state.durationValidated ? '#ff0000' : gray}
 												iconStyle={{color: '#ffffff'}} />
 											<Text style={styles.optionsText}>hour(s)</Text>
 										</View>
@@ -376,11 +375,11 @@ class NonFixedEvent extends React.Component {
 												value={this.state.minutes}
 												onChange={(minutes) => this.setState({minutes, durationValidated: true})}
 												minValue={0} 
-												leftButtonBackgroundColor={lightOrangeColor}
-												rightButtonBackgroundColor={orangeColor}
+												leftButtonBackgroundColor={lightOrange}
+												rightButtonBackgroundColor={orange}
 												rounded={true}
 												borderColor={'lightgray'}
-												textColor={!this.state.durationValidated ? '#ff0000' : grayColor}
+												textColor={!this.state.durationValidated ? '#ff0000' : gray}
 												iconStyle={{color: '#ffffff'}}  />
 											<Text style={styles.optionsText}>minute(s)</Text>
 										</View>

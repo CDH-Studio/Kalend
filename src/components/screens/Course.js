@@ -5,11 +5,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { blueColor, statusBlueColor, grayColor } from '../../../config';
 import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { courseStyles as styles } from '../../styles';
+import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -26,7 +25,7 @@ class Course extends React.Component {
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
@@ -387,14 +386,14 @@ class Course extends React.Component {
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
 							<FontAwesome5 name="university"
 								size={130}
-								color={blueColor}/>
+								color={blue}/>
 						</View>
 						
 						<View>
 							<View style={styles.textInput}>
 								<MaterialIcons name="class"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText} 
@@ -439,9 +438,9 @@ class Course extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular',
-											color: grayColor
+											color: gray
 										}, 
-										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : grayColor}
+										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
@@ -466,7 +465,7 @@ class Course extends React.Component {
 											dateInput:{borderWidth: 0}, 
 											dateText:{fontFamily: 'OpenSans-Regular'}, 
 											placeholderText:{
-												color: !this.state.endTimeValidated ? '#ff0000' : grayColor,
+												color: !this.state.endTimeValidated ? '#ff0000' : gray,
 												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 										format="HH:mm A" 
@@ -484,7 +483,7 @@ class Course extends React.Component {
 						<View style={styles.textInput}>
 							<MaterialIcons name="location-on"
 								size={30}
-								color={blueColor} />
+								color={blue} />
 							<View style={styles.textInputBorder}>
 								<TextInput style={styles.textInputText} 
 									placeholder="Location" 
