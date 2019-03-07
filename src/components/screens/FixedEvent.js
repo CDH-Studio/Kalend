@@ -6,12 +6,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { blueColor, orangeColor, lightOrangeColor, statusBlueColor, grayColor } from '../../../config';
+import { statusBlueColor } from '../../../config';
 import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
-import { fixedEventStyles as styles } from '../../styles';
+import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
 const viewHeight = 519.1428833007812;
 const containerWidth = Dimensions.get('window').width;
@@ -22,11 +23,11 @@ class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
-		headerTintColor: '#ffffff',
+		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -38,42 +39,13 @@ class FixedEvent extends React.Component {
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 		
 		this.state = { 
-			containerHeight,
-
-			title: '',
-			
-			allDay: false,
-
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-
-			startTime: new Date().toLocaleTimeString(),
-			disabledStartTime : false,
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime : true,
-			amPmEnd: this.getAmPm(),
-
-			location: '',
-			recurrenceValue: 'None',
-			recurrence: 'NONE',
-			description: '',
-
-			eventID: ''
+			containerHeight
 		};
-
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if(this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			this.setState({...this.props.FEditState});
 		} else {
 			this.resetField();
@@ -330,7 +302,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+		this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
 	}
 
 	/**
@@ -387,7 +359,7 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		}; 
 
-		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			let events = this.props.FixedEventsReducer;
 			let arr = [];
 
@@ -410,7 +382,7 @@ class FixedEvent extends React.Component {
 				});
 			});
 
-			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		} else {
 			InsertFixedEvent(info).then(data => {
 				if (!data.error) {
@@ -421,7 +393,7 @@ class FixedEvent extends React.Component {
 						type: ADD_FE,
 						event: this.state
 					});
-					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
 				}
 			});
 		}
@@ -534,10 +506,10 @@ class FixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
 			tutorialStatus = <TutorialStatus active={2}
-				color={blueColor}
-				backgroundColor={'#ffffff'}
+				color={blue}
+				backgroundColor={white}
 				skip={this.skip} />;
 
 			addEventButton = 
@@ -553,16 +525,13 @@ class FixedEvent extends React.Component {
 			</TouchableOpacity>;
 		} else {
 			tutorialStatus = null;
-
 			addEventButton = null;
-
+			paddingBottomContainer = null;
 			nextButton = 
 			<TouchableOpacity style={styles.buttonNext}
 				onPress={this.nextScreen}>
 				<Text style={styles.buttonNextText}>DONE</Text>
 			</TouchableOpacity>;
-
-			paddingBottomContainer = null;
 		}
 		
 		return (
@@ -576,7 +545,7 @@ class FixedEvent extends React.Component {
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 							<MaterialCommunityIcons name="calendar-today"
 								size={130}
-								color={blueColor}/>
+								color={blue}/>
 						</View>
 
 						<View>
@@ -600,9 +569,9 @@ class FixedEvent extends React.Component {
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
 								<View style={styles.switch}>
-									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}} 
+									<Switch trackColor={{false: 'lightgray', true: lightOrange}} 
 										ios_backgroundColor={'lightgray'} 
-										thumbColor={this.state.allDay ? orangeColor : 'darkgray'} 
+										thumbColor={this.state.allDay ? orange : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
 											allDay: allDay, 
 											disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} 
@@ -620,7 +589,7 @@ class FixedEvent extends React.Component {
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
-										placeholderText:{color:grayColor}}} 
+										placeholderText:{color:gray}}} 
 									placeholder={this.state.startDate} 
 									format="ddd., MMM DD, YYYY" 
 									minDate={this.state.minStartDate} 
@@ -641,6 +610,7 @@ class FixedEvent extends React.Component {
 										placeholderText:{
 											color: grayColor, 
 											opacity: this.state.disabledStartTime ? 0 : 1}}}
+											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
 									confirmBtnText="Confirm" 
@@ -699,7 +669,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -712,7 +682,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -725,7 +695,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<Feather name="repeat"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									{

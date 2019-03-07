@@ -1,6 +1,315 @@
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
-import { blueColor, grayColor, orangeColor } from '../config';
+import { HEIGHT } from './components/TutorialStatus';
+
+export const white = '#FFFFFF';
+export const black = '#000';
+export const blue = '#1473E6';
+export const statusBlueColor = '#105DBA';
+export const dark_blue = '#0E4BAA';
+export const lightOrange = '#FFBF69';
+export const orange = '#FF9F1C';
+export const imageRollCheck = '#764D16';
+export const darkOrange = '#FF621C';
+export const red = '#B80000';
+export const statusBarDark = '#00000050';
+export const gray = '#565454';
+
+
+export const loadingStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+
+	animView: {
+		position:'absolute',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height:'100%',
+		width:'100%'
+	},
+	
+	anim: {
+		height:350, 
+		width:350,
+		flex: 1,
+		alignSelf:'center' 
+	}
+});
+
+export const welcomeStyles = StyleSheet.create({
+	mainContent: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'space-around',
+		height: Dimensions.get('window').height + StatusBar.currentHeight,
+		width: Dimensions.get('window').width
+	},
+
+	image: {
+		width: 320,
+		height: 320,
+	},
+
+	text: {
+		fontSize: 16,
+		color: 'rgba(255, 255, 255, 0.8)',
+		backgroundColor: 'transparent',
+		textAlign: 'center',
+		paddingHorizontal: 16,
+		fontFamily: 'Raleway-Regular',
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 10 
+	},
+
+	title: {
+		fontSize: 24,
+		color: white,
+		backgroundColor: 'transparent',
+		textAlign: 'center',
+		marginBottom: 16,
+		fontFamily: 'Raleway-Bold',
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 10 
+	},
+
+	buttonCircle: {
+		width: 40,
+		height: 40,
+		backgroundColor: 'rgba(0, 0, 0, .2)',
+		borderRadius: 20,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	icon: {
+		backgroundColor: 'transparent', 
+		textShadowColor: 'rgba(0, 0, 0, 0.20)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 20 
+	},
+
+	ionicons: { 
+		backgroundColor: 'transparent'
+	},
+	
+	container: {
+		flex: 1
+	}
+});
+
+export const tutorialStatusStyles = StyleSheet.create({
+
+	section: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		padding: HEIGHT / 4,
+	},
+
+	emptySection: {
+		opacity: 0 //In order to center the bottom section
+	},
+
+	sectionIconRow: {
+		flexDirection: 'row',
+		marginLeft: 10
+	},
+
+	sectionIcon: {
+		width: 20,
+	},
+
+	skipButtonText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15
+	}
+});
+
+export const cameraRollImageStyles = StyleSheet.create({
+	image: {
+		width: Dimensions.get('window').width/3 - 14,
+		height: Dimensions.get('window').width/3 - 14,
+		borderRadius: 5,
+		backgroundColor: black,
+	},
+
+	touch: {
+		margin: 5,
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.8,
+				shadowRadius: 2,    
+			},
+			android: {
+				elevation: 5,
+			},
+		}),
+	},
+
+	circleIcon: {
+		position: 'absolute', 
+		bottom: -15, 
+		right: -15, 
+		padding: 5,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 20
+	},
+
+	checkIcon: {
+		position: 'absolute', 
+		bottom: -10, 
+		right: -10, 
+		padding: 5,
+	},
+
+	shadow : {
+		backgroundColor:'#232323',
+		position:'absolute', 
+		opacity: 0.4
+	}
+});
+
+export const scheduleCreateStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+		height: '130%' //Fixes pattern bug
+	},
+
+	surface: {
+		padding: 8,
+		height: 110,
+		width: Dimensions.get('window').width * 0.8,
+		borderRadius: 4,
+		justifyContent: 'center',
+		elevation: 3,
+	},
+
+	title: {
+		fontSize: 20,
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center'
+	},
+
+	subtitle: {
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center',
+		paddingTop: 5,
+		paddingBottom: 10
+	},
+
+	progressBar: {
+		alignSelf:'center'
+	}
+});
+
+export const selectPictureStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		width: '100%',
+		height: '130%', //Fixes pattern bug
+	},
+
+	imageGrid: {
+		padding: 5,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		paddingBottom: 88 + 5
+	},
+
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		right: 0,
+		bottom: 0,
+	},
+
+	content: {
+		flex: 1,
+	},
+
+	scroll: {
+		paddingTop: 88,
+	},
+
+	emptyText: {
+		color: white, 
+		padding: 20, 
+		fontFamily: 'Raleway-Regular', 
+		fontSize: 17, 
+		textAlign: 'center'
+	},
+	
+	emptyView: {
+		alignItems: 'center', 
+		padding: 20, 
+		height: Dimensions.get('window').height*0.85, 
+		justifyContent: 'center'
+	}
+});
+
+export const takePictureStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		backgroundColor: black
+	},
+
+	preview: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+
+	capture: {
+		flex: 0,
+		padding: 15,
+		borderRadius: 50,
+		margin: 20,
+		alignSelf: 'center',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.8,
+				shadowRadius: 2,    
+			},
+			android: {
+				elevation: 5,
+			},
+		}),
+	},
+
+	icon: {
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 10
+	}, 
+	
+	buttonContainer: { 
+		justifyContent: 'center', 
+		alignItems: 'center',
+		position: 'absolute',
+		right: 0,
+		left: 0,
+		bottom: 0 
+	}
+});
 
 export const homeStyles = StyleSheet.create({
 	container: {
@@ -26,7 +335,7 @@ export const homeStyles = StyleSheet.create({
 	text: {
 		paddingTop: 10,
 		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 20,
 		textAlign: 'center',
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
@@ -66,7 +375,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 		width: 220,
 		paddingLeft: 15,
 		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 20
 	},
 
@@ -77,7 +386,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	buttonSelect: {
 		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
+		backgroundColor: white,
 		padding: 17,
 		paddingVertical: 21.15,
 		alignItems: 'center',
@@ -88,7 +397,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		
 	},
 
@@ -96,7 +405,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 		borderRadius: 12,
 		backgroundColor: 'transparent',
 		borderWidth: 3,
-		borderColor: '#FFFFFF',
+		borderColor: white,
 		padding: 17,
 		alignItems: 'center',
 		marginTop: 20,
@@ -107,7 +416,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonTakeText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: '#FFFFFF',
+		color: white,
 		fontWeight:'500',
 		textShadowColor: 'rgba(0, 0, 0, 0.40)',
 		textShadowOffset: { width: -1, height: 1 },
@@ -122,13 +431,13 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	textManual: {
 		fontFamily: 'Raleway-Regular',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 15,
 	},
 
 	buttonManual: {
 		fontFamily: 'Raleway-SemiBold',
-		color: '#FFFFFF',
+		color: white,
 		fontSize: 15,
 	}
 });
@@ -311,7 +620,7 @@ export const fixedEventStyles = StyleSheet.create({
 		width: 220,
 		paddingRight: 15,
 		fontFamily: 'Raleway-Regular',
-		color: grayColor,
+		color: gray,
 		fontSize: 20,
 		textAlign: 'right'
 	},
@@ -327,7 +636,7 @@ export const fixedEventStyles = StyleSheet.create({
 	textInputText: {
 		fontFamily: 'OpenSans-Regular',
 		fontSize: 15,
-		color: grayColor,
+		color: gray,
 		paddingBottom: 0
 	},
 
@@ -340,7 +649,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	blueTitle: {
 		width: 70,
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18
 	},
@@ -381,7 +690,7 @@ export const fixedEventStyles = StyleSheet.create({
 		width: '105%',
 		marginLeft: -5,
 		marginBottom: -8,
-		color: grayColor
+		color: gray
 	},
 
 	buttons: {
@@ -397,7 +706,7 @@ export const fixedEventStyles = StyleSheet.create({
 		width: 150,
 		height: 57.9,
 		borderRadius: 12,
-		backgroundColor: blueColor,
+		backgroundColor: blue,
 		elevation: 4
 	},
 
@@ -416,7 +725,7 @@ export const fixedEventStyles = StyleSheet.create({
 		backgroundColor: '#FFFFFF',
 		borderRadius: 12,
 		borderWidth: 3,
-		borderColor: blueColor,
+		borderColor: blue,
 		elevation: 4
 	},
 
@@ -424,7 +733,7 @@ export const fixedEventStyles = StyleSheet.create({
 		padding: 8,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		textAlign: 'center'
 	}
 });
@@ -455,7 +764,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		width: 205,
 		marginLeft: 15,
 		fontFamily: 'Raleway-Regular',
-		color: grayColor,
+		color: gray,
 		fontSize: 20
 	},
 
@@ -485,7 +794,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	textInputText: {
 		fontFamily: 'OpenSans-Regular',
 		fontSize: 15,
-		color: grayColor,
+		color: gray,
 		paddingBottom: 0
 	},
 
@@ -505,14 +814,14 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	blueTitle: {
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 88
 	},
 
 	blueTitleLong: {
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 200
@@ -553,7 +862,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	optionsText: {
-		color: grayColor,
+		color: gray,
 		fontFamily: 'OpenSans-Regular',
 		marginBottom: 5
 	},
@@ -567,7 +876,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	buttonEvent: {
 		borderRadius: 12,
-		backgroundColor: blueColor,
+		backgroundColor: blue,
 		width: 150,
 		height: 57.9,
 		elevation: 4,
@@ -589,7 +898,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		width: 100,
 		height: 58,
 		borderWidth: 3,
-		borderColor: blueColor,
+		borderColor: blue,
 		elevation: 4,
 		justifyContent:'center'
 	},
@@ -597,7 +906,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	buttonNextText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		textAlign: 'center',
 		padding: 8
 	}
@@ -620,7 +929,7 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	sectionTitle: {
-		color: grayColor,
+		color: gray,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
 		marginTop: 20,
@@ -675,12 +984,12 @@ export const eventOverviewStyles = StyleSheet.create({
 		width: 180,
 		fontFamily: 'OpenSans-SemiBold',
 		fontSize: 15,
-		color: grayColor
+		color: gray
 	},
 
 	eventInfo: {
 		fontFamily: 'OpenSans-Regular',
-		color: grayColor
+		color: gray
 	},
 
 	modalView: {
@@ -693,7 +1002,7 @@ export const eventOverviewStyles = StyleSheet.create({
 
 	modalContent: {
 		justifyContent: 'space-between',
-		backgroundColor: 'white',
+		backgroundColor: white,
 		borderRadius: 8,
 		marginHorizontal: 20
 	},
@@ -725,7 +1034,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalTitle: {
-		backgroundColor: orangeColor,
+		backgroundColor: orange,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',
@@ -746,14 +1055,14 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
 		paddingVertical: 3,
-		color: grayColor
+		color: gray
 	},
 
 	modalInfoText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 3,
-		color: grayColor
+		color: gray
 	},
 
 	modalDetailsView: {
@@ -765,28 +1074,28 @@ export const eventOverviewStyles = StyleSheet.create({
 		textDecorationLine: 'underline',
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: grayColor
+		color: gray
 	},
 	
 	modalDetailsSubtitle: {
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: grayColor
+		color: gray
 	},
 
 	modalDetailsText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 1,
-		color: grayColor
+		color: gray
 	},
 
 	actionsModal: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: 'white',
+		backgroundColor: white,
 	},
 
 	actionIconModal: {
@@ -794,7 +1103,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	deleteDialogContent: {
-		backgroundColor: 'white',
+		backgroundColor: white,
 		borderRadius: 8,
 		justifyContent: 'space-between',
 		padding: 10
@@ -815,7 +1124,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 20,
 		fontFamily: 'Raleway-SemiBold',
 		marginLeft: 10,
-		color: grayColor
+		color: gray
 	},
 
 	deleteDialogOptions: {
@@ -826,7 +1135,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	deleteDialogCancel: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize:16,
-		color: grayColor
+		color: gray
 	},
 
 	deleteDialogYes: {

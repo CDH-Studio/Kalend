@@ -15,62 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "359972006564-sqppvav66anuu0m7ru6q19vmm8labvb1.apps.googleusercontent.com",
+          "client_id": "359972006564-gakl8ih8orkqc13amifg8m6bp8649psf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kalend",
-            "certificate_hash": "4fa44f1827f040364faf4bf1a190eaa0c7b4a81c"
-          }
-        },
-        {
-          "client_id": "359972006564-sb1mdcg68s8o9vson4n4gvi8fb47mkog.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCVMraZ5WuS5FD8fAovs5lIhacky4-pyEI"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "359972006564-9tngmtaigit300v7kqjr48sph3apvq38.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "359972006564-1o0ous6a9aqoafq6dv0c33r58fbaq5p5.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.Kalend"
-              }
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:359972006564:android:62a1d25ae531f7ca",
-        "android_client_info": {
-          "package_name": "com.kalendfrontend"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "359972006564-3olr9p9mkn22cvjkhe5mggta7qj5bcij.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.kalendfrontend",
-            "certificate_hash": "4fa44f1827f040364faf4bf1a190eaa0c7b4a81c"
+            "certificate_hash": "da7a98129cc1b48b55e78e799b50c3aa2cef3498"
           }
         },
         {

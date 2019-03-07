@@ -1,17 +1,63 @@
 import React from 'react';
-import {Text, Platform, StatusBar, View, StyleSheet, ScrollView} from 'react-native';
-import { blueColor, calendarEventColors } from '../../../config';
+import { Text, Platform, StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
-import updateNavigation from '../NavigationHelper';
 import { connect } from 'react-redux';
+import updateNavigation from '../NavigationHelper';
+import { calendarEventColors, statusBlueColor } from '../../../config';
+import { white, blue, black} from '../../styles';
+import { DashboardNavigator } from '../../constants/screenNames';
 
+const containerPadding = 10;
+const data = {
+	fixed: [
+		{
+			title: 'Test',
+			location: 'FSS',
+			time: '1PM - 3PM'
+		}
+	],
+	nonFixed: [
+		{
+			title: 'AI',
+			location: 'CBY 032',
+			time: '3PM - 9:40PM'
+		}
+	],
+	school: [
+		{
+			title: 'School',
+			location: 'SITE 323',
+			time: '8AM - 2PM'
+		}
+	]
+};
+
+const days = [
+	'Sunday',
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday'
+];
+
+/**
+ * An event in the list of events
+ * 
+ * @prop {Object} info Information about the event
+ * @prop {String} info.type The type of event
+ * @prop {String} info.title The title of the event
+ * @prop {String} info.location The location of the event
+ * @prop {String} info.time The time of the event
+ */
 class ScheduleEvent extends React.Component  {
 
 	constructor(props) {
 		super(props);
-		console.log(props);
-		let color;
 
+		// Gets the color for appropriate type of event
+		let color;
 		switch (props.info.type) {
 			case 'fixed':
 				color = 'red';
@@ -24,7 +70,6 @@ class ScheduleEvent extends React.Component  {
 				break;
 		}
 
-
 		this.state = {
 			color
 		};
@@ -32,15 +77,12 @@ class ScheduleEvent extends React.Component  {
 
 	render() {
 		const { color } = this.state;
-		const {title, location, time} = this.props.info;
+		const { title, location, time } = this.props.info;
+
 		return (
 			<View style={styles.eventContainer}>
-				<View style={{
-					width: 20,
-					borderBottomLeftRadius: 5, 
-					borderTopLeftRadius: 5,
-					backgroundColor: calendarEventColors[color]
-				}} />	
+				<View style={[styles.scheduleEventColor, {backgroundColor: calendarEventColors[color]}]} />	
+
 				<View style={styles.eventData}>
 					<Text style={styles.eventTitle}>{title}</Text>
 					<Text style={styles.eventLocation}>{location}</Text>
@@ -51,7 +93,17 @@ class ScheduleEvent extends React.Component  {
 	}
 }
 
+/**
+ * A portion (day) of the list of event
+ * 
+ * @prop {String} day The day of the event
+ * @prop {Object} data Information about the event
+ * @prop {String} data.title The title of the event
+ * @prop {String} data.location The location of the event
+ * @prop {String} data.time The time of the event
+ */
 class ScheduleDay extends React.Component {
+
 	constructor(props) {
 		super(props);
 
@@ -61,6 +113,9 @@ class ScheduleDay extends React.Component {
 		};
 	}
 
+	/**
+	 * Adds the type of event in data
+	 */
 	constructData = (data) => {
 		let events = [];
 		for (let key in data) {
@@ -76,10 +131,11 @@ class ScheduleDay extends React.Component {
 	}
 
 	render() {
-		const {day, data} = this.state;
+		const { day, data } = this.state;
 		return (
 			<View style={styles.dayContainer}>
 				<Text style={styles.dayTitle}>{day}</Text>
+
 				{
 					data.map((info, key) => {
 						return <ScheduleEvent key={key} info={info} />;
@@ -90,59 +146,19 @@ class ScheduleDay extends React.Component {
 	}
 }
 
+/**
+ * The screen with more information about the selected generated school schedule
+ */
 class ScheduleSelectionDetails extends React.Component {
-	data = {
-		fixed: [
-			{
-				title: 'Test',
-				location: 'FSS',
-				time: '1PM - 3PM'
-			}
-		],
-		nonFixed: [
-			{
-				title: 'AI',
-				location: 'CBY 032',
-				time: '3PM - 9:40PM'
-			}
-		],
-		school: [
-			{
-				
-				title: 'School',
-				location: 'SITE 323',
-				time: '8AM - 2PM'
-				// summary,
-				// location,
-				// end: {
-				// 	dateTime:
-				// },
-				// start: {
-				// 	dateTime:
-				// },
-
-			}
-		]
-	}
-
-	days = [
-		'Sunday',
-		'Monday',
-		'Tuesday',
-		'Wednesday',
-		'Thursday',
-		'Friday',
-		'Saturday'
-	]
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
-		headerTintColor: '#fff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		},
 		headerRight: (
@@ -155,24 +171,32 @@ class ScheduleSelectionDetails extends React.Component {
 		),
 	});
 
-	componentDidMount() {
-		this.props.navigation.setParams({ goBack: this.goBack });
-	}
-
-	goBack = () => {
-		this.props.navigation.pop();
-	}
-
 	constructor(props) {
 		super(props);
 		this.state = {
 			showFAB: true,
 			currentY: 0,
 		};
+		
+		// Waits for the animation to finish, then goes to the next screen
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	// Hides the FAB when scrolling down
+	componentDidMount() {
+		// Sets the onPress for the delete icon in the header
+		this.props.navigation.setParams({ goBack: this.goBack });
+	}
+
+	/**
+	 * Goes to the previous screen, helper method for deleting an event
+	 */
+	goBack = () => {
+		this.props.navigation.pop();
+	}
+
+	/**
+	 * Hides the FAB when scrolling down
+	 */
 	onScroll = (event) => {
 		event = Math.abs(event.nativeEvent.contentOffset.y);
 		if (event > Math.abs(this.state.currentY)) {
@@ -188,38 +212,62 @@ class ScheduleSelectionDetails extends React.Component {
 		}
 	}
 
+	/**
+	 * TODO: Returns the data for the specified weekday
+	 */
 	getEventForWeekday = () => {
-		return this.data;
+		return data;
+	}
+
+	/**
+	 * Goes to the next screen
+	 */
+	nextScreen = () => {
+		this.props.navigation.navigate(DashboardNavigator);
 	}
 
 	render() {
+		const { showFAB } = this.state;
 		return(
-			<View style={{width: '100%', height: '100%'}}>
-				<StatusBar translucent={true} backgroundColor={'#105dba'} />
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={statusBlueColor} />
+
 				<ScrollView onScroll={this.onScroll}>
 					<View style={styles.content}>
-
 						{
-							this.days.map((day, key) => {
-								return <ScheduleDay key={key} day={day} data={this.getEventForWeekday(day)} />;
+							days.map((day, key) => {
+								return <ScheduleDay key={key} 
+									day={day} 
+									data={this.getEventForWeekday(day)} />;
 							})
 						}
-
 					</View>
 				</ScrollView>
 				
 				<FAB
 					style={styles.fab}
 					icon="check"
-					visible={this.state.showFAB}
-					onPress={() => this.props.navigation.navigate('DashboardNavigator')} />
+					visible={showFAB}
+					onPress={this.nextScreen} />
 			</View>
 		);
 	}
 }
 
-const containerPadding = 10;
+let mapStateToProps = (state) => {
+	return {
+		index: state.ScheduleSelectionReducer.index
+	};
+};
+
+export default connect(mapStateToProps, null)(ScheduleSelectionDetails);
+
 const styles = StyleSheet.create({
+	container: {
+		width: '100%', 
+		height: '100%'
+	},
 
 	fab: {
 		position: 'absolute',
@@ -245,7 +293,7 @@ const styles = StyleSheet.create({
 	eventContainer: {
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.8,
 				shadowRadius: 2,    
@@ -254,26 +302,24 @@ const styles = StyleSheet.create({
 				elevation: 5,
 			},
 		}),
-		backgroundColor: 'white', 
+		backgroundColor: white, 
 		borderRadius: 5, 
 		marginVertical: 7,
 		display: 'flex',
 		flexDirection: 'row'
 	},
+
 	eventData: {
 		padding: 7
 	},
+
 	eventTitle: {
 		fontFamily: 'Raleway-Bold',
+	},
+
+	scheduleEventColor: {
+		width: 20,
+		borderBottomLeftRadius: 5, 
+		borderTopLeftRadius: 5,
 	}
-
 });
-
-function mapStateToProps(state) {
-	const index = state.ScheduleSelectionReducer.index;
-	return {
-		index
-	};
-}
-
-export default connect(mapStateToProps, null)(ScheduleSelectionDetails);

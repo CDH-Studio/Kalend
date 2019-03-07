@@ -9,8 +9,17 @@ import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import { googleSignOut } from '../../services/google_identity';
-import { schoolScheduleStyles as styles } from '../../styles';
+import { schoolScheduleStyles as styles, white } from '../../styles';
 import TutorialStatus from '../TutorialStatus';
+import { TutorialSchoolSchedule,
+	LoginNavigator,
+	TutorialSchoolScheduleSelectPicture,
+	DashboardSchoolScheduleSelectPicture,
+	TutorialSchoolScheduleTakePicture,
+	DashboardSchoolScheduleTakePicture,
+	TutorialFixedEvent,
+	TutorialAddCourse,
+	DashboardAddCourse } from '../../constants/screenNames';
 
 const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 
@@ -22,14 +31,14 @@ class SchoolSchedule extends React.Component {
 	static navigationOptions = ({navigation}) => {
 		return {
 			title: 'Add School Schedule',
-			headerTintColor: '#ffffff',
+			headerTintColor: white,
 			headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 			headerTransparent: true,
 			headerStyle: {
 				backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 			},
-			headerRight: navigation.state.routeName === 'TutorialSchoolSchedule' ? (
+			headerRight: navigation.state.routeName === TutorialSchoolSchedule ? (
 				<IconButton
 					onPress={navigation.getParam('goBack')}
 					icon={({size, color}) => (
@@ -37,9 +46,8 @@ class SchoolSchedule extends React.Component {
 							size={size}
 							color={color} />
 					)}
-					color='#ffffff'
-					size={25}
-				/> 
+					color={white}
+					size={25} /> 
 			) : null
 		};
 	};
@@ -59,7 +67,7 @@ class SchoolSchedule extends React.Component {
 
 	goBack = () => {
 		googleSignOut();
-		this.props.navigation.navigate('LoginNavigator');
+		this.props.navigation.navigate(LoginNavigator);
 	}
 
 	selectAPicture() {
@@ -68,18 +76,18 @@ class SchoolSchedule extends React.Component {
 				console.log(accepted);
 
 				if (accepted) {
-					if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
-						this.props.navigation.navigate('TutorialSchoolScheduleSelectPicture');
+					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
+						this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
 					} else {
-						this.props.navigation.navigate('DashboardSchoolScheduleSelectPicture');
+						this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
 					}
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
-				this.props.navigation.navigate('TutorialSchoolScheduleSelectPicture');
+			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
+				this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
 			} else {
-				this.props.navigation.navigate('DashboardSchoolScheduleSelectPicture');
+				this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
 			}
 		}
 	}
@@ -90,18 +98,18 @@ class SchoolSchedule extends React.Component {
 				console.log(accepted);
 				
 				if (accepted) {
-					if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
-						this.props.navigation.navigate('TutorialSchoolScheduleTakePicture');
+					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
+						this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
 					} else {
-						this.props.navigation.navigate('DashboardSchoolScheduleTakePicture');
+						this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
 					}
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
-				this.props.navigation.navigate('TutorialSchoolScheduleTakePicture');
+			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
+				this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
 			} else {
-				this.props.navigation.navigate('DashboardSchoolScheduleTakePicture');
+				this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
 			}
 		}
 	}
@@ -109,26 +117,26 @@ class SchoolSchedule extends React.Component {
 	/**
 	 * To go to the appropriate Add Course screen according to the current route*/
 	manualImport() {
-		if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
-			this.props.navigation.navigate('TutorialAddCourse');
+		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
+			this.props.navigation.navigate(TutorialAddCourse);
 		} else {
-			this.props.navigation.navigate('DashboardAddCourse');
+			this.props.navigation.navigate(DashboardAddCourse);
 		}
 	}
 
 	/** 
 	 * To go to the next screen without entering any information*/
 	skip = () => {
-		this.props.navigation.navigate('TutorialFixedEvent', {update:false});
+		this.props.navigation.navigate(TutorialFixedEvent, {update:false});
 	}
 
 	render() {
 		const {containerHeight} = this.state;
 		let tutorialStatus;
 
-		if (this.props.navigation.state.routeName === 'TutorialSchoolSchedule') {
+		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
 			tutorialStatus = <TutorialStatus active={1}
-				color={'#ffffff'}
+				color={white}
 				skip={this.skip} />;
 		} else {
 			tutorialStatus = null;
@@ -153,7 +161,7 @@ class SchoolSchedule extends React.Component {
 						<View style={styles.instruction}>
 							<FontAwesome5 name="university"
 								size={130}
-								color='#ffffff'/>
+								color={white}/>
 							<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
 						</View>
 						

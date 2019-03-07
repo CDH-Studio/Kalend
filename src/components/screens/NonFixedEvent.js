@@ -6,11 +6,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { blueColor, statusBlueColor, grayColor, lightOrangeColor, orangeColor } from '../../../config';
+import { statusBlueColor } from '../../../config';
 import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { nonFixedEventStyles as styles } from '../../styles';
+import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
 const viewHeight = 780.5714111328125;
 
@@ -21,11 +22,11 @@ class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.update ? 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
-		headerTintColor: '#ffffff',
+		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -49,7 +50,7 @@ class NonFixedEvent extends React.Component {
 	}
 	
 	componentWillMount() {	
-		if (this.props.navigation.state.routeName !== 'TutorialNonFixedEvent') {
+		if (this.props.navigation.state.routeName !== TutorialNonFixedEvent) {
 			this.setState({...this.props.NFEditState});
 		} else  {
 			this.resetFields();
@@ -60,7 +61,7 @@ class NonFixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialReviewEvent');
+		this.props.navigation.navigate(TutorialReviewEvent);
 	}
 
 	/**
@@ -105,12 +106,12 @@ class NonFixedEvent extends React.Component {
 			return;
 		}
 
-		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
 			this.props.dispatch({
 				type: ADD_NFE,
 				event: this.state
 			});
-			this.props.navigation.navigate('TutorialReviewEvent');
+			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
 			let events = this.props.NonFixedEventsReducer;
 			let arr = [];
@@ -134,7 +135,7 @@ class NonFixedEvent extends React.Component {
 				});
 			});
 
-			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		}
 	}
 
@@ -222,10 +223,10 @@ class NonFixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === 'TutorialNonFixedEvent') {
+		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
 			tutorialStatus = <TutorialStatus active={3}
-				color={blueColor}
-				backgroundColor={'#ffffff'}
+				color={blue}
+				backgroundColor={white}
 				skip={this.skip} />;
 
 			addEventButton = 
@@ -262,7 +263,7 @@ class NonFixedEvent extends React.Component {
 						<View style={styles.instruction}>
 							<MaterialCommunityIcons name="face"
 								size={130}
-								color={blueColor} />
+								color={blue} />
 
 							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
 						</View>
@@ -291,9 +292,9 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.dateRange}>
 									<Text style={styles.blueTitleLong}>Specific Date Range</Text>
 
-									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}}
+									<Switch trackColor={{false: 'lightgray', true: lightOrange}}
 										ios_backgroundColor={'lightgray'}
-										thumbColor={this.state.specificDateRange ? orangeColor : 'darkgray'}
+										thumbColor={this.state.specificDateRange ? orange : 'darkgray'}
 										onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
 										value = {this.state.specificDateRange} />
 								</View>
@@ -391,9 +392,9 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.switch}>
 									<Text style={[styles.blueTitle, {width:150}]}>Is Dividable</Text>
 
-									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}}
+									<Switch trackColor={{false: 'lightgray', true: lightOrange}}
 										ios_backgroundColor={'lightgray'}
-										thumbColor={this.state.isDividable ? orangeColor : 'darkgray'}
+										thumbColor={this.state.isDividable ? orange : 'darkgray'}
 										onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
 										value = {this.state.isDividable} />
 								</View>
@@ -405,12 +406,12 @@ class NonFixedEvent extends React.Component {
 										value={this.state.occurence}
 										onChange={(occurence) => this.setState({occurence})}
 										minValue={0} 
-										leftButtonBackgroundColor={lightOrangeColor}
-										rightButtonBackgroundColor={orangeColor}
+										leftButtonBackgroundColor={lightOrange}
+										rightButtonBackgroundColor={orange}
 										rounded={true}
 										borderColor={'lightgray'}
-										textColor={grayColor}
-										iconStyle={{color: '#ffffff'}}  />
+										textColor={gray}
+										iconStyle={{color: white}}  />
 								</View>
 							</View>
 						</View>
@@ -422,8 +423,8 @@ class NonFixedEvent extends React.Component {
 								minimumValue={0}
 								maximumValue={1} 
 								step={0.5}
-								thumbTintColor={orangeColor}
-								minimumTrackTintColor={lightOrangeColor}
+								thumbTintColor={orange}
+								minimumTrackTintColor={lightOrange}
 								onValueChange={(priority) => this.setState({priority: priority})} />
 
 							<View style={styles.questionLayout}>
@@ -440,7 +441,7 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -453,7 +454,7 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 								
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
