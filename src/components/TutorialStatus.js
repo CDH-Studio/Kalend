@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Platform, Animated, TouchableOpacity } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
-import { tutorialStatusStyles as styles } from '../styles';
+import { tutorialStatusStyles as styles, white } from '../styles';
 import { FAB } from 'react-native-paper';
 
 const dotSize = 20;
@@ -41,7 +41,7 @@ class TutorialStatus extends React.Component {
 				small
 				icon="arrow-forward" />;
 		} else {
-			if (props.color === '#ffffff') {
+			if (props.color === white) {
 				next = 
 				<View style={{
 					flexDirection: 'row',

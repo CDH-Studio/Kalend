@@ -3,7 +3,9 @@ import { Text, Platform, StatusBar, View, StyleSheet, ScrollView } from 'react-n
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { blueColor, calendarEventColors, statusBlueColor, grayColor } from '../../../config';
+import { calendarEventColors, statusBlueColor } from '../../../config';
+import { white, blue, black, gray} from '../../styles';
+import { DashboardNavigator } from '../../constants/screenNames';
 
 const containerPadding = 10;
 const data = {
@@ -151,12 +153,12 @@ class ScheduleSelectionDetails extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
-		headerTintColor: '#fff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		},
 		headerRight: (
@@ -221,7 +223,7 @@ class ScheduleSelectionDetails extends React.Component {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
-		this.props.navigation.navigate('DashboardNavigator');
+		this.props.navigation.navigate(DashboardNavigator);
 	}
 
 	render() {
@@ -286,13 +288,13 @@ const styles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
 		marginVertical: 7,
-		color: grayColor
+		color: gray
 	},
 
 	eventContainer: {
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
 				shadowRadius: 3,    
@@ -301,7 +303,7 @@ const styles = StyleSheet.create({
 				elevation: 5,
 			},
 		}),
-		backgroundColor: 'white', 
+		backgroundColor: white, 
 		borderRadius: 5, 
 		marginVertical: 7,
 		display: 'flex',
@@ -314,15 +316,15 @@ const styles = StyleSheet.create({
 
 	eventTitle: {
 		fontFamily: 'Raleway-Bold',
-		color: grayColor
+		color: gray
 	},
 
 	eventTime : {
-		color: grayColor
+		color: gray
 	},
 
 	eventLocation : {
-		color: grayColor
+		color: gray
 	},
 
 	scheduleEventColor: {

@@ -6,12 +6,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { blueColor, orangeColor, lightOrangeColor, statusBlueColor, grayColor } from '../../../config';
 import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
-import { fixedEventStyles as styles } from '../../styles';
+import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus from '../TutorialStatus';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 const viewHeight = 446.66668701171875;
@@ -23,11 +23,11 @@ class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
-		headerTintColor: '#ffffff',
+		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -44,53 +44,24 @@ class FixedEvent extends React.Component {
 		console.log('TOT', containerHeightTemp);
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
-		this.setState({containerHeight});
+		// Causes a bug (cannot scroll when keyboard is shown)
+		// let scrollable = containerHeight !== containerHeightTemp;
+		let scrollable = true;
+
+		this.setState({
+			scrollable,
+			containerHeight
+		});
 	}
 
 	constructor(props) {
 		super(props);
-
-		// Causes a bug (cannot scroll when keyboard is shown)
-		// let scrollable = containerHeight !== containerHeightTemp;
-		let scrollable = true;
 		
-		this.state = { 
-			title: '',
-			
-			allDay: false,
-
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-
-			startTime: new Date().toLocaleTimeString(),
-			disabledStartTime : false,
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime : true,
-			amPmEnd: this.getAmPm(),
-
-			location: '',
-			recurrenceValue: 'None',
-			recurrence: 'NONE',
-			description: '',
-
-			eventID: '',
-
-			scrollable,
-		};
-
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if(this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			this.setState({...this.props.FEditState});
 		} else {
 			this.resetField();
@@ -278,7 +249,8 @@ class FixedEvent extends React.Component {
 		this.setState({
 			startTime,
 			endTime, 
-			amPmEnd: ''
+			amPmEnd: '',
+			endTimeValidated: true
 		});
 	}
 
@@ -313,8 +285,9 @@ class FixedEvent extends React.Component {
 		this.setState({
 			endDate: endDate, 
 			maxStartDate: endDate, 
-			minEndTime: this.setMinEndTime(), 
-			disabledEndTime: false
+			minEndTime: this.setMinEndTime(),
+			disabledEndTime: false,
+			endDateValidated: true
 		});
 	}
 
@@ -364,9 +337,47 @@ class FixedEvent extends React.Component {
 	}
 
 	/**
+	 * Validates the Title, End Date and End Time fields
+	 */
+	fieldValidation = () => {
+		let validated = true;
+
+		if (this.state.title === '') {
+			this.setState({titleValidated: false});
+			validated = false;
+		} else {
+			this.setState({titleValidated: true});
+		}
+		
+		if (this.state.disabledEndDate === true) {
+			this.setState({endDateValidated: false});
+			validated = false;
+		} else {
+			this.setState({endDateValidated: true});
+		}
+		
+		if(this.state.allDay === false) {
+			if (this.state.disabledEndTime === true) {
+				this.setState({endTimeValidated: false});
+				validated = false;
+			} else {
+				this.setState({endTimeValidated: true});
+			}
+		}
+
+		return validated;
+	}
+
+	/**
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
+		let validated = this.fieldValidation();
+		
+		if (!validated) {
+			return;
+		}
+
 		let info = {
 			title: this.state.title,
 			location: this.state.location,
@@ -379,7 +390,7 @@ class FixedEvent extends React.Component {
 			endTime: this.state.endTime
 		}; 
 
-		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			let events = this.props.FixedEventsReducer;
 			let arr = [];
 
@@ -402,7 +413,7 @@ class FixedEvent extends React.Component {
 				});
 			});
 
-			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		} else {
 			InsertFixedEvent(info).then(data => {
 				if (!data.error) {
@@ -413,7 +424,7 @@ class FixedEvent extends React.Component {
 						type: ADD_FE,
 						event: this.state
 					});
-					this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
 				}
 			});
 		}
@@ -423,6 +434,12 @@ class FixedEvent extends React.Component {
 	 * Adds the event to the calendar and resets the fields
 	 */
 	addAnotherEvent = () => {
+		let validated = this.fieldValidation();
+		
+		if (!validated) {
+			return false;
+		}
+
 		let info = {
 			title: this.state.title,
 			location: this.state.location,
@@ -454,6 +471,7 @@ class FixedEvent extends React.Component {
 	resetField = () => {
 		this.setState({
 			title: '',
+			titleValidated: true,
 
 			allDay: false,
 
@@ -464,6 +482,7 @@ class FixedEvent extends React.Component {
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
+			endDateValidated: true,
 
 			startTime: new Date().toLocaleTimeString(),
 			disabledStartTime : false,
@@ -473,6 +492,7 @@ class FixedEvent extends React.Component {
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime : true,
 			amPmEnd: this.getAmPm(),
+			endTimeValidated: true,
 
 			location: '',
 			recurrenceValue: 'None',
@@ -499,13 +519,37 @@ class FixedEvent extends React.Component {
 		let tutorialStatus;
 		let addEventButtonText;
 		let addEventButtonFunction;
+		let errorTitle;
+		let errorEnd;
+
+		if (!this.state.titleValidated) {
+			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+		} else {
+			errorTitle = null;
+		}
+
+		if(this.state.allDay === false) {
+			if (!this.state.endDateValidated && !this.state.endTimeValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select Dates and Times.</Text>;
+			} else if (!this.state.endTimeValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select an End Date and Time.</Text>;
+			} else {
+				errorEnd = null;
+			}
+		} else {
+			if (!this.state.endDateValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select a Start and End Date.</Text>;
+			} else {
+				errorEnd = null;
+			}
+		}
 
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
 			tutorialStatus = <TutorialStatus active={2}
-				color={blueColor}
+				color={blue}
 				backgroundColor={'#ffffff'}
 				skip={this.skip}
 				showTutShadow={this.state.showTutShadow} />;
@@ -533,27 +577,33 @@ class FixedEvent extends React.Component {
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 							<MaterialCommunityIcons name="calendar-today"
 								size={130}
-								color={blueColor}/>
+								color={blue}/>
 						</View>
 
-						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title"
-								size={30}
-								color={blueColor} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText}
-									placeholder="Title" 
-									onChangeText={(title) => this.setState({title})}
-									value={this.state.title}/>
+						<View>
+							<View style={styles.textInput}>
+								<MaterialCommunityIcons name="format-title"
+									size={30}
+									color={blue} />
+
+								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<TextInput style={styles.textInputText}
+										placeholder="Title" 
+										onChangeText={(title) => this.setState({title, titleValidated: true})}
+										value={this.state.title}/>
+								</View>
 							</View>
+
+							{errorTitle}
 						</View>
+
 						<View style={styles.timeSection}>
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
 								<View style={styles.switch}>
-									<Switch trackColor={{false: 'lightgray', true: lightOrangeColor}} 
+									<Switch trackColor={{false: 'lightgray', true: lightOrange}} 
 										ios_backgroundColor={'lightgray'} 
-										thumbColor={this.state.allDay ? orangeColor : 'darkgray'} 
+										thumbColor={this.state.allDay ? orange : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
 											allDay: allDay, 
 											disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} 
@@ -571,7 +621,7 @@ class FixedEvent extends React.Component {
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
-										placeholderText:{color:grayColor}}} 
+										placeholderText:{color:gray}}} 
 									placeholder={this.state.startDate} 
 									format="ddd., MMM DD, YYYY" 
 									minDate={this.state.minStartDate} 
@@ -590,7 +640,8 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color: grayColor, 
+											color: gray, 
+											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
@@ -612,6 +663,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
+											color: !this.state.endDateValidated ? '#ff0000' : gray,
 											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 									placeholder={this.state.endDate} 
 									format="ddd., MMM DD, YYYY" 
@@ -630,7 +682,8 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color: grayColor, 
+											color: !this.state.endTimeValidated ? '#ff0000' : gray, 
+											opacity: this.state.allDay ? 0 : 1,
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 									format="HH:mm A" 
@@ -640,13 +693,15 @@ class FixedEvent extends React.Component {
 									is24Hour={false}
 									onDateChange={this.endTimeOnDateChange}/>
 							</View>
+
+							{errorEnd}
 						</View>
 
 						<View style={styles.description}>
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -659,7 +714,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -672,7 +727,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<Feather name="repeat"
 									size={30}
-									color={blueColor} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									{

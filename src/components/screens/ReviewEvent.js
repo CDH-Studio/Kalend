@@ -3,13 +3,13 @@ import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-n
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { blueColor, statusBlueColor } from '../../../config';
 import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
 
 const priorityLevels = {
 	0: 'Low',
@@ -26,20 +26,18 @@ class ReviewEvent extends React.Component {
 
 	static navigationOptions = {
 		title: 'Review Events',
-		headerTintColor: '#ffffff',
+		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 
 	constructor(props) {
 		super(props);
-
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
-		this.deleteEvent = this.deleteEvent.bind(this);
 
 		this.state = {
 			containerHeight: null,
@@ -137,7 +135,7 @@ class ReviewEvent extends React.Component {
 		}
 	}
 	
-	deleteEvent(id, category) {
+	deleteEvent = (id, category) => {
 		let newEvents;
 		let eventType;
 		let objectToChange;
@@ -175,7 +173,7 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			this.props.navigation.navigate('TutorialEdit' + editScreen, {update:true});
 		} else {
 			this.props.navigation.navigate('DashboardEdit' + editScreen, {update:true});
@@ -186,10 +184,10 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
-			this.props.navigation.navigate('TutorialScheduleCreation');
+		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
+			this.props.navigation.navigate(TutorialScheduleCreation);
 		} else {
-			this.props.navigation.navigate('DashboardScheduleCreation');
+			this.props.navigation.navigate(DashboardScheduleCreation);
 		}
 	}
 
@@ -200,10 +198,10 @@ class ReviewEvent extends React.Component {
 		 * In order to remove the tutorial status if not needed */
 		let tutorialStatus;
 
-		if (this.props.navigation.state.routeName === 'TutorialReviewEvent') {
+		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			tutorialStatus = <TutorialStatus active={4}
-				color={blueColor}
-				backgroundColor={'#ffffff'} />;
+				color={blue}
+				backgroundColor={white} />;
 		} else {
 			tutorialStatus = null;
 		}
