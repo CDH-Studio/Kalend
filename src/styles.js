@@ -464,7 +464,7 @@ export const courseStyles = StyleSheet.create({
 		width: 210,
 		paddingRight: 15,
 		fontFamily: 'Raleway-Regular',
-		color: grayColor,
+		color: gray,
 		fontSize: 20,
 		textAlign: 'right'
 	},
@@ -491,7 +491,7 @@ export const courseStyles = StyleSheet.create({
 	textInputText: {
 		fontFamily: 'OpenSans-Regular',
 		fontSize: 15,
-		color: grayColor,
+		color: gray,
 		paddingBottom: 0
 	},
 
@@ -510,21 +510,21 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	dayOfWeekTitle: {
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		marginRight: 5
 	},
 
 	blueTitle: {
-		color: blueColor,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 93
 	},
 
 	dayOfWeekValues:{
-		color: grayColor,
+		color: gray,
 		height: 40,
 		width: '105%',
 		marginLeft: -5,
@@ -545,7 +545,7 @@ export const courseStyles = StyleSheet.create({
 
 	buttonEvent: {
 		borderRadius: 12,
-		backgroundColor: blueColor,
+		backgroundColor: blue,
 		width: 150,
 		height: 57.9,
 		elevation: 4,
@@ -567,7 +567,7 @@ export const courseStyles = StyleSheet.create({
 		width: 100,
 		height: 58,
 		borderWidth: 3,
-		borderColor: blueColor,
+		borderColor: blue,
 		elevation: 4,
 		justifyContent:'center'
 	},
@@ -575,7 +575,7 @@ export const courseStyles = StyleSheet.create({
 	buttonNextText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blueColor,
+		color: blue,
 		textAlign: 'center',
 		padding: 8
 	}
