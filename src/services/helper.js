@@ -85,7 +85,7 @@ export const getStartDate = (date, tempDay) => {
 	let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
 	let day = days.indexOf(tempDay) + 1;
 	// Convert time to EST
-	semesterStart.setTime(semesterStart.getTime()+semesterStart.getTimezoneOffset()*60*1000);
+	// semesterStart.setTime(semesterStart.getTime()+semesterStart.getTimezoneOffset()*60*1000);
 	let startDay = semesterStart.getDay();
 
 	if(day < startDay) {

@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { blueColor, orangeColor, redColor } from '../../../config';
-import { takePictureStyles as styles } from '../../styles';
+import { takePictureStyles as styles, orange, red, blue, white } from '../../styles';
 
 const iconColor = 'white';
 
@@ -22,7 +21,7 @@ class SchoolScheduleTakePicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Take a Picture',
-		headerTintColor: '#ffffff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
@@ -188,7 +187,7 @@ class SchoolScheduleTakePicture extends React.Component {
 					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, {backgroundColor: redColor}]}>
+							style={[styles.capture, {backgroundColor: red}]}>
 							<Entypo name='cross' 
 								size={dismissIcon}
 								color={iconColor} 
@@ -198,7 +197,7 @@ class SchoolScheduleTakePicture extends React.Component {
 
 					<View style={{opacity: takePictureOpacity}}>
 						<TouchableOpacity onPress={this.takePicture}
-							style={[styles.capture, {backgroundColor: changeIcon ? orangeColor : blueColor }]}>
+							style={[styles.capture, {backgroundColor: changeIcon ? orange : blue }]}>
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
 								color={iconColor} 
