@@ -612,7 +612,7 @@ class FixedEvent extends React.Component {
 											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="H:mm A" 
+									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
@@ -655,7 +655,7 @@ class FixedEvent extends React.Component {
 											opacity: this.state.allDay ? 0 : 1,
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="H:mm A" 
+									format="h:mm A" 
 									minDate={this.state.minEndTime}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 

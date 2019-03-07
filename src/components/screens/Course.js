@@ -458,7 +458,7 @@ class Course extends React.Component {
 										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="H:mm A" 
+									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
@@ -483,12 +483,12 @@ class Course extends React.Component {
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
 												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-										format="HH:mm A" 
+										format="h:mm A" 
 										minDate={this.state.minEndTime}
 										confirmBtnText="Confirm" 
 										cancelBtnText="Cancel" 
 										is24Hour={false}
-										onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+										onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
 								</View>
 
 								{errorEndTime}
