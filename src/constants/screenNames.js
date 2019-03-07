@@ -1,20 +1,24 @@
+//Tutorials
+export const TutorialNavigator = 'TutorialNavigator';
+export const TutorialSchoolSchedule = 'TutorialSchoolSchedule';
+export const TutorialSchoolScheduleSelectPicture = 'TutorialSchoolScheduleSelectPicture';
+export const TutorialSchoolScheduleTakePicture = 'TutorialSchoolScheduleTakePicture';
+export const TutorialAddCourse = 'TutorialAddCourse';
+export const TutorialSchoolScheduleCreation = 'TutorialSchoolScheduleCreation';
+export const TutorialFixedEvent = 'TutorialFixedEvent';
+export const TutorialNonFixedEvent = 'TutorialNonFixedEvent';
+export const TutorialUnavailableHours = 'TutorialUnavailableHours';
+export const TutorialReviewEvent = 'TutorialReviewEvent';
+export const TutorialScheduleCreation = 'TutorialScheduleCreation';
+export const TutorialScheduleSelection = 'TutorialScheduleSelection';
+export const TutorialScheduleSelectionDetails = 'TutorialScheduleSelectionDetails';
+
+
 // Dashboard Screen
 export const DashboardSchoolSchedule = 'DashboardSchoolSchedule';
 export const DashboardEditFixedEvent = 'DashboardEditFixedEvent';
 export const DashboardEditNonFixedEvent = 'DashboardEditNonFixedEvent';
-//Tutorials
-export const TutorialFixedEvent = 'TutorialFixedEvent';
-export const TutorialNonFixedEvent = 'TutorialNonFixedEvent';
-export const TutorialReviewEvent = 'TutorialReviewEvent';
-export const TutorialNavigator = 'TutorialNavigator';
-export const TutorialScheduleCreation = 'TutorialScheduleCreation';
-export const TutorialScheduleSelection = 'TutorialScheduleSelection';
-export const TutorialSchoolScheduleSelectPicture = 'TutorialSchoolScheduleSelectPicture';
-export const TutorialSchoolScheduleTakePicture = 'TutorialSchoolScheduleTakePicture';
-export const TutorialSchoolScheduleCreation = 'TutorialSchoolScheduleCreation';
-export const TutorialSchoolSchedule = 'TutorialSchoolSchedule';
-export const TutorialAddCourse = 'TutorialAddCourse';
-export const TutorialScheduleSelectionDetails = 'TutorialScheduleSelectionDetails';
+
 
 export const WelcomeScreen = 'WelcomeScreen';
 export const DashboardOptionsNavigator = 'DashboardOptionsNavigator';

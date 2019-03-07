@@ -912,6 +912,79 @@ export const nonFixedEventStyles = StyleSheet.create({
 	}
 });
 
+export const unavailableHoursStyles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+
+	scrollView: {
+		flex: 1,
+		marginTop: StatusBar.currentHeight + Header.HEIGHT
+	},
+
+	content: {
+		flex: 1,
+		justifyContent: 'space-evenly',
+		paddingHorizontal: 20
+	},
+
+	instruction: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+
+	errorTitle: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 45
+	},
+
+	errorEnd: {
+		color: 'red',
+		fontSize: 12,
+		alignSelf: 'flex-start',
+		marginLeft: 10
+	},
+
+	text: {
+		width: 240,
+		paddingRight: 15,
+		fontFamily: 'Raleway-Regular',
+		color: gray,
+		fontSize: 20,
+		textAlign: 'right'
+	},
+
+
+	blueTitle: {
+		color: blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		paddingVertical: 10
+	},
+
+	rowContent: {
+		flexDirection:'row',
+		justifyContent:'space-evenly'
+	},
+
+	colContent: {
+		flexDirection:'column',
+		alignItems: 'center'
+	},
+
+	rowSwitch: {
+		flexDirection:'row',
+		alignItems: 'center'
+	},
+
+	type: {
+		fontSize: 15,
+		fontFamily: 'Raleway-SemiBold'
+	},
+});
+
 export const reviewEventStyles = StyleSheet.create({
 	container: {
 		flex: 1

@@ -10,7 +10,7 @@ import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
-import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { TutorialNonFixedEvent, TutorialUnavailableHours } from '../../constants/screenNames';
 
 const viewHeight = 780.5714111328125;
 
@@ -60,7 +60,7 @@ class NonFixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate(TutorialReviewEvent);
+		this.props.navigation.navigate(TutorialUnavailableHours);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class NonFixedEvent extends React.Component {
 				type: ADD_NFE,
 				event: this.state
 			});
-			this.props.navigation.navigate(TutorialReviewEvent);
+			this.props.navigation.navigate(TutorialUnavailableHours);
 		} else {
 			let events = this.props.NonFixedEventsReducer;
 			let arr = [];
@@ -134,7 +134,7 @@ class NonFixedEvent extends React.Component {
 				});
 			});
 
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+			this.props.navigation.navigate(TutorialUnavailableHours, {changed:true});
 		}
 	}
 
@@ -177,7 +177,6 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			// durationType: 0,
 			occurrence: 1,
 
 			priority: 0.5,

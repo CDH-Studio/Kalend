@@ -20,6 +20,7 @@ import ScheduleCreation from './src/components/screens/ScheduleCreation';
 import ScheduleSelection from './src/components/screens/ScheduleSelection';
 import ScheduleSelectionDetails from './src/components/screens/ScheduleSelectionDetails';
 import Course from './src/components/screens/Course';
+import UnavailableHours from './src/components/screens/UnavailableHours';
 import ReviewEvent from './src/components/screens/ReviewEvent';
 import Dashboard from './src/components/screens/Dashboard';
 import Chatbot from './src/components/screens/Chatbot';
@@ -54,11 +55,16 @@ const TutorialNavigator = createStackNavigator(
 		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
 		TutorialFixedEvent: {screen: FixedEvent},
 		TutorialNonFixedEvent: {screen: NonFixedEvent},
+		TutorialUnavailableHours: {screen: UnavailableHours},
+
 		TutorialReviewEvent: {screen: ReviewEvent},
 		TutorialEditCourse: {screen: Course},
 		TutorialEditFixedEvent: {screen: FixedEvent},
 		TutorialEditNonFixedEvent: {screen: NonFixedEvent},
+		TutorialEditUnavailableHours: {screen: UnavailableHours},
+
 		TutorialScheduleCreation: {screen: ScheduleCreation},
+
 		TutorialScheduleSelection: {screen: ScheduleSelection},
 		TutorialScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 
@@ -82,16 +88,25 @@ const DashboardNavigator = createBottomTabNavigator(
 const DashboardOptionsNavigator = createStackNavigator(
 	{
 		DashboardNavigator,
+
 		DashboardSchoolSchedule: {screen: SchoolSchedule},
 		DashboardSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
 		DashboardSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
 		DashboardAddCourse: {screen: Course},
+		DashboardFixedEvent: {screen: FixedEvent},
+		DashboardNonFixedEvent: {screen: NonFixedEvent},
+		DashboardUnavailableHours: {screen: UnavailableHours},
+
 		DashboardSchoolScheduleCreation: {screen: SchoolScheduleCreation},
+
+		DashboardReviewEvent: {screen: ReviewEvent},
 		DashboardEditCourse: {screen: Course},
 		DashboardEditFixedEvent: {screen: FixedEvent},
 		DashboardEditNonFixedEvent: {screen: NonFixedEvent},
-		DashboardReviewEvent: {screen: ReviewEvent},
+		DashboardEditUnavailableHours: {screen: UnavailableHours},
+		
 		DashboardScheduleCreation: {screen: ScheduleCreation},
+
 		DashboardScheduleSelection: {screen: ScheduleSelection},
 		DashboardScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 
