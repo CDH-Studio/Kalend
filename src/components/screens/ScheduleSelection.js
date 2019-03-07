@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
 	},
 
 	hoursText: {
-		paddingVertical: 3.4, 
+		paddingVertical: Platform.OS === 'ios' ? 4.6 : 3.4, 
 		opacity: 0.5
 	}, 
 
