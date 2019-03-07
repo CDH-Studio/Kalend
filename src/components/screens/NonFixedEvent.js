@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor } from '../../../config';
+import { statusBlueColor, blueColor, graycolor, lightOrangeColor, orangeColor } from '../../../config';
 import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange } from '../../styles';
