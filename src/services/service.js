@@ -24,8 +24,6 @@ export let getIp = () => {
 		.catch(console.error);
 };
 
-// const serverUrl = 'http://52.60.127.46:8080';
-//const serverUrl = 'http://192.168.0.13:8080';
 export const grabSampleData = () =>  {
 	fetch(`${serverUrl}/api/test`)
 		.then(res =>  {
@@ -76,16 +74,16 @@ export const InsertDataIntoGoogle = (events) => {
 
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
-		let obj = {
-			'end': {
-				'timeZone': 'EST'
-			},
-			'start': {
-				'timeZone': 'EST'
-			}
-		};
 			
 		event.courses.forEach(course => {
+			let obj = {
+				'end': {
+					'timeZone': 'EST'
+				},
+				'start': {
+					'timeZone': 'EST'
+				}
+			};
 			let startDate = getStartDate(tempStartDate, event.day);
 			let endDate = getStartDate(tempStartDate, event.day);
 			let day = event.day.substr(0,2).toUpperCase();
@@ -132,11 +130,10 @@ export const InsertDataIntoGoogle = (events) => {
 			let promise_temp = (calendarID) => {
 				insertEvent(calendarID,obj,{})
 					.then( data => {
-						console.log('data inserted', data);
 						return data;
 					})
 					.catch( err => {
-						console.log('er1', err);
+						console.log('error', err);
 					});
 			};
 			promises.push(getCalendarID(promise_temp));
