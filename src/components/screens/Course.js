@@ -37,10 +37,25 @@ class Course extends React.Component {
 		}
 
 		this.state = { 
-			//Height of Screen
 			containerHeight,
-			eventID: Date.now()
+			eventID: Date.now(),
+
+			courseCode: '',
+
+			dayOfWeek: 'Monday',
+			dayOfWeekValue: 'MONDAY',
+
+			startTime: new Date().toLocaleTimeString(),
+			amPmStart: this.getAmPm(),
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime: true,
+			amPmEnd: this.getAmPm(),
+
+			location: ''
 		};
+		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -130,7 +145,7 @@ class Course extends React.Component {
 			endTime = this.state.endTime;
 		}
 
-		// Check if an start time has been specified, if not, use the state start time
+		// Check if a start time has been specified, if not, use the state start time
 		// and specify that the startTime wasn't given by changing the variable startCheck
 		if (startTime === undefined) {
 			startTime = this.state.startTime;
@@ -364,14 +379,14 @@ class Course extends React.Component {
 										placeholderText:{color:'#565454'}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="HH:mm A" 
+									format="H:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
 									onDateChange={(startTime) => {
-										this.setState({startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime))});
+										this.setState({startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime), undefined)});
 										this.setState({ disabledEndTime: this.enableEndTime()});
-									}}/>
+									}} />
 							</View>
 
 							<View style={styles.time}>
@@ -388,12 +403,12 @@ class Course extends React.Component {
 											color:'#565454',
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="HH:mm A" 
+									format="H:mm A" 
 									minDate={this.state.minEndTime}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
-									onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+									onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})} />
 
 							</View>
 						</View>
