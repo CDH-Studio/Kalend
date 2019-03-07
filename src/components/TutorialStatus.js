@@ -51,7 +51,7 @@ class TutorialStatus extends React.Component {
 		this.state = {
 			colors,
 			next,
-			shadowOpacity: new Animated.Value(1)
+			shadowOpacity: new Animated.Value(Number(props.showTutShadow))
 		};
 	}
 
@@ -74,34 +74,13 @@ class TutorialStatus extends React.Component {
 		return dots;
 	}
 
-	// componentWillReceiveProps(newProps) {
-	// 	if (newProps.showTutShadow) {
-	// 		if (this.state.shadowOpacity._value != 1) {
-	// 			Animated.timing(
-	// 				this.state.shadowOpacity,
-	// 				{ 
-	// 					toValue: 1,
-	// 					useNativeDriver: true,
-	// 				},
-	// 			).start(); 
-	// 		}
-	// 	} else {
-	// 		if (this.state.shadowOpacity._value != 0) {
-	// 			Animated.timing(
-	// 				this.state.shadowOpacity,
-	// 				{ 
-	// 					toValue: 0,
-	// 					useNativeDriver: true,
-	// 				},
-	// 			).start(); 
-	// 		}
-	// 	}
-	// 	console.log(newProps.showTutShadow);
-	// }
+	shouldComponentUpdate(newProps) {
+		return newProps.showTutShadow !== this.props.showTutShadow;
+	}
 
 	render() {
 		const { next } = this.state;
-		const { backgroundColor } = this.props;	
+		const { backgroundColor, showTutShadow } = this.props;	
 
 		return(
 			<View style={[styles.section, {
@@ -111,11 +90,11 @@ class TutorialStatus extends React.Component {
 					ios: {
 						shadowColor: 'black',
 						shadowOffset: { width: 0, height: -2 },
-						shadowOpacity: this.state.shadowOpacity._value * 0.3,
+						shadowOpacity: showTutShadow * 0.3,
 						shadowRadius: 3,    
 					},
 					android: {
-						elevation: this.state.shadowOpacity._value *  10,
+						elevation: showTutShadow *  10,
 					},
 				}),}]}>
 				<View style={{ 
@@ -132,5 +111,15 @@ class TutorialStatus extends React.Component {
 		);
 	}
 }
+
+export const onScroll = (event, value) => {
+	event = event.nativeEvent;
+	if (parseInt(event.contentOffset.y + event.layoutMeasurement.height) >= parseInt(event.contentSize.height)) {
+		return false;
+	} else if (!value) {
+		return true;
+	}
+	return value;
+};
 
 export default TutorialStatus;

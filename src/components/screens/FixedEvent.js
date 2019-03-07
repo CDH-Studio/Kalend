@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions, Alert } from 'react-native';
+import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, Keyboard, ActionSheetIOS, ScrollView, Dimensions, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,10 +10,9 @@ import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
-import TutorialStatus from '../TutorialStatus';
+import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { darkBlueColor } from '../../../config';
 
 const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
@@ -49,15 +48,21 @@ class FixedEvent extends React.Component {
 		// let scrollable = containerHeight !== containerHeightTemp;
 		let scrollable = true;
 
+		let showTutShadow = containerHeight !== containerHeightTemp;
+
 		this.setState({
 			scrollable,
-			containerHeight
+			containerHeight,
+			showTutShadow
 		});
 	}
 
 	constructor(props) {
 		super(props);
 		
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -68,6 +73,21 @@ class FixedEvent extends React.Component {
 			this.resetField();
 		}
 
+		this.setContainerHeight();
+	}
+
+	componentWillUnmount () {
+		this.keyboardDidShowListener.remove();
+		this.keyboardDidHideListener.remove();
+	}
+  
+	keyboardDidShow = () => {
+		this.setState({
+			showTutShadow: true
+		});
+	}
+  
+	keyboardDidHide = () => {
 		this.setContainerHeight();
 	}
 
@@ -494,17 +514,8 @@ class FixedEvent extends React.Component {
 		});
 	}
 
-	onScroll = (event) => {
-		event = event.nativeEvent;
-		if (parseInt(event.contentOffset.y + event.layoutMeasurement.height) >= parseInt(event.contentSize.height)) {
-			this.setState({showTutShadow : false});
-		} else if (!this.state.showTutShadow) {
-			this.setState({showTutShadow : true});
-		}
-	}
-
 	render() {
-		const {containerHeight, scrollable} = this.state;
+		const { containerHeight, scrollable, showTutShadow } = this.state;
 		let tutorialStatus;
 		let addEventButtonText;
 		let addEventButtonFunction;
@@ -558,12 +569,13 @@ class FixedEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 				
 				<ScrollView style={styles.scrollView}
-					onScroll={this.onScroll}
+					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
+							
 							<MaterialCommunityIcons name="calendar-today"
 								size={130}
 								color={blue}/>

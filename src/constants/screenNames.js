@@ -26,3 +26,5 @@ export const DashboardSchoolScheduleTakePicture = 'DashboardSchoolScheduleTakePi
 export const DashboardAddCourse = 'DashboardAddCourse';
 export const DashboardScheduleSelectionDetails = 'DashboardScheduleSelectionDetails';
 export const DashboardNavigator = 'DashboardNavigator';
+
+export const LoginNavigator = 'LoginNavigator';

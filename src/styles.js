@@ -37,7 +37,7 @@ export const bottomButtonsStyles = StyleSheet.create({
 				shadowRadius: 3,    
 			},
 			android: {
-				elevation: 5,
+				elevation: 4,
 			},
 		}),
 	},
