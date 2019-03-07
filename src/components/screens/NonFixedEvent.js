@@ -11,6 +11,7 @@ import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { darkBlueColor } from '../../../config';
 
 const viewHeight = 780.5714111328125;
 
@@ -451,10 +452,16 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonAdd}
+							<TouchableOpacity style={[styles.button, styles.buttonAdd]}
 								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonAddText}>
+								<Text style={styles.buttonText}>
 									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={[styles.button, styles.buttonNext]}
+								onPress={this.skip}>
+								<Text style={styles.buttonText}>
+									Next
 								</Text>
 							</TouchableOpacity>
 						</View>

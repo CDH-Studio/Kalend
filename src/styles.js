@@ -23,10 +23,11 @@ export const bottomButtonsStyles = StyleSheet.create({
 		marginTop: 20
 	},
 
-	buttonAdd: {
+	button: {
 		backgroundColor: blue,
 		color:'white',
-		width: '100%',
+		width: '48%',
+		padding: 5,
 		borderRadius: 5,
 		...Platform.select({
 			ios: {
@@ -39,9 +40,17 @@ export const bottomButtonsStyles = StyleSheet.create({
 				elevation: 5,
 			},
 		}),
+	},
+
+	buttonAdd: {
+		marginRight: '4%'
 	},	
 
-	buttonAddText: {
+	buttonNext: {
+		backgroundColor: dark_blue
+	},	
+
+	buttonText: {
 		padding: 8,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
@@ -578,49 +587,7 @@ export const courseStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 20
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: blue,
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: blue,
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blue,
-		textAlign: 'center',
-		padding: 8
-	}
+	...bottomButtonsStyles
 });
 
 export const fixedEventStyles = StyleSheet.create({
@@ -917,7 +884,17 @@ export const eventOverviewStyles = StyleSheet.create({
 		paddingHorizontal: 10,
 		borderRadius: 8,
 		backgroundColor: '#FFFFFF',
-		elevation: 4
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
 	},
 
 	info: {
@@ -959,6 +936,17 @@ export const eventOverviewStyles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#00000080',
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
 	},
 
 	modalContent: {
@@ -972,7 +960,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'flex-end',
 		paddingHorizontal: 15,
-		paddingVertical: 10
+		paddingVertical: 10,
 	},
 
 	modalInfoDate: {

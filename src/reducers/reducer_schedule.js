@@ -11,7 +11,7 @@ export default function ScheduleSelectionReducer(state = [], action) {
 		case CLEAR_SELECTED_SCHEDULE:
 			return {
 				...state,
-				index: action.index,
+				index: null,
 			};
 			
 		default:

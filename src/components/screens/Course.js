@@ -9,6 +9,7 @@ import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { darkBlueColor } from '../../../config';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -337,8 +338,8 @@ class Course extends React.Component {
 	}
 
 	render() {
-		let addCourseButton;
-		let nextButton;
+		let addEventButtonText;
+		let addEventButtonFunction;
 		let errorCourseCode;
 		let errorEndTime;
 
@@ -356,23 +357,11 @@ class Course extends React.Component {
 		
 
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
-			addCourseButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}COURSE</Text>
-				</TouchableOpacity>;
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>NEXT</Text>
-			</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			addCourseButton = null;
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>DONE</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
 		}
 
 		return(
@@ -493,9 +482,19 @@ class Course extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							{addCourseButton}
-
-							{nextButton}
+							<TouchableOpacity style={[styles.button, styles.buttonAdd]}
+								onPress={addEventButtonFunction}>
+								<Text style={styles.buttonText}>
+									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={[styles.button, styles.buttonNext]}
+								onPress={() => 
+									this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
+								<Text style={styles.buttonText}>
+									Next
+								</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>

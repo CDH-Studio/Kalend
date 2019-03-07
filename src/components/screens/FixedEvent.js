@@ -13,6 +13,7 @@ import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, sta
 import TutorialStatus from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { darkBlueColor } from '../../../config';
 
 const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
@@ -378,6 +379,7 @@ class FixedEvent extends React.Component {
 		}; 
 
 		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
+			
 			let events = this.props.FixedEventsReducer;
 			let arr = [];
 
@@ -734,10 +736,16 @@ class FixedEvent extends React.Component {
 							</View>
 						</View>
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonAdd}
+							<TouchableOpacity style={[styles.button, styles.buttonAdd]}
 								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonAddText}>
+								<Text style={styles.buttonText}>
 									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={[styles.button, styles.buttonNext]}
+								onPress={this.skip}>
+								<Text style={styles.buttonText}>
+									Next
 								</Text>
 							</TouchableOpacity>
 						</View>

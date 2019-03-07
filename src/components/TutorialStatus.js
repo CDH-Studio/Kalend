@@ -3,7 +3,6 @@ import { Text, View, Platform, Animated, TouchableOpacity } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { tutorialStatusStyles as styles, white } from '../styles';
-import { FAB } from 'react-native-paper';
 
 const dotSize = 20;
 const sectionMargin = 20;
@@ -36,28 +35,17 @@ class TutorialStatus extends React.Component {
 
 		// If no next function has been passed, do not show the next button/text
 		let next;
-		if (props.skip === undefined) {
-			next =  <FAB style={[styles.fab, {opacity: 0}]}
-				small
-				icon="arrow-forward" />;
-		} else {
-			if (props.color === white) {
-				next = 
-				<View style={{
-					flexDirection: 'row',
-					justifyContent: 'flex-end',
-					alignItems: 'center'}}>
-					<TouchableOpacity style={styles.skipButton} 
-						onPress={props.skip} >
-						<Text style={styles.skipButtonText}>Skip</Text>
-					</TouchableOpacity>
-				</View>;
-			} else {
-				next = <FAB style={[styles.fab, {backgroundColor: props.color}]}
-					small
-					icon="arrow-forward"
-					onPress={props.skip} />;
-			}
+		if (props.skip && props.color === white) {
+			next = 
+			<View style={{
+				flexDirection: 'row',
+				justifyContent: 'flex-end',
+				alignItems: 'center'}}>
+				<TouchableOpacity style={styles.skipButton} 
+					onPress={props.skip} >
+					<Text style={styles.skipButtonText}>Skip</Text>
+				</TouchableOpacity>
+			</View>;
 		}
 
 		this.state = {
@@ -139,8 +127,7 @@ class TutorialStatus extends React.Component {
 						{this.createDots()}
 					</View>
 				</View>
-				
-				{ next }
+				{next}
 			</View>
 		);
 	}
