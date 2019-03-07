@@ -1,10 +1,9 @@
 import React from 'react';
-import { Text, View, Platform, Animated } from 'react-native';
+import { Text, View, Platform, Animated, TouchableOpacity } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { tutorialStatusStyles as styles } from '../styles';
 import { FAB } from 'react-native-paper';
-import { darkBlueColor } from '../../config';
 
 const dotSize = 20;
 const sectionMargin = 20;
@@ -43,11 +42,16 @@ class TutorialStatus extends React.Component {
 				icon="arrow-forward" />;
 		} else {
 			if (props.color === '#ffffff') {
-				next = <FAB style={[styles.fab, {backgroundColor: props.color}]}
-					small
-					color={darkBlueColor}
-					icon="arrow-forward"
-					onPress={props.skip} />;
+				next = 
+				<View style={{
+					flexDirection: 'row',
+					justifyContent: 'flex-end',
+					alignItems: 'center'}}>
+					<TouchableOpacity style={styles.skipButton} 
+						onPress={props.skip} >
+						<Text style={styles.skipButtonText}>Skip</Text>
+					</TouchableOpacity>
+				</View>;
 			} else {
 				next = <FAB style={[styles.fab, {backgroundColor: props.color}]}
 					small
@@ -59,7 +63,7 @@ class TutorialStatus extends React.Component {
 		this.state = {
 			colors,
 			next,
-			shadowOpacity: new Animated.Value(0)
+			shadowOpacity: new Animated.Value(1)
 		};
 	}
 
@@ -111,10 +115,12 @@ class TutorialStatus extends React.Component {
 		const { next } = this.state;
 		const { backgroundColor } = this.props;	
 
+		console.log(ifIphoneX());
 		return(
+
 			<View style={[styles.section, {
 				backgroundColor: backgroundColor, 
-				paddingBottom: ifIphoneX() ? 20 : 20,
+				paddingBottom: ifIphoneX() ? 30 : 20,
 				...Platform.select({
 					ios: {
 						shadowColor: 'black',
@@ -123,12 +129,13 @@ class TutorialStatus extends React.Component {
 						shadowRadius: 3,    
 					},
 					android: {
-						elevation: this.state.shadowOpacity._value *  3,
+						elevation: this.state.shadowOpacity._value *  10,
 					},
 				}),}]}>
-				<View style={{flex:1, 
-					flexDirection: 'row',
-					justifyContent: 'center',
+				<View style={{ 
+					position: 'absolute',
+					width: '100%',
+					paddingTop: 20,
 					alignItems: 'center',}}>
 					<View style={styles.sectionIconRow}>
 						{this.createDots()}

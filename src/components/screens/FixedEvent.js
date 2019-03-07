@@ -42,7 +42,7 @@ class FixedEvent extends React.Component {
 		console.log("Status", getStatusBarHeight());
 		console.log("TOT", containerHeightTemp);
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
-		let scrollable = true;
+		let scrollable = false;
 		
 		this.state = { 
 			containerHeight,

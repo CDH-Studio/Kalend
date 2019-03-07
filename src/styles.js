@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { blueColor, grayColor, orangeColor, darkOrangeColor, darkBlueColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const loadingStyles = StyleSheet.create({
 	container: {
@@ -95,12 +95,12 @@ export const tutorialStatusStyles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0,
-		padding: HEIGHT / 4,
+		paddingVertical: HEIGHT / 2 + 6,
 	},
 
 	sectionIconRow: {
 		flexDirection: 'row',
-		marginLeft: 10
+		marginLeft: 10,
 	},
 
 	sectionIcon: {
@@ -110,10 +110,22 @@ export const tutorialStatusStyles = StyleSheet.create({
 	fab: {
 		position: 'absolute',
 		margin: 16,
-		marginBottom: 14,
+		marginBottom: ifIphoneX() ? 17 : 7,
 		right: 0,
 		bottom: 0,
 	},
+
+	skipButtonText: {
+		fontFamily: 'Raleway-SemiBold',
+		paddingHorizontal: 20,
+		marginBottom: 10,
+		fontSize: 15,
+		color: 'white',
+	},
+
+	skipButton: {
+		position: 'absolute',
+	}
 });
 
 export const cameraRollImageStyles = StyleSheet.create({
