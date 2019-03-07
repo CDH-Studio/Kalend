@@ -77,7 +77,6 @@ class FixedEvent extends React.Component {
 		if (currentMinute < 10) {
 			currentMinute = '0' + currentMinute;
 		}
-
 		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
 	}
 
@@ -189,7 +188,7 @@ class FixedEvent extends React.Component {
 	 * @param {String} startTime The time output of the time dialog
 	 */
 	startTimeOnDateChange = (startTime) => {
-		let firstDate = new Date(this.state.startDate).getTime();this.beforeStartTime(this.getTwelveHourTime(startTime));
+		let firstDate = new Date(this.state.startDate).getTime();
 		let endDate = new Date(this.state.endDate).getTime();
 
 		let endTime;
@@ -202,6 +201,7 @@ class FixedEvent extends React.Component {
 		}
 
 		startTime = this.getTwelveHourTime(startTime);
+		console.log(startTime);
 		this.setState({
 			startTime, 
 			endTime, 
@@ -598,20 +598,21 @@ class FixedEvent extends React.Component {
 									onDateChange={this.startDateOnDateChange} />
 									
 								<DatePicker showIcon={false} 
-									time={this.state.startTime} 
-									mode="time" 
-									disabled = {this.state.disabledStartTime}
+									date={this.state.startTime} 
+									mode="time"
+									disabled={this.state.disabledStartTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}, 
 										placeholderText:{
 											color: gray, 
 											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="HH:mm A" 
+									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
@@ -640,20 +641,21 @@ class FixedEvent extends React.Component {
 									onDateChange={this.endDateOnDateChange} />
 
 								<DatePicker showIcon={false} 
-									time={this.state.endTime} 
+									date={this.state.endTime} 
 									mode="time" 
 									disabled = {this.state.disabledEndTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
 										placeholderText:{
 											color: !this.state.endTimeValidated ? '#ff0000' : gray, 
 											opacity: this.state.allDay ? 0 : 1,
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="HH:mm A" 
+									format="h:mm A" 
 									minDate={this.state.minEndTime}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
