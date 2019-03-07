@@ -4,6 +4,41 @@ import { blueColor, grayColor, orangeColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
+export const bottomButtonsStyles = StyleSheet.create({
+	buttons: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 20
+	},
+
+	buttonAdd: {
+		backgroundColor: blueColor,
+		color:'white',
+		width: '80%',
+		marginHorizontal: '10%',
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 5,
+			},
+		}),
+	},	
+
+	buttonAddText: {
+		padding: 8,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		textAlign: 'center'
+	},
+});
+
 export const loadingStyles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -304,7 +339,7 @@ export const takePictureStyles = StyleSheet.create({
 		right: 0,
 		left: 0,
 		bottom: 0 
-	}
+	},
 });
 
 export const homeStyles = StyleSheet.create({
@@ -537,79 +572,7 @@ export const fixedEventStyles = StyleSheet.create({
 		color: grayColor
 	},
 
-	buttons: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginTop: 20
-	},
-
-	buttonEvent: {
-		justifyContent:'center',
-		width: 150,
-		height: 57.9,
-		borderRadius: 12,
-		backgroundColor: blueColor,
-		elevation: 4
-	},
-
-	buttonAdd: {
-		backgroundColor: blueColor,
-		color:'white',
-		width: '80%',
-		marginHorizontal: '10%',
-		borderRadius: 5,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-	},	
-
-	buttonAddIcon: {
-		padding: 8,
-		textAlign: 'center'
-	},
-
-	buttonAddText: {
-		padding: 8,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center'
-	},
-
-	buttonEventText: {
-		padding: 8,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center'
-	},
-
-	buttonNext: {
-		justifyContent:'center',
-		width: 100,
-		height: 58,
-		backgroundColor: '#FFFFFF',
-		borderRadius: 12,
-		borderWidth: 3,
-		borderColor: blueColor,
-		elevation: 4
-	},
-
-	buttonNextText: {
-		padding: 8,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blueColor,
-		textAlign: 'center'
-	}
+	...bottomButtonsStyles
 });
 
 export const nonFixedEventStyles = StyleSheet.create({

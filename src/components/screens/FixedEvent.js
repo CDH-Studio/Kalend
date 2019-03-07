@@ -11,7 +11,7 @@ import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import TutorialStatus from '../TutorialStatus';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 const viewHeight = 446.66668701171875;

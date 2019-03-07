@@ -115,9 +115,7 @@ class TutorialStatus extends React.Component {
 		const { next } = this.state;
 		const { backgroundColor } = this.props;	
 
-		console.log(ifIphoneX());
 		return(
-
 			<View style={[styles.section, {
 				backgroundColor: backgroundColor, 
 				paddingBottom: ifIphoneX() ? 30 : 20,
