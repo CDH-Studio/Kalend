@@ -11,6 +11,7 @@ import { requestStoragePermission, requestCamera } from '../../services/android_
 import { googleSignOut } from '../../services/google_identity';
 import { schoolScheduleStyles as styles } from '../../styles';
 import TutorialStatus from '../TutorialStatus';
+import { store } from '../../store'; 
 
 const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 
@@ -55,6 +56,7 @@ class SchoolSchedule extends React.Component {
 
 	componentDidMount() {
 		this.props.navigation.setParams({goBack: this.goBack});
+		console.log('state', store.getState());
 	}
 
 	goBack = () => {

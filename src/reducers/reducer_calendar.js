@@ -5,7 +5,10 @@ export default function CalendarReducer(state = [], action) {
 	switch (action.type) {
 	
 		case CREATE_CALENDAR: 
-			return  [...state, id];
+			return  {
+				...state,
+				id
+			};
 
 		default:
 			return state;

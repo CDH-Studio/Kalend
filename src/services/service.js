@@ -72,6 +72,7 @@ export const analyzePicture = (base64Data) => {
 
 export const InsertDataIntoGoogle = (events) => {
 	let promises = [];
+	let calendarID = store.getState().CalendarReducer.id;
 
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
@@ -145,6 +146,7 @@ export const InsertDataIntoGoogle = (events) => {
 };
 
 export const  InsertFixedEvent = (event) => {
+	let calendarID = store.getState().CalendarReducer.id;
 	let obj = {
 		'end': {
 			'timeZone': 'EST'
@@ -172,14 +174,7 @@ export const  InsertFixedEvent = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 
-	let promise = (calendarID) => {
-		return insertEvent(calendarID,obj,{})
-			.then( data => {
-				return data;
-			});
-	};
-
-	return getCalendarID(promise);
+	return insertEvent(calendarID,obj,{});	
 };
 
 const getCalendarID = (promise) => {
@@ -212,6 +207,7 @@ export const createCalendar = () => {
 export const generateSchedule = () => {
 	//let fixedEvents = store.getState().FixedEventsReducer;
 	let nonFixedEvents = store.getState().NonFixedEventsReducer;
+	let calendarID = store.getState().CalendarReducer.id;
 	//let courses = store.getState().CoursesReducer;
 
 	nonFixedEvents.forEach(event => {
@@ -222,7 +218,7 @@ export const generateSchedule = () => {
 				'timeZone': 'EST',
 				'items': [
 					{
-						'id': '883l5cca7qnde72fa370omqhpk@group.calendar.google.com'
+						'id': calendarID
 					}
 				]
 			};
