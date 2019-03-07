@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { gradientColors, orangeColor, lightOrangeColor } from '../../../config';
 import { scheduleCreateStyles as styles } from '../../styles';
+import { generateSchedule } from '../../services/service';
 
 /**
  * The loading screen shown after the user reviewed their events
@@ -18,6 +19,7 @@ class ScheduleCreation extends React.Component {
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
+		this.generateSchedules();
 		setTimeout(() => {
 			this.navigateToSelection();
 		}, 2000);
@@ -32,6 +34,9 @@ class ScheduleCreation extends React.Component {
 		}else {
 			this.props.navigation.navigate('DashboardScheduleSelection');
 		}
+	}
+	generateSchedules() {
+		generateSchedule();
 	}
   
 	render() {

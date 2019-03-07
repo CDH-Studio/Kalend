@@ -5,8 +5,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
-import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
+import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo, createCalendar } from '../../services/google_identity';
 import { store } from '../../store';
+import { CREATE_CALENDAR } from '../../constants';
 import { homeStyles as styles } from '../../styles';
 
 /** 
@@ -31,6 +32,15 @@ class Home extends React.Component {
 		this.props.dispatch({
 			type:'SIGNED_IN',
 			user: userInfo
+		});
+	}
+
+	setCalendar = () => {
+		createCalendar().then(id => {
+			this.props.dispatch({
+				type: CREATE_CALENDAR,
+				id
+			});
 		});
 	}
 	
@@ -103,9 +113,8 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const main = state.NavigationReducer.main;
-	const screen = state.NavigationReducer.screen;
-	const profile = state.NavigationReducer.profile;
+	const { main, screen , profile } = state.NavigationReducer;
+
 	return {
 		main, 
 		screen,

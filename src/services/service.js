@@ -1,5 +1,5 @@
 import { formatData, getStartDate } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { store } from '../store';
 import firebase from 'react-native-firebase';
 
@@ -200,3 +200,42 @@ const getCalendarID = (promise) => {
 		}
 	});
 };
+
+export const createCalendar = () => {
+	return new Promise( function(resolve, reject) { 
+		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
+			resolve(data.id);
+		});
+	});
+};
+
+export const generateSchedule = () => {
+	//let fixedEvents = store.getState().FixedEventsReducer;
+	let nonFixedEvents = store.getState().NonFixedEventsReducer;
+	//let courses = store.getState().CoursesReducer;
+
+	nonFixedEvents.forEach(event => {
+		if(event.specificDateRange) {
+			let startDate = new Date(event.startDate).toISOString();
+			let endDate = new Date(event.endDate).toISOString();
+			let obj = {
+				'timeZone': 'EST',
+				'items': [
+					{
+						'id': '883l5cca7qnde72fa370omqhpk@group.calendar.google.com'
+					}
+				]
+			};
+			obj.timeMin = startDate;
+			obj.timeMax = endDate;
+
+			getAvailabilities(obj).then(data => {
+				console.log('availability', data);
+			});
+
+		}
+	});
+	
+
+};
+
