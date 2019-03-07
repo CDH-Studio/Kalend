@@ -47,8 +47,7 @@ class SchoolSchedule extends React.Component {
 							color={color} />
 					)}
 					color={white}
-					size={25}
-				/> 
+					size={25} /> 
 			) : null
 		};
 	};

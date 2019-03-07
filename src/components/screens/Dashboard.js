@@ -29,8 +29,7 @@ class Dashboard extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true}
-					backgroundColor={blueColor} 
-				/>
+					backgroundColor={blueColor} />
 
 				<Text>Redux Management</Text>
 				<Button title='Purge' 

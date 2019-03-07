@@ -192,9 +192,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 	
-		if(this.props.navigation.state.routeName === TutorialSchoolScheduleSelectPicture) {
+		if (this.props.navigation.state.routeName === TutorialSchoolScheduleSelectPicture) {
 			this.props.navigation.navigate(TutorialSchoolScheduleCreation);
-		}else {
+		} else {
 			this.props.navigation.navigate(DashboardSchoolScheduleCreation);
 		}
 	}

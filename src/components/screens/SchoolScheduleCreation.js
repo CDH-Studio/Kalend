@@ -10,6 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { gradientColors } from '../../../config';
 import { white, orange, blue } from '../../styles';
+
 /**
  * The loading screen after the User uploads a picture
  * Displays 'Analyzing picture' with a progress bar.
@@ -49,7 +50,7 @@ class SchoolScheduleCreation extends React.Component {
 					let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 					fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 					analyzePicture({data: fakeEscape}).then(success => {
-						if(success) this.props.navigation.dispatch(this.navigateAction);
+						if (success) this.props.navigation.dispatch(this.navigateAction);
 						else this.props.navigation.pop();
 					});
 				})
@@ -62,11 +63,9 @@ class SchoolScheduleCreation extends React.Component {
 			<LinearGradient style={styles.container} colors={gradientColors}>
 				<ImageBackground style={styles.container} 
 					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat"
-				>
+					resizeMode="repeat" >
 					<StatusBar translucent={true} 
-						backgroundColor={'rgba(0, 0, 0, 0.4)'} 
-					/>
+						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 					<Surface style={styles.surface}>
 						<Text style={styles.title}>Analysing your Picture</Text>
 						<Text style={styles.subtitle}>Extracting the information from your picture</Text>
@@ -76,8 +75,7 @@ class SchoolScheduleCreation extends React.Component {
 							color={blue} 
 							useNativeDriver={true} 
 							borderWidth={0} 
-							unfilledColor={orange}
-						/>
+							unfilledColor={orange} />
 					</Surface>
 				</ImageBackground>
 			</LinearGradient>
@@ -85,14 +83,14 @@ class SchoolScheduleCreation extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const imgURI = state.ImageReducer.data;
 	const hasImage = state.ImageReducer.hasImage;
 	return {
 		imgURI,
 		hasImage
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(SchoolScheduleCreation);
 
