@@ -6,11 +6,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor } from '../../../config';
 import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
-import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray } from '../../styles';
+import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
@@ -231,7 +230,8 @@ class FixedEvent extends React.Component {
 		this.setState({
 			startTime,
 			endTime, 
-			amPmEnd: ''
+			amPmEnd: '',
+			endTimeValidated: true
 		});
 	}
 
@@ -266,8 +266,9 @@ class FixedEvent extends React.Component {
 		this.setState({
 			endDate: endDate, 
 			maxStartDate: endDate, 
-			minEndTime: this.setMinEndTime(), 
-			disabledEndTime: false
+			minEndTime: this.setMinEndTime(),
+			disabledEndTime: false,
+			endDateValidated: true
 		});
 	}
 
@@ -304,9 +305,47 @@ class FixedEvent extends React.Component {
 	}
 
 	/**
+	 * Validates the Title, End Date and End Time fields
+	 */
+	fieldValidation = () => {
+		let validated = true;
+
+		if (this.state.title === '') {
+			this.setState({titleValidated: false});
+			validated = false;
+		} else {
+			this.setState({titleValidated: true});
+		}
+		
+		if (this.state.disabledEndDate === true) {
+			this.setState({endDateValidated: false});
+			validated = false;
+		} else {
+			this.setState({endDateValidated: true});
+		}
+		
+		if(this.state.allDay === false) {
+			if (this.state.disabledEndTime === true) {
+				this.setState({endTimeValidated: false});
+				validated = false;
+			} else {
+				this.setState({endTimeValidated: true});
+			}
+		}
+
+		return validated;
+	}
+
+	/**
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
+		let validated = this.fieldValidation();
+		
+		if (!validated) {
+			return;
+		}
+
 		let info = {
 			title: this.state.title,
 			location: this.state.location,
@@ -363,6 +402,12 @@ class FixedEvent extends React.Component {
 	 * Adds the event to the calendar and resets the fields
 	 */
 	addAnotherEvent = () => {
+		let validated = this.fieldValidation();
+		
+		if (!validated) {
+			return false;
+		}
+
 		let info = {
 			title: this.state.title,
 			location: this.state.location,
@@ -394,6 +439,7 @@ class FixedEvent extends React.Component {
 	resetField = () => {
 		this.setState({
 			title: '',
+			titleValidated: true,
 
 			allDay: false,
 
@@ -404,6 +450,7 @@ class FixedEvent extends React.Component {
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
+			endDateValidated: true,
 
 			startTime: new Date().toLocaleTimeString(),
 			disabledStartTime : false,
@@ -413,6 +460,7 @@ class FixedEvent extends React.Component {
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime : true,
 			amPmEnd: this.getAmPm(),
+			endTimeValidated: true,
 
 			location: '',
 			recurrenceValue: 'None',
@@ -429,6 +477,30 @@ class FixedEvent extends React.Component {
 		let addEventButton;
 		let nextButton;
 		let paddingBottomContainer = HEIGHT;
+		let errorTitle;
+		let errorEnd;
+
+		if (!this.state.titleValidated) {
+			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+		} else {
+			errorTitle = null;
+		}
+
+		if(this.state.allDay === false) {
+			if (!this.state.endDateValidated && !this.state.endTimeValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select Dates and Times.</Text>;
+			} else if (!this.state.endTimeValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select an End Date and Time.</Text>;
+			} else {
+				errorEnd = null;
+			}
+		} else {
+			if (!this.state.endDateValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select a Start and End Date.</Text>;
+			} else {
+				errorEnd = null;
+			}
+		}
 
 		/**
 		 * In order to show components based on current route
@@ -475,17 +547,23 @@ class FixedEvent extends React.Component {
 								color={blue}/>
 						</View>
 
-						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title"
-								size={30}
-								color={blue} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText}
-									placeholder="Title" 
-									onChangeText={(title) => this.setState({title})}
-									value={this.state.title}/>
+						<View>
+							<View style={styles.textInput}>
+								<MaterialCommunityIcons name="format-title"
+									size={30}
+									color={blue} />
+
+								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<TextInput style={styles.textInputText}
+										placeholder="Title" 
+										onChangeText={(title) => this.setState({title, titleValidated: true})}
+										value={this.state.title}/>
+								</View>
 							</View>
+
+							{errorTitle}
 						</View>
+
 						<View style={styles.timeSection}>
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
@@ -530,6 +608,7 @@ class FixedEvent extends React.Component {
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
 											color: gray, 
+											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="HH:mm A" 
@@ -551,6 +630,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
+											color: !this.state.endDateValidated ? '#ff0000' : gray,
 											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 									placeholder={this.state.endDate} 
 									format="ddd., MMM DD, YYYY" 
@@ -569,7 +649,8 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular'}, 
 										placeholderText:{
-											color: gray, 
+											color: !this.state.endTimeValidated ? '#ff0000' : gray, 
+											opacity: this.state.allDay ? 0 : 1,
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 									format="HH:mm A" 
@@ -579,6 +660,8 @@ class FixedEvent extends React.Component {
 									is24Hour={false}
 									onDateChange={this.endTimeOnDateChange}/>
 							</View>
+
+							{errorEnd}
 						</View>
 
 						<View style={styles.description}>

@@ -442,6 +442,145 @@ export const schoolScheduleStyles = StyleSheet.create({
 	}
 });
 
+export const courseStyles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+
+	content: {
+		flex:1,
+		justifyContent:'space-evenly',
+		marginTop: StatusBar.currentHeight + Header.HEIGHT,
+		paddingHorizontal: 20
+	},
+
+	instruction: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+
+	text: {
+		width: 210,
+		paddingRight: 15,
+		fontFamily: 'Raleway-Regular',
+		color: gray,
+		fontSize: 20,
+		textAlign: 'right'
+	},
+
+	errorCourseCode: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 45
+	},
+
+	errorEndTime: {
+		color: 'red',
+		fontSize: 12
+	},
+
+	textInput: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'flex-end',
+		marginRight: 5,
+		height: 40
+	},
+
+	textInputText: {
+		fontFamily: 'OpenSans-Regular',
+		fontSize: 15,
+		color: gray,
+		paddingBottom: 0
+	},
+
+	textInputBorder: {
+		borderBottomColor: '#D4D4D4',
+		borderBottomWidth: 1,
+		width: '87%',
+		marginLeft: 10,
+	},
+
+	dayOfWeekBorder: {
+		borderBottomColor: 'lightgray',
+		borderBottomWidth: 1,
+		width: '60%',
+		marginLeft: 10,
+	},
+
+	dayOfWeekTitle: {
+		color: blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 17,
+		marginRight: 5
+	},
+
+	blueTitle: {
+		color: blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 17,
+		width: 93
+	},
+
+	dayOfWeekValues:{
+		color: gray,
+		height: 40,
+		width: '105%',
+		marginLeft: -5,
+		marginBottom:-8
+	},
+
+	time: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	buttons: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 20
+	},
+
+	buttonEvent: {
+		borderRadius: 12,
+		backgroundColor: blue,
+		width: 150,
+		height: 57.9,
+		elevation: 4,
+		marginRight: 25,
+		justifyContent:'center'
+	},
+
+	buttonEventText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		textAlign: 'center',
+		padding: 8
+	},
+
+	buttonNext: {
+		borderRadius: 12,
+		backgroundColor: '#FFFFFF',
+		width: 100,
+		height: 58,
+		borderWidth: 3,
+		borderColor: blue,
+		elevation: 4,
+		justifyContent:'center'
+	},
+
+	buttonNextText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: blue,
+		textAlign: 'center',
+		padding: 8
+	}
+});
+
 export const fixedEventStyles = StyleSheet.create({
 	container: {
 		flex: 1
@@ -454,13 +593,27 @@ export const fixedEventStyles = StyleSheet.create({
 
 	content: {
 		flex: 1,
-		justifyContent: 'space-evenly'
+		justifyContent: 'space-evenly',
+		paddingHorizontal: 20
 	},
 
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+
+	errorTitle: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 45
+	},
+
+	errorEnd: {
+		color: 'red',
+		fontSize: 12,
+		alignSelf: 'flex-start',
+		marginLeft: 10
 	},
 
 	text: {
@@ -488,7 +641,7 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	textInputBorder: {
-		borderBottomColor: 'lightgray',
+		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
 		marginLeft: 10,
@@ -520,7 +673,7 @@ export const fixedEventStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingLeft: 45,
+		paddingLeft: 30,
 		paddingRight: 5
 	},
 
@@ -528,7 +681,7 @@ export const fixedEventStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingLeft: 45,
+		paddingLeft: 30,
 		paddingRight: 5
 	},
 
@@ -592,14 +745,13 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		paddingHorizontal: 15,
-		marginBottom: 20,
 		marginTop: StatusBar.currentHeight + Header.HEIGHT
 	},
 
 	content: {
 		flex: 1,
-		justifyContent:'space-evenly'
+		justifyContent:'space-evenly',
+		paddingHorizontal: 20
 	},
 
 	instruction: {
@@ -616,6 +768,22 @@ export const nonFixedEventStyles = StyleSheet.create({
 		fontSize: 20
 	},
 
+	errorTitle: {
+		color: 'red',
+		fontSize: 12,
+		marginLeft: 40
+	},
+
+	errorEndDate: {
+		color: 'red',
+		fontSize: 12,
+		alignSelf: 'flex-start'
+	},
+	
+	errorDuration: {
+		color: 'red',
+		fontSize: 12
+	},
 	textInput: {
 		flexDirection: 'row',
 		alignItems: 'flex-end',
