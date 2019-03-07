@@ -3,9 +3,9 @@ import { StatusBar, View, Animated, Easing} from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
-import { gradientColors, blueColor, statusBarDark } from '../../../config';
-import { loadingStyles as styles } from '../../styles';
-
+import { gradientColors, statusBarDark } from '../../../config';
+import { loadingStyles as styles, blue } from '../../styles';
+import { WelcomeScreen, LoginNavigator, TutorialNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
 const logoAnimDuration = 3000;
@@ -18,9 +18,9 @@ class LoadingScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			colors: [blueColor, blueColor],
+			colors: [blue, blue],
 			animProgress: new Animated.Value(0),
-			nextScreen: 'WelcomeScreen'
+			nextScreen: WelcomeScreen
 		};
 
 		// Waits for the animation to finish, then goes to the next screen
@@ -49,12 +49,12 @@ class LoadingScreen extends React.Component {
 		switch (this.props.main) {
 			case 'Home':
 				this.setState({
-					nextScreen: 'LoginNavigator'
+					nextScreen: LoginNavigator
 				});
 				break;
 			case 'SchoolSchedule':
 				this.setState({
-					nextScreen: 'TutorialNavigator'
+					nextScreen: TutorialNavigator
 				});
 				break;
 			case 'Dashboard':
@@ -62,7 +62,7 @@ class LoadingScreen extends React.Component {
 				// is the dashboard, otherwise its the login screen
 				if (this.props.profile !== null) {
 					this.setState({
-						nextScreen: 'DashboardOptionsNavigator'
+						nextScreen: DashboardOptionsNavigator
 					});
 				}
 				break;
@@ -70,7 +70,7 @@ class LoadingScreen extends React.Component {
 	}
 
 	render() {
-		const { colors, progress } = this.state;
+		const { colors, animProgress } = this.state;
 		return(
 			<View style={styles.container}>
 				<AnimatedGradient
@@ -84,7 +84,7 @@ class LoadingScreen extends React.Component {
 				
 				<View style={styles.animView}>
 					<LottieView
-						progress={progress}
+						progress={animProgress}
 						source={logoFile}
 						loop={false}
 						speed={1}

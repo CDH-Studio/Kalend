@@ -1,40 +1,40 @@
 import React from 'react';
-import {Platform, Dimensions, StyleSheet, StatusBar, Text, View, ScrollView, TextInput, Picker, TouchableOpacity, ActionSheetIOS} from 'react-native';
-import {Header} from 'react-navigation';
-import { blueColor, statusBlueColor } from '../../../config';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import DatePicker from 'react-native-datepicker';
-import updateNavigation from '../NavigationHelper';
-import {ADD_COURSE, CLEAR_COURSE} from '../../constants';
+import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
+import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
+import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
+import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 
 const viewHeight = 718.8571166992188;
+const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
+/**
+ * Permits the user to input their school schedule manually 
+ * or to edit the previously entred courses
+ */
 class Course extends React.Component {
 
-	// Style for Navigation Bar
 	static navigationOptions = {
 		title: 'Add Courses',
-		headerTintColor: 'white',
+		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blueColor,
+			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 
-	// Constructor and States
 	constructor(props) {
 		super(props);
+
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
-		let containerHeight = null;
-		
-		if(viewHeight < containerHeightTemp) {
-			containerHeight = containerHeightTemp;
-		}
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
 		this.state = { 
 			containerHeight,
@@ -55,7 +55,7 @@ class Course extends React.Component {
 
 			location: ''
 		};
-		
+
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -88,12 +88,12 @@ class Course extends React.Component {
 		let currentHour = time.getHours();
 		let currentMinute = time.getMinutes();
 
-		if(currentHour > 12) {
+		if (currentHour > 12) {
 			currentHour = currentHour % 12;
 			time.setHours(currentHour);
 		}
 
-		if(currentMinute < 10) {
+		if (currentMinute < 10) {
 			currentMinute = '0' + currentMinute;
 		}
 
@@ -108,17 +108,20 @@ class Course extends React.Component {
 		return (hours >= 12) ? ' PM' : ' AM';
 	}
 
+	/**
+	 * Enables endTime and sets it to the startTime
+	 */
 	enableEndTime() {
-		if(this.state.disabledEndTime === true) {
+		if (this.state.disabledEndTime === true) {
 			this.setState({endTime: this.state.startTime});
 			return false;
-		}else {
+		} else {
 			//do nothing
 		}
 	}
 
 	/**
-	 * 
+	 * Sets the minimum endTime on iOS devices
 	 */
 	setMinEndTime() {
 		let min = new Date();
@@ -241,12 +244,43 @@ class Course extends React.Component {
 		);
 	}
 
+	/**
+	 * Validates the CourseCode and EndTime fields
+	 */
+	fieldValidation = () => {
+		let validated = true;
 
+		if (this.state.courseCode === '') {
+			this.setState({courseCodeValidated: false});
+			validated = false;
+		} else {
+			this.setState({courseCodeValidated: true});
+		}
+		
+		if (this.state.disabledEndTime === true) {
+			this.setState({endTimeValidated: false});
+			validated = false;
+		} else {
+			this.setState({endTimeValidated: true});
+		}
+
+		return validated;
+	}
+
+	/**
+	 * Adds the event in the calendar
+	 */
 	nextScreen = () => {
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
-			this.addAnotherEvent();
-			this.props.navigation.navigate('TutorialFixedEvent', {update:false});
+			if (this.addAnotherEvent()) {
+				this.props.navigation.navigate('TutorialFixedEvent', {update:false});
+			}
 		} else {
+			let validated = this.fieldValidation();
+			if (!validated) {
+				return;
+			}
+			
 			let events = this.props.CoursesReducer;
 			let arr = [];
 
@@ -273,21 +307,34 @@ class Course extends React.Component {
 		}
 	}
 
+	/**
+	 * Adds the event to the calendar and resets the fields
+	 */
 	addAnotherEvent = () => {
+		let validated = this.fieldValidation();
+		if (!validated) {
+			return false;
+		}
+
 		this.props.dispatch({
 			type: ADD_COURSE,
 			event: this.state
 		});
-		this.resetField();
+
+		if(validated) {
+			this.resetField();
+		}
+		return validated;
 	}
 
-	
+	/**
+	 * Reset the fields of the form
+	 */
 	resetField = () => {
 		this.setState({
-			//Course Code
 			courseCode: '',
+			courseCodeValidated: true,
 			
-			//Time section
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'MONDAY',
 
@@ -298,8 +345,8 @@ class Course extends React.Component {
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime: true,
 			amPmEnd: this.getAmPm(),
+			endTimeValidated: true,
 
-			//Other Information
 			location: ''
 		});
 	}
@@ -307,42 +354,71 @@ class Course extends React.Component {
 	render() {
 		let addCourseButton;
 		let nextButton;
+		let errorCourseCode;
+		let errorEndTime;
 
-		if(this.props.navigation.state.routeName === 'TutorialAddCourse') {
+		if (!this.state.courseCodeValidated) {
+			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
+		} else {
+			errorCourseCode = null;
+		}
+
+		if (!this.state.endTimeValidated) {
+			errorEndTime = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
+		} else {
+			errorEndTime = null;
+		}
+		
+
+		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
 			addCourseButton = 
-				<TouchableOpacity style={styles.buttonEvent} onPress={this.addAnotherEvent}> 
+				<TouchableOpacity style={styles.buttonEvent}
+					onPress={this.addAnotherEvent}> 
 					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}COURSE</Text>
 				</TouchableOpacity>;
 			nextButton = 
-			<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+			<TouchableOpacity style={styles.buttonNext}
+				onPress={this.nextScreen}>
 				<Text style={styles.buttonNextText}>NEXT</Text>
 			</TouchableOpacity>;
 		} else {
 			addCourseButton = null;
 			nextButton = 
-				<TouchableOpacity style={styles.buttonNext} onPress={this.nextScreen}>
+				<TouchableOpacity style={styles.buttonNext}
+					onPress={this.nextScreen}>
 					<Text style={styles.buttonNextText}>DONE</Text>
 				</TouchableOpacity>;
 		}
+
 		return(
 			<View style={styles.container}>
-				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
+				<StatusBar translucent={true}
+					backgroundColor={statusBlueColor} />
 
 				<ScrollView>
-					<View style={styles.content}>
+					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
-							<FontAwesome5 name="university" size={130} color={blueColor}/>
+							<FontAwesome5 name="university"
+								size={130}
+								color={blue}/>
 						</View>
+						
+						<View>
+							<View style={styles.textInput}>
+								<MaterialIcons name="class"
+									size={30}
+									color={blue} />
 
-						<View style={styles.textInput}>
-							<MaterialIcons name="class" size={30} color={blueColor} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
-									placeholder="Course Code" 
-									onChangeText={(courseCode) => this.setState({courseCode})} 
-									value={this.state.courseCode}/>
+								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<TextInput style={styles.textInputText} 
+										placeholder="Course Code" 
+										onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
+										value={this.state.courseCode} />
+								</View>
 							</View>
+
+							{errorCourseCode}
 						</View>
 
 						<View style={styles.textInput}>
@@ -367,7 +443,7 @@ class Course extends React.Component {
 								}
 							</View>
 						</View>
-						<View style={styles.timeSection}>
+						<View>
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>Start Time</Text>
 								<DatePicker showIcon={false} 
@@ -375,8 +451,11 @@ class Course extends React.Component {
 									mode="time" 
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular', color:'#565454'}, 
-										placeholderText:{color:'#565454'}
+										dateText:{
+											fontFamily: 'OpenSans-Regular',
+											color: gray
+										}, 
+										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="H:mm A" 
@@ -384,39 +463,44 @@ class Course extends React.Component {
 									cancelBtnText="Cancel" 
 									is24Hour={false}
 									onDateChange={(startTime) => {
-										this.setState({startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime), undefined)});
+										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime), undefined)});
 										this.setState({ disabledEndTime: this.enableEndTime()});
 									}} />
 							</View>
 
-							<View style={styles.time}>
-								<Text style={styles.blueTitle}>End Time</Text>
-								<DatePicker showIcon={false} 
-									date={this.state.endTime} 
-									mode="time" 
-									disabled= {this.state.disabledEndTime}
-									customStyles={{
-										disabled:{backgroundColor: 'transparent'}, 
-										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
-										placeholderText:{
-											color:'#565454',
-											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
-									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="H:mm A" 
-									minDate={this.state.minEndTime}
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									is24Hour={false}
-									onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})} />
+							<View>
+								<View style={styles.time}>
+									<Text style={styles.blueTitle}>End Time</Text>
+									<DatePicker showIcon={false} 
+										date={this.state.endTime} 
+										mode="time" 
+										disabled= {this.state.disabledEndTime}
+										customStyles={{
+											disabled:{backgroundColor: 'transparent'}, 
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular'}, 
+											placeholderText:{
+												color: !this.state.endTimeValidated ? '#ff0000' : gray,
+												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
+										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
+										format="HH:mm A" 
+										minDate={this.state.minEndTime}
+										confirmBtnText="Confirm" 
+										cancelBtnText="Cancel" 
+										is24Hour={false}
+										onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+								</View>
 
+								{errorEndTime}
 							</View>
 						</View>
 
 						<View style={styles.textInput}>
-							<MaterialIcons name="location-on" size={30} color={blueColor} />
+							<MaterialIcons name="location-on"
+								size={30}
+								color={blue} />
 							<View style={styles.textInputBorder}>
-								<TextInput style={{fontFamily: 'OpenSans-Regular', fontSize: 15, color: '#565454', paddingBottom:0}} 
+								<TextInput style={styles.textInputText} 
 									placeholder="Location" 
 									onChangeText={(location) => this.setState({location})} 
 									value={this.state.location}/>
@@ -435,136 +519,8 @@ class Course extends React.Component {
 	}
 }
 
-const headerHeight = Header.HEIGHT;
-const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-
-	content: {
-		flex:1,
-		justifyContent:'space-evenly',
-		height: containerHeight,
-		marginTop: StatusBar.currentHeight + headerHeight,
-		paddingHorizontal: 20
-	},
-
-	instruction: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-
-	text: {
-		width: 210,
-		paddingRight: 15,
-		fontFamily: 'Raleway-Regular',
-		color: '#565454',
-		fontSize: 20,
-		textAlign: 'right'
-	},
-
-	textInput: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'flex-end',
-		marginRight: 5,
-		height: 40
-	},
-
-	textInputBorder: {
-		borderBottomColor: 'lightgray',
-		borderBottomWidth: 1,
-		width: '87%',
-		marginLeft: 10,
-	},
-
-	dayOfWeekBorder: {
-		borderBottomColor: 'lightgray',
-		borderBottomWidth: 1,
-		width: '65%',
-		marginLeft: 10,
-	},
-
-	dayOfWeekTitle: {
-		color: '#1473E6',
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 17,
-		marginRight: 5,
-		marginLeft: 5
-	},
-
-	blueTitle: {
-		color: '#1473E6',
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 17,
-		width: 88
-	},
-
-	dayOfWeekValues:{
-		color: '#565454',
-		height: 40,
-		width: '105%',
-		marginLeft: -5,
-		marginBottom:-8
-	},
-
-	time: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginLeft: 10
-	},
-
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 20
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: blueColor,
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: blueColor,
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blueColor,
-		textAlign: 'center',
-		padding: 8
-	}
-});
-
-
 function mapStateToProps(state) {
-	const { CoursesReducer, NavigationReducer } = state;
+	const {CoursesReducer, NavigationReducer} = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
@@ -572,4 +528,5 @@ function mapStateToProps(state) {
 		CoursesReducer
 	};
 }
+
 export default connect(mapStateToProps, null)(Course);

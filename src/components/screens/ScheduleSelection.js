@@ -5,9 +5,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import converter from 'number-to-words';
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
-import { data } from '../../scheduleInfo';
+import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { SET_SELECTED_SCHEDULE } from '../../constants';
+import { white, black } from '../../styles';
+import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -79,7 +81,7 @@ class ScheduleEvent extends React.Component {
 				left: left,
 				...Platform.select({
 					ios: {
-						shadowColor: '#000000',
+						shadowColor: black,
 						shadowOffset: { width: 0, height: 2 },
 						shadowOpacity: this.props.showShadow ? 0.8 : 0,
 						shadowRadius: 2,    
@@ -129,9 +131,9 @@ class Schedule extends React.Component {
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
 		let latestHour = 12;
-		Object.entries(data).map((i, index) => {
+		Object.entries(scheduleInfo).map((i, index) => {
 			if (index === 2) {
-				i[1] = i[1][this.state.id];
+				i[1] = i[1][this.props.id];
 			}
 
 			i[1].map((i) => {
@@ -151,8 +153,8 @@ class Schedule extends React.Component {
 		// If the range of the earliest and latest hours divided by the number of lines 
 		// is odd, change it to be event
 		let interval = (latestHour - earliestHour);
-		if (interval % this.state.numOfLines !== 0) {
-			let diff = this.state.numOfLines - interval % this.state.numOfLines;
+		if (interval % this.props.numOfLines !== 0) {
+			let diff = this.props.numOfLines - interval % this.props.numOfLines;
 			interval += diff;
 
 			for (let i = 0; i < diff; i ++) {
@@ -175,8 +177,8 @@ class Schedule extends React.Component {
 		// Creates the hours on the side
 		let currentHour = earliestHour;
 		let count = 0;
-		interval = interval / this.state.numOfLines;
-		for (let i = 0; i <= this.state.numOfLines; i++) {
+		interval = interval / this.props.numOfLines;
+		for (let i = 0; i <= this.props.numOfLines; i++) {
 			hours.push(currentHour);
 			currentHour += interval;
 			if (currentHour > 12 || (currentHour >= 12 && count == 1)) {
@@ -242,7 +244,7 @@ class Schedule extends React.Component {
 					<View style={[styles.card, {
 						...Platform.select({
 							ios: {
-								shadowColor: '#000000',
+								shadowColor: black,
 								shadowOffset: { width: 0, height: 2 },
 								shadowOpacity: showShadow ? 0.8 : 0,
 								shadowRadius: 2,    
@@ -335,7 +337,7 @@ class Schedule extends React.Component {
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
-		headerTintColor: '#fff',
+		headerTintColor: white,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
@@ -361,10 +363,10 @@ class ScheduleSelection extends React.Component {
 	 */
 	nextScreen = (title, index) => {
 		this.setIndex(index);
-		if (this.props.navigation.state.routeName === 'TutorialScheduleSelection') {
-			this.props.navigation.navigate('TutorialScheduleSelectionDetails', {title});
+		if (this.props.navigation.state.routeName === TutorialScheduleSelection) {
+			this.props.navigation.navigate(TutorialScheduleSelectionDetails, {title});
 		} else {
-			this.props.navigation.navigate('DashboardScheduleSelectionDetails', {title});
+			this.props.navigation.navigate(DashboardScheduleSelectionDetails, {title});
 		}
 	}
 	
@@ -395,9 +397,9 @@ class ScheduleSelection extends React.Component {
 							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
 							{ 
-								data.ai.map((ai, key) => {
+								scheduleInfo.ai.map((ai, key) => {
 									return <Schedule nextScreen={this.nextScreen} 
-										data={data} 
+										data={scheduleInfo} 
 										key={key} 
 										id={key} 
 										numOfLines={6} />;
@@ -428,7 +430,7 @@ const styles = StyleSheet.create({
 	},
 
 	description: {
-		color: 'white',
+		color: white,
 		fontFamily: 'Raleway-Regular',
 	},
 
@@ -465,7 +467,7 @@ const styles = StyleSheet.create({
 	},
 
 	card: {
-		backgroundColor: 'white', 
+		backgroundColor: white, 
 		borderRadius: 3, 
 		paddingTop: 5, 
 		paddingHorizontal: lineViewHorizontalPadding,
@@ -474,7 +476,7 @@ const styles = StyleSheet.create({
 
 	title: {
 		fontFamily: 'Raleway-Medium', 
-		color:'white', 
+		color: white, 
 		fontSize: 18, 
 		marginBottom: 10
 	}, 
