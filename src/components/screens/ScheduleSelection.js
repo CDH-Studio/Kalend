@@ -382,8 +382,8 @@ class ScheduleSelection extends React.Component {
 	}
 
 	render() {
-		console.log("NavigationHeader", Header.HEIGHT);
-		console.log("StatusBar", StatusBar.HEIGHT);
+		console.log('NavigationHeader', Header.HEIGHT);
+		console.log('StatusBar', StatusBar.HEIGHT);
 
 		return(
 			<LinearGradient style={styles.container} 

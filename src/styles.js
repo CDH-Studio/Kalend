@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
-import { blueColor, grayColor, orangeColor, darkOrangeColor, darkBlueColor } from '../config';
+import { blueColor, grayColor, orangeColor } from '../config';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions, Button } from 'react-native';
+import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,7 +14,7 @@ import { fixedEventStyles as styles } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-const viewHeight = 436.5;
+const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
 
 /**
@@ -32,21 +32,29 @@ class FixedEvent extends React.Component {
 		}
 	});
 
+	setContainerHeight = () => {
+		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
+		let tutorialStatusHeight = this.props.navigation.state.routeName === 'TutorialFixedEvent' ? 56.1 : 0;
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
+
+		console.log('Height', Dimensions.get('window').height);
+		console.log('Header', Header.HEIGHT);
+		console.log('Tutorial', tutorialStatusHeight);
+		console.log('Status', getStatusBarHeight());
+		console.log('TOT', containerHeightTemp);
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+
+		this.setState({containerHeight});
+	}
+
 	constructor(props) {
 		super(props);
 
-		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - HEIGHT - getStatusBarHeight();
-		console.log("Height", Dimensions.get('window').height);
-		console.log("Header", Header.HEIGHT);
-		console.log("Tutorial", HEIGHT);
-		console.log("Status", getStatusBarHeight());
-		console.log("TOT", containerHeightTemp);
-		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
-		let scrollable = false;
+		// Causes a bug (cannot scroll when keyboard is shown)
+		// let scrollable = containerHeight !== containerHeightTemp;
+		let scrollable = true;
 		
 		this.state = { 
-			containerHeight,
-
 			title: '',
 			
 			allDay: false,
@@ -82,11 +90,13 @@ class FixedEvent extends React.Component {
 	}
 
 	componentWillMount() {
-		if(this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
+		if (this.props.navigation.state.routeName !== 'TutorialFixedEvent') {
 			this.setState({...this.props.FEditState});
 		} else {
 			this.resetField();
 		}
+
+		this.setContainerHeight();
 	}
 
 	/**
@@ -337,7 +347,20 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+		const { location, title, description, recurrence, allDay } = this.state;
+		if (location !== '' || title !== '' || description !== '' || recurrence !== 'NONE' || allDay) {
+			Alert.alert(
+				'Save event?',
+				'You are going to the next screen. Do you want to save this event?',
+				[
+					{text: 'Save', onPress: () => this.addAnotherEvent(), style: 'cancel',},
+					{text: 'Discard', onPress: () => this.props.navigation.navigate('TutorialNonFixedEvent', {update:false})},
+				],
+				{cancelable: false},
+			);
+		} else {
+			this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+		}
 	}
 
 	/**
@@ -474,9 +497,8 @@ class FixedEvent extends React.Component {
 	render() {
 		const {containerHeight, scrollable} = this.state;
 		let tutorialStatus;
-		let addEventButton;
-		let nextButton;
-		let paddingBottomContainer = HEIGHT;
+		let addEventButtonText;
+		let addEventButtonFunction;
 
 		/**
 		 * In order to show components based on current route
@@ -488,21 +510,13 @@ class FixedEvent extends React.Component {
 				skip={this.skip}
 				showTutShadow={this.state.showTutShadow} />;
 
-			addEventButton = null;
-
-			nextButton = null;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
 		} else {
 			tutorialStatus = null;
 
-			addEventButton = null;
-
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>DONE</Text>
-			</TouchableOpacity>;
-
-			paddingBottomContainer = null;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
 		}
 		
 		return (
@@ -510,14 +524,11 @@ class FixedEvent extends React.Component {
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 				
-
 				<ScrollView style={styles.scrollView}
 					onScroll={this.onScroll}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>
-					<View style={[styles.content, {height: containerHeight}]} onLayout={(event) => {
-						console.log(event.nativeEvent.layout.height);
-					}}>
+					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
 							<MaterialCommunityIcons name="calendar-today"
@@ -681,15 +692,10 @@ class FixedEvent extends React.Component {
 							</View>
 						</View>
 						<View style={styles.buttons}>
-							<TouchableOpacity style={styles.buttonAdd}>
-								{/* <MaterialIcons style={styles.buttonAddIcon}
-									name="add"
-									size={25}
-									color='white'
-								/> */}
-
+							<TouchableOpacity style={styles.buttonAdd}
+								onPress={addEventButtonFunction}>
 								<Text style={styles.buttonAddText}>
-									Add
+									{addEventButtonText}
 								</Text>
 							</TouchableOpacity>
 						</View>
