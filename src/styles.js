@@ -895,7 +895,7 @@ export const eventOverviewStyles = StyleSheet.create({
 
 	info: {
 		flexDirection: 'row',
-		justifyContent: 'flex-end',
+		justifyContent: 'flex-start',
 		alignItems: 'center'
 	},
 
@@ -909,9 +909,12 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	actions: {
+		position: 'absolute',
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		width: 70
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		width: '100%',
+		height: '100%'
 	},
 
 	eventTitle: {
@@ -922,6 +925,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	eventInfo: {
+		width: 180,
 		fontFamily: 'OpenSans-Regular',
 		color: gray
 	},
