@@ -120,7 +120,8 @@ class EventOverview extends React.Component {
 						type: SET_NAV_SCREEN,
 						reviewEventSelected: this.props.id
 					});
-				}}>
+				}}
+				style={{width:'100%'}}>
 					<View style={styles.info}>
 						<View style={[styles.category, {backgroundColor: categoryColor}]}>
 							<Text></Text>
@@ -128,32 +129,35 @@ class EventOverview extends React.Component {
 						<View>
 							<Text style={styles.eventTitle}
 								numberOfLines={1}>{this.props.eventTitle}</Text>
-							<Text style={styles.eventInfo}>{this.props.date}</Text>
-							<Text style={styles.eventInfo}>{this.props.time}</Text>
+							<Text style={styles.eventInfo}
+								numberOfLines={1}>{this.props.date}</Text>
+							<Text style={styles.eventInfo}
+								numberOfLines={1}>{this.props.time}</Text>
 						</View>
+					</View>
+					<View style={styles.actions}>
+						<TouchableOpacity onPress={() => {
+							this.props.navigateEditScreen(editScreen);
+								
+							store.dispatch({
+								... store.getState().NavigationReducer,
+								type: SET_NAV_SCREEN,
+								reviewEventSelected: this.props.id
+							});
+						}}>
+							<Feather name="edit"
+								size={30}
+								color={grayColor} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}
+							style={{marginLeft: 10}}>
+							<Feather name="trash"
+								size={30}
+								color={grayColor} />
+						</TouchableOpacity>
 					</View>
 				</TouchableOpacity>
 
-				<View style={styles.actions}>
-					<TouchableOpacity onPress={() => {
-						this.props.navigateEditScreen(editScreen);
-							
-						store.dispatch({
-							... store.getState().NavigationReducer,
-							type: SET_NAV_SCREEN,
-							reviewEventSelected: this.props.id
-						});
-					}}>
-						<Feather name="edit"
-							size={30}
-							color={grayColor} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}>
-						<Feather name="trash"
-							size={30}
-							color={grayColor} />
-					</TouchableOpacity>
-				</View>
 
 				<Modal visible={this.state.modalVisible}
 					transparent={true}
