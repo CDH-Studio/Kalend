@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, Keyboard, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -32,37 +32,9 @@ class FixedEvent extends React.Component {
 		}
 	});
 
-	setContainerHeight = () => {
-		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
-		let tutorialStatusHeight = this.props.navigation.state.routeName === 'TutorialFixedEvent' ? 56.1 : 0;
-		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
-
-		console.log('Height', Dimensions.get('window').height);
-		console.log('Header', Header.HEIGHT);
-		console.log('Tutorial', tutorialStatusHeight);
-		console.log('Status', getStatusBarHeight());
-		console.log('TOT', containerHeightTemp);
-		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
-
-		// Causes a bug (cannot scroll when keyboard is shown)
-		// let scrollable = containerHeight !== containerHeightTemp;
-		let scrollable = true;
-
-		let showTutShadow = containerHeight !== containerHeightTemp;
-
-		this.setState({
-			scrollable,
-			containerHeight,
-			showTutShadow
-		});
-	}
-
 	constructor(props) {
 		super(props);
 		
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -76,19 +48,22 @@ class FixedEvent extends React.Component {
 		this.setContainerHeight();
 	}
 
-	componentWillUnmount () {
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
-	}
-  
-	keyboardDidShow = () => {
+	setContainerHeight = () => {
+		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
+		let tutorialStatusHeight = this.props.navigation.state.routeName === 'TutorialFixedEvent' ? 56.1 : 0;
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+
+		// Causes a bug (cannot scroll when keyboard is shown)
+		// let scrollable = containerHeight !== containerHeightTemp;
+		let scrollable = true;
+		let showTutShadow = containerHeight !== containerHeightTemp;
+
 		this.setState({
-			showTutShadow: true
+			scrollable,
+			containerHeight,
+			showTutShadow
 		});
-	}
-  
-	keyboardDidHide = () => {
-		this.setContainerHeight();
 	}
 
 	/**
@@ -516,6 +491,7 @@ class FixedEvent extends React.Component {
 
 	render() {
 		const { containerHeight, scrollable, showTutShadow } = this.state;
+		
 		let tutorialStatus;
 		let addEventButtonText;
 		let addEventButtonFunction;
@@ -554,7 +530,7 @@ class FixedEvent extends React.Component {
 				color={blue}
 				backgroundColor={'#ffffff'}
 				skip={this.skip}
-				showTutShadow={this.state.showTutShadow} />;
+				showTutShadow={showTutShadow} />;
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;

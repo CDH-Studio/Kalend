@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, Animated, TouchableOpacity } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Keyboard } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { tutorialStatusStyles as styles, white } from '../styles';
@@ -48,11 +48,35 @@ class TutorialStatus extends React.Component {
 			</View>;
 		}
 
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+
 		this.state = {
 			colors,
 			next,
-			shadowOpacity: new Animated.Value(Number(props.showTutShadow))
+			showTutShadow: props.showTutShadow
 		};
+	}
+
+	componentWillUnmount () {
+		this.keyboardDidShowListener.remove();
+		this.keyboardDidHideListener.remove();
+	}
+  
+	keyboardDidShow = () => {
+		this.setState({
+			prevShowTutShadow: this.state.showTutShadow,
+			showTutShadow: true
+		});
+		this.forceUpdate();
+	}
+  
+	keyboardDidHide = () => {
+		this.setState({
+			prevShowTutShadow: null,
+			showTutShadow: this.state.prevShowTutShadow
+		});
+		this.forceUpdate();
 	}
 
 	/**
@@ -75,12 +99,20 @@ class TutorialStatus extends React.Component {
 	}
 
 	shouldComponentUpdate(newProps) {
-		return newProps.showTutShadow !== this.props.showTutShadow;
+		if (newProps.showTutShadow !== this.props.showTutShadow) {
+			this.setState({
+				showTutShadow: newProps.showTutShadow
+			});
+			return true;
+		}
+		return false;
 	}
 
 	render() {
-		const { next } = this.state;
-		const { backgroundColor, showTutShadow } = this.props;	
+		const { next, showTutShadow } = this.state;
+		const { backgroundColor } = this.props;	
+
+		console.log(this.state);
 
 		return(
 			<View style={[styles.section, {
@@ -115,11 +147,11 @@ class TutorialStatus extends React.Component {
 export const onScroll = (event, value) => {
 	event = event.nativeEvent;
 	if (parseInt(event.contentOffset.y + event.layoutMeasurement.height) >= parseInt(event.contentSize.height)) {
-		return false;
-	} else if (!value) {
 		return true;
+	} else if (!value) {
+		return false;
 	}
-	return value;
+	return false;
 };
 
 export default TutorialStatus;
