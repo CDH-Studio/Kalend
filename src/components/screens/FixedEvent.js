@@ -716,7 +716,7 @@ class FixedEvent extends React.Component {
 								<View style={styles.textInputBorder}>
 									{
 										Platform.OS === 'ios' ? 
-											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue}</Text>
+											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
 											:	
 											<Picker style={styles.recurrence} 
 												selectedValue={this.state.recurrence} 
