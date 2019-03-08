@@ -19,8 +19,8 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  */
 class Course extends React.Component {
 
-	static navigationOptions = {
-		title: 'Add Courses',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.routeName === 'TutorialAddCourse' ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -28,7 +28,7 @@ class Course extends React.Component {
 			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
+	});
 
 	constructor(props) {
 		super(props);
@@ -352,10 +352,12 @@ class Course extends React.Component {
 	}
 
 	render() {
-		let addCourseButton;
-		let nextButton;
+		let addEventButtonWidth;
+		let addEventButtonText;
+		let addEventButtonFunction;
 		let errorCourseCode;
 		let errorEndTime;
+		let showNextButton = true;
 
 		if (!this.state.courseCodeValidated) {
 			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
@@ -371,23 +373,14 @@ class Course extends React.Component {
 		
 
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
-			addCourseButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}COURSE</Text>
-				</TouchableOpacity>;
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>NEXT</Text>
-			</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
+			addEventButtonWidth = '48%';
 		} else {
-			addCourseButton = null;
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>DONE</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
+			addEventButtonWidth = '100%';
+			showNextButton = false;
 		}
 
 		return(
@@ -508,9 +501,20 @@ class Course extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							{addCourseButton}
-
-							{nextButton}
+							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
+								onPress={addEventButtonFunction}>
+								<Text style={styles.buttonText}>
+									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
+							{ showNextButton? 
+								<TouchableOpacity style={[styles.button, styles.buttonNext]}
+									onPress={() => 
+										this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
+									<Text style={styles.buttonText}>
+									Next
+									</Text>
+								</TouchableOpacity> : null}
 						</View>
 					</View>
 				</ScrollView>

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
 
 const viewHeight = 780.5714111328125;
@@ -182,20 +182,24 @@ class NonFixedEvent extends React.Component {
 
 			priority: 0.5,
 			location: '',
-			description: ''
+			description: '',
+
+			showTutShadow: true,
 		});
 	}
 
 	render() {
-		const {containerHeight} = this.state;
+		const { containerHeight, showTutShadow } = this.state;
 
+		let addEventButtonText;
+		let addEventButtonFunction;
 		let tutorialStatus;
-		let addEventButton;
-		let nextButton;
 		let paddingBottomContainer = HEIGHT;
 		let errorTitle;
 		let errorEndDate;
 		let errorDuration;
+		let addEventButtonWidth;
+		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
 			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
@@ -226,38 +230,30 @@ class NonFixedEvent extends React.Component {
 			tutorialStatus = <TutorialStatus active={3}
 				color={blue}
 				backgroundColor={white}
-				skip={this.skip} />;
+				skip={this.skip}
+				showTutShadow={showTutShadow} />;
 
-			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-				</TouchableOpacity>;
-
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>NEXT</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
+			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
-			addEventButton = null;
-
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>DONE</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
 
 			paddingBottomContainer = null;
+			addEventButtonWidth = '100%';
+			showNextButton = false;
 		}
 
 		return(
 			<View style={styles.container}>
 				<StatusBar backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.scrollView}>
+				<ScrollView style={styles.scrollView}
+					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
+					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
 						<View style={styles.instruction}>
 							<MaterialCommunityIcons name="face"
@@ -465,14 +461,25 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							{addEventButton}
-
-							{nextButton}
+							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
+								onPress={addEventButtonFunction}>
+								<Text style={styles.buttonText}>
+									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
+							{ showNextButton ? 
+								<TouchableOpacity style={[styles.button, styles.buttonNext]}
+									onPress={this.skip}>
+									<Text style={styles.buttonText}>
+									Next
+									</Text>
+								</TouchableOpacity> : null}
 						</View>
 					</View>
 				</ScrollView>
 
 				{tutorialStatus}	
+				
 			</View>
 		);
 	}

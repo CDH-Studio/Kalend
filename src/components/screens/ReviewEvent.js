@@ -8,7 +8,7 @@ import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
 
 const priorityLevels = {
@@ -45,7 +45,8 @@ class ReviewEvent extends React.Component {
 			currentY: 0,
 			fixedEventData: [],
 			nonFixedEventData: [],
-			schoolScheduleData: []
+			schoolScheduleData: [],
+			showTutShadow: true
 		};
 	}
 
@@ -62,8 +63,6 @@ class ReviewEvent extends React.Component {
 		let fixedEventData = [];
 		let nonFixedEventData = [];
 		let schoolScheduleData = [];
-
-		console.log(store.getState());
 
 		if (store.getState().CoursesReducer !== undefined) {
 			store.getState().CoursesReducer.map((data) => {
@@ -192,6 +191,7 @@ class ReviewEvent extends React.Component {
 	}
 
 	render() {
+		const { showTutShadow } = this.state;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 		/**
@@ -201,7 +201,8 @@ class ReviewEvent extends React.Component {
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			tutorialStatus = <TutorialStatus active={4}
 				color={blue}
-				backgroundColor={white} />;
+				backgroundColor={white}
+				showTutShadow={showTutShadow} />;
 		} else {
 			tutorialStatus = null;
 		}
@@ -212,7 +213,11 @@ class ReviewEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}
-					onScroll={this.onScroll}>
+					onScroll={(event) => { 
+						this.setState({showTutShadow: onScroll(event, showTutShadow)});
+						this.onScroll(event);
+					}}
+					scrollEventThrottle={100} >
 					<View style={[styles.content, {height: containerHeight, paddingBottom: tutorialHeight + 16}]} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
