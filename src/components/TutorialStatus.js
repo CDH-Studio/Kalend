@@ -86,7 +86,7 @@ class TutorialStatus extends React.Component {
 		let dots = [];
 		const { colors } = this.state;
 
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 5; i++) {
 			dots.push(
 				<Octicons name="primitive-dot" 
 					key={i}

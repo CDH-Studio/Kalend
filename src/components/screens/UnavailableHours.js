@@ -1,12 +1,15 @@
 import React from 'react';
-import { Platform, Dimensions, ScrollView, StatusBar, Text, View, Switch, Button } from 'react-native';
+import { Platform, Dimensions, ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
-import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableFixed } from '../../constants/screenNames';
+import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
+import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
+
+const viewHeight = 688.3809814453125;
 
 /**
  * Permits the user to input the hours they are not available or don't want to have anything booked
@@ -14,7 +17,7 @@ import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orang
 class UnavailableHours extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: 'Add Unavailable Hours',
+		title: navigation.state.routeName === TutorialUnavailableHours || navigation.state.routeName === DashboardUnavailableHours ? 'Add Unavailable Hours' : 'Edit Unavailable Hours',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -27,46 +30,63 @@ class UnavailableHours extends React.Component {
 	constructor(props) {
 		super(props);
 
-		// let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
-		// let containerHeight = null;
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = null;
 		
-		// if (viewHeight < containerHeightTemp) {
-		// 	containerHeight = containerHeightTemp;
-		// }
+		if (viewHeight < containerHeightTemp) {
+			containerHeight = containerHeightTemp;
+		}
 
 		this.state = { 
-			// containerHeight,
+			containerHeight,
 			eventID: Date.now(),
+			showTutShadow: true,
 
 			initialAmPm: this.getAmPm(),
 
 			sleepWeek: false,
 			startSleepWeek: new Date().toLocaleTimeString(),
 			endSleepWeek: new Date().toLocaleTimeString(),
+			disabledEndSleepWeek: true,
+			endSleepWeekValidated: true,
 			sleepWeekEnd: false,
 			startSleepWeekEnd: new Date().toLocaleTimeString(),
 			endSleepWeekEnd: new Date().toLocaleTimeString(),
+			disabledEndSleepWeekEnd: true,
+			endSleepWeekEndValidated: true,
 
 			commutingWeek: false,
 			startCommutingWeek: new Date().toLocaleTimeString(),
-			startCommutingWeekEnd: new Date().toLocaleTimeString(),
-			commutingWeekEnd: false,
 			endCommutingWeek: new Date().toLocaleTimeString(),
+			disabledEndCommutingWeek: true,
+			endCommutingWeekValidated: true,
+			commutingWeekEnd: false,
+			startCommutingWeekEnd: new Date().toLocaleTimeString(),
 			endCommutingWeekEnd: new Date().toLocaleTimeString(),
+			disabledEndCommutingWeekEnd: true,
+			endCommutingWeekEndValidated: true,
 
 			eatingWeek: false,
 			startEatingWeek: new Date().toLocaleTimeString(),
-			startEatingWeekEnd: new Date().toLocaleTimeString(),
-			eatingWeekEnd: false,
 			endEatingWeek: new Date().toLocaleTimeString(),
+			disabledEndEatingWeek: true,
+			endEatingWeekValidated: true,
+			eatingWeekEnd: false,
+			startEatingWeekEnd: new Date().toLocaleTimeString(),
 			endEatingWeekEnd: new Date().toLocaleTimeString(),
+			disabledEndEatingWeekEnd: true,
+			endEatingWeekEndValidated: true,
 
 			otherWeek: false,
 			startOtherWeek: new Date().toLocaleTimeString(),
-			startOtherWeekEnd: new Date().toLocaleTimeString(),
-			otherWeekEnd: false,
 			endOtherWeek: new Date().toLocaleTimeString(),
+			disabledEndOtherWeek: true,
+			endOtherWeekValidated: true,
+			otherWeekEnd: false,
+			startOtherWeekEnd: new Date().toLocaleTimeString(),
 			endOtherWeekEnd: new Date().toLocaleTimeString(),
+			disabledEndOtherWeekEnd: true,
+			endOtherWeekEndValidated: true,
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -113,26 +133,12 @@ class UnavailableHours extends React.Component {
 	/**
 	 * Enables endTime and sets it to the startTime
 	 */
-	enableEndTime() {
-		if (this.state.disabledEndTime === true) {
-			this.setState({endTime: this.state.startTime});
+	enableEndTime(disabledEndTime, startTime, endTime) {
+		if (this.state[disabledEndTime] === true) {
+			this.setState({[endTime]: this.state[startTime]});
 			return false;
 		} else {
 			//do nothing
-		}
-	}
-
-	/**
-	 * Sets the minimum endTime on iOS devices
-	 */
-	setMinEndTime() {
-		let min = new Date();
-
-		if (this.state.startDate === this.state.endDate) {
-			this.state.endTime = this.state.startTime;
-			min = min.toLocaleTimeString();
-			min = this.state.startTime;
-			return min;
 		}
 	}
 
@@ -147,13 +153,13 @@ class UnavailableHours extends React.Component {
 
 		// Check if an end time has been specified, if not, use the state end time
 		if (endTime === undefined) {
-			endTime = this.state.endTime;
+			endTime = this.state[endTime];
 		}
 
 		// Check if an start time has been specified, if not, use the state start time
 		// and specify that the startTime wasn't given by changing the variable startCheck
 		if (startTime === undefined) {
-			startTime = this.state.startTime;
+			startTime = this.state[startTime];
 			startCheck = false;
 		}
 
@@ -217,7 +223,8 @@ class UnavailableHours extends React.Component {
 	}
 
 	/**
-	 * To go to the appropriate Fixed Event screen according to the current route*/
+	 * To go to the appropriate Fixed Event screen according to the current route
+	 */
 	manualImport() {
 		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
 			this.props.navigation.navigate(TutorialUnavailableFixed, {update:false});
@@ -235,13 +242,31 @@ class UnavailableHours extends React.Component {
 	}
 	
 	render() {
+		const { containerHeight, showTutShadow } = this.state;
+		let tutorialStatus;
+		let paddingBottomContainer = HEIGHT;
+
+		/**
+		 * In order to show components based on current route
+		 */
+		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
+			tutorialStatus = <TutorialStatus active={5}
+				color={blue}
+				backgroundColor={'#ffffff'}
+				skip={this.skip}
+				showTutShadow={showTutShadow} />;
+		} else {
+			tutorialStatus = null;
+			paddingBottomContainer = null;
+		}
+
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}>
-					<View style={styles.content}>
+					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer + 20}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add the hours for which you're not available or you don't want anything to be booked.</Text>
 							<MaterialCommunityIcons name="block-helper"
@@ -267,14 +292,14 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.sleepWeek ? orange : 'darkgray'}
 												onValueChange={(sleepWeek) => this.setState({sleepWeek: sleepWeek})}
-												value = {this.state.sleepWeek} />
+												value={this.state.sleepWeek} />
 										</View>
 										{this.state.sleepWeek ?
 											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startSleepWeek} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -289,34 +314,37 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startSleepWeek) => {
-														this.setState({endSleepWeekValidated: true, startSleepWeek, endSleepWeek: this.beforeStartTime(this.getTwelveHourTime(startSleepWeek))});
-														this.setState({ disabledEndSleepWeek: this.enableEndTime()});
-													}}/>
+														this.setState({
+															endSleepWeekValidated: true, 
+															startSleepWeek, 
+															endSleepWeek: this.beforeStartTime(this.getTwelveHourTime(startSleepWeek), this.state.endSleepWeek)
+														});
+														this.setState({disabledEndSleepWeek: false});
+													}} />
 
 												<Text> - </Text>
 
 												<DatePicker showIcon={false} 
 													date={this.state.endSleepWeek} 
 													mode="time" 
-													style={{width:70}}
-													disabled= {this.state.disabledEndTime}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndSleepWeek}
 													customStyles={{
 														disabled:{backgroundColor: 'transparent'}, 
 														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular'}, 
-														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+														dateText:{fontFamily: 'OpenSans-Regular',
+															color: !this.state.endSleepWeekValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndSleepWeek ? 'line-through' : 'none'}, 
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endSleepWeek.split(':')[0] + ':' + this.state.endSleepWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													minDate={this.state.minEndTime}
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endSleepWeek) => this.setState({endSleepWeek, startSleepWeek: this.beforeStartTime(undefined, this.getTwelveHourTime(endSleepWeek))})}/>
+													onDateChange={(endSleepWeek) => this.setState({endSleepWeek, startSleepWeek: this.beforeStartTime(this.state.startSleepWeek, this.getTwelveHourTime(endSleepWeek))})} />
 											</View> : null}
 									</View>
+
 									<View style={styles.colContent}>
 										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
@@ -325,7 +353,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.sleepWeekEnd ? orange : 'darkgray'}
 												onValueChange={(sleepWeekEnd) => this.setState({sleepWeekEnd: sleepWeekEnd})}
-												value = {this.state.sleepWeekEnd} />
+												value={this.state.sleepWeekEnd} />
 										</View>
 
 										{this.state.sleepWeekEnd ?
@@ -333,14 +361,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startSleepWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startSleepWeekEnd.split(':')[0] + ':' + this.state.startSleepWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -348,44 +376,37 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startSleepWeekEnd) => {
-														this.setState({endTimeValidated: true, startSleepWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(startSleepWeekEnd))});
-														this.setState({ disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endSleepWeekEndValidated: true, startSleepWeekEnd, endSleepWeekEnd: this.beforeStartTime(this.getTwelveHourTime(startSleepWeekEnd), this.state.endSleepWeekEnd)});
+														this.setState({disabledEndSleepWeekEnd: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endSleepWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndSleepWeekEnd}
 													customStyles={{
+														disabled:{backgroundColor: 'transparent'}, 
 														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndSleepWeekEnd ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endSleepWeekEnd.split(':')[0] + ':' + this.state.endSleepWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endSleepWeekEnd) => {
-														this.setState({endTimeValidated: true, endSleepWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(endSleepWeekEnd))});
-														this.setState({ disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endSleepWeekEnd) => this.setState({endSleepWeekEnd, startSleepWeekEnd: this.beforeStartTime(this.state.startSleepWeekEnd, this.getTwelveHourTime(endSleepWeekEnd))})} />
 											</View> : null}
 										
 									</View>
 								</View>
 							</View>
 						</View>
-
-
-
 
 						<View>
 							<View style={styles.row}>
@@ -406,7 +427,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.commutingWeek ? orange : 'darkgray'}
 												onValueChange={(commutingWeek) => this.setState({commutingWeek: commutingWeek})}
-												value = {this.state.commutingWeek} />
+												value={this.state.commutingWeek} />
 										</View>
 
 										{this.state.commutingWeek ?
@@ -414,14 +435,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startCommutingWeek} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startCommutingWeek.split(':')[0] + ':' + this.state.startCommutingWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -429,35 +450,31 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startCommutingWeek) => {
-														this.setState({endTimeValidated: true, startCommutingWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(startCommutingWeek))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endCommutingWeekValidated: true, startCommutingWeek, endCommutingWeek: this.beforeStartTime(this.getTwelveHourTime(startCommutingWeek), this.state.endCommutingWeek)});
+														this.setState({disabledEndCommutingWeek: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endCommutingWeek} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndCommutingWeek}
 													customStyles={{
-														dateInput:{borderWidth: 0},
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														disabled:{backgroundColor: 'transparent'}, 
+														dateInput:{borderWidth: 0}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndCommutingWeek ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endCommutingWeek.split(':')[0] + ':' + this.state.endCommutingWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endCommutingWeek) => {
-														this.setState({endTimeValidated: true, endCommutingWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(endCommutingWeek))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endCommutingWeek) => this.setState({endCommutingWeek, startCommutingWeek: this.beforeStartTime(this.state.startCommutingWeek, this.getTwelveHourTime(endCommutingWeek))})} />
 											</View> : null}
 									
 									</View>
@@ -469,7 +486,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.commutingWeekEnd ? orange : 'darkgray'}
 												onValueChange={(commutingWeekEnd) => this.setState({commutingWeekEnd: commutingWeekEnd})}
-												value = {this.state.commutingWeekEnd} />
+												value={this.state.commutingWeekEnd} />
 										</View>
 
 										{this.state.commutingWeekEnd ?
@@ -477,14 +494,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startCommutingWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startCommutingWeekEnd.split(':')[0] + ':' + this.state.startCommutingWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -492,45 +509,36 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startCommutingWeekEnd) => {
-														this.setState({endTimeValidated: true, startCommutingWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(startCommutingWeekEnd))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endCommutingWeekEndValidated: true, startCommutingWeekEnd, endCommutingWeekEnd: this.beforeStartTime(this.getTwelveHourTime(startCommutingWeekEnd), this.state.endCommutingWeekEnd)});
+														this.setState({disabledEndCommutingWeekEnd: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endCommutingWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndCommutingWeekEnd}
 													customStyles={{
-														dateInput:{borderWidth: 0},
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														disabled:{backgroundColor: 'transparent'}, 
+														dateInput:{borderWidth: 0}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndCommutingWeekEnd ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endCommutingWeekEnd.split(':')[0] + ':' + this.state.endCommutingWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endCommutingWeekEnd) => {
-														this.setState({endTimeValidated: true, endCommutingWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(endCommutingWeekEnd))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endCommutingWeekEnd) => this.setState({endCommutingWeekEnd, startCommutingWeekEnd: this.beforeStartTime(this.state.startCommutingWeekEnd, this.getTwelveHourTime(endCommutingWeekEnd))})} />
 											</View> : null}
 									</View>
-
 								</View>
-
-								
 							</View>
 						</View>
-
-
 
 						<View>
 							<View style={styles.row}>
@@ -551,7 +559,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.eatingWeek ? orange : 'darkgray'}
 												onValueChange={(eatingWeek) => this.setState({eatingWeek: eatingWeek})}
-												value = {this.state.eatingWeek} />
+												value={this.state.eatingWeek} />
 										</View>
 
 										{this.state.eatingWeek ?
@@ -559,14 +567,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startEatingWeek} 
 													mode="time"
-													style={{width:70}} 
+													style={{width: 70}} 
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endEatingWeekValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startEatingWeek.split(':')[0] + ':' + this.state.startEatingWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -574,35 +582,31 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startEatingWeek) => {
-														this.setState({endTimeValidated: true, startEatingWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(startEatingWeek))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endEatingWeekValidated: true, startEatingWeek, endEatingWeek: this.beforeStartTime(this.getTwelveHourTime(startEatingWeek), this.state.endEatingWeek)});
+														this.setState({disabledEndEatingWeek: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endEatingWeek} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndEatingWeek}
 													customStyles={{
-														dateInput:{borderWidth: 0},
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														disabled:{backgroundColor: 'transparent'}, 
+														dateInput:{borderWidth: 0}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endEatingWeekValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndEatingWeek ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endEatingWeek.split(':')[0] + ':' + this.state.endEatingWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endEatingWeek) => {
-														this.setState({endTimeValidated: true, endEatingWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(endEatingWeek))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endEatingWeek) => this.setState({endEatingWeek, startEatingWeek: this.beforeStartTime(this.state.startEatingWeek, this.getTwelveHourTime(endEatingWeek))})} />
 											</View> : null}
 									
 									</View>
@@ -614,7 +618,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.eatingWeekEnd ? orange : 'darkgray'}
 												onValueChange={(eatingWeekEnd) => this.setState({eatingWeekEnd: eatingWeekEnd})}
-												value = {this.state.eatingWeekEnd} />
+												value={this.state.eatingWeekEnd} />
 										</View>
 
 										{this.state.eatingWeekEnd ?
@@ -622,14 +626,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startEatingWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startEatingWeekEnd.split(':')[0] + ':' + this.state.startEatingWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -637,41 +641,34 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startEatingWeekEnd) => {
-														this.setState({endTimeValidated: true, startEatingWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(startEatingWeekEnd))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endEatingWeekEndValidated: true, startEatingWeekEnd, endEatingWeekEnd: this.beforeStartTime(this.getTwelveHourTime(startEatingWeekEnd), this.state.endEatingWeekEnd)});
+														this.setState({disabledEndEatingWeekEnd: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endEatingWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndEatingWeekEnd}
 													customStyles={{
-														dateInput:{borderWidth: 0},
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														disabled:{backgroundColor: 'transparent'}, 
+														dateInput:{borderWidth: 0}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndEatingWeekEnd ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endEatingWeekEnd.split(':')[0] + ':' + this.state.endEatingWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endEatingWeekEnd) => {
-														this.setState({endTimeValidated: true, endEatingWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(endEatingWeekEnd))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endEatingWeekEnd) => this.setState({endEatingWeekEnd, startEatingWeekEnd: this.beforeStartTime(this.state.startEatingWeekEnd, this.getTwelveHourTime(endEatingWeekEnd))})} />
 											</View> : null}
 									</View>
-
 								</View>
-
-								
 							</View>
 						</View>
 
@@ -694,7 +691,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.otherWeek ? orange : 'darkgray'}
 												onValueChange={(otherWeek) => this.setState({otherWeek: otherWeek})}
-												value = {this.state.otherWeek} />
+												value={this.state.otherWeek} />
 										</View>
 
 										{this.state.otherWeek ?
@@ -702,14 +699,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startOtherWeek} 
 													mode="time"
-													style={{width:70}} 
+													style={{width: 70}} 
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endOtherWeekValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startOtherWeek.split(':')[0] + ':' + this.state.startOtherWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -717,35 +714,31 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startOtherWeek) => {
-														this.setState({endTimeValidated: true, startOtherWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(startOtherWeek))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endOtherWeekValidated: true, startOtherWeek, endOtherWeek: this.beforeStartTime(this.getTwelveHourTime(startOtherWeek), this.state.endOtherWeek)});
+														this.setState({disabledEndOtherWeek: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endOtherWeek} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled={this.state.disabledEndOtherWeek}
 													customStyles={{
-														dateInput:{borderWidth: 0},
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														disabled:{backgroundColor: 'transparent'}, 
+														dateInput:{borderWidth: 0}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endOtherWeekValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndOtherWeek ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endOtherWeek.split(':')[0] + ':' + this.state.endOtherWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endOtherWeek) => {
-														this.setState({endTimeValidated: true, endOtherWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(endOtherWeek))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endOtherWeek) => this.setState({endOtherWeek, startOtherWeek: this.beforeStartTime(this.state.startOtherWeek, this.getTwelveHourTime(endOtherWeek))})} />
 											</View> : null}
 									
 									</View>
@@ -757,7 +750,7 @@ class UnavailableHours extends React.Component {
 												ios_backgroundColor={'lightgray'}
 												thumbColor={this.state.otherWeekEnd ? orange : 'darkgray'}
 												onValueChange={(otherWeekEnd) => this.setState({otherWeekEnd: otherWeekEnd})}
-												value = {this.state.otherWeekEnd} />
+												value={this.state.otherWeekEnd} />
 										</View>
 
 										{this.state.otherWeekEnd ?
@@ -765,14 +758,14 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.startOtherWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startOtherWeekEnd.split(':')[0] + ':' + this.state.startOtherWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -780,35 +773,31 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startOtherWeekEnd) => {
-														this.setState({endTimeValidated: true, startOtherWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(startOtherWeekEnd))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+														this.setState({endOtherWeekEndValidated: true, startOtherWeekEnd, endOtherWeekEnd: this.beforeStartTime(this.getTwelveHourTime(startOtherWeekEnd), this.state.endOtherWeekEnd)});
+														this.setState({disabledEndOtherWeekEnd: false});
+													}} />
 
 												<Text> - </Text>
 													
 												<DatePicker showIcon={false} 
 													date={this.state.endOtherWeekEnd} 
 													mode="time" 
-													style={{width:70}}
+													style={{width: 70}}
+													disabled= {this.state.disabledEndOtherWeekEnd}
 													customStyles={{
-														dateInput:{borderWidth: 0},
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
+														disabled:{backgroundColor: 'transparent'}, 
+														dateInput:{borderWidth: 0}, 
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
 														placeholderText:{
-															color: !this.state.endTimeValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+															color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndOtherWeekEnd ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endOtherWeekEnd.split(':')[0] + ':' + this.state.endOtherWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
+													cancelBtnText="Cancel"
 													is24Hour={false}
-													onDateChange={(endOtherWeekEnd) => {
-														this.setState({endTimeValidated: true, endOtherWeekEnd, endTime: this.beforeStartTime(this.getTwelveHourTime(endOtherWeekEnd))});
-														this.setState({disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endOtherWeekEnd) => this.setState({endOtherWeekEnd, startOtherWeekEnd: this.beforeStartTime(this.state.startOtherWeekEnd, this.getTwelveHourTime(endOtherWeekEnd))})} />
 											</View> : null}
 									</View>
 								</View>
@@ -821,12 +810,15 @@ class UnavailableHours extends React.Component {
 							<Text style={styles.textManual}>!</Text>
 						</Text>
 						
-						<View>
-							<Button title={'NEXT'} />
+						<View style={styles.buttons}>
+							<TouchableOpacity style={[styles.button, {width:'100%'}]}>
+								<Text style={styles.buttonText}>NEXT</Text>
+							</TouchableOpacity>
 						</View>
-
 					</View>
 				</ScrollView>
+
+				{tutorialStatus}
 			</View>
 		);
 	}

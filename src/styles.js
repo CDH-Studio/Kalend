@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
 import { Header } from 'react-navigation';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
@@ -856,7 +856,8 @@ export const unavailableHoursStyles = StyleSheet.create({
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingTop: 20
 	},
 
 	errorTitle: {
@@ -914,7 +915,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		textAlign:'center',
-		paddingVertical: 20
+		paddingTop: 20
 	},
 
 	textManual: {
@@ -927,7 +928,9 @@ export const unavailableHoursStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		color: gray,
 		fontSize: 15,
-	}
+	},
+
+	...bottomButtonsStyles
 });
 
 export const reviewEventStyles = StyleSheet.create({
