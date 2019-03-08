@@ -38,7 +38,6 @@ class Course extends React.Component {
 
 		this.state = { 
 			containerHeight,
-			eventID: Date.now(),
 
 			courseCode: '',
 

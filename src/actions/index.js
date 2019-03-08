@@ -1,5 +1,6 @@
-import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE } from '../constants';
+import { UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE } from '../constants';
 
+/*** UPDATE ***/
 export function updateFixedEvents (index, event) {
 	const action = {
 		type: UPDATE_FE,
@@ -20,6 +21,17 @@ export function updateCourses (index, event) {
 	return action;
 }
 
+export function updateNonFixedEvents (index, event) {
+	const action = {
+		type: UPDATE_NFE,
+		event, 
+		index
+	};
+
+	return action;
+}
+
+/*** USER ***/
 export function logonUser (profile) {
 	const action = {
 		type: SIGNED_IN,
@@ -37,6 +49,7 @@ export function logoffUser () {
 	return action;
 }
 
+/*** IMAGE ***/
 export function setImageURI (ImageUri) {
 	const action = {
 		type: SET_IMG,
@@ -46,6 +59,7 @@ export function setImageURI (ImageUri) {
 	return action;
 }
 
+/*** ADD ***/
 export function addFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
@@ -64,6 +78,16 @@ export function addCourse (event) {
 	return action;
 }
 
+export function addNonFixedEvent (event) {
+	const action = {
+		type: ADD_NFE,
+		event
+	}; 
+
+	return action;
+}
+
+/*** DELETE ***/
 export function deleteNonFixedEvent (event) {
 	const action = {
 		type: DELETE_NFE,
@@ -85,15 +109,6 @@ export function deleteFixedEvent (event) {
 export function deleteCourse (event) {
 	const action = {
 		type: DELETE_COURSE,
-		event
-	}; 
-
-	return action;
-}
-
-export function addNonFixedEvent (event) {
-	const action = {
-		type: ADD_NFE,
 		event
 	}; 
 

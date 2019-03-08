@@ -302,12 +302,13 @@ class ReviewEvent extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer} = state;
+	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer, NavigationReducer } = state;
 
 	return {
 		FixedEventsReducer,
 		NonFixedEventsReducer,
-		CoursesReducer 
+		CoursesReducer, 
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
 }
 

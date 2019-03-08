@@ -14,6 +14,7 @@ export default function FixedEventsReducer(state = [], action) {
 			return [];
 
 		case UPDATE_FE:
+			console.log(index);
 			state.splice(index, 1, event);
 			return [...state];
 			
