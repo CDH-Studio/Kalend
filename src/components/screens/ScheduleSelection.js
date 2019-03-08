@@ -4,12 +4,12 @@ import { Header } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import converter from 'number-to-words';
-import { gradientColors, calendarEventColors, calendarEventColorsInside, grayColor } from '../../../config';
+import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { SET_SELECTED_SCHEDULE } from '../../constants';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { white, black } from '../../styles';
+import { white, black, gray } from '../../styles';
 import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
 
 const containerPadding = 10;
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
 	weekLetters: {
 		fontFamily: 'Raleway-Medium', 
 		fontSize: 17, 
-		color: grayColor
+		color: gray
 	}, 
 
 	weekLetterContainer: {
