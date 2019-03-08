@@ -16,3 +16,6 @@ export const CLEAR_SELECTED_SCHEDULE = 'CLEAR_SELECTED_SCHEDULE';
 export const CLEAR_OPENED = 'CLEAR_OPENED';
 export const CLEAR_IMG = 'CLEAR_IMG';
 export const CLEAR_COURSE = 'CLEAR_COURSE';
+export const UPDATE_FE = 'UPDATE_FE';
+export const UPDATE_COURSE = 'UPDATE_COURSE';
+export const UPDATE_NFE = 'UPDATE_NFE';

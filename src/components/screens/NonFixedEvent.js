@@ -6,11 +6,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
+import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 
 const viewHeight = 780.5714111328125;
 
@@ -41,8 +41,7 @@ class NonFixedEvent extends React.Component {
 		}
 
 		this.state = { 
-			containerHeight,
-			eventID: Date.now()
+			containerHeight
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -99,41 +98,15 @@ class NonFixedEvent extends React.Component {
 	 * Adds the event in the database
 	 */
 	nextScreen = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
 			return;
 		}
 
 		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
-			this.props.dispatch({
-				type: ADD_NFE,
-				event: this.state
-			});
+			this.props.dispatch(addNonFixedEvent(this.state));
 			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
-			let events = this.props.NonFixedEventsReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_NFE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_NFE,
-					event
-				});
-			});
-
+			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
 			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		}
 	}
@@ -142,16 +115,11 @@ class NonFixedEvent extends React.Component {
 	 * Adds the event to the database and resets the fields
 	 */
 	addAnotherEvent = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
 			return;
 		}
 
-		this.props.dispatch({
-			type: ADD_NFE,
-			event: this.state
-		});
+		this.props.dispatch(addNonFixedEvent(this.state));
 		this.resetFields();
 	}
 
@@ -491,7 +459,8 @@ function mapStateToProps(state) {
 
 	return {
 		NFEditState: NonFixedEventsReducer[selected],
-		NonFixedEventsReducer
+		NonFixedEventsReducer,
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
 }
 

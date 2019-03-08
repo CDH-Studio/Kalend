@@ -112,8 +112,6 @@ class TutorialStatus extends React.Component {
 		const { next, showTutShadow } = this.state;
 		const { backgroundColor } = this.props;	
 
-		console.log(this.state);
-
 		return(
 			<View style={[styles.section, {
 				backgroundColor: backgroundColor, 

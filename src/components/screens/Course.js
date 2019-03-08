@@ -5,11 +5,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { updateCourses, addCourse } from '../../actions';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -39,7 +39,6 @@ class Course extends React.Component {
 
 		this.state = { 
 			containerHeight,
-			eventID: Date.now(),
 
 			courseCode: '',
 
@@ -282,29 +281,8 @@ class Course extends React.Component {
 				return;
 			}
 			
-			let events = this.props.CoursesReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_COURSE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_COURSE,
-					event
-				});
-			});
-
-			this.props.navigation.navigate(TutorialReviewEvent);
+			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
+			this.props.navigation.navigate('TutorialReviewEvent');
 		}
 	}
 
@@ -317,10 +295,7 @@ class Course extends React.Component {
 			return false;
 		}
 
-		this.props.dispatch({
-			type: ADD_COURSE,
-			event: this.state
-		});
+		this.props.dispatch(addCourse(this.state));
 
 		if(validated) {
 			this.resetField();
