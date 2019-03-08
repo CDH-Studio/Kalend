@@ -56,6 +56,7 @@ const TutorialNavigator = createStackNavigator(
 		TutorialFixedEvent: {screen: FixedEvent},
 		TutorialNonFixedEvent: {screen: NonFixedEvent},
 		TutorialUnavailableHours: {screen: UnavailableHours},
+		TutorialUnavailableFixed: {screen: FixedEvent},
 
 		TutorialReviewEvent: {screen: ReviewEvent},
 		TutorialEditCourse: {screen: Course},

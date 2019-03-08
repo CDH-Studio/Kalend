@@ -22,7 +22,7 @@ class TutorialStatus extends React.Component {
 
 		// According to active index, darken that dot
 		let colors = [];
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 5; i++) {
 			if (i + 1 === props.active) {
 				colors[i] = props.color;
 			} else {

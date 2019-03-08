@@ -961,7 +961,8 @@ export const unavailableHoursStyles = StyleSheet.create({
 		color: blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18,
-		paddingVertical: 10
+		paddingVertical: 10,
+		paddingLeft: 10
 	},
 
 	rowContent: {
@@ -974,7 +975,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	rowSwitch: {
+	row: {
 		flexDirection:'row',
 		alignItems: 'center'
 	},
@@ -983,6 +984,25 @@ export const unavailableHoursStyles = StyleSheet.create({
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold'
 	},
+
+	manual: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		textAlign:'center',
+		paddingVertical: 20
+	},
+
+	textManual: {
+		fontFamily: 'Raleway-Regular',
+		color: gray,
+		fontSize: 15,
+	},
+
+	buttonManual: {
+		fontFamily: 'Raleway-SemiBold',
+		color: gray,
+		fontSize: 15,
+	}
 });
 
 export const reviewEventStyles = StyleSheet.create({

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Platform, Dimensions, ScrollView, StatusBar, Text, View, Switch } from 'react-native';
+import { Platform, Dimensions, ScrollView, StatusBar, Text, View, Switch, Button } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
-import { TutorialUnavailableHours, TutorialReviewEvent } from '../../constants/screenNames';
+import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableFixed } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 
@@ -216,6 +216,16 @@ class UnavailableHours extends React.Component {
 		return date;
 	}
 
+	/**
+	 * To go to the appropriate Fixed Event screen according to the current route*/
+	manualImport() {
+		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
+			this.props.navigation.navigate(TutorialUnavailableFixed, {update:false});
+		} else {
+			this.props.navigation.navigate(DashboardUnavailableFixed, {update:false});
+		}
+	}
+
 
 	/**
 	 * To go to the next screen without entering any information
@@ -240,11 +250,17 @@ class UnavailableHours extends React.Component {
 						</View>
 
 						<View>
-							<Text style={styles.blueTitle}>Sleeping Hours</Text>
+							<View style={styles.row}>
+								<MaterialCommunityIcons name="sleep"
+									size={30}
+									color={blue}/>
+
+								<Text style={styles.blueTitle}>Sleeping Hours</Text>
+							</View>
 							<View>
 								<View style={styles.rowContent}>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -254,18 +270,18 @@ class UnavailableHours extends React.Component {
 												value = {this.state.sleepWeek} />
 										</View>
 										{this.state.sleepWeek ?
-											<View style={{flexDirection:'row', alignItems: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startSleepWeek} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{color: !this.state.endSleepWeekValidated ? '#ff0000' : gray}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.startSleepWeek.split(':')[0] + ':' + this.state.startSleepWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -273,8 +289,8 @@ class UnavailableHours extends React.Component {
 													cancelBtnText="Cancel" 
 													is24Hour={false}
 													onDateChange={(startSleepWeek) => {
-														this.setState({endTimeValidated: true, startSleepWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(startSleepWeek))});
-														this.setState({ disabledEndTime: this.enableEndTime()});
+														this.setState({endSleepWeekValidated: true, startSleepWeek, endSleepWeek: this.beforeStartTime(this.getTwelveHourTime(startSleepWeek))});
+														this.setState({ disabledEndSleepWeek: this.enableEndTime()});
 													}}/>
 
 												<Text> - </Text>
@@ -282,28 +298,27 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endSleepWeek} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
+													disabled= {this.state.disabledEndTime}
 													customStyles={{
+														disabled:{backgroundColor: 'transparent'}, 
 														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: gray
-														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														dateText:{fontFamily: 'OpenSans-Regular'}, 
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endSleepWeek.split(':')[0] + ':' + this.state.endSleepWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
 													confirmBtnText="Confirm" 
 													cancelBtnText="Cancel" 
+													minDate={this.state.minEndTime}
 													is24Hour={false}
-													onDateChange={(endSleepWeek) => {
-														this.setState({endTimeValidated: true, endSleepWeek, endTime: this.beforeStartTime(this.getTwelveHourTime(endSleepWeek))});
-														this.setState({ disabledEndTime: this.enableEndTime()});
-													}}/>
+													onDateChange={(endSleepWeek) => this.setState({endSleepWeek, startSleepWeek: this.beforeStartTime(undefined, this.getTwelveHourTime(endSleepWeek))})}/>
 											</View> : null}
 									</View>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -314,11 +329,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.sleepWeekEnd ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startSleepWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -342,14 +357,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endSleepWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endSleepWeekEnd.split(':')[0] + ':' + this.state.endSleepWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -371,11 +388,18 @@ class UnavailableHours extends React.Component {
 
 
 						<View>
-							<Text style={styles.blueTitle}>Commuting Hours</Text>
+							<View style={styles.row}>
+								<MaterialCommunityIcons name="train-car"
+									size={30}
+									color={blue}/>
+
+								<Text style={styles.blueTitle}>Commuting Hours</Text>
+							</View>
+
 							<View>
 								<View style={styles.rowContent}>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -386,11 +410,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.commutingWeek ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startCommutingWeek} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -414,14 +438,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endCommutingWeek} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0},
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endCommutingWeek.split(':')[0] + ':' + this.state.endCommutingWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -436,7 +462,7 @@ class UnavailableHours extends React.Component {
 									
 									</View>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -447,11 +473,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.commutingWeekEnd ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startCommutingWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -475,14 +501,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endCommutingWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0},
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endCommutingWeekEnd.split(':')[0] + ':' + this.state.endCommutingWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -505,11 +533,18 @@ class UnavailableHours extends React.Component {
 
 
 						<View>
-							<Text style={styles.blueTitle}>Eating Hours</Text>
+							<View style={styles.row}>
+								<MaterialCommunityIcons name="food"
+									size={30}
+									color={blue}/>
+
+								<Text style={styles.blueTitle}>Eating Hours</Text>
+							</View>
+
 							<View>
 								<View style={styles.rowContent}>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -520,11 +555,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.eatingWeek ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startEatingWeek} 
 													mode="time"
-													style={{width:60}} 
+													style={{width:70}} 
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -548,14 +583,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endEatingWeek} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0},
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endEatingWeek.split(':')[0] + ':' + this.state.endEatingWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -570,7 +607,7 @@ class UnavailableHours extends React.Component {
 									
 									</View>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -581,11 +618,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.eatingWeekEnd ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startEatingWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -609,14 +646,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endEatingWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0},
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endEatingWeekEnd.split(':')[0] + ':' + this.state.endEatingWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -637,11 +676,18 @@ class UnavailableHours extends React.Component {
 						</View>
 
 						<View>
-							<Text style={styles.blueTitle}>Other Unavailable Hours</Text>
+							<View style={styles.row}>
+								<MaterialCommunityIcons name="timelapse"
+									size={30}
+									color={blue}/>
+
+								<Text style={styles.blueTitle}>Other Unavailable Hours</Text>
+							</View>
+
 							<View>
 								<View style={styles.rowContent}>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -652,11 +698,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.otherWeek ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startOtherWeek} 
 													mode="time"
-													style={{width:60}} 
+													style={{width:70}} 
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -680,14 +726,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endOtherWeek} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0},
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endOtherWeek.split(':')[0] + ':' + this.state.endOtherWeek.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -702,7 +750,7 @@ class UnavailableHours extends React.Component {
 									
 									</View>
 									<View style={styles.colContent}>
-										<View style={styles.rowSwitch}>
+										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
@@ -713,11 +761,11 @@ class UnavailableHours extends React.Component {
 										</View>
 
 										{this.state.otherWeekEnd ?
-											<View style={{flexDirection:'row', justifyContent: 'center'}}>
+											<View style={styles.row}>
 												<DatePicker showIcon={false} 
 													date={this.state.startOtherWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0}, 
 														dateText:{
@@ -741,14 +789,16 @@ class UnavailableHours extends React.Component {
 												<DatePicker showIcon={false} 
 													date={this.state.endOtherWeekEnd} 
 													mode="time" 
-													style={{width:60}}
+													style={{width:70}}
 													customStyles={{
 														dateInput:{borderWidth: 0},
 														dateText:{
 															fontFamily: 'OpenSans-Regular',
 															color: gray
 														}, 
-														placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+														placeholderText:{
+															color: !this.state.endTimeValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 													}}
 													placeholder={this.getTwelveHourTime(this.state.endOtherWeekEnd.split(':')[0] + ':' + this.state.endOtherWeekEnd.split(':')[1] +  this.state.initialAmPm)} 
 													format="h:mm A" 
@@ -761,16 +811,19 @@ class UnavailableHours extends React.Component {
 													}}/>
 											</View> : null}
 									</View>
-
 								</View>
-
-								
 							</View>
 						</View>
 
-
-
-
+						<Text style={styles.manual}>
+							<Text style={styles.textManual}>Want to add more specific unavailable hours? Add them as </Text>
+							<Text style={styles.buttonManual} onPress={() => this.manualImport()}>Fixed Events</Text>
+							<Text style={styles.textManual}>!</Text>
+						</Text>
+						
+						<View>
+							<Button title={'NEXT'} />
+						</View>
 
 					</View>
 				</ScrollView>

@@ -8,6 +8,7 @@ export const TutorialSchoolScheduleCreation = 'TutorialSchoolScheduleCreation';
 export const TutorialFixedEvent = 'TutorialFixedEvent';
 export const TutorialNonFixedEvent = 'TutorialNonFixedEvent';
 export const TutorialUnavailableHours = 'TutorialUnavailableHours';
+export const TutorialUnavailableFixed = 'TutorialUnavailableFixed';
 export const TutorialReviewEvent = 'TutorialReviewEvent';
 export const TutorialScheduleCreation = 'TutorialScheduleCreation';
 export const TutorialScheduleSelection = 'TutorialScheduleSelection';
@@ -18,6 +19,7 @@ export const TutorialScheduleSelectionDetails = 'TutorialScheduleSelectionDetail
 export const DashboardSchoolSchedule = 'DashboardSchoolSchedule';
 export const DashboardEditFixedEvent = 'DashboardEditFixedEvent';
 export const DashboardEditNonFixedEvent = 'DashboardEditNonFixedEvent';
+export const DashboardUnavailableFixed = 'DashboardUnavailableFixed';
 
 
 export const WelcomeScreen = 'WelcomeScreen';
