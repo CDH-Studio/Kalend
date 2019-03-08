@@ -7,6 +7,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
+import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 
@@ -20,7 +21,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === 'TutorialAddCourse' ? 'Add Courses' : 'Edit Course',
+		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -59,7 +60,7 @@ class Course extends React.Component {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== 'TutorialAddCourse') {
+		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
 			let courses = store.getState().CoursesReducer;
 			let selected = store.getState().NavigationReducer.reviewEventSelected;
 
@@ -270,9 +271,9 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
+		if (this.props.navigation.state.routeName === TutorialAddCourse) {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate('TutorialFixedEvent', {update:false});
+				this.props.navigation.navigate(TutorialFixedEvent);
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -281,7 +282,7 @@ class Course extends React.Component {
 			}
 			
 			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+			this.props.navigation.navigate('TutorialReviewEvent');
 		}
 	}
 
@@ -349,7 +350,7 @@ class Course extends React.Component {
 		}
 		
 
-		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
+		if (this.props.navigation.state.routeName === TutorialAddCourse) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 			addEventButtonWidth = '48%';
@@ -487,7 +488,7 @@ class Course extends React.Component {
 							{ showNextButton? 
 								<TouchableOpacity style={[styles.button, styles.buttonNext]}
 									onPress={() => 
-										this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
+										this.props.navigation.navigate(TutorialFixedEvent)}>
 									<Text style={styles.buttonText}>
 									Next
 									</Text>

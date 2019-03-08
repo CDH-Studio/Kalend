@@ -5,7 +5,7 @@ import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../const
 import updateNavigation from '../NavigationHelper';
 import { store, persistor } from '../../store';
 import { dashboardStyles as styles, blue } from '../../styles';
-import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent } from '../../constants/screenNames';
+import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent, LoginNavigator } from '../../constants/screenNames';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -79,7 +79,7 @@ class Dashboard extends React.Component {
 
 				<Button title='Go back home'
 					onPress={() => {
-						this.props.navigation.navigate('LoginNavigator');
+						this.props.navigation.navigate(LoginNavigator);
 					}}>
 				</Button>
 				

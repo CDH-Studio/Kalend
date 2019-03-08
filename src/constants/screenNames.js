@@ -24,6 +24,7 @@ export const DashboardSchoolScheduleCreation = 'DashboardSchoolScheduleCreation'
 export const DashboardSchoolScheduleSelectPicture = 'DashboardSchoolScheduleSelectPicture';
 export const DashboardSchoolScheduleTakePicture = 'DashboardSchoolScheduleTakePicture';
 export const DashboardAddCourse = 'DashboardAddCourse';
+export const DashboardAddNonFixedEvent = 'DashboardAddNonFixedEvent';
 export const DashboardScheduleSelectionDetails = 'DashboardScheduleSelectionDetails';
 export const DashboardNavigator = 'DashboardNavigator';
 
