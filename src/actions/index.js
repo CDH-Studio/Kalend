@@ -1,4 +1,14 @@
-import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../constants';
+import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE } from '../constants';
+
+export function updateFixedEvents (index, event) {
+	const action = {
+		type: UPDATE_FE,
+		event, 
+		index
+	};
+
+	return action;
+}
 
 export function logonUser (profile) {
 	const action = {
@@ -26,7 +36,7 @@ export function setImageURI (ImageUri) {
 	return action;
 }
 
-export function AddFixedEvent (event) {
+export function addFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
 		event
