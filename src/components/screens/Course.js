@@ -19,8 +19,8 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  */
 class Course extends React.Component {
 
-	static navigationOptions = {
-		title: 'Add Courses',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.routeName === 'TutorialAddCourse' ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -28,7 +28,7 @@ class Course extends React.Component {
 			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
+	});
 
 	constructor(props) {
 		super(props);
