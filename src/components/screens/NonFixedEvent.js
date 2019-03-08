@@ -10,7 +10,7 @@ import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
-import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
 
 const viewHeight = 780.5714111328125;
 
@@ -20,7 +20,7 @@ const viewHeight = 780.5714111328125;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.update ? 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
+		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Courses' : 'Edit Course', 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,

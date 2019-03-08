@@ -11,7 +11,7 @@ import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
-import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 const viewHeight = 446.66668701171875;
@@ -22,7 +22,7 @@ const containerWidth = Dimensions.get('window').width;
 class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
+		title: navigation.state.routeName === TutorialFixedEvent || navigation.state.routeName === DashboardAddCourse ? 'Add Fixed Events' : 'Edit Fixed Event',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -50,7 +50,7 @@ class FixedEvent extends React.Component {
 
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
-		let tutorialStatusHeight = this.props.navigation.state.routeName === 'TutorialFixedEvent' ? 56.1 : 0;
+		let tutorialStatusHeight = this.props.navigation.state.routeName === TutorialFixedEvent ? 56.1 : 0;
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
@@ -316,7 +316,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+		this.props.navigation.navigate(TutorialNonFixedEvent);
 	}
 
 	/**
@@ -397,7 +397,7 @@ class FixedEvent extends React.Component {
 				});
 			});
 
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
 			InsertFixedEvent(info).then(data => {
 				if (!data.error) {
@@ -408,7 +408,7 @@ class FixedEvent extends React.Component {
 						type: ADD_FE,
 						event: this.state
 					});
-					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
+					this.props.navigation.navigate(TutorialNonFixedEvent);
 				}
 			});
 		}
