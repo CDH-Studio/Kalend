@@ -4,7 +4,7 @@ import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { calendarEventColors, statusBlueColor } from '../../../config';
-import { white, blue, black} from '../../styles';
+import { white, blue, black, gray} from '../../styles';
 import { DashboardNavigator } from '../../constants/screenNames';
 
 const containerPadding = 10;
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
 	},
 	
 	content: {
-		padding: containerPadding,
+		padding: containerPadding
 	},
 
 	dayContainer: {
@@ -287,7 +287,8 @@ const styles = StyleSheet.create({
 	dayTitle: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
-		marginVertical: 7
+		marginVertical: 7,
+		color: gray
 	},
 
 	eventContainer: {
@@ -295,8 +296,8 @@ const styles = StyleSheet.create({
 			ios: {
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
 			},
 			android: {
 				elevation: 5,
@@ -315,6 +316,15 @@ const styles = StyleSheet.create({
 
 	eventTitle: {
 		fontFamily: 'Raleway-Bold',
+		color: gray
+	},
+
+	eventTime : {
+		color: gray
+	},
+
+	eventLocation : {
+		color: gray
 	},
 
 	scheduleEventColor: {

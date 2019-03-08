@@ -1,4 +1,4 @@
-import {SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE} from '../constants';
+import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../constants';
 
 export function logonUser (profile) {
 	const action = {

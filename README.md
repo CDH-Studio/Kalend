@@ -36,6 +36,8 @@ For more information please go and see our [wiki](https://github.com/CDH-Studio/
   * https://redux.js.org/
 * Redux Persist
   * https://github.com/rt2zz/redux-persist
+* React Native iPhone X Helper
+  * https://github.com/ptelad/react-native-iphone-x-helper
 
 ## Dependencies
 

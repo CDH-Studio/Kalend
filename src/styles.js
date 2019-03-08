@@ -1,6 +1,7 @@
-import { StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { HEIGHT } from './components/TutorialStatus';
+import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
@@ -15,6 +16,45 @@ export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
 
+export const bottomButtonsStyles = StyleSheet.create({
+	buttons: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 20
+	},
+
+	button: {
+		backgroundColor: blue,
+		color:'white',
+		width: '48%',
+		padding: 5,
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	buttonNext: {
+		marginLeft: '4%',
+		backgroundColor: dark_blue
+	},	
+
+	buttonText: {
+		padding: 8,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 15,
+		color: '#FFFFFF',
+		textAlign: 'center'
+	},
+});
 
 export const loadingStyles = StyleSheet.create({
 	container: {
@@ -42,7 +82,7 @@ export const welcomeStyles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		height: Dimensions.get('window').height + StatusBar.currentHeight,
+		height: Dimensions.get('window').height + getStatusBarHeight(),
 		width: Dimensions.get('window').width
 	},
 
@@ -107,28 +147,36 @@ export const tutorialStatusStyles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		padding: HEIGHT / 4,
-	},
-
-	emptySection: {
-		opacity: 0 //In order to center the bottom section
+		paddingVertical: HEIGHT / 2 + 6,
 	},
 
 	sectionIconRow: {
 		flexDirection: 'row',
-		marginLeft: 10
+		marginLeft: 10,
 	},
 
 	sectionIcon: {
 		width: 20,
 	},
 
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		marginBottom: ifIphoneX() ? 17 : 7,
+		right: 0,
+		bottom: 0,
+	},
+
 	skipButtonText: {
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15
+		paddingHorizontal: 20,
+		marginBottom: 10,
+		fontSize: 15,
+		color: 'white',
+	},
+
+	skipButton: {
+		position: 'absolute',
 	}
 });
 
@@ -308,7 +356,7 @@ export const takePictureStyles = StyleSheet.create({
 		right: 0,
 		left: 0,
 		bottom: 0 
-	}
+	},
 });
 
 export const homeStyles = StyleSheet.create({
@@ -450,7 +498,7 @@ export const courseStyles = StyleSheet.create({
 	content: {
 		flex:1,
 		justifyContent:'space-evenly',
-		marginTop: StatusBar.currentHeight + Header.HEIGHT,
+		marginTop: getStatusBarHeight() + Header.HEIGHT,
 		paddingHorizontal: 20
 	},
 
@@ -536,49 +584,7 @@ export const courseStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 20
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: blue,
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: blue,
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blue,
-		textAlign: 'center',
-		padding: 8
-	}
+	...bottomButtonsStyles
 });
 
 export const fixedEventStyles = StyleSheet.create({
@@ -588,7 +594,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -600,7 +606,8 @@ export const fixedEventStyles = StyleSheet.create({
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: -200
 	},
 
 	errorTitle: {
@@ -693,49 +700,7 @@ export const fixedEventStyles = StyleSheet.create({
 		color: gray
 	},
 
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 20
-	},
-
-	buttonEvent: {
-		justifyContent:'center',
-		marginRight: 25,
-		width: 150,
-		height: 57.9,
-		borderRadius: 12,
-		backgroundColor: blue,
-		elevation: 4
-	},
-
-	buttonEventText: {
-		padding: 8,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center'
-	},
-
-	buttonNext: {
-		justifyContent:'center',
-		width: 100,
-		height: 58,
-		backgroundColor: '#FFFFFF',
-		borderRadius: 12,
-		borderWidth: 3,
-		borderColor: blue,
-		elevation: 4
-	},
-
-	buttonNextText: {
-		padding: 8,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blue,
-		textAlign: 'center'
-	}
+	...bottomButtonsStyles
 });
 
 export const nonFixedEventStyles = StyleSheet.create({
@@ -745,7 +710,9 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		paddingHorizontal: 15,
+		marginBottom: 20,
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -866,50 +833,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 		fontFamily: 'OpenSans-Regular',
 		marginBottom: 5
 	},
-
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 35
-	},
-
-	buttonEvent: {
-		borderRadius: 12,
-		backgroundColor: blue,
-		width: 150,
-		height: 57.9,
-		elevation: 4,
-		marginRight: 25,
-		justifyContent:'center'
-	},
-
-	buttonEventText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		padding: 8
-	},
-
-	buttonNext: {
-		borderRadius: 12,
-		backgroundColor: '#FFFFFF',
-		width: 100,
-		height: 58,
-		borderWidth: 3,
-		borderColor: blue,
-		elevation: 4,
-		justifyContent:'center'
-	},
-
-	buttonNextText: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 15,
-		color: blue,
-		textAlign: 'center',
-		padding: 8
-	}
+	
+	...bottomButtonsStyles
 });
 
 export const unavailableHoursStyles = StyleSheet.create({
@@ -1012,12 +937,11 @@ export const reviewEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
 		flex:1,
-		justifyContent:'space-evenly',
 		paddingHorizontal: 20
 	},
 
@@ -1049,7 +973,17 @@ export const eventOverviewStyles = StyleSheet.create({
 		paddingHorizontal: 10,
 		borderRadius: 8,
 		backgroundColor: '#FFFFFF',
-		elevation: 4
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
 	},
 
 	info: {
@@ -1091,6 +1025,17 @@ export const eventOverviewStyles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#00000080',
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
 	},
 
 	modalContent: {
@@ -1104,7 +1049,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'flex-end',
 		paddingHorizontal: 15,
-		paddingVertical: 10
+		paddingVertical: 10,
 	},
 
 	modalInfoDate: {

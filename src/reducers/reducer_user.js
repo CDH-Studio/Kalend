@@ -8,12 +8,12 @@ export default function HomeReducer(state = user, action) {
 	const profile = action;
 
 	switch (action.type) {
-
 		case SIGNED_IN:
 			user = {
 				profile
 			};	
 			return user;
+
 		case SIGNED_OUT:
 			user = {
 				profile: null

@@ -19,8 +19,8 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  */
 class Course extends React.Component {
 
-	static navigationOptions = {
-		title: 'Add Courses',
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.routeName === 'TutorialAddCourse' ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -28,7 +28,7 @@ class Course extends React.Component {
 			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	};
+	});
 
 	constructor(props) {
 		super(props);
@@ -38,7 +38,22 @@ class Course extends React.Component {
 
 		this.state = { 
 			containerHeight,
-			eventID: Date.now()
+			eventID: Date.now(),
+
+			courseCode: '',
+
+			dayOfWeek: 'Monday',
+			dayOfWeekValue: 'MONDAY',
+
+			startTime: new Date().toLocaleTimeString(),
+			amPmStart: this.getAmPm(),
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime: true,
+			amPmEnd: this.getAmPm(),
+
+			location: ''
 		};
 
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -133,7 +148,7 @@ class Course extends React.Component {
 			endTime = this.state.endTime;
 		}
 
-		// Check if an start time has been specified, if not, use the state start time
+		// Check if a start time has been specified, if not, use the state start time
 		// and specify that the startTime wasn't given by changing the variable startCheck
 		if (startTime === undefined) {
 			startTime = this.state.startTime;
@@ -337,10 +352,12 @@ class Course extends React.Component {
 	}
 
 	render() {
-		let addCourseButton;
-		let nextButton;
+		let addEventButtonWidth;
+		let addEventButtonText;
+		let addEventButtonFunction;
 		let errorCourseCode;
 		let errorEndTime;
+		let showNextButton = true;
 
 		if (!this.state.courseCodeValidated) {
 			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
@@ -356,23 +373,14 @@ class Course extends React.Component {
 		
 
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
-			addCourseButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}COURSE</Text>
-				</TouchableOpacity>;
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>NEXT</Text>
-			</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
+			addEventButtonWidth = '48%';
 		} else {
-			addCourseButton = null;
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>DONE</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
+			addEventButtonWidth = '100%';
+			showNextButton = false;
 		}
 
 		return(
@@ -432,7 +440,7 @@ class Course extends React.Component {
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>Start Time</Text>
 								<DatePicker showIcon={false} 
-									time={this.state.startTime} 
+									date={this.state.startTime} 
 									mode="time" 
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
@@ -443,21 +451,21 @@ class Course extends React.Component {
 										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="HH:mm A" 
+									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
 									onDateChange={(startTime) => {
-										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime))});
+										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime), undefined)});
 										this.setState({ disabledEndTime: this.enableEndTime()});
-									}}/>
+									}} />
 							</View>
 
 							<View>
 								<View style={styles.time}>
 									<Text style={styles.blueTitle}>End Time</Text>
 									<DatePicker showIcon={false} 
-										time={this.state.endTime} 
+										date={this.state.endTime} 
 										mode="time" 
 										disabled= {this.state.disabledEndTime}
 										customStyles={{
@@ -468,12 +476,12 @@ class Course extends React.Component {
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
 												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-										format="HH:mm A" 
+										format="h:mm A" 
 										minDate={this.state.minEndTime}
 										confirmBtnText="Confirm" 
 										cancelBtnText="Cancel" 
 										is24Hour={false}
-										onDateChange={(endTime) => this.setState({ endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+										onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
 								</View>
 
 								{errorEndTime}
@@ -493,9 +501,20 @@ class Course extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							{addCourseButton}
-
-							{nextButton}
+							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
+								onPress={addEventButtonFunction}>
+								<Text style={styles.buttonText}>
+									{addEventButtonText}
+								</Text>
+							</TouchableOpacity>
+							{ showNextButton? 
+								<TouchableOpacity style={[styles.button, styles.buttonNext]}
+									onPress={() => 
+										this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
+									<Text style={styles.buttonText}>
+									Next
+									</Text>
+								</TouchableOpacity> : null}
 						</View>
 					</View>
 				</ScrollView>
