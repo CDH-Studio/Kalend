@@ -352,6 +352,8 @@ class Course extends React.Component {
 	}
 
 	render() {
+		const { dayOfWeekValue } = this.state;
+
 		let addEventButtonWidth;
 		let addEventButtonText;
 		let addEventButtonFunction;
@@ -420,7 +422,7 @@ class Course extends React.Component {
 							<View style={styles.dayOfWeekBorder}>
 								{
 									Platform.OS === 'ios' ? 
-										<Text onPress={this.dayOfWeekOnClick}>{this.state.dayOfWeekValue}</Text>
+										<Text onPress={this.dayOfWeekOnClick}>{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
 										:	
 										<Picker style={styles.dayOfWeekValues} 
 											selectedValue={this.state.dayOfWeek} 
