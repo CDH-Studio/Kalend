@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, Keyboard, ActionSheetIOS, ScrollView, Dimensions, Alert } from 'react-native';
+import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, Keyboard, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -521,6 +521,8 @@ class FixedEvent extends React.Component {
 		let addEventButtonFunction;
 		let errorTitle;
 		let errorEnd;
+		let addEventButtonWidth;
+		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
 			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
@@ -556,11 +558,14 @@ class FixedEvent extends React.Component {
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
+			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
+			addEventButtonWidth = '100%';
+			showNextButton = false;
 		}
 		
 		return (
@@ -748,18 +753,19 @@ class FixedEvent extends React.Component {
 							</View>
 						</View>
 						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, styles.buttonAdd]}
+							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
 								onPress={addEventButtonFunction}>
 								<Text style={styles.buttonText}>
 									{addEventButtonText}
 								</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={[styles.button, styles.buttonNext]}
-								onPress={this.skip}>
-								<Text style={styles.buttonText}>
+							{ showNextButton? 
+								<TouchableOpacity style={[styles.button, styles.buttonNext]}
+									onPress={this.skip}>
+									<Text style={styles.buttonText}>
 									Next
-								</Text>
-							</TouchableOpacity>
+									</Text>
+								</TouchableOpacity> : null}
 						</View>
 					</View>
 				</ScrollView>

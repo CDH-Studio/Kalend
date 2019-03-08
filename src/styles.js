@@ -42,11 +42,8 @@ export const bottomButtonsStyles = StyleSheet.create({
 		}),
 	},
 
-	buttonAdd: {
-		marginRight: '4%'
-	},	
-
 	buttonNext: {
+		marginLeft: '4%',
 		backgroundColor: dark_blue
 	},	
 

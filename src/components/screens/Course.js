@@ -9,7 +9,6 @@ import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
-import { darkBlueColor } from '../../../config';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -338,10 +337,12 @@ class Course extends React.Component {
 	}
 
 	render() {
+		let addEventButtonWidth;
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorCourseCode;
 		let errorEndTime;
+		let showNextButton = true;
 
 		if (!this.state.courseCodeValidated) {
 			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
@@ -359,9 +360,12 @@ class Course extends React.Component {
 		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
+			addEventButtonWidth = '48%';
 		} else {
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
+			addEventButtonWidth = '100%';
+			showNextButton = false;
 		}
 
 		return(
@@ -482,19 +486,20 @@ class Course extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, styles.buttonAdd]}
+							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
 								onPress={addEventButtonFunction}>
 								<Text style={styles.buttonText}>
 									{addEventButtonText}
 								</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={[styles.button, styles.buttonNext]}
-								onPress={() => 
-									this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
-								<Text style={styles.buttonText}>
+							{ showNextButton? 
+								<TouchableOpacity style={[styles.button, styles.buttonNext]}
+									onPress={() => 
+										this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
+									<Text style={styles.buttonText}>
 									Next
-								</Text>
-							</TouchableOpacity>
+									</Text>
+								</TouchableOpacity> : null}
 						</View>
 					</View>
 				</ScrollView>

@@ -11,7 +11,6 @@ import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
-import { darkBlueColor } from '../../../config';
 
 const viewHeight = 780.5714111328125;
 
@@ -197,6 +196,8 @@ class NonFixedEvent extends React.Component {
 		let errorTitle;
 		let errorEndDate;
 		let errorDuration;
+		let addEventButtonWidth;
+		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
 			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
@@ -231,6 +232,7 @@ class NonFixedEvent extends React.Component {
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
+			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
@@ -238,6 +240,8 @@ class NonFixedEvent extends React.Component {
 			addEventButtonFunction = this.nextScreen;
 
 			paddingBottomContainer = null;
+			addEventButtonWidth = '100%';
+			showNextButton = false;
 		}
 
 		return(
@@ -452,18 +456,19 @@ class NonFixedEvent extends React.Component {
 						</View>
 
 						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, styles.buttonAdd]}
+							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
 								onPress={addEventButtonFunction}>
 								<Text style={styles.buttonText}>
 									{addEventButtonText}
 								</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={[styles.button, styles.buttonNext]}
-								onPress={this.skip}>
-								<Text style={styles.buttonText}>
+							{ showNextButton ? 
+								<TouchableOpacity style={[styles.button, styles.buttonNext]}
+									onPress={this.skip}>
+									<Text style={styles.buttonText}>
 									Next
-								</Text>
-							</TouchableOpacity>
+									</Text>
+								</TouchableOpacity> : null}
 						</View>
 					</View>
 				</ScrollView>
