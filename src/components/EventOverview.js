@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { calendarEventColors, grayColor } from '../../config';
@@ -34,14 +34,16 @@ class EventOverview extends React.Component {
 	}
 	
 	/**
-	 * In order for the info modal to not stay open when on edit screen */
+	 * In order for the info modal to not stay open when on edit screen 
+	 */
 	navigateAndCloseModal = (editScreen) => {
 		this.setState({modalVisible: false});
 		this.props.navigateEditScreen(editScreen);
 	}
 
 	/**
-	 * To delete the event from the database and delete the component */
+	 * To delete the event from the database and delete the component 
+	 */
 	deleteEvent = () => {
 		this.setState({deleteDialogVisible: false, modalVisible: false});
 		this.props.action(this.props.id, this.props.category);
@@ -155,60 +157,62 @@ class EventOverview extends React.Component {
 
 				<Modal visible={this.state.modalVisible}
 					transparent={true}
-					onRequestClose={() => {
-						//do nothing;
-					}}
+					onRequestClose={() => this.setState({modalVisible: false})}
 					animationType={'slide'}>
-					<View style={styles.modalView}>
-						<View style={styles.modalContent}>
-							<TouchableOpacity style={styles.closeModal}
-								onPress={() => this.setState({modalVisible: false})}>
-								<Feather name="x"
-									size={30}
-									color={grayColor} />
-							</TouchableOpacity>
+					<TouchableOpacity style={styles.modalView} 
+						onPress={() => this.setState({modalVisible: false})}
+						activeOpacity={1}>
+						<TouchableWithoutFeedback>
+							<View style={styles.modalContent}>
+								<TouchableOpacity style={styles.closeModal}
+									onPress={() => this.setState({modalVisible: false})}>
+									<Feather name="x"
+										size={30}
+										color={grayColor} />
+								</TouchableOpacity>
 
-							<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
+								<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
 
-							<View style={styles.modalInfoView}>
-								<View>
-									<View style={styles.modalInfoDate}>
-										<Text style={styles.modalInfoTitle}>Date(s): </Text>
-										<Text style={styles.modalInfoText}>{this.props.date}</Text>
+								<View style={styles.modalInfoView}>
+									<View>
+										<View style={styles.modalInfoDate}>
+											<Text style={styles.modalInfoTitle}>Date(s): </Text>
+											<Text style={styles.modalInfoText}>{this.props.date}</Text>
+										</View>
+										<View style={styles.modalInfoTime}>
+											<Text style={styles.modalInfoTitle}>Time: </Text>
+											<Text style={styles.modalInfoText}>{this.props.time}</Text>
+										</View>
 									</View>
-									<View style={styles.modalInfoTime}>
-										<Text style={styles.modalInfoTitle}>Time: </Text>
-										<Text style={styles.modalInfoText}>{this.props.time}</Text>
-									</View>
+									
+									<MaterialCommunityIcons name={categoryIcon}
+										size={80}
+										color={grayColor} />
+								</View>
+
+								<View style={styles.modalDetailsView}>
+									<Text style={styles.modalDetailsTitle}>Details</Text>
+									{details}
 								</View>
 								
-								<MaterialCommunityIcons name={categoryIcon}
-									size={80}
-									color={grayColor} />
-							</View>
+								<View style={styles.actionsModal}>
+									<TouchableOpacity style={styles.actionIconModal}
+										onPress={() => this.navigateAndCloseModal(editScreen)}>
+										<Feather name="edit"
+											size={40}
+											color={grayColor} />
+									</TouchableOpacity>
 
-							<View style={styles.modalDetailsView}>
-								<Text style={styles.modalDetailsTitle}>Details</Text>
-								{details}
+									<TouchableOpacity style={styles.actionIconModal}
+										onPress={() => this.setState({deleteDialogVisible: true})}>
+										<Feather name="trash"
+											size={40}
+											color={grayColor} />
+									</TouchableOpacity>
+								</View>
 							</View>
-							
-							<View style={styles.actionsModal}>
-								<TouchableOpacity style={styles.actionIconModal}
-									onPress={() => this.navigateAndCloseModal(editScreen)}>
-									<Feather name="edit"
-										size={40}
-										color={grayColor} />
-								</TouchableOpacity>
-
-								<TouchableOpacity style={styles.actionIconModal}
-									onPress={() => this.setState({deleteDialogVisible: true})}>
-									<Feather name="trash"
-										size={40}
-										color={grayColor} />
-								</TouchableOpacity>
-							</View>
-						</View>
-					</View>
+						</TouchableWithoutFeedback>
+					</TouchableOpacity>
 				</Modal>
 
 				<Modal visible={this.state.deleteDialogVisible}
@@ -217,29 +221,33 @@ class EventOverview extends React.Component {
 						//do nothing;
 					}}
 					animationType={'slide'}>
-					<View style={styles.modalView}>
-						<View style={styles.deleteDialogContent}>
-							<View style={styles.deleteDialogMainRow}>
-								<Feather name="trash"
-									size={80}
-									color={grayColor} />
+					<TouchableOpacity style={styles.modalView} 
+						onPress={() => this.setState({deleteDialogVisible: false})}
+						activeOpacity={1}>
+						<TouchableWithoutFeedback>
+							<View style={styles.deleteDialogContent}>
+								<View style={styles.deleteDialogMainRow}>
+									<Feather name="trash"
+										size={80}
+										color={grayColor} />
 
-								<View style={styles.deleteDialogRightCol}>
-									<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
+									<View style={styles.deleteDialogRightCol}>
+										<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
 
-									<View style={styles.deleteDialogOptions}>
-										<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false})}>
-											<Text style={styles.deleteDialogCancel}>Cancel</Text>
-										</TouchableOpacity>
+										<View style={styles.deleteDialogOptions}>
+											<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false})}>
+												<Text style={styles.deleteDialogCancel}>Cancel</Text>
+											</TouchableOpacity>
 
-										<TouchableOpacity onPress={this.deleteEvent}>
-											<Text style={styles.deleteDialogYes}>Yes</Text>
-										</TouchableOpacity>
+											<TouchableOpacity onPress={this.deleteEvent}>
+												<Text style={styles.deleteDialogYes}>Yes</Text>
+											</TouchableOpacity>
+										</View>
 									</View>
 								</View>
 							</View>
-						</View>
-					</View>
+						</TouchableWithoutFeedback>
+					</TouchableOpacity>
 				</Modal>
 			</View>
 		);
