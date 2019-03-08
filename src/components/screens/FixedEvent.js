@@ -4,15 +4,15 @@ import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { updateFixedEvents, addFixedEvent } from '../../actions';
 
 const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
@@ -216,7 +216,7 @@ class FixedEvent extends React.Component {
 		}
 
 		startTime = this.getTwelveHourTime(startTime);
-		console.log(startTime);
+
 		this.setState({
 			startTime, 
 			endTime, 
@@ -355,59 +355,29 @@ class FixedEvent extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
 			return;
 		}
 
-		let info = {
-			title: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			recurrence: this.state.recurrence,
-			allDay: this.state.allDay,
-			startDate: this.state.startDate,
-			startTime: this.state.startTime,
-			endDate: this.state.endDate,
-			endTime: this.state.endTime
-		}; 
-
 		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
-			
-			let events = this.props.FixedEventsReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_FE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_FE,
-					event
-				});
-			});
-
+			this.props.dispatch(updateFixedEvents(this.props.selectedIndex, this.state));
 			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		} else {
+			let info = {
+				title: this.state.title,
+				location: this.state.location,
+				description: this.state.description,
+				recurrence: this.state.recurrence,
+				allDay: this.state.allDay,
+				startDate: this.state.startDate,
+				startTime: this.state.startTime,
+				endDate: this.state.endDate,
+				endTime: this.state.endTime
+			}; 
+
 			InsertFixedEvent(info).then(data => {
 				if (!data.error) {
-					this.setState({
-						eventID: data.id
-					});
-					this.props.dispatch({
-						type: ADD_FE,
-						event: this.state
-					});
+					this.props.dispatch(addFixedEvent(this.state));
 					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
 				}
 			});
@@ -418,9 +388,7 @@ class FixedEvent extends React.Component {
 	 * Adds the event to the calendar and resets the fields
 	 */
 	addAnotherEvent = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
 			return false;
 		}
 
@@ -437,13 +405,7 @@ class FixedEvent extends React.Component {
 		};
 		InsertFixedEvent(info).then(data => {
 			if (!data.error) {
-				this.setState({
-					eventID: data.id
-				});
-				this.props.dispatch({
-					type: ADD_FE,
-					event: this.state
-				});
+				this.props.dispatch(addFixedEvent(this.state));
 				this.resetField();
 			}
 		});
@@ -482,8 +444,6 @@ class FixedEvent extends React.Component {
 			recurrenceValue: 'None',
 			recurrence: 'NONE',
 			description: '',
-
-			eventID: '',
 
 			showTutShadow: true,
 		});
@@ -761,7 +721,8 @@ function mapStateToProps(state) {
 
 	return {
 		FEditState: FixedEventsReducer[selected],
-		FixedEventsReducer
+		FixedEventsReducer,
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
 }
 
