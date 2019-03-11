@@ -1,4 +1,4 @@
-import { UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE } from '../constants';
+import { SET_NAV_SCREEN, SET_SELECTED_SCHEDULE, UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE } from '../constants';
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -50,10 +50,11 @@ export function logoffUser () {
 }
 
 /*** IMAGE ***/
-export function setImageURI (ImageUri) {
+export function setImageURI (data, hasImage) {
 	const action = {
 		type: SET_IMG,
-		data: ImageUri
+		data, 
+		hasImage
 	}; 
 
 	return action;
@@ -111,6 +112,29 @@ export function deleteCourse (event) {
 		type: DELETE_COURSE,
 		event
 	}; 
+
+	return action;
+}
+
+/*** SET ***/
+export function setSelectedSchedule (index) {
+	const action = {
+		type: SET_SELECTED_SCHEDULE,
+		index
+	};
+
+	return action;
+}
+
+export function setNavigationScreen (data) {
+	const action = {
+		type: SET_NAV_SCREEN,
+		screen: data.screen,
+		route: data.route,
+		main: data.main,
+		routes: data.routes,
+		reviewEventSelected: data.reviewEventSelected
+	};
 
 	return action;
 }

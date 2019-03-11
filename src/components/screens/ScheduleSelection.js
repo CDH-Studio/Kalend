@@ -7,10 +7,10 @@ import converter from 'number-to-words';
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
-import { SET_SELECTED_SCHEDULE } from '../../constants';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { white, black, gray } from '../../styles';
 import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
+import { setSelectedSchedule } from '../../actions';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -377,10 +377,7 @@ class ScheduleSelection extends React.Component {
 	 * @param {Integer} index The index of the selected school schedule
 	 */
 	setIndex = (index) => {
-		this.props.dispatch({
-			type: SET_SELECTED_SCHEDULE,
-			index,
-		});
+		this.props.dispatch(setSelectedSchedule(index));
 	}
 
 	render() {
@@ -409,7 +406,6 @@ class ScheduleSelection extends React.Component {
 										numOfLines={6} />;
 								})
 							}
-
 						</View>
 					</ScrollView>
 				</ImageBackground>

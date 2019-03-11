@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'r
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { calendarEventColors, grayColor } from '../../config';
-import { SET_NAV_SCREEN } from '../constants';
 import { store } from '../store';
 import { eventOverviewStyles as styles } from '../styles';
+import { setNavigationScreen } from '../actions';
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
@@ -115,11 +115,10 @@ class EventOverview extends React.Component {
 			<View style={styles.container}>
 				<TouchableOpacity onPress={() => {
 					this.setState({modalVisible: true});
-					store.dispatch({
+					store.dispatch(setNavigationScreen({
 						... store.getState().NavigationReducer,
-						type: SET_NAV_SCREEN,
 						reviewEventSelected: this.props.id
-					});
+					}));
 				}}
 				style={{width:'100%'}}>
 					<View style={styles.info}>
@@ -139,11 +138,10 @@ class EventOverview extends React.Component {
 						<TouchableOpacity onPress={() => {
 							this.props.navigateEditScreen(editScreen);
 								
-							store.dispatch({
+							store.dispatch(setNavigationScreen({
 								... store.getState().NavigationReducer,
-								type: SET_NAV_SCREEN,
 								reviewEventSelected: this.props.id
-							});
+							}));
 						}}>
 							<Feather name="edit"
 								size={30}

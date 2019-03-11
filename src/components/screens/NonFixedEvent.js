@@ -463,7 +463,7 @@ class NonFixedEvent extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const { NonFixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
@@ -472,6 +472,6 @@ function mapStateToProps(state) {
 		NonFixedEventsReducer,
 		selectedIndex: NavigationReducer.reviewEventSelected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(NonFixedEvent);

@@ -693,7 +693,7 @@ class FixedEvent extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const { FixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
@@ -702,6 +702,6 @@ function mapStateToProps(state) {
 		FixedEventsReducer,
 		selectedIndex: NavigationReducer.reviewEventSelected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(FixedEvent);
