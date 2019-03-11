@@ -89,28 +89,28 @@ export function addNonFixedEvent (event) {
 }
 
 /*** DELETE ***/
-export function deleteNonFixedEvent (event) {
+export function deleteNonFixedEvent (index) {
 	const action = {
 		type: DELETE_NFE,
-		event
+		index
 	}; 
 
 	return action;
 }
 
-export function deleteFixedEvent (event) {
+export function deleteFixedEvent (index) {
 	const action = {
 		type: DELETE_FE,
-		event
+		index
 	}; 
 
 	return action;
 }
 
-export function deleteCourse (event) {
+export function deleteCourse (index) {
 	const action = {
 		type: DELETE_COURSE,
-		event
+		index
 	}; 
 
 	return action;

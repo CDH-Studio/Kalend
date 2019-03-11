@@ -142,17 +142,17 @@ class ReviewEvent extends React.Component {
 
 		switch (category) {
 			case 'SchoolSchedule':
-				dataToDispatch = deleteCourse(this.state.schoolScheduleData);
+				dataToDispatch = deleteCourse(id);
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
 			case 'FixedEvent':
-				dataToDispatch = deleteFixedEvent(this.state.schoolScheduleData);
+				dataToDispatch = deleteFixedEvent(id);
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
 			case 'NonFixedEvent':
-				dataToDispatch = deleteNonFixedEvent(this.state.schoolScheduleData);
+				dataToDispatch = deleteNonFixedEvent(id);
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
 				break;
