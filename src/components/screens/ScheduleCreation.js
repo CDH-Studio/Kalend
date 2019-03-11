@@ -20,10 +20,13 @@ class ScheduleCreation extends React.Component {
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
-		this.generateSchedules();
-		setTimeout(() => {
+		this.generateScheduleService();
+	}
+	
+	generateScheduleService = () => {
+		generateSchedule().then(() => {
 			this.navigateToSelection();
-		}, 2000);
+		});
 	}
 
 	/**
@@ -36,10 +39,7 @@ class ScheduleCreation extends React.Component {
 			this.props.navigation.navigate(DashboardScheduleSelection);
 		}
 	}
-	generateSchedules() {
-		generateSchedule();
-	}
-  
+	
 	render() {
 		return(
 			<LinearGradient style={styles.container} 
