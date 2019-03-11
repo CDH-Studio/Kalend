@@ -11,6 +11,7 @@ import { store } from '../../store';
 import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -492,22 +493,11 @@ class Course extends React.Component {
 							</View>
 						</View>
 
-						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
-								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonText}>
-									{addEventButtonText}
-								</Text>
-							</TouchableOpacity>
-							{ showNextButton? 
-								<TouchableOpacity style={[styles.button, styles.buttonNext]}
-									onPress={() => 
-										this.props.navigation.navigate(TutorialFixedEvent)}>
-									<Text style={styles.buttonText}>
-									Next
-									</Text>
-								</TouchableOpacity> : null}
-						</View>
+
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, () => 
+								this.props.navigation.navigate(TutorialFixedEvent)]} />
 					</View>
 				</ScrollView>
 

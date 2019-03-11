@@ -14,6 +14,7 @@ import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, sta
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
@@ -704,21 +705,10 @@ class FixedEvent extends React.Component {
 								</View>
 							</View>
 						</View>
-						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
-								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonText}>
-									{addEventButtonText}
-								</Text>
-							</TouchableOpacity>
-							{ showNextButton? 
-								<TouchableOpacity style={[styles.button, styles.buttonNext]}
-									onPress={this.skip}>
-									<Text style={styles.buttonText}>
-									Next
-									</Text>
-								</TouchableOpacity> : null}
-						</View>
+
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
 
