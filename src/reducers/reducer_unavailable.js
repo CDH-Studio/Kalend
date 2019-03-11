@@ -1,4 +1,4 @@
-import {SET_UNAVAILABLE_HOURS} from '../constants';
+import { SET_UNAVAILABLE_HOURS } from '../constants';
 
 let data = {
 	info: null
