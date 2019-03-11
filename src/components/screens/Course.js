@@ -3,6 +3,7 @@ import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Pic
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
@@ -292,6 +293,11 @@ class Course extends React.Component {
 	addAnotherEvent = () => {
 		let validated = this.fieldValidation();
 		if (!validated) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add course',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
 			return false;
 		}
 
@@ -299,6 +305,11 @@ class Course extends React.Component {
 
 		if(validated) {
 			this.resetField();
+			this.setState({
+				snackbarText: 'Course successfully added',
+				snackbarVisible: true,
+				snackbarTime: 3000
+			});
 		}
 		return validated;
 	}
@@ -323,12 +334,15 @@ class Course extends React.Component {
 			amPmEnd: this.getAmPm(),
 			endTimeValidated: true,
 
-			location: ''
+			location: '',
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		const { dayOfWeekValue } = this.state;
+		const { dayOfWeekValue, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
 		let addEventButtonWidth;
 		let addEventButtonText;
@@ -496,6 +510,14 @@ class Course extends React.Component {
 						</View>
 					</View>
 				</ScrollView>
+
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}

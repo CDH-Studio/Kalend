@@ -21,7 +21,7 @@ const viewHeight = 780.5714111328125;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Courses' : 'Edit Course', 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
+		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
