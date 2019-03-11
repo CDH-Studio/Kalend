@@ -843,7 +843,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 		marginBottom: 5
 	},
 	
-	...bottomButtonsStyles
+	...bottomButtonsStyles,
+	...snackbarStyle
 });
 
 export const reviewEventStyles = StyleSheet.create({

@@ -4,6 +4,7 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
@@ -116,11 +117,21 @@ class NonFixedEvent extends React.Component {
 	 */
 	addAnotherEvent = () => {
 		if (!this.fieldValidation()) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add event',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
 			return;
 		}
 
 		this.props.dispatch(addNonFixedEvent(this.state));
 		this.resetFields();
+		this.setState({
+			snackbarText: 'Event successfully added',
+			snackbarVisible: true,
+			snackbarTime: 3000
+		});
 	}
 
 	/**
@@ -153,11 +164,14 @@ class NonFixedEvent extends React.Component {
 			description: '',
 
 			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		const { containerHeight, showTutShadow } = this.state;
+		const { containerHeight, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
 		let addEventButtonText;
 		let addEventButtonFunction;
@@ -448,6 +462,13 @@ class NonFixedEvent extends React.Component {
 
 				{tutorialStatus}	
 				
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
