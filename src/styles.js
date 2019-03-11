@@ -16,6 +16,13 @@ export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
 
+export const snackbarStyle = StyleSheet.create({
+	snackbar: {
+		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - 90, 
+		marginHorizontal: '5%'
+	}
+});
+
 export const bottomButtonsStyles = StyleSheet.create({
 	buttons: {
 		flexDirection: 'row',
@@ -584,7 +591,8 @@ export const courseStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	...bottomButtonsStyles
+	...bottomButtonsStyles,
+	...snackbarStyle
 });
 
 export const fixedEventStyles = StyleSheet.create({
@@ -700,7 +708,8 @@ export const fixedEventStyles = StyleSheet.create({
 		color: gray
 	},
 
-	...bottomButtonsStyles
+	...bottomButtonsStyles,
+	...snackbarStyle
 });
 
 export const nonFixedEventStyles = StyleSheet.create({
@@ -834,7 +843,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 		marginBottom: 5
 	},
 	
-	...bottomButtonsStyles
+	...bottomButtonsStyles,
+	...snackbarStyle
 });
 
 export const reviewEventStyles = StyleSheet.create({

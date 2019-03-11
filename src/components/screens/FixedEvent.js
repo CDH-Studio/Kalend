@@ -5,6 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
@@ -389,6 +390,11 @@ class FixedEvent extends React.Component {
 	 */
 	addAnotherEvent = () => {
 		if (!this.fieldValidation()) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add event',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
 			return false;
 		}
 
@@ -407,6 +413,11 @@ class FixedEvent extends React.Component {
 			if (!data.error) {
 				this.props.dispatch(addFixedEvent(this.state));
 				this.resetField();
+				this.setState({
+					snackbarText: 'Event successfully added',
+					snackbarVisible: true,
+					snackbarTime: 3000
+				});
 			}
 		});
 	}
@@ -446,11 +457,14 @@ class FixedEvent extends React.Component {
 			description: '',
 
 			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		const { containerHeight, scrollable, showTutShadow } = this.state;
+		const { containerHeight, scrollable, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
 		let tutorialStatus;
 		let addEventButtonText;
@@ -710,6 +724,13 @@ class FixedEvent extends React.Component {
 
 				{tutorialStatus}
 
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
