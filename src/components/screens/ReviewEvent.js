@@ -3,6 +3,7 @@ import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-n
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
+import { InsertFixedEvent } from '../../services/service';
 import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
@@ -183,6 +184,25 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
+		store.getState().FixedEventsReducer.map((event, key) => {
+			let info = {
+				title: event.title,
+				location: event.location,
+				description: event.description,
+				recurrence: event.recurrence,
+				allDay: event.allDay,
+				startDate: event.startDate,
+				startTime: event.startTime,
+				endDate: event.endDate,
+				endTime: event.endTime
+			}; 
+			InsertFixedEvent(info).then(data => {
+				if (data.error) {
+					console.error('ERROR adding event', data);
+				}
+			});
+		});
+
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			this.props.navigation.navigate(TutorialScheduleCreation);
 		} else {
