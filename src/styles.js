@@ -147,7 +147,7 @@ export const tutorialStatusStyles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0,
-		paddingVertical: HEIGHT / 2 + 6,
+		paddingVertical: HEIGHT / 2 + 6
 	},
 
 	sectionIconRow: {
@@ -860,17 +860,11 @@ export const unavailableHoursStyles = StyleSheet.create({
 		paddingTop: 20
 	},
 
-	errorTitle: {
+	errorEndTime: {
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 45
-	},
-
-	errorEnd: {
-		color: 'red',
-		fontSize: 12,
-		alignSelf: 'flex-start',
-		marginLeft: 10
+		width: 140,
+		textAlign: 'center'
 	},
 
 	text: {
@@ -909,6 +903,10 @@ export const unavailableHoursStyles = StyleSheet.create({
 	type: {
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold'
+	},
+
+	timeWidth: {
+		width: 70
 	},
 
 	manual: {
@@ -961,7 +959,6 @@ export const reviewEventStyles = StyleSheet.create({
 		margin: 16,
 		right: 0,
 		bottom: 0,
-		zIndex: 1 //To make it go on top of the tutorialStatus
 	},
 });
 

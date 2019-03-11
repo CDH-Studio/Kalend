@@ -1,4 +1,4 @@
-import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../constants';
+import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, SET_UNAVAILABLE_HOURS } from '../constants';
 
 export function logonUser (profile) {
 	const action = {
@@ -76,6 +76,15 @@ export function AddNonFixedEvent (event) {
 		type: ADD_NFE,
 		event
 	}; 
+
+	return action;
+}
+
+export function setUnavailableHours (info) {
+	const action = {
+		type: SET_UNAVAILABLE_HOURS,
+		info
+	};
 
 	return action;
 }

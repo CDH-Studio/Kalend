@@ -20,6 +20,7 @@ export const DashboardSchoolSchedule = 'DashboardSchoolSchedule';
 export const DashboardEditFixedEvent = 'DashboardEditFixedEvent';
 export const DashboardEditNonFixedEvent = 'DashboardEditNonFixedEvent';
 export const DashboardUnavailableFixed = 'DashboardUnavailableFixed';
+export const DashboardReviewEvent = 'DashboardReviewEvent';
 
 
 export const WelcomeScreen = 'WelcomeScreen';

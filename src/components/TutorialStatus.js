@@ -126,7 +126,7 @@ class TutorialStatus extends React.Component {
 						shadowRadius: 3,    
 					},
 					android: {
-						elevation: showTutShadow *  10,
+						elevation: showTutShadow *  5,
 					},
 				}),}]}>
 				<View style={{ 
