@@ -1,18 +1,19 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
-import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
+import { updateFixedEvents, addFixedEvent } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
@@ -22,7 +23,7 @@ const containerWidth = Dimensions.get('window').width;
 class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
+		title: navigation.state.routeName === TutorialFixedEvent || navigation.state.routeName === DashboardAddCourse ? 'Add Fixed Events' : 'Edit Fixed Event',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -50,7 +51,7 @@ class FixedEvent extends React.Component {
 
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
-		let tutorialStatusHeight = this.props.navigation.state.routeName === 'TutorialFixedEvent' ? 56.1 : 0;
+		let tutorialStatusHeight = this.props.navigation.state.routeName === TutorialFixedEvent ? 56.1 : 0;
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
@@ -216,7 +217,7 @@ class FixedEvent extends React.Component {
 		}
 
 		startTime = this.getTwelveHourTime(startTime);
-		console.log(startTime);
+
 		this.setState({
 			startTime, 
 			endTime, 
@@ -316,7 +317,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('TutorialNonFixedEvent', {update:false});
+		this.props.navigation.navigate(TutorialNonFixedEvent);
 	}
 
 	/**
@@ -355,62 +356,16 @@ class FixedEvent extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
 			return;
 		}
 
-		let info = {
-			title: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			recurrence: this.state.recurrence,
-			allDay: this.state.allDay,
-			startDate: this.state.startDate,
-			startTime: this.state.startTime,
-			endDate: this.state.endDate,
-			endTime: this.state.endTime
-		}; 
-
 		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
-			
-			let events = this.props.FixedEventsReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_FE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_FE,
-					event
-				});
-			});
-
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+			this.props.dispatch(updateFixedEvents(this.props.selectedIndex, this.state));
+			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
-			InsertFixedEvent(info).then(data => {
-				if (!data.error) {
-					this.setState({
-						eventID: data.id
-					});
-					this.props.dispatch({
-						type: ADD_FE,
-						event: this.state
-					});
-					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
-				}
-			});
+			this.props.dispatch(addFixedEvent(this.state));
+			this.props.navigation.navigate(TutorialNonFixedEvent);
 		}
 	}
 
@@ -418,34 +373,22 @@ class FixedEvent extends React.Component {
 	 * Adds the event to the calendar and resets the fields
 	 */
 	addAnotherEvent = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add event',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
 			return false;
 		}
 
-		let info = {
-			title: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			recurrence: this.state.recurrence,
-			allDay: this.state.allDay,
-			startDate: this.state.startDate,
-			startTime: this.state.startTime,
-			endDate: this.state.endDate,
-			endTime: this.state.endTime
-		};
-		InsertFixedEvent(info).then(data => {
-			if (!data.error) {
-				this.setState({
-					eventID: data.id
-				});
-				this.props.dispatch({
-					type: ADD_FE,
-					event: this.state
-				});
-				this.resetField();
-			}
+		this.props.dispatch(addFixedEvent(this.state));
+		this.resetField();
+		this.refs._scrollView.scrollTo({x: 0});
+		this.setState({
+			snackbarText: 'Event successfully added',
+			snackbarVisible: true,
+			snackbarTime: 3000
 		});
 	}
 
@@ -483,21 +426,21 @@ class FixedEvent extends React.Component {
 			recurrence: 'NONE',
 			description: '',
 
-			eventID: '',
-
 			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		const { containerHeight, scrollable, showTutShadow } = this.state;
+		const { containerHeight, scrollable, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
 		let tutorialStatus;
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorTitle;
 		let errorEnd;
-		let addEventButtonWidth;
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
@@ -534,13 +477,11 @@ class FixedEvent extends React.Component {
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
-			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
-			addEventButtonWidth = '100%';
 			showNextButton = false;
 		}
 		
@@ -550,6 +491,7 @@ class FixedEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 				
 				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
 					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>
@@ -716,7 +658,7 @@ class FixedEvent extends React.Component {
 								<View style={styles.textInputBorder}>
 									{
 										Platform.OS === 'ios' ? 
-											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue}</Text>
+											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
 											:	
 											<Picker style={styles.recurrence} 
 												selectedValue={this.state.recurrence} 
@@ -730,26 +672,22 @@ class FixedEvent extends React.Component {
 								</View>
 							</View>
 						</View>
-						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
-								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonText}>
-									{addEventButtonText}
-								</Text>
-							</TouchableOpacity>
-							{ showNextButton? 
-								<TouchableOpacity style={[styles.button, styles.buttonNext]}
-									onPress={this.skip}>
-									<Text style={styles.buttonText}>
-									Next
-									</Text>
-								</TouchableOpacity> : null}
-						</View>
+
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
 
 				{tutorialStatus}
 
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
@@ -761,7 +699,8 @@ function mapStateToProps(state) {
 
 	return {
 		FEditState: FixedEventsReducer[selected],
-		FixedEventsReducer
+		FixedEventsReducer,
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
 }
 

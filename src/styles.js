@@ -16,6 +16,13 @@ export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
 
+export const snackbarStyle = StyleSheet.create({
+	snackbar: {
+		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - 90, 
+		marginHorizontal: '5%'
+	}
+});
+
 export const bottomButtonsStyles = StyleSheet.create({
 	buttons: {
 		flexDirection: 'row',
@@ -584,7 +591,7 @@ export const courseStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	...bottomButtonsStyles
+	...snackbarStyle
 });
 
 export const fixedEventStyles = StyleSheet.create({
@@ -700,7 +707,7 @@ export const fixedEventStyles = StyleSheet.create({
 		color: gray
 	},
 
-	...bottomButtonsStyles
+	...snackbarStyle
 });
 
 export const nonFixedEventStyles = StyleSheet.create({
@@ -833,8 +840,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 		fontFamily: 'OpenSans-Regular',
 		marginBottom: 5
 	},
-	
-	...bottomButtonsStyles
+
+	...snackbarStyle
 });
 
 export const unavailableHoursStyles = StyleSheet.create({
@@ -988,7 +995,7 @@ export const eventOverviewStyles = StyleSheet.create({
 
 	info: {
 		flexDirection: 'row',
-		justifyContent: 'flex-end',
+		justifyContent: 'flex-start',
 		alignItems: 'center'
 	},
 
@@ -1002,9 +1009,12 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	actions: {
+		position: 'absolute',
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		width: 70
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		width: '100%',
+		height: '100%'
 	},
 
 	eventTitle: {
@@ -1015,6 +1025,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	eventInfo: {
+		width: 180,
 		fontFamily: 'OpenSans-Regular',
 		color: gray
 	},
@@ -1029,8 +1040,8 @@ export const eventOverviewStyles = StyleSheet.create({
 			ios: {
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
+				shadowOpacity: 0.6,
+				shadowRadius: 7,    
 			},
 			android: {
 				elevation: 4,

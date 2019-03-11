@@ -1,16 +1,18 @@
 import React from 'react';
-import { Platform, StatusBar, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput } from 'react-native';
+import { Platform, StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
-import { TutorialNonFixedEvent, TutorialUnavailableHours } from '../../constants/screenNames';
+import { TutorialNonFixedEvent, TutorialUnavailableHours, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
+import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 780.5714111328125;
 
@@ -20,7 +22,7 @@ const viewHeight = 780.5714111328125;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.update ? 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
+		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -41,8 +43,7 @@ class NonFixedEvent extends React.Component {
 		}
 
 		this.state = { 
-			containerHeight,
-			eventID: Date.now()
+			containerHeight
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -99,42 +100,16 @@ class NonFixedEvent extends React.Component {
 	 * Adds the event in the database
 	 */
 	nextScreen = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
 			return;
 		}
 
 		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
-			this.props.dispatch({
-				type: ADD_NFE,
-				event: this.state
-			});
-			this.props.navigation.navigate(TutorialUnavailableHours);
+			this.props.dispatch(addNonFixedEvent(this.state));
+			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
-			let events = this.props.NonFixedEventsReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_NFE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_NFE,
-					event
-				});
-			});
-
-			this.props.navigation.navigate(TutorialUnavailableHours, {changed:true});
+			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
+			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
 		}
 	}
 
@@ -142,17 +117,23 @@ class NonFixedEvent extends React.Component {
 	 * Adds the event to the database and resets the fields
 	 */
 	addAnotherEvent = () => {
-		let validated = this.fieldValidation();
-		
-		if (!validated) {
+		if (!this.fieldValidation()) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add event',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
 			return;
 		}
 
-		this.props.dispatch({
-			type: ADD_NFE,
-			event: this.state
-		});
+		this.props.dispatch(addNonFixedEvent(this.state));
 		this.resetFields();
+		this.refs._scrollView.scrollTo({x: 0});
+		this.setState({
+			snackbarText: 'Event successfully added',
+			snackbarVisible: true,
+			snackbarTime: 3000
+		});
 	}
 
 	/**
@@ -184,11 +165,14 @@ class NonFixedEvent extends React.Component {
 			description: '',
 
 			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		const { containerHeight, showTutShadow } = this.state;
+		const { containerHeight, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
 		let addEventButtonText;
 		let addEventButtonFunction;
@@ -197,7 +181,6 @@ class NonFixedEvent extends React.Component {
 		let errorTitle;
 		let errorEndDate;
 		let errorDuration;
-		let addEventButtonWidth;
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
@@ -234,7 +217,6 @@ class NonFixedEvent extends React.Component {
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
-			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
@@ -242,7 +224,6 @@ class NonFixedEvent extends React.Component {
 			addEventButtonFunction = this.nextScreen;
 
 			paddingBottomContainer = null;
-			addEventButtonWidth = '100%';
 			showNextButton = false;
 		}
 
@@ -251,6 +232,7 @@ class NonFixedEvent extends React.Component {
 				<StatusBar backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
 					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
@@ -459,26 +441,22 @@ class NonFixedEvent extends React.Component {
 							</View>
 						</View>
 
-						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
-								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonText}>
-									{addEventButtonText}
-								</Text>
-							</TouchableOpacity>
-							{ showNextButton ? 
-								<TouchableOpacity style={[styles.button, styles.buttonNext]}
-									onPress={this.skip}>
-									<Text style={styles.buttonText}>
-									Next
-									</Text>
-								</TouchableOpacity> : null}
-						</View>
+
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
 
 				{tutorialStatus}	
 				
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
@@ -490,7 +468,8 @@ function mapStateToProps(state) {
 
 	return {
 		NFEditState: NonFixedEventsReducer[selected],
-		NonFixedEventsReducer
+		NonFixedEventsReducer,
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
 }
 

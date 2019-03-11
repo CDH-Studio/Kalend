@@ -1,5 +1,37 @@
-import { SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, SET_UNAVAILABLE_HOURS } from '../constants';
+import { UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE, SET_UNAVAILABLE_HOURS } from '../constants';
 
+/*** UPDATE ***/
+export function updateFixedEvents (index, event) {
+	const action = {
+		type: UPDATE_FE,
+		event, 
+		index
+	};
+
+	return action;
+}
+
+export function updateCourses (index, event) {
+	const action = {
+		type: UPDATE_COURSE,
+		event, 
+		index
+	};
+
+	return action;
+}
+
+export function updateNonFixedEvents (index, event) {
+	const action = {
+		type: UPDATE_NFE,
+		event, 
+		index
+	};
+
+	return action;
+}
+
+/*** USER ***/
 export function logonUser (profile) {
 	const action = {
 		type: SIGNED_IN,
@@ -17,6 +49,7 @@ export function logoffUser () {
 	return action;
 }
 
+/*** IMAGE ***/
 export function setImageURI (ImageUri) {
 	const action = {
 		type: SET_IMG,
@@ -26,7 +59,8 @@ export function setImageURI (ImageUri) {
 	return action;
 }
 
-export function AddFixedEvent (event) {
+/*** ADD ***/
+export function addFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
 		event
@@ -35,7 +69,7 @@ export function AddFixedEvent (event) {
 	return action;
 }
 
-export function AddCourseEvent (event) {
+export function addCourse (event) {
 	const action = {
 		type: ADD_COURSE,
 		event
@@ -44,7 +78,17 @@ export function AddCourseEvent (event) {
 	return action;
 }
 
-export function DeleteNonFixedEvent (event) {
+export function addNonFixedEvent (event) {
+	const action = {
+		type: ADD_NFE,
+		event
+	}; 
+
+	return action;
+}
+
+/*** DELETE ***/
+export function deleteNonFixedEvent (event) {
 	const action = {
 		type: DELETE_NFE,
 		event
@@ -53,7 +97,7 @@ export function DeleteNonFixedEvent (event) {
 	return action;
 }
 
-export function DeleteFixedEvent (event) {
+export function deleteFixedEvent (event) {
 	const action = {
 		type: DELETE_FE,
 		event
@@ -62,18 +106,9 @@ export function DeleteFixedEvent (event) {
 	return action;
 }
 
-export function DeleteCourseEvent (event) {
+export function deleteCourse (event) {
 	const action = {
 		type: DELETE_COURSE,
-		event
-	}; 
-
-	return action;
-}
-
-export function AddNonFixedEvent (event) {
-	const action = {
-		type: ADD_NFE,
 		event
 	}; 
 

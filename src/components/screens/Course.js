@@ -1,14 +1,17 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { ADD_COURSE, CLEAR_COURSE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
+import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { updateCourses, addCourse } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -20,7 +23,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === 'TutorialAddCourse' ? 'Add Courses' : 'Edit Course',
+		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -38,7 +41,6 @@ class Course extends React.Component {
 
 		this.state = { 
 			containerHeight,
-			eventID: Date.now(),
 
 			courseCode: '',
 
@@ -60,7 +62,7 @@ class Course extends React.Component {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== 'TutorialAddCourse') {
+		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
 			let courses = store.getState().CoursesReducer;
 			let selected = store.getState().NavigationReducer.reviewEventSelected;
 
@@ -271,9 +273,9 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
+		if (this.props.navigation.state.routeName === TutorialAddCourse) {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate('TutorialFixedEvent', {update:false});
+				this.props.navigation.navigate(TutorialFixedEvent);
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -281,29 +283,8 @@ class Course extends React.Component {
 				return;
 			}
 			
-			let events = this.props.CoursesReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_COURSE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_COURSE,
-					event
-				});
-			});
-
-			this.props.navigation.navigate('TutorialReviewEvent', {changed:true});
+			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
+			this.props.navigation.navigate('TutorialReviewEvent');
 		}
 	}
 
@@ -313,16 +294,24 @@ class Course extends React.Component {
 	addAnotherEvent = () => {
 		let validated = this.fieldValidation();
 		if (!validated) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add course',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
 			return false;
 		}
 
-		this.props.dispatch({
-			type: ADD_COURSE,
-			event: this.state
-		});
+		this.props.dispatch(addCourse(this.state));
 
 		if(validated) {
 			this.resetField();
+			this.refs._scrollView.scrollTo({x: 0});
+			this.setState({
+				snackbarText: 'Course successfully added',
+				snackbarVisible: true,
+				snackbarTime: 3000
+			});
 		}
 		return validated;
 	}
@@ -347,12 +336,16 @@ class Course extends React.Component {
 			amPmEnd: this.getAmPm(),
 			endTimeValidated: true,
 
-			location: ''
+			location: '',
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		let addEventButtonWidth;
+		const { dayOfWeekValue, snackbarVisible, snackbarText, snackbarTime } = this.state;
+
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorCourseCode;
@@ -372,14 +365,12 @@ class Course extends React.Component {
 		}
 		
 
-		if (this.props.navigation.state.routeName === 'TutorialAddCourse') {
+		if (this.props.navigation.state.routeName === TutorialAddCourse) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
-			addEventButtonWidth = '48%';
 		} else {
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
-			addEventButtonWidth = '100%';
 			showNextButton = false;
 		}
 
@@ -388,7 +379,7 @@ class Course extends React.Component {
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 
-				<ScrollView>
+				<ScrollView ref='_scrollView'>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
@@ -420,7 +411,7 @@ class Course extends React.Component {
 							<View style={styles.dayOfWeekBorder}>
 								{
 									Platform.OS === 'ios' ? 
-										<Text onPress={this.dayOfWeekOnClick}>{this.state.dayOfWeekValue}</Text>
+										<Text onPress={this.dayOfWeekOnClick}>{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
 										:	
 										<Picker style={styles.dayOfWeekValues} 
 											selectedValue={this.state.dayOfWeek} 
@@ -500,24 +491,21 @@ class Course extends React.Component {
 							</View>
 						</View>
 
-						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
-								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonText}>
-									{addEventButtonText}
-								</Text>
-							</TouchableOpacity>
-							{ showNextButton? 
-								<TouchableOpacity style={[styles.button, styles.buttonNext]}
-									onPress={() => 
-										this.props.navigation.navigate('TutorialFixedEvent', {update:false})}>
-									<Text style={styles.buttonText}>
-									Next
-									</Text>
-								</TouchableOpacity> : null}
-						</View>
+
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, () => 
+								this.props.navigation.navigate(TutorialFixedEvent)]} />
 					</View>
 				</ScrollView>
+
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
