@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, View, Platform, TouchableOpacity, Keyboard } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
-import { tutorialStatusStyles as styles, white } from '../styles';
+import { tutorialStatusStyles as styles, white, black } from '../styles';
 
 const dotSize = 20;
 const sectionMargin = 20;
@@ -115,10 +114,9 @@ class TutorialStatus extends React.Component {
 		return(
 			<View style={[styles.section, {
 				backgroundColor: backgroundColor, 
-				paddingBottom: ifIphoneX() ? 30 : 20,
 				...Platform.select({
 					ios: {
-						shadowColor: 'black',
+						shadowColor: black,
 						shadowOffset: { width: 0, height: -2 },
 						shadowOpacity: showTutShadow * 0.3,
 						shadowRadius: 3,    
@@ -127,11 +125,7 @@ class TutorialStatus extends React.Component {
 						elevation: showTutShadow *  5,
 					},
 				}),}]}>
-				<View style={{ 
-					position: 'absolute',
-					width: '100%',
-					paddingTop: 20,
-					alignItems: 'center',}}>
+				<View style={styles.sectionDots}>
 					<View style={styles.sectionIconRow}>
 						{this.createDots()}
 					</View>

@@ -4,13 +4,13 @@ import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { InsertFixedEvent } from '../../services/service';
-import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 
 const priorityLevels = {
 	0: 'Low',
@@ -136,23 +136,23 @@ class ReviewEvent extends React.Component {
 	}
 	
 	deleteEvent = (id, category) => {
+		let dataToDispatch;
 		let newEvents;
-		let eventType;
 		let objectToChange;
 
 		switch (category) {
 			case 'SchoolSchedule':
-				eventType = DELETE_COURSE;
+				dataToDispatch = deleteCourse(id);
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
 			case 'FixedEvent':
-				eventType = DELETE_FE;
+				dataToDispatch = deleteFixedEvent(id);
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
 			case 'NonFixedEvent':
-				eventType = DELETE_NFE;
+				dataToDispatch = deleteNonFixedEvent(id);
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
 				break;
@@ -165,7 +165,7 @@ class ReviewEvent extends React.Component {
 			if (index != id) return event;
 		});
 
-		this.props.dispatch({type: eventType, event: newEvents});
+		this.props.dispatch(dataToDispatch);
 		this.setState({[objectToChange]: newEvents});
 	}
 

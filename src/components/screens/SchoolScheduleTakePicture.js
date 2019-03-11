@@ -6,6 +6,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { takePictureStyles as styles, orange, red, blue, white } from '../../styles';
+import { setImageURI } from '../../actions';
 
 const iconColor = 'white';
 
@@ -141,10 +142,7 @@ class SchoolScheduleTakePicture extends React.Component {
 				fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 				analyzePicture({data: fakeEscape});
 				
-				this.props.dispatch({
-					type:'SET_IMG',
-					hasImage: false
-				});
+				this.props.dispatch(setImageURI(undefined, false));
 
 				if(this.props.navigation.state.routeName === 'TutorialSchoolScheduleTakePicture') {
 					this.props.navigation.navigate('TutorialSchoolScheduleCreation');
