@@ -1,6 +1,8 @@
 import { formatData, getStartDate } from './helper';
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { store } from '../store';
+import { ADD_COURSE } from '../constants';
+import { AddGeneratedNonFixedEvent } from '../actions';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -48,7 +50,6 @@ export const analyzePicture = (base64Data) => {
 			}
 		})
 			.then(res => {
-				
 				return res.json();
 			})
 			.then(body => {
@@ -74,21 +75,21 @@ export const InsertDataIntoGoogle = (events) => {
 
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
-			
 		event.courses.forEach(course => {
+			console.log('course', course);
 			let obj = {
 				'end': {
-					'timeZone': 'EST'
+					'timeZone': 'UTC'
 				},
 				'start': {
-					'timeZone': 'EST'
+					'timeZone': 'UTC'
 				}
 			};
 			let startDate = getStartDate(tempStartDate, event.day);
 			let endDate = getStartDate(tempStartDate, event.day);
-			let day = event.day.substr(0,2).toUpperCase();
+			//let day = event.day.substr(0,2).toUpperCase();
 			let recurrence = [
-				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
+				'RRULE:FREQ=WEEKLY;UNTIL=20190327'
 			];
 			
 			// Convert all letters to lowercase for easier formating
@@ -123,20 +124,11 @@ export const InsertDataIntoGoogle = (events) => {
 			courseReduxObj.hours = d;
 
 			store.dispatch({
-				type: 'ADD_COURSE',
+				type: ADD_COURSE,
 				event: courseReduxObj
 			});
 			
-			let promise_temp = (calendarID) => {
-				insertEvent(calendarID,obj,{})
-					.then( data => {
-						return data;
-					})
-					.catch( err => {
-						console.log('error', err);
-					});
-			};
-			promises.push(getCalendarID(promise_temp));
+			promises.push(insertEvent(calendarID,obj,{}));
 		});
 	});
 	return Promise.all(promises);
@@ -174,27 +166,23 @@ export const  InsertFixedEvent = (event) => {
 	return insertEvent(calendarID,obj,{});	
 };
 
-const getCalendarID = (promise) => {
-	return getCalendarList().then((data) => {
-		let calendarID = undefined;
-		for (let i = 0; i < data.items.length; i++) {
-			if (data.items[i].summary === 'Kalend') {
-				calendarID = data.items[i].id;
+export const getCalendarID2 = () => {
+	return new Promise( async function(resolve) { 
+		await getCalendarList().then((data) => {
+			let calendarID;
+			for (let i = 0; i < data.items.length; i++) {
+				if (data.items[i].summary === 'Kalend') {
+					calendarID = data.items[i].id;
+					console.log('found one!', calendarID);
+				}
 			}
-		}
-
-		if (calendarID === undefined) {
-			createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-				return promise(data.id);
-			});
-		} else {
-			return promise(calendarID);
-		}
+			resolve(calendarID);
+		});
 	});
 };
 
 export const createCalendar = () => {
-	return new Promise( function(resolve, reject) { 
+	return new Promise( function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
 			resolve(data.id);
 		});
@@ -202,33 +190,125 @@ export const createCalendar = () => {
 };
 
 export const generateSchedule = () => {
-	//let fixedEvents = store.getState().FixedEventsReducer;
-	let nonFixedEvents = store.getState().NonFixedEventsReducer;
-	let calendarID = store.getState().CalendarReducer.id;
-	//let courses = store.getState().CoursesReducer;
+	return new Promise( function(resolve) {
+		let nonFixedEvents = store.getState().NonFixedEventsReducer;
+		
+		if (nonFixedEvents.length == 0) return;
+		
+		nonFixedEvents.forEach(event => {
+			ItterateOccurence(event);
+		});
 
-	nonFixedEvents.forEach(event => {
-		if(event.specificDateRange) {
-			let startDate = new Date(event.startDate).toISOString();
-			let endDate = new Date(event.endDate).toISOString();
-			let obj = {
-				'timeZone': 'EST',
-				'items': [
-					{
-						'id': calendarID
-					}
-				]
-			};
+		resolve();
+	});
+};
+
+async function ItterateOccurence(event) {
+	let testedDates = [];
+	let startDayTime = 8;
+	let endDayTime = 22;
+
+	for (let i = 0; i < event.occurrence; i++) {
+		await findEmptySlots(startDayTime, endDayTime, event, testedDates).then(availableDate => {
+			storeNonFixedEvent(availableDate, event);
+		});
+	}	
+}
+
+function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
+	let calendarID = store.getState().CalendarReducer.id;
+	let obj = {};
+	obj.timeZone = 'EST';
+	obj.items = [{'id': calendarID}];
+
+	return new Promise( async function(resolve) {
+		let available = false;
+	
+		while(!available) {
+			let startDate = new Date(event.startDate);
+			let endDate = new Date(event.endDate);
+			let eventHours = event.hours;
+			let eventMinutes = event.minutes; 
+
+			// Check if it is a specific Date Range
+			if(event.specificDateRange == false) endDate.setDate(startDate.getDate() + 7);
+			
+			// Check if the total duration must be dicided
+			if (event.isDividable) {
+				let dividedDuration = divideDuration(event.hours, event.minutes, event.occurrence);
+		
+				eventHours = dividedDuration.hours;
+				eventMinutes = dividedDuration.minutes;
+			} 
+
+			let randomStartTime = getRndInteger(startDayTime, endDayTime - eventHours);
+			let randomDay = getRndInteger(startDate.getDate(), endDate.getDate());
+			startDate.setHours(randomStartTime);
+			startDate.setDate(randomDay);
+			startDate = startDate.toISOString();
+
+			// If random generated startDate has already been tested, move to the next itteration
+			if (testedDates.includes(startDate)) continue;
+
+			let randomEndTime = randomStartTime + eventHours;
+			endDate.setHours(randomEndTime, eventMinutes);
+			endDate.setDate(randomDay);
+			endDate = endDate.toISOString();
+
 			obj.timeMin = startDate;
 			obj.timeMax = endDate;
 
-			getAvailabilities(obj).then(data => {
-				console.log('availability', data);
+			// Call to google to check whether time conflicts with the specified generated startDate;
+			await getAvailabilities(obj).then(data => {
+				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
+				if (busySchedule.length > 0) {
+					console.log('slot already taken!');
+					testedDates.push(startDate);
+				} else {
+					console.log(`found a free slot! Pushing the event! ${randomStartTime}`);
+					available = true;
+					resolve({startDate, endDate});
+				}
 			});
-
 		}
 	});
-	
 
+}
+
+let storeNonFixedEvent = (availableDate, event) => {
+	//let calendarID = store.getState().CalendarReducer.id;
+	let obj = {
+		'end': {},
+		'start': {}
+	};
+
+	obj.end.timeZone = 'EST';
+	obj.start.timeZone = 'EST';
+	obj.summary = event.title;
+	obj.location = event.location;
+	obj.description = event.description;
+	obj.end.dateTime = availableDate.endDate;
+	obj.start.dateTime = availableDate.startDate;
+
+	store.dispatch(AddGeneratedNonFixedEvent(obj));
 };
 
+function getRndInteger(min, max) {
+	return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+function divideDuration(__hours, __minutes, __occurence) {
+	let totalDuration = (__hours * 60) + __minutes;
+	let dividedDuration = totalDuration / __occurence;
+	let { hours, minutes } = convertMintuesToHours(dividedDuration);
+	
+	return {hours, minutes};
+}
+
+
+function convertMintuesToHours(__duration) { 
+	const hours = Math.floor(__duration / 60);  
+	const minutes = __duration % 60;
+
+	return {hours, minutes};         
+}
