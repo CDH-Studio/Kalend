@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput } from 'react-native';
+import { Platform, StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -181,7 +181,6 @@ class NonFixedEvent extends React.Component {
 		let errorTitle;
 		let errorEndDate;
 		let errorDuration;
-		let addEventButtonWidth;
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
@@ -218,7 +217,6 @@ class NonFixedEvent extends React.Component {
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
-			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
@@ -226,7 +224,6 @@ class NonFixedEvent extends React.Component {
 			addEventButtonFunction = this.nextScreen;
 
 			paddingBottomContainer = null;
-			addEventButtonWidth = '100%';
 			showNextButton = false;
 		}
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -472,7 +472,6 @@ class FixedEvent extends React.Component {
 		let addEventButtonFunction;
 		let errorTitle;
 		let errorEnd;
-		let addEventButtonWidth;
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
@@ -509,13 +508,11 @@ class FixedEvent extends React.Component {
 
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
-			addEventButtonWidth = '48%';
 		} else {
 			tutorialStatus = null;
 
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
-			addEventButtonWidth = '100%';
 			showNextButton = false;
 		}
 		
