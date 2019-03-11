@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
 import { Header } from 'react-navigation';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
@@ -851,6 +851,100 @@ export const nonFixedEventStyles = StyleSheet.create({
 	...snackbarStyle
 });
 
+export const unavailableHoursStyles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+
+	scrollView: {
+		flex: 1,
+		marginTop: StatusBar.currentHeight + Header.HEIGHT
+	},
+
+	content: {
+		flex: 1,
+		justifyContent: 'space-evenly',
+		paddingHorizontal: 20
+	},
+
+	instruction: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingTop: 20
+	},
+
+	errorEndTime: {
+		color: 'red',
+		fontSize: 12,
+		width: 140,
+		textAlign: 'center'
+	},
+
+	text: {
+		width: 240,
+		paddingRight: 15,
+		fontFamily: 'Raleway-Regular',
+		color: gray,
+		fontSize: 20,
+		textAlign: 'right'
+	},
+
+
+	blueTitle: {
+		color: blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		paddingVertical: 10,
+		paddingLeft: 10
+	},
+
+	rowContent: {
+		flexDirection:'row',
+		justifyContent:'space-evenly'
+	},
+
+	colContent: {
+		flexDirection:'column',
+		alignItems: 'center'
+	},
+
+	row: {
+		flexDirection:'row',
+		alignItems: 'center'
+	},
+
+	type: {
+		fontSize: 15,
+		fontFamily: 'Raleway-SemiBold'
+	},
+
+	timeWidth: {
+		width: 70
+	},
+
+	manual: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		textAlign:'center',
+		paddingTop: 20
+	},
+
+	textManual: {
+		fontFamily: 'Raleway-Regular',
+		color: gray,
+		fontSize: 15,
+	},
+
+	buttonManual: {
+		fontFamily: 'Raleway-SemiBold',
+		color: gray,
+		fontSize: 15,
+	},
+
+	...bottomButtonsStyles
+});
+
 export const reviewEventStyles = StyleSheet.create({
 	container: {
 		flex: 1
@@ -879,7 +973,6 @@ export const reviewEventStyles = StyleSheet.create({
 		margin: 16,
 		right: 0,
 		bottom: 0,
-		zIndex: 1 //To make it go on top of the tutorialStatus
 	},
 });
 

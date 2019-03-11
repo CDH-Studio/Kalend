@@ -1,4 +1,4 @@
-import { SET_NAV_SCREEN, SET_SELECTED_SCHEDULE, UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE } from '../constants';
+import { SET_NAV_SCREEN, SET_SELECTED_SCHEDULE, UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE, SET_UNAVAILABLE_HOURS } from '../constants';
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -134,6 +134,15 @@ export function setNavigationScreen (data) {
 		main: data.main,
 		routes: data.routes,
 		reviewEventSelected: data.reviewEventSelected
+  };
+
+	return action;
+}
+    
+export function setUnavailableHours (info) {
+	const action = {
+		type: SET_UNAVAILABLE_HOURS,
+		info
 	};
 
 	return action;

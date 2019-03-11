@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
-import { TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
+import { TutorialNonFixedEvent, TutorialUnavailableHours, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
 import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 
@@ -61,7 +61,7 @@ class NonFixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate(TutorialReviewEvent);
+		this.props.navigation.navigate(TutorialUnavailableHours);
 	}
 
 	/**
@@ -158,7 +158,6 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			// durationType: 0,
 			occurrence: 1,
 
 			priority: 0.5,
