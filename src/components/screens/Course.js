@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -11,6 +11,7 @@ import { store } from '../../store';
 import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -344,7 +345,6 @@ class Course extends React.Component {
 	render() {
 		const { dayOfWeekValue, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
-		let addEventButtonWidth;
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorCourseCode;
@@ -367,11 +367,9 @@ class Course extends React.Component {
 		if (this.props.navigation.state.routeName === TutorialAddCourse) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
-			addEventButtonWidth = '48%';
 		} else {
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
-			addEventButtonWidth = '100%';
 			showNextButton = false;
 		}
 
@@ -492,22 +490,11 @@ class Course extends React.Component {
 							</View>
 						</View>
 
-						<View style={styles.buttons}>
-							<TouchableOpacity style={[styles.button, {width: addEventButtonWidth}]}
-								onPress={addEventButtonFunction}>
-								<Text style={styles.buttonText}>
-									{addEventButtonText}
-								</Text>
-							</TouchableOpacity>
-							{ showNextButton? 
-								<TouchableOpacity style={[styles.button, styles.buttonNext]}
-									onPress={() => 
-										this.props.navigation.navigate(TutorialFixedEvent)}>
-									<Text style={styles.buttonText}>
-									Next
-									</Text>
-								</TouchableOpacity> : null}
-						</View>
+
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, () => 
+								this.props.navigation.navigate(TutorialFixedEvent)]} />
 					</View>
 				</ScrollView>
 

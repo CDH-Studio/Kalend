@@ -591,7 +591,6 @@ export const courseStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	...bottomButtonsStyles,
 	...snackbarStyle
 });
 
@@ -708,7 +707,6 @@ export const fixedEventStyles = StyleSheet.create({
 		color: gray
 	},
 
-	...bottomButtonsStyles,
 	...snackbarStyle
 });
 
@@ -842,8 +840,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		fontFamily: 'OpenSans-Regular',
 		marginBottom: 5
 	},
-	
-	...bottomButtonsStyles,
+
 	...snackbarStyle
 });
 
