@@ -1,4 +1,14 @@
-import {SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE} from '../constants';
+import {SIGNED_IN, 
+	SIGNED_OUT, 
+	SET_IMG, 
+	ADD_FE, 
+	ADD_NFE, 
+	ADD_COURSE, 
+	DELETE_NFE, 
+	DELETE_FE, 
+	DELETE_COURSE, 
+	CREATE_CALENDAR,
+	ADD_GENERATED_NFE} from '../constants';
 
 export function logonUser (profile) {
 	const action = {
@@ -34,6 +44,16 @@ export function AddFixedEvent (event) {
 
 	return action;
 }
+
+export function AddGeneratedNonFixedEvent (event) {
+	const action = {
+		type: ADD_GENERATED_NFE,
+		event
+	}; 
+
+	return action;
+}
+
 
 export function AddCourseEvent (event) {
 	const action = {
@@ -79,3 +99,13 @@ export function AddNonFixedEvent (event) {
 
 	return action;
 }
+
+export function setCalendarID (id) {
+	const action = {
+		type: CREATE_CALENDAR,
+		id
+	}; 
+
+	return action;
+}
+
