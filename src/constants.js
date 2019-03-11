@@ -18,3 +18,7 @@ export const CLEAR_IMG = 'CLEAR_IMG';
 export const CLEAR_COURSE = 'CLEAR_COURSE';
 export const CREATE_CALENDAR = 'CREATE_CALENDAR';
 export const ADD_GENERATED_NFE = 'ADD_GENERATED_NFE';
+export const SET_UNAVAILABLE_HOURS = 'SET_UNAVAILABLE_HOURS';
+export const UPDATE_FE = 'UPDATE_FE';
+export const UPDATE_COURSE = 'UPDATE_COURSE';
+export const UPDATE_NFE = 'UPDATE_NFE';

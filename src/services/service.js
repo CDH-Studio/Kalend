@@ -2,7 +2,7 @@ import { formatData, getStartDate } from './helper';
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { store } from '../store';
 import { ADD_COURSE } from '../constants';
-import { AddGeneratedNonFixedEvent } from '../actions';
+import { addGeneratedNonFixedEvent } from '../actions';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -290,7 +290,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 	obj.end.dateTime = availableDate.endDate;
 	obj.start.dateTime = availableDate.startDate;
 
-	store.dispatch(AddGeneratedNonFixedEvent(obj));
+	store.dispatch(addGeneratedNonFixedEvent(obj));
 };
 
 function getRndInteger(min, max) {

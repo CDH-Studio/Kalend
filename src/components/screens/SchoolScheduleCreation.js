@@ -84,11 +84,9 @@ class SchoolScheduleCreation extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-	const imgURI = state.ImageReducer.data;
-	const hasImage = state.ImageReducer.hasImage;
 	return {
-		imgURI,
-		hasImage
+		imgURI: state.ImageReducer.data,
+		hasImage: state.ImageReducer.hasImage
 	};
 };
 

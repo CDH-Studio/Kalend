@@ -1,20 +1,21 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor } from '../../../config';
-import { ADD_FE, CLEAR_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { InsertFixedEvent } from '../../services/service';
-import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
-import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
+import TutorialStatus, { onScroll } from '../TutorialStatus';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
+import { updateFixedEvents, addFixedEvent } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
-const viewHeight = 519.1428833007812;
+const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
 
 /**
@@ -22,7 +23,7 @@ const containerWidth = Dimensions.get('window').width;
 class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.update ? 'Edit Fixed Event': 'Add Fixed Events',
+		title: navigation.state.routeName === TutorialFixedEvent || navigation.state.routeName === DashboardAddCourse ? 'Add Fixed Events' : 'Edit Fixed Event',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -34,13 +35,7 @@ class FixedEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
-		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 		
-		this.state = { 
-			containerHeight
-		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -50,6 +45,26 @@ class FixedEvent extends React.Component {
 		} else {
 			this.resetField();
 		}
+
+		this.setContainerHeight();
+	}
+
+	setContainerHeight = () => {
+		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
+		let tutorialStatusHeight = this.props.navigation.state.routeName === TutorialFixedEvent ? 56.1 : 0;
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+
+		// Causes a bug (cannot scroll when keyboard is shown)
+		// let scrollable = containerHeight !== containerHeightTemp;
+		let scrollable = true;
+		let showTutShadow = containerHeight !== containerHeightTemp;
+
+		this.setState({
+			scrollable,
+			containerHeight,
+			showTutShadow
+		});
 	}
 
 	/**
@@ -78,7 +93,6 @@ class FixedEvent extends React.Component {
 		if (currentMinute < 10) {
 			currentMinute = '0' + currentMinute;
 		}
-
 		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
 	}
 
@@ -190,7 +204,7 @@ class FixedEvent extends React.Component {
 	 * @param {String} startTime The time output of the time dialog
 	 */
 	startTimeOnDateChange = (startTime) => {
-		let firstDate = new Date(this.state.startDate).getTime();this.beforeStartTime(this.getTwelveHourTime(startTime));
+		let firstDate = new Date(this.state.startDate).getTime();
 		let endDate = new Date(this.state.endDate).getTime();
 
 		let endTime;
@@ -203,6 +217,7 @@ class FixedEvent extends React.Component {
 		}
 
 		startTime = this.getTwelveHourTime(startTime);
+
 		this.setState({
 			startTime, 
 			endTime, 
@@ -231,7 +246,8 @@ class FixedEvent extends React.Component {
 		this.setState({
 			startTime,
 			endTime, 
-			amPmEnd: ''
+			amPmEnd: '',
+			endTimeValidated: true
 		});
 	}
 
@@ -266,8 +282,9 @@ class FixedEvent extends React.Component {
 		this.setState({
 			endDate: endDate, 
 			maxStartDate: endDate, 
-			minEndTime: this.setMinEndTime(), 
-			disabledEndTime: false
+			minEndTime: this.setMinEndTime(),
+			disabledEndTime: false,
+			endDateValidated: true
 		});
 	}
 
@@ -300,62 +317,55 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
+		this.props.navigation.navigate(TutorialNonFixedEvent);
+	}
+
+	/**
+	 * Validates the Title, End Date and End Time fields
+	 */
+	fieldValidation = () => {
+		let validated = true;
+
+		if (this.state.title === '') {
+			this.setState({titleValidated: false});
+			validated = false;
+		} else {
+			this.setState({titleValidated: true});
+		}
+		
+		if (this.state.disabledEndDate === true) {
+			this.setState({endDateValidated: false});
+			validated = false;
+		} else {
+			this.setState({endDateValidated: true});
+		}
+		
+		if(this.state.allDay === false) {
+			if (this.state.disabledEndTime === true) {
+				this.setState({endTimeValidated: false});
+				validated = false;
+			} else {
+				this.setState({endTimeValidated: true});
+			}
+		}
+
+		return validated;
 	}
 
 	/**
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		let info = {
-			title: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			recurrence: this.state.recurrence,
-			allDay: this.state.allDay,
-			startDate: this.state.startDate,
-			startTime: this.state.startTime,
-			endDate: this.state.endDate,
-			endTime: this.state.endTime
-		}; 
+		if (!this.fieldValidation()) {
+			return;
+		}
 
 		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
-			let events = this.props.FixedEventsReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_FE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_FE,
-					event
-				});
-			});
-
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+			this.props.dispatch(updateFixedEvents(this.props.selectedIndex, this.state));
+			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
-			InsertFixedEvent(info).then(data => {
-				if (!data.error) {
-					this.setState({
-						eventID: data.id
-					});
-					this.props.dispatch({
-						type: ADD_FE,
-						event: this.state
-					});
-					this.props.navigation.navigate(TutorialNonFixedEvent, {update:false});
-				}
-			});
+			this.props.dispatch(addFixedEvent(this.state));
+			this.props.navigation.navigate(TutorialNonFixedEvent);
 		}
 	}
 
@@ -363,28 +373,22 @@ class FixedEvent extends React.Component {
 	 * Adds the event to the calendar and resets the fields
 	 */
 	addAnotherEvent = () => {
-		let info = {
-			title: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			recurrence: this.state.recurrence,
-			allDay: this.state.allDay,
-			startDate: this.state.startDate,
-			startTime: this.state.startTime,
-			endDate: this.state.endDate,
-			endTime: this.state.endTime
-		};
-		InsertFixedEvent(info).then(data => {
-			if (!data.error) {
-				this.setState({
-					eventID: data.id
-				});
-				this.props.dispatch({
-					type: ADD_FE,
-					event: this.state
-				});
-				this.resetField();
-			}
+		if (!this.fieldValidation()) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add event',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
+			return false;
+		}
+
+		this.props.dispatch(addFixedEvent(this.state));
+		this.resetField();
+		this.refs._scrollView.scrollTo({x: 0});
+		this.setState({
+			snackbarText: 'Event successfully added',
+			snackbarVisible: true,
+			snackbarTime: 3000
 		});
 	}
 
@@ -394,6 +398,7 @@ class FixedEvent extends React.Component {
 	resetField = () => {
 		this.setState({
 			title: '',
+			titleValidated: true,
 
 			allDay: false,
 
@@ -404,6 +409,7 @@ class FixedEvent extends React.Component {
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
+			endDateValidated: true,
 
 			startTime: new Date().toLocaleTimeString(),
 			disabledStartTime : false,
@@ -413,22 +419,51 @@ class FixedEvent extends React.Component {
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime : true,
 			amPmEnd: this.getAmPm(),
+			endTimeValidated: true,
 
 			location: '',
 			recurrenceValue: 'None',
 			recurrence: 'NONE',
 			description: '',
 
-			eventID: ''
+			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
 	}
 
 	render() {
-		const {containerHeight} = this.state;
+		const { containerHeight, scrollable, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
+		
 		let tutorialStatus;
-		let addEventButton;
-		let nextButton;
-		let paddingBottomContainer = HEIGHT;
+		let addEventButtonText;
+		let addEventButtonFunction;
+		let errorTitle;
+		let errorEnd;
+		let showNextButton = true;
+
+		if (!this.state.titleValidated) {
+			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+		} else {
+			errorTitle = null;
+		}
+
+		if(this.state.allDay === false) {
+			if (!this.state.endDateValidated && !this.state.endTimeValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select Dates and Times.</Text>;
+			} else if (!this.state.endTimeValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select an End Date and Time.</Text>;
+			} else {
+				errorEnd = null;
+			}
+		} else {
+			if (!this.state.endDateValidated) {
+				errorEnd = <Text style={styles.errorEnd}>Please select a Start and End Date.</Text>;
+			} else {
+				errorEnd = null;
+			}
+		}
 
 		/**
 		 * In order to show components based on current route
@@ -436,56 +471,56 @@ class FixedEvent extends React.Component {
 		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
 			tutorialStatus = <TutorialStatus active={2}
 				color={blue}
-				backgroundColor={white}
-				skip={this.skip} />;
+				backgroundColor={'#ffffff'}
+				skip={this.skip}
+				showTutShadow={showTutShadow} />;
 
-			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-				</TouchableOpacity>;
-
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>NEXT</Text>
-			</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
 		} else {
 			tutorialStatus = null;
-			addEventButton = null;
-			paddingBottomContainer = null;
-			nextButton = 
-			<TouchableOpacity style={styles.buttonNext}
-				onPress={this.nextScreen}>
-				<Text style={styles.buttonNextText}>DONE</Text>
-			</TouchableOpacity>;
+
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
+			showNextButton = false;
 		}
 		
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
-
-				<ScrollView style={styles.scrollView}>
-					<View style={[styles.content, {height: containerHeight, paddingBottom:paddingBottomContainer}]}>
+				
+				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
+					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
+					scrollEnabled={scrollable}
+					scrollEventThrottle={100}>
+					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
+							
 							<MaterialCommunityIcons name="calendar-today"
 								size={130}
 								color={blue}/>
 						</View>
 
-						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title"
-								size={30}
-								color={blue} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText}
-									placeholder="Title" 
-									onChangeText={(title) => this.setState({title})}
-									value={this.state.title}/>
+						<View>
+							<View style={styles.textInput}>
+								<MaterialCommunityIcons name="format-title"
+									size={30}
+									color={blue} />
+
+								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<TextInput style={styles.textInputText}
+										placeholder="Title" 
+										onChangeText={(title) => this.setState({title, titleValidated: true})}
+										value={this.state.title}/>
+								</View>
 							</View>
+
+							{errorTitle}
 						</View>
+
 						<View style={styles.timeSection}>
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
@@ -520,19 +555,21 @@ class FixedEvent extends React.Component {
 									onDateChange={this.startDateOnDateChange} />
 									
 								<DatePicker showIcon={false} 
-									time={this.state.startTime} 
-									mode="time" 
-									disabled = {this.state.disabledStartTime}
+									date={this.state.startTime} 
+									mode="time"
+									disabled={this.state.disabledStartTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}, 
 										placeholderText:{
 											color: gray, 
+											opacity: this.state.disabledStartTime ? 0 : 1,
 											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="HH:mm A" 
+									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
@@ -551,6 +588,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
+											color: !this.state.endDateValidated ? '#ff0000' : gray,
 											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 									placeholder={this.state.endDate} 
 									format="ddd., MMM DD, YYYY" 
@@ -560,25 +598,29 @@ class FixedEvent extends React.Component {
 									onDateChange={this.endDateOnDateChange} />
 
 								<DatePicker showIcon={false} 
-									time={this.state.endTime} 
+									date={this.state.endTime} 
 									mode="time" 
 									disabled = {this.state.disabledEndTime}
 									style={{width:80}}
 									customStyles={{
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
 										placeholderText:{
-											color: gray, 
+											color: !this.state.endTimeValidated ? '#ff0000' : gray, 
+											opacity: this.state.allDay ? 0 : 1,
 											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
 									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-									format="HH:mm A" 
+									format="h:mm A" 
 									minDate={this.state.minEndTime}
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
 									onDateChange={this.endTimeOnDateChange}/>
 							</View>
+
+							{errorEnd}
 						</View>
 
 						<View style={styles.description}>
@@ -616,7 +658,7 @@ class FixedEvent extends React.Component {
 								<View style={styles.textInputBorder}>
 									{
 										Platform.OS === 'ios' ? 
-											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue}</Text>
+											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
 											:	
 											<Picker style={styles.recurrence} 
 												selectedValue={this.state.recurrence} 
@@ -631,28 +673,35 @@ class FixedEvent extends React.Component {
 							</View>
 						</View>
 
-						<View style={styles.buttons}>
-							{addEventButton}
-
-							{nextButton}
-						</View>
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
 
 				{tutorialStatus}
+
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const { FixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
 		FEditState: FixedEventsReducer[selected],
-		FixedEventsReducer
+		FixedEventsReducer,
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(FixedEvent);

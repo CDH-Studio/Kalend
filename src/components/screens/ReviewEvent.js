@@ -3,14 +3,14 @@ import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-n
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor } from '../../../config';
-import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
+import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
+import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 
 const priorityLevels = {
 	0: 'Low',
@@ -46,7 +46,8 @@ class ReviewEvent extends React.Component {
 			currentY: 0,
 			fixedEventData: [],
 			nonFixedEventData: [],
-			schoolScheduleData: []
+			schoolScheduleData: [],
+			showTutShadow: true
 		};
 	}
 
@@ -63,8 +64,6 @@ class ReviewEvent extends React.Component {
 		let fixedEventData = [];
 		let nonFixedEventData = [];
 		let schoolScheduleData = [];
-
-		console.log(store.getState());
 
 		if (store.getState().CoursesReducer !== undefined) {
 			store.getState().CoursesReducer.map((data) => {
@@ -137,23 +136,23 @@ class ReviewEvent extends React.Component {
 	}
 	
 	deleteEvent = (id, category) => {
+		let dataToDispatch;
 		let newEvents;
-		let eventType;
 		let objectToChange;
 
 		switch (category) {
 			case 'SchoolSchedule':
-				eventType = DELETE_COURSE;
+				dataToDispatch = deleteCourse(id);
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
 			case 'FixedEvent':
-				eventType = DELETE_FE;
+				dataToDispatch = deleteFixedEvent(id);
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
 			case 'NonFixedEvent':
-				eventType = DELETE_NFE;
+				dataToDispatch = deleteNonFixedEvent(id);
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
 				break;
@@ -166,7 +165,7 @@ class ReviewEvent extends React.Component {
 			if (index != id) return event;
 		});
 
-		this.props.dispatch({type: eventType, event: newEvents});
+		this.props.dispatch(dataToDispatch);
 		this.setState({[objectToChange]: newEvents});
 	}
 
@@ -185,6 +184,25 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
+		store.getState().FixedEventsReducer.map((event) => {
+			let info = {
+				title: event.title,
+				location: event.location,
+				description: event.description,
+				recurrence: event.recurrence,
+				allDay: event.allDay,
+				startDate: event.startDate,
+				startTime: event.startTime,
+				endDate: event.endDate,
+				endTime: event.endTime
+			}; 
+			InsertFixedEvent(info).then(data => {
+				if (data.error) {
+					console.error('ERROR adding event', data);
+				}
+			});
+		});
+
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			this.props.navigation.navigate(TutorialScheduleCreation);
 		} else {
@@ -193,6 +211,7 @@ class ReviewEvent extends React.Component {
 	}
 
 	render() {
+		const { showTutShadow } = this.state;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 		/**
@@ -202,7 +221,8 @@ class ReviewEvent extends React.Component {
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			tutorialStatus = <TutorialStatus active={4}
 				color={blue}
-				backgroundColor={white} />;
+				backgroundColor={white}
+				showTutShadow={showTutShadow} />;
 		} else {
 			tutorialStatus = null;
 		}
@@ -213,7 +233,11 @@ class ReviewEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}
-					onScroll={this.onScroll}>
+					onScroll={(event) => { 
+						this.setState({showTutShadow: onScroll(event, showTutShadow)});
+						this.onScroll(event);
+					}}
+					scrollEventThrottle={100} >
 					<View style={[styles.content, {height: containerHeight, paddingBottom: tutorialHeight + 16}]} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
@@ -286,24 +310,25 @@ class ReviewEvent extends React.Component {
 					</View>		
 				</ScrollView>
 
+				{tutorialStatus}
+				
 				<FAB style={styles.fab}
 					icon="check"
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
-
-				{tutorialStatus}
 			</View>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer} = state;
+	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer, NavigationReducer } = state;
 
 	return {
 		FixedEventsReducer,
 		NonFixedEventsReducer,
-		CoursesReducer 
+		CoursesReducer, 
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
 }
 

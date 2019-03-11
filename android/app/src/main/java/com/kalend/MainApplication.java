@@ -3,6 +3,14 @@ package com.kalend;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import fr.snapp.imagebase64.RNImgToBase64Package;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
+import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -37,7 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-		  new RNFirebasePackage(),
+		      new RNFirebasePackage(),
           new RNImgToBase64Package(),
           new VectorIconsPackage(),
           new LottiePackage(),
@@ -45,8 +53,8 @@ public class MainApplication extends Application implements ReactApplication {
           new LinearGradientPackage(),
           new RNGoogleSigninPackage(),
           new RNCameraPackage(),
-		  new RNFirebaseRemoteConfigPackage(),
-		  new RNFirebaseMessagingPackage(),
+          new RNFirebaseRemoteConfigPackage(),
+          new RNFirebaseMessagingPackage(),
           new RNFirebaseAnalyticsPackage(),
           new RNFirebaseCrashlyticsPackage(),
           new RNFirebasePerformancePackage()

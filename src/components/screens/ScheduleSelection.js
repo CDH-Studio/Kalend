@@ -7,9 +7,10 @@ import converter from 'number-to-words';
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
-import { SET_SELECTED_SCHEDULE } from '../../constants';
-import { white, black } from '../../styles';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { white, black, gray } from '../../styles';
 import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
+import { setSelectedSchedule } from '../../actions';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -83,8 +84,8 @@ class ScheduleEvent extends React.Component {
 					ios: {
 						shadowColor: black,
 						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: this.props.showShadow ? 0.8 : 0,
-						shadowRadius: 2,    
+						shadowOpacity: this.props.showShadow ? 0.2 : 0,
+						shadowRadius: 1,    
 					},
 					android: {
 						elevation: this.props.showShadow ? 3 : 0,
@@ -246,8 +247,8 @@ class Schedule extends React.Component {
 							ios: {
 								shadowColor: black,
 								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: showShadow ? 0.8 : 0,
-								shadowRadius: 2,    
+								shadowOpacity: showShadow ? 0.4 : 0,
+								shadowRadius: 5,    
 							},
 							android: {
 								elevation: showShadow ? 5 : 0,
@@ -344,7 +345,7 @@ class ScheduleSelection extends React.Component {
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			marginTop: Platform.OS === 'ios' ? StatusBar.currentHeight : StatusBar.currentHeight
 		}
 	};
 
@@ -376,13 +377,13 @@ class ScheduleSelection extends React.Component {
 	 * @param {Integer} index The index of the selected school schedule
 	 */
 	setIndex = (index) => {
-		this.props.dispatch({
-			type: SET_SELECTED_SCHEDULE,
-			index,
-		});
+		this.props.dispatch(setSelectedSchedule(index));
 	}
-	
+
 	render() {
+		console.log('NavigationHeader', Header.HEIGHT);
+		console.log('StatusBar', StatusBar.HEIGHT);
+
 		return(
 			<LinearGradient style={styles.container} 
 				colors={gradientColors}>
@@ -405,7 +406,6 @@ class ScheduleSelection extends React.Component {
 										numOfLines={6} />;
 								})
 							}
-
 						</View>
 					</ScrollView>
 				</ImageBackground>
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
 
 	content: {
 		padding: containerPadding,
-		paddingTop: StatusBar.currentHeight + Header.HEIGHT + 10,
+		paddingTop: getStatusBarHeight() + Header.HEIGHT + 10,
 	},
 
 	description: {
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
 	},
 
 	hoursText: {
-		paddingVertical: 3.4, 
+		paddingVertical: Platform.OS === 'ios' ? 4.6 : 3.4, 
 		opacity: 0.5
 	}, 
 
@@ -457,6 +457,7 @@ const styles = StyleSheet.create({
 	weekLetters: {
 		fontFamily: 'Raleway-Medium', 
 		fontSize: 17, 
+		color: gray
 	}, 
 
 	weekLetterContainer: {

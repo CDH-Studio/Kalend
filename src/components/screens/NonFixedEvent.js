@@ -1,17 +1,18 @@
 import React from 'react';
-import { Platform, StatusBar, View, ScrollView, Text, Slider, TouchableOpacity, Switch, Dimensions, TextInput } from 'react-native';
+import { Platform, StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { statusBlueColor } from '../../../config';
-import { ADD_NFE, CLEAR_NFE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
-import { TutorialNonFixedEvent, TutorialReviewEvent } from '../../constants/screenNames';
+import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
+import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
+import { TutorialNonFixedEvent, TutorialUnavailableHours, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
+import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
+import BottomButtons from '../BottomButtons';
 
 const viewHeight = 780.5714111328125;
 
@@ -21,7 +22,7 @@ const viewHeight = 780.5714111328125;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.update ? 'Edit Non-Fixed Event': 'Add Non-Fixed Events',
+		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -42,8 +43,7 @@ class NonFixedEvent extends React.Component {
 		}
 
 		this.state = { 
-			containerHeight,
-			eventID: Date.now()
+			containerHeight
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -56,13 +56,93 @@ class NonFixedEvent extends React.Component {
 			this.resetFields();
 		}
 	}
-	
+
+	/**
+	 * To go to the next screen without entering any information
+	 */
+	skip = () => {
+		this.props.navigation.navigate(TutorialUnavailableHours);
+	}
+
+	/**
+	 * Validates the Title, End Date and End Time fields
+	 */
+	fieldValidation = () => {
+		let validated = true;
+
+		if (this.state.title === '') {
+			this.setState({titleValidated: false});
+			validated = false;
+		} else {
+			this.setState({titleValidated: true});
+		}
+		
+		if(this.state.specificDateRange === true) {
+			if (this.state.disabledEndDate === true) {
+				this.setState({endDateValidated: false});
+				validated = false;
+			} else {
+				this.setState({endDateValidated: true});
+			}
+		}
+		
+		if (this.state.hours === 0 && this.state.minutes === 0) {
+			this.setState({durationValidated: false});
+			validated = false;
+		} else {
+			this.setState({durationValidated: true});
+		}
+
+		return validated;
+	}
+
+	/**
+	 * Adds the event in the database
+	 */
+	nextScreen = () => {
+		if (!this.fieldValidation()) {
+			return;
+		}
+
+		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
+			this.props.dispatch(addNonFixedEvent(this.state));
+			this.props.navigation.navigate(TutorialReviewEvent);
+		} else {
+			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
+			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+		}
+	}
+
+	/**
+	 * Adds the event to the database and resets the fields
+	 */
+	addAnotherEvent = () => {
+		if (!this.fieldValidation()) {
+			this.setState({
+				snackbarText: 'Invalid fields, please review to add event',
+				snackbarVisible: true,
+				snackbarTime: 5000
+			});
+			return;
+		}
+
+		this.props.dispatch(addNonFixedEvent(this.state));
+		this.resetFields();
+		this.refs._scrollView.scrollTo({x: 0});
+		this.setState({
+			snackbarText: 'Event successfully added',
+			snackbarVisible: true,
+			snackbarTime: 3000
+		});
+	}
+
 	/**
 	 * Reset the fields of the form
 	 */
 	resetFields = () => {
 		this.setState({
 			title: '',
+			titleValidated: true,
 
 			specificDateRange: false,
 			startDate: new Date().toDateString(),
@@ -72,82 +152,58 @@ class NonFixedEvent extends React.Component {
 			endDate: new Date().toDateString(),
 			minEndDate: this.startDate,
 			disabledEndDate : true,
+			endDateValidated: true,
 
 			hours: 0,
 			minutes: 0,
+			durationValidated: true,
 			isDividable: false,
-			// durationType: 0,
 			occurrence: 1,
 
 			priority: 0.5,
 			location: '',
-			description: ''
+			description: '',
+
+			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		});
-	}
-
-	/**
-	 * To go to the next screen without entering any information
-	 */
-	skip = () => {
-		this.props.navigation.navigate(TutorialReviewEvent);
-	}
-
-	/**
-	 * Adds the event in the database
-	 */
-	nextScreen = () => {
-
-		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
-			this.props.dispatch({
-				type: ADD_NFE,
-				event: this.state
-			});
-			this.props.navigation.navigate(TutorialReviewEvent);
-		} else {
-			let events = this.props.NonFixedEventsReducer;
-			let arr = [];
-
-			events.map((event) => {
-				if (event.eventID === this.state.eventID) {
-					arr.push(this.state);
-				} else {
-					arr.push(event);
-				}
-			});
-
-			this.props.dispatch({
-				type: CLEAR_NFE,
-			});
-
-			arr.map((event) => {
-				this.props.dispatch({
-					type: ADD_NFE,
-					event
-				});
-			});
-
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
-		}
-	}
-
-	/**
-	 * Adds the event to the database and resets the fields
-	 */
-	addAnotherEvent = () => {
-		this.props.dispatch({
-			type: ADD_NFE,
-			event: this.state
-		});
-		this.resetFields();
 	}
 
 	render() {
-		const {containerHeight} = this.state;
+		const { containerHeight, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
+		let addEventButtonText;
+		let addEventButtonFunction;
 		let tutorialStatus;
-		let addEventButton;
-		let nextButton;
 		let paddingBottomContainer = HEIGHT;
+		let errorTitle;
+		let errorEndDate;
+		let errorDuration;
+		let showNextButton = true;
+
+		if (!this.state.titleValidated) {
+			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+		} else {
+			errorTitle = null;
+		}
+
+		if(this.state.specificDateRange === true) {
+			if (!this.state.endDateValidated) {
+				errorEndDate = <Text style={styles.errorEndDate}>Please select a Start and End Date.</Text>;
+			} else {
+				errorEndDate = null;
+			}
+		} else {
+			errorEndDate = null;
+		}
+
+		if (!this.state.durationValidated) {
+			errorDuration = <Text style={styles.errorDuration}>Please add a Duration.</Text>;
+		} else {
+			errorDuration = null;
+		}
 
 		/**
 		 * In order to show components based on current route
@@ -156,38 +212,29 @@ class NonFixedEvent extends React.Component {
 			tutorialStatus = <TutorialStatus active={3}
 				color={blue}
 				backgroundColor={white}
-				skip={this.skip} />;
+				skip={this.skip}
+				showTutShadow={showTutShadow} />;
 
-			addEventButton = 
-				<TouchableOpacity style={styles.buttonEvent}
-					onPress={this.addAnotherEvent}> 
-					<Text style={styles.buttonEventText}>ADD ANOTHER{'\n'}EVENT</Text>
-				</TouchableOpacity>;
-
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>NEXT</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Add';
+			addEventButtonFunction = this.addAnotherEvent;
 		} else {
 			tutorialStatus = null;
 
-			addEventButton = null;
-
-			nextButton = 
-				<TouchableOpacity style={styles.buttonNext}
-					onPress={this.nextScreen}>
-					<Text style={styles.buttonNextText}>DONE</Text>
-				</TouchableOpacity>;
+			addEventButtonText = 'Done';
+			addEventButtonFunction = this.nextScreen;
 
 			paddingBottomContainer = null;
+			showNextButton = false;
 		}
 
 		return(
 			<View style={styles.container}>
 				<StatusBar backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.scrollView}>
+				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
+					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
+					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
 						<View style={styles.instruction}>
 							<MaterialCommunityIcons name="face"
@@ -197,17 +244,21 @@ class NonFixedEvent extends React.Component {
 							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
 						</View>
 
-						<View style={styles.textInput}>
-							<MaterialCommunityIcons name="format-title"
-								size={30}
-								color={blue} />
+						<View>
+							<View style={styles.textInput}>
+								<MaterialCommunityIcons name="format-title"
+									size={30}
+									color={blue} />
 
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText} 
-									placeholder="Title" 
-									onChangeText={(title) => this.setState({title})} 
-									value={this.state.title}/>
+								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<TextInput style={styles.textInputText} 
+										placeholder="Title" 
+										onChangeText={(title) => this.setState({title, titleValidated: true})} 
+										value={this.state.title}/>
+								</View>
 							</View>
+
+							{errorTitle}
 						</View>
 						
 						<View>
@@ -225,86 +276,93 @@ class NonFixedEvent extends React.Component {
 								</View>
 								
 								{this.state.specificDateRange ? /*To hide/show the date*/
-									<View style={styles.questionLayout}>
-										<Text style={styles.blueTitle}>Start Date</Text>
+									<View>
+										<View style={styles.questionLayout}>
+											<Text style={styles.blueTitle}>Start Date</Text>
 
-										<DatePicker showIcon={false} 
-											date={this.state.startDate} 
-											mode="date" 
-											style={{width:140}}
-											disabled={this.state.disabledStartDate}
-											customStyles={{
-												disabled:{backgroundColor: 'transparent'},
-												dateInput:{borderWidth: 0},
-												dateText:{
-													fontFamily: 'OpenSans-Regular',
-													color: this.state.disabledStartDate ? '#FF0000' : gray}}} 
-											placeholder={this.state.startDate} 
-											format="ddd., MMM DD, YYYY" 
-											minDate={this.state.minStartDate} 
-											maxDate={this.state.maxStartDate}
-											confirmBtnText="Confirm" 
-											cancelBtnText="Cancel" 
-											onDateChange={(startDate) => this.setState({
-												startDate: startDate,
-												endDate: startDate,
-												disabledEndDate: false,
-												minEndDate: startDate})} />
-									</View> : null}
-									
-								{this.state.specificDateRange ? /*To hide/show the date*/
-									<View style={styles.questionLayout}>
-										<Text style={styles.blueTitle}>End Date</Text>
+											<DatePicker showIcon={false} 
+												date={this.state.startDate} 
+												mode="date" 
+												style={{width:140}}
+												disabled={this.state.disabledStartDate}
+												customStyles={{
+													disabled:{backgroundColor: 'transparent'},
+													dateInput:{borderWidth: 0},
+													dateText:{
+														fontFamily: 'OpenSans-Regular',
+														color: !this.state.endDateValidated ? '#FF0000' : gray}}} 
+												placeholder={this.state.startDate} 
+												format="ddd., MMM DD, YYYY" 
+												minDate={this.state.minStartDate} 
+												maxDate={this.state.maxStartDate}
+												confirmBtnText="Confirm" 
+												cancelBtnText="Cancel" 
+												onDateChange={(startDate) => this.setState({
+													startDate: startDate,
+													endDate: startDate,
+													disabledEndDate: false,
+													minEndDate: startDate, endDateValidated: true})} />
+										</View>
+										
+										<View style={styles.questionLayout}>
+											<Text style={styles.blueTitle}>End Date</Text>
 
-										<DatePicker showIcon={false} 
-											date={this.state.endDate} 
-											mode="date" 
-											style={{width:140}}
-											disabled={this.state.disabledEndDate}
-											customStyles={{
-												disabled:{backgroundColor: 'transparent'},
-												dateInput:{borderWidth: 0},
-												dateText:{fontFamily: 'OpenSans-Regular',
-													color: gray,
-													textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
-											placeholder={this.state.endDate} 
-											format="ddd., MMM DD, YYYY" 
-											minDate={this.state.minEndDate}
-											confirmBtnText="Confirm" 
-											cancelBtnText="Cancel" 
-											onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate})} />
-									</View> : null}
+											<DatePicker showIcon={false} 
+												date={this.state.endDate} 
+												mode="date" 
+												style={{width:140}}
+												disabled={this.state.disabledEndDate}
+												customStyles={{
+													disabled:{backgroundColor: 'transparent'},
+													dateInput:{borderWidth: 0},
+													dateText:{fontFamily: 'OpenSans-Regular',
+														color: !this.state.endDateValidated ? '#ff0000' : gray,
+														textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
+												placeholder={this.state.endDate} 
+												format="ddd., MMM DD, YYYY" 
+												minDate={this.state.minEndDate}
+												confirmBtnText="Confirm" 
+												cancelBtnText="Cancel" 
+												onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, })} />
+										</View>
 
-								<View style={styles.duration}>
-									<Text style={styles.blueTitle}>Duration</Text>
+										{errorEndDate}
+									</View>: null}
 
-									<View style={styles.timePicker}>
-										<NumericInput initValue = {this.state.hours}
-											value={this.state.hours}
-											onChange={(hours) => this.setState({hours})}
-											minValue={0} 
-											leftButtonBackgroundColor={lightOrange}
-											rightButtonBackgroundColor={orange}
-											rounded={true}
-											borderColor={'lightgray'}
-											textColor={gray}
-											iconStyle={{color: white}} />
-										<Text style={styles.optionsText}>hour(s)</Text>
+								<View>
+									<View style={styles.duration}>
+										<Text style={styles.blueTitle}>Duration</Text>
+
+										<View style={styles.timePicker}>
+											<NumericInput initValue = {this.state.hours}
+												value={this.state.hours}
+												onChange={(hours) => this.setState({hours, durationValidated: true})}
+												minValue={0} 
+												leftButtonBackgroundColor={lightOrange}
+												rightButtonBackgroundColor={orange}
+												rounded={true}
+												borderColor={'lightgray'}
+												textColor={!this.state.durationValidated ? '#ff0000' : gray}
+												iconStyle={{color: '#ffffff'}} />
+											<Text style={styles.optionsText}>hour(s)</Text>
+										</View>
+
+										<View style={styles.timePicker}>
+											<NumericInput initValue={this.state.minutes}
+												value={this.state.minutes}
+												onChange={(minutes) => this.setState({minutes, durationValidated: true})}
+												minValue={0} 
+												leftButtonBackgroundColor={lightOrange}
+												rightButtonBackgroundColor={orange}
+												rounded={true}
+												borderColor={'lightgray'}
+												textColor={!this.state.durationValidated ? '#ff0000' : gray}
+												iconStyle={{color: '#ffffff'}}  />
+											<Text style={styles.optionsText}>minute(s)</Text>
+										</View>
 									</View>
 
-									<View style={styles.timePicker}>
-										<NumericInput initValue={this.state.minutes}
-											value={this.state.minutes}
-											onChange={(minutes) => this.setState({minutes})}
-											minValue={0} 
-											leftButtonBackgroundColor={lightOrange}
-											rightButtonBackgroundColor={orange}
-											rounded={true}
-											borderColor={'lightgray'}
-											textColor={gray}
-											iconStyle={{color: white}}  />
-										<Text style={styles.optionsText}>minute(s)</Text>
-									</View>
+									{errorDuration}
 								</View>
 
 								<View style={styles.switch}>
@@ -383,28 +441,36 @@ class NonFixedEvent extends React.Component {
 							</View>
 						</View>
 
-						<View style={styles.buttons}>
-							{addEventButton}
 
-							{nextButton}
-						</View>
+						<BottomButtons twoButtons={showNextButton}
+							buttonText={[addEventButtonText, 'Next']}
+							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
 
 				{tutorialStatus}	
+				
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const { NonFixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
 		NFEditState: NonFixedEventsReducer[selected],
-		NonFixedEventsReducer
+		NonFixedEventsReducer,
+		selectedIndex: NavigationReducer.reviewEventSelected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(NonFixedEvent);
