@@ -134,7 +134,7 @@ export function setNavigationScreen (data) {
 		main: data.main,
 		routes: data.routes,
 		reviewEventSelected: data.reviewEventSelected
-  };
+	};
 
 	return action;
 }
