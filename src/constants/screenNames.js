@@ -16,6 +16,7 @@ export const TutorialSchoolSchedule = 'TutorialSchoolSchedule';
 export const TutorialAddCourse = 'TutorialAddCourse';
 export const TutorialScheduleSelectionDetails = 'TutorialScheduleSelectionDetails';
 
+export const LoginNavigator = 'LoginNavigator';
 export const WelcomeScreen = 'WelcomeScreen';
 export const DashboardOptionsNavigator = 'DashboardOptionsNavigator';
 export const DashboardScheduleCreation = 'DashboardScheduleCreation';
