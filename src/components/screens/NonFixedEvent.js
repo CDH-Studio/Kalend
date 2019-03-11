@@ -128,6 +128,7 @@ class NonFixedEvent extends React.Component {
 
 		this.props.dispatch(addNonFixedEvent(this.state));
 		this.resetFields();
+		this.refs._scrollView.scrollTo({x: 0});
 		this.setState({
 			snackbarText: 'Event successfully added',
 			snackbarVisible: true,
@@ -232,6 +233,7 @@ class NonFixedEvent extends React.Component {
 				<StatusBar backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
 					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>

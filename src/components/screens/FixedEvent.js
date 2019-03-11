@@ -9,7 +9,6 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { InsertFixedEvent } from '../../services/service';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
@@ -365,24 +364,8 @@ class FixedEvent extends React.Component {
 			this.props.dispatch(updateFixedEvents(this.props.selectedIndex, this.state));
 			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
-			let info = {
-				title: this.state.title,
-				location: this.state.location,
-				description: this.state.description,
-				recurrence: this.state.recurrence,
-				allDay: this.state.allDay,
-				startDate: this.state.startDate,
-				startTime: this.state.startTime,
-				endDate: this.state.endDate,
-				endTime: this.state.endTime
-			}; 
-
-			InsertFixedEvent(info).then(data => {
-				if (!data.error) {
-					this.props.dispatch(addFixedEvent(this.state));
-					this.props.navigation.navigate(TutorialNonFixedEvent);
-				}
-			});
+			this.props.dispatch(addFixedEvent(this.state));
+			this.props.navigation.navigate(TutorialNonFixedEvent);
 		}
 	}
 
@@ -399,27 +382,13 @@ class FixedEvent extends React.Component {
 			return false;
 		}
 
-		let info = {
-			title: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			recurrence: this.state.recurrence,
-			allDay: this.state.allDay,
-			startDate: this.state.startDate,
-			startTime: this.state.startTime,
-			endDate: this.state.endDate,
-			endTime: this.state.endTime
-		};
-		InsertFixedEvent(info).then(data => {
-			if (!data.error) {
-				this.props.dispatch(addFixedEvent(this.state));
-				this.resetField();
-				this.setState({
-					snackbarText: 'Event successfully added',
-					snackbarVisible: true,
-					snackbarTime: 3000
-				});
-			}
+		this.props.dispatch(addFixedEvent(this.state));
+		this.resetField();
+		this.refs._scrollView.scrollTo({x: 0});
+		this.setState({
+			snackbarText: 'Event successfully added',
+			snackbarVisible: true,
+			snackbarTime: 3000
 		});
 	}
 
@@ -522,6 +491,7 @@ class FixedEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 				
 				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
 					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>
