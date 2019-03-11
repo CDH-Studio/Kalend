@@ -25,7 +25,7 @@ class TutorialStatus extends React.Component {
 
 		// According to active index, darken that dot
 		let colors = [];
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 5; i++) {
 			if (i + 1 === props.active) {
 				colors[i] = props.color;
 			} else {
@@ -86,7 +86,7 @@ class TutorialStatus extends React.Component {
 		let dots = [];
 		const { colors } = this.state;
 
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 5; i++) {
 			dots.push(
 				<Octicons name="primitive-dot" 
 					key={i}
@@ -124,7 +124,7 @@ class TutorialStatus extends React.Component {
 						shadowRadius: 3,    
 					},
 					android: {
-						elevation: showTutShadow *  10,
+						elevation: showTutShadow *  5,
 					},
 				}),}]}>
 				<View style={{ 

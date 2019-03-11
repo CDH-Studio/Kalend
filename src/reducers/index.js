@@ -7,5 +7,6 @@ import NavigationReducer from './reducer_navigation';
 import StateReducer from './reducer_state';
 import ScheduleSelectionReducer from './reducer_schedule';
 import CoursesReducer from './reducer_course';
+import UnavailableReducer from './reducer_unavailable';
 
-export default combineReducers( { HomeReducer, ImageReducer, FixedEventsReducer, CoursesReducer, NonFixedEventsReducer,  NavigationReducer, StateReducer, ScheduleSelectionReducer });
+export default combineReducers( { HomeReducer, ImageReducer, FixedEventsReducer, CoursesReducer, NonFixedEventsReducer,  NavigationReducer, StateReducer, ScheduleSelectionReducer, UnavailableReducer });

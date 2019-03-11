@@ -310,12 +310,12 @@ class ReviewEvent extends React.Component {
 					</View>		
 				</ScrollView>
 
+				{tutorialStatus}
+				
 				<FAB style={styles.fab}
 					icon="check"
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
-
-				{tutorialStatus}
 			</View>
 		);
 	}
