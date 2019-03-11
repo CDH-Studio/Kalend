@@ -414,6 +414,7 @@ class FixedEvent extends React.Component {
 			if (!data.error) {
 				this.props.dispatch(addFixedEvent(this.state));
 				this.resetField();
+				this.refs._scrollView.scrollTo({x: 0});
 				this.setState({
 					snackbarText: 'Event successfully added',
 					snackbarVisible: true,
@@ -522,6 +523,7 @@ class FixedEvent extends React.Component {
 					backgroundColor={statusBlueColor} />
 				
 				<ScrollView style={styles.scrollView}
+					ref='_scrollView'
 					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>

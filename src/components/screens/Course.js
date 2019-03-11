@@ -306,6 +306,7 @@ class Course extends React.Component {
 
 		if(validated) {
 			this.resetField();
+			this.refs._scrollView.scrollTo({x: 0});
 			this.setState({
 				snackbarText: 'Course successfully added',
 				snackbarVisible: true,
@@ -378,7 +379,7 @@ class Course extends React.Component {
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 
-				<ScrollView>
+				<ScrollView ref='_scrollView'>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
