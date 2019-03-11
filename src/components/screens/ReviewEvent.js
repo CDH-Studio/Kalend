@@ -184,7 +184,7 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		store.getState().FixedEventsReducer.map((event, key) => {
+		store.getState().FixedEventsReducer.map((event) => {
 			let info = {
 				title: event.title,
 				location: event.location,
