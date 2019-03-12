@@ -6,16 +6,29 @@ target 'Kalend' do
   # use_frameworks!
 
   # Pods for Kalend
-  pod 'React', :path => '../node_modules/react-native'
+  pod 'React', :path => '../node_modules/react-native', subspecs: [
+    'Core',
+    'CxxBridge', # Include this for RN >= 0.47
+    'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket', # Needed for debugging
+    'RCTAnimation', # Needed for FlatList and animations running on native UI thread
+    'ART',
+  ]
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'GoogleSignIn'
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-  pod 'React', path: '../node_modules/react-native', subspecs: [
-    'ART',
-  ]
+  pod 'react-native-camera', path: '../node_modules/react-native-camera'
+  pod 'Firebase/Core', '~> 5.15.0'
+  pod 'Firebase/RemoteConfig', '~> 5.15.0'
+  pod 'Fabric', '~> 1.7.13'
+  pod 'Crashlytics', '~> 3.10.7'
+  pod 'Firebase/Performance', '~> 5.15.0'
 
   target 'Kalend-tvOSTests' do
     inherit! :search_paths

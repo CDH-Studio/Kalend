@@ -17,7 +17,7 @@ exports[`Buttons render correctly 1`] = `
       "borderRadius": 12,
       "borderWidth": 3,
       "elevation": 4,
-      "height": 55,
+      "height": 58,
       "justifyContent": "center",
       "opacity": 1,
       "width": 100,
@@ -69,6 +69,7 @@ exports[`Picker renders correctly 1`] = `
     Object {
       "color": "#565454",
       "height": 40,
+      "marginBottom": -8,
       "marginLeft": -5,
       "width": "105%",
     }

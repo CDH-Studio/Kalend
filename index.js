@@ -1,8 +1,13 @@
-import {AppRegistry, StatusBar} from 'react-native';
-import Home from './src/components/screens/Home';
 import React from 'react';
-import store from './src/store';
+import { AppRegistry, StatusBar } from 'react-native';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { name as appName } from './app.json';
+import { blueColor, orangeColor } from './config';
+import { store, persistor } from './src/store/index';
+import Home from './src/components/screens/Home';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
 import SchoolScheduleSelectPicture from './src/components/screens/SchoolScheduleSelectPicture';
 import SchoolScheduleTakePicture from './src/components/screens/SchoolScheduleTakePicture';
@@ -11,36 +16,29 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen';
 import FixedEvent from './src/components/screens/FixedEvent';
 import NonFixedEvent from './src/components/screens/NonFixedEvent';
 import SchoolScheduleCreation from './src/components/screens/SchoolScheduleCreation';
-import {name as appName} from './app.json';
-import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import ScheduleCreation from './src/components/screens/ScheduleCreation';
+import ScheduleSelection from './src/components/screens/ScheduleSelection';
+import ScheduleSelectionDetails from './src/components/screens/ScheduleSelectionDetails';
+import Course from './src/components/screens/Course';
+import UnavailableHours from './src/components/screens/UnavailableHours';
+import ReviewEvent from './src/components/screens/ReviewEvent';
+import Dashboard from './src/components/screens/Dashboard';
+import Chatbot from './src/components/screens/Chatbot';
+import CompareSchedule from './src/components/screens/CompareSchedule';
+import Settings from './src/components/screens/Settings';
 
 const theme = {
 	...DefaultTheme,
 	colors: {
 		...DefaultTheme.colors,
-		primary: '#1473E6',
-		accent: '#FF9F1C',
+		primary: blueColor,
+		accent: orangeColor,
 	}
 };
 
-export default function Main() {
-	return (
-		<Provider store={store}>
-			<PaperProvider theme={theme}>
-				<AppContainer/>
-			</PaperProvider>
-		</Provider>
-	);
-}
-
-
-StatusBar.setBarStyle('light-content', true);
-AppRegistry.registerComponent(appName, () => Main);
-
 const LoginNavigator = createStackNavigator(
 	{
-		Home: Home
+		Home
 	},
 	{
 		headerMode: 'none',
@@ -50,75 +48,146 @@ const LoginNavigator = createStackNavigator(
 
 const TutorialNavigator = createStackNavigator(
 	{
-		SchoolSchedule: SchoolSchedule,
-		SchoolScheduleSelectPicture: SchoolScheduleSelectPicture,
-		SchoolScheduleTakePicture: SchoolScheduleTakePicture,
-		SchoolScheduleCreation: SchoolScheduleCreation,
-		FixedEvent: FixedEvent,
-		NonFixedEvent: NonFixedEvent,
-		//ReviewEvent: {screen: ReviewEvent},
-		//ScheduleSelection: {screen: ScheduleSelection},
-		//ScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
+		TutorialSchoolSchedule: {screen: SchoolSchedule},
+		TutorialSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
+		TutorialSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
+		TutorialAddCourse: {screen: Course},
+		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
+		TutorialFixedEvent: {screen: FixedEvent},
+		TutorialNonFixedEvent: {screen: NonFixedEvent},
+		TutorialUnavailableHours: {screen: UnavailableHours},
+		TutorialUnavailableFixed: {screen: FixedEvent},
+
+		TutorialReviewEvent: {screen: ReviewEvent},
+		TutorialEditCourse: {screen: Course},
+		TutorialEditFixedEvent: {screen: FixedEvent},
+		TutorialEditNonFixedEvent: {screen: NonFixedEvent},
+		TutorialEditUnavailableHours: {screen: UnavailableHours},
+
+		TutorialScheduleCreation: {screen: ScheduleCreation},
+
+		TutorialScheduleSelection: {screen: ScheduleSelection},
+		TutorialScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
 	}, 
 	{
-		initialRouteName: 'SchoolSchedule'
+		initialRouteName: 'TutorialSchoolSchedule'
 	}
 );
 
-// const CreateScheduleNavigator = createStackNavigator(
-// 	{
-// 		CreateSchedule: {screen: CreateSchedule}
-// 	}, 
-// 	{
-// 		headerMode: 'none',
-// 		initialRouteName: 'CreateSchedule'
-// 	}
-// );
+const DashboardNavigator = createBottomTabNavigator(
+	{
+		Dashboard,
+		Chatbot,
+		CompareSchedule,
+		Settings
+	}, 
+	{
+		initialRouteName: 'Dashboard'
+	}
+);
 
-// const DashboardNavigator = createStackNavigator(
-// 	{
-// 		Dashboard: {screen: Dashboard},
-// 		DashboardOptions: {screen: DashboardOptionsNavigator},
-// 		Chatbot: {screen: Chatbot},
-// 		Settings: {screen: Settings}
-// 	}, 
-// 	{
-// 		initialRouteName: 'Dashboard'
-// 	}
-// );
+const DashboardOptionsNavigator = createStackNavigator(
+	{
+		DashboardNavigator,
 
-// const DashboardOptionsNavigator = createStackNavigator(
-// 	{
-// 		SchoolSchedule: {screen: SchoolScheduleNavigator},
-// 		FixedEvent: {screen: FixedEvent},
-// 		NonFixedEvent: {screen: NonFixedEvent},
-// 		ScheduleSelection: {screen: ScheduleSelectionNavigator},
-// 		CompareSchedule: {screen: CompareScheduleNavigator}
-// 	}
-// );
+		DashboardSchoolSchedule: {screen: SchoolSchedule},
+		DashboardSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
+		DashboardSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
+		DashboardAddCourse: {screen: Course},
+		DashboardFixedEvent: {screen: FixedEvent},
+		DashboardNonFixedEvent: {screen: NonFixedEvent},
+		DashboardUnavailableHours: {screen: UnavailableHours},
 
-// const CompareScheduleNavigator = createStackNavigator(
-// 	{
-// 		CompareSchedule: {screen: CompareSchedule},
-// 		CompareScheduleDetails: {screen: CompareScheduleDetails}
-// 	}, 
-// 	{
-// 		initialRouteName: 'CompareSchedule'
-// 	}
-// );
+		DashboardSchoolScheduleCreation: {screen: SchoolScheduleCreation},
+
+		DashboardReviewEvent: {screen: ReviewEvent},
+		DashboardEditCourse: {screen: Course},
+		DashboardEditFixedEvent: {screen: FixedEvent},
+		DashboardEditNonFixedEvent: {screen: NonFixedEvent},
+		DashboardEditUnavailableHours: {screen: UnavailableHours},
+		
+		DashboardScheduleCreation: {screen: ScheduleCreation},
+
+		DashboardScheduleSelection: {screen: ScheduleSelection},
+		DashboardScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
+	}, 
+	{
+		initialRouteName: 'DashboardNavigator'
+	});
 
 const MainNavigator = createSwitchNavigator(
 	{
-		WelcomeScreen: WelcomeScreen,
-		LoadingScreen: LoadingScreen,
-		//Dashboard: DashboardNavigator,
-		LoginNavigator: LoginNavigator,
-		TutorialNavigator: TutorialNavigator
+		WelcomeScreen,
+		LoadingScreen,
+		DashboardOptionsNavigator,
+		LoginNavigator,
+		TutorialNavigator,
 	},
 	{
-		headerMode: 'none',
 		initialRouteName: 'LoadingScreen'
 	}
 );
 
+const defaultGetStateForAction = TutorialNavigator.router.getStateForAction;
 const AppContainer = createAppContainer(MainNavigator);
+
+StatusBar.setBarStyle('light-content', true);
+AppRegistry.registerComponent(appName, () => Main);
+
+TutorialNavigator.router.getStateForAction = (action, state) => {
+	let nav = store.getState().NavigationReducer;
+
+	if (state && state.routes[state.index].routeName === 'TutorialSchoolSchedule' 
+		&& nav.routes && !store.getState().StateReducer.openedApp 
+		&& nav.main === 'SchoolSchedule') {
+		const routes = [
+			...nav.routes,
+		];
+		store.dispatch({
+			...nav,
+			type: 'SET_OPENED',
+			openedApp: true
+		});
+		return {
+			...state,
+			routes,
+			index: routes.length - 1,
+		};
+	} else if (state && state.routes) {
+		if(action && action.action == 'FinishSchoolCreation') {
+			let routes = [
+				{key: '1',
+					routeName: 'TutorialSchoolSchedule',
+					params:{}},
+				{key: '2',
+					routeName: 'TutorialFixedEvent',
+					params:{update:false}}];
+			return {
+				...state,
+				routes,
+				index: routes.length - 1,
+			};
+		} else {
+			store.dispatch({
+				...nav,
+				type: 'SET_NAV_SCREEN',
+				routes: state.routes
+			});
+		}
+	}
+		
+	return defaultGetStateForAction(action, state);
+};
+
+export default function Main() {
+	return (
+		<Provider store={store}>
+			<PersistGate loading={null}
+				persistor={persistor}>
+				<PaperProvider theme={theme}>
+					<AppContainer />
+				</PaperProvider>
+			</PersistGate>
+		</Provider>
+	);
+}

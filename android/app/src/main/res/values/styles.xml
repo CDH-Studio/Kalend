@@ -6,12 +6,11 @@
         <item name="android:datePickerDialogTheme">@style/Dialog.Theme</item>
         <item name="android:timePickerDialogTheme">@style/Dialog.Theme</item>
         <item name="android:windowBackground">@color/main_blue</item>
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">#1473E6</item>
-        <item name="android:textColorPrimary">#0000FF</item>
+        <item name="android:textColorPrimary">#1473E6</item>
     </style>
 
 </resources>

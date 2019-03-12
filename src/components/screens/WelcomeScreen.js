@@ -1,113 +1,49 @@
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions, StatusBar } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import { gradientColors, orangeColor } from '../../../config';
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import updateNavigation from '../NavigationHelper';
+import { slides, statusBarDark } from '../../../config';
+import { welcomeStyles as styles } from '../../styles';
 
-const styles = StyleSheet.create({
-	mainContent: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'space-around',
-	},
-	image: {
-		width: 320,
-		height: 320,
-	},
-	text: {
-		fontSize: 16,
-		color: 'rgba(255, 255, 255, 0.8)',
-		backgroundColor: 'transparent',
-		textAlign: 'center',
-		paddingHorizontal: 16,
-		fontFamily: 'Raleway-Regular',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10 
-	},
-	title: {
-		fontSize: 24,
-		color: 'white',
-		backgroundColor: 'transparent',
-		textAlign: 'center',
-		marginBottom: 16,
-		fontFamily: 'Raleway-Bold',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10 
-	},
-	buttonCircle: {
-		width: 40,
-		height: 40,
-		backgroundColor: 'rgba(0, 0, 0, .2)',
-		borderRadius: 20,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	icon: {
-		backgroundColor: 'transparent', 
-		textShadowColor: 'rgba(0, 0, 0, 0.20)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 20 
-	}
-});
+const slidesIconSize = 200;
+const nextIconSize = 24;
+const nextIconColor = 'rgba(255, 255, 255, .9)';
 
-const slides = [
-	{
-		key: 'integration',
-		title: 'School Integration',
-		text: 'Add your school schedule by importing\na picture or a screenshot of your schedule',
-		icon: 'ios-school',
-		colors: gradientColors,
-		color: '#CBE0FA'
-	},
-	{
-		key: 'generator',
-		title: 'Schedule Generator',
-		text: 'Add your events and the activities you\nwould like to do and let the application\ngenerate the best schedules for you',
-		icon: 'ios-calendar',
-		colors: [orangeColor,'#FF621C'],
-		color: '#FFE0B6'
-	},
-	{
-		key: 'compare',
-		title: 'Compare Schedule',
-		text: 'Find availabilities by comparing schedules\nwith your friends and colleagues',
-		icon: 'ios-people',
-		colors: gradientColors,
-		color: '#CBE0FA'
-	},
-	{
-		key: 'done',
-		title: 'Start right now\nwith Kalend!',
-		text: '',
-		icon: '',
-		colors: [orangeColor,'#FF621C'],
-	}
-];
-
+/**
+ * The slides for the first four screens when a user first opens the application.
+ * This screen only shows if the user has not already been in the application.
+ */
 class WelcomeScreen extends React.Component {
 	
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			showRealApp: false
-		};
+		// Updates the navigation location in redux
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	_renderItem = props => (
+	/**
+	 * Renders each slide
+	 */
+	renderSlide = props => (
 		<LinearGradient
 			style={[styles.mainContent, {
 				paddingTop: props.topSpacer,
-				paddingBottom: props.bottomSpacer,
-				width: props.width,
-				height: Dimensions.get('window').height + StatusBar.currentHeight,
-			}]}
+				paddingBottom: props.bottomSpacer }]}
 			colors={props.colors}
-			start={{x: 0, y: .1}} end={{x: .1, y: 1}} >
-			{props.icon === '' ? null : <Ionicons style={styles.icon} name={props.icon} size={200} color={props.color} /> }
+			start={{x: 0, y: .1}} 
+			end={{x: .1, y: 1}}>
+
+			{ 
+				props.icon === '' ? 
+					null : 
+					<Ionicons style={styles.icon} 
+						name={props.icon} 
+						size={slidesIconSize} 
+						color={props.color} /> 
+			}
 			
 			<View>
 				<Text style={styles.title}>{props.title}</Text>
@@ -116,43 +52,56 @@ class WelcomeScreen extends React.Component {
 		</LinearGradient>
 	);
 
-	_renderNextButton = () => {
+	/**
+	 * Returns the next button
+	 */
+	renderNextButton = () => {
 		return (
 			<View style={styles.buttonCircle}>
 				<Ionicons
 					name="md-arrow-round-forward"
-					color="rgba(255, 255, 255, .9)"
-					size={24}
-					style={{ backgroundColor: 'transparent' }} />
+					color={nextIconColor}
+					size={nextIconSize}
+					style={styles.ionicons} />
 			</View>
 		);
 	}
 
-	_renderDoneButton = () => {
+	/**
+	 * Returns the done button
+	 */
+	renderDoneButton = () => {
 		return (
 			<View style={styles.buttonCircle}>
 				<Ionicons
 					name="md-checkmark"
-					color="rgba(255, 255, 255, .9)"
-					size={24}
-					style={{ backgroundColor: 'transparent' }} />
+					color={nextIconColor}
+					size={nextIconSize}
+					style={styles.ionicons} />
 			</View>
 		);
 	}
 
-	_onDone = () => {
-		// User finished the introduction. Show real app through
-		// navigation or simply by controlling state
-		this.setState({ showRealApp: true });
+	/**
+	 * Navigates to the next screen (Login screen)
+	 */
+	next = () => {
 		this.props.navigation.navigate('LoginNavigator');
 	}
 
 	render() {
-		return <AppIntroSlider slides={slides} 
-			renderItem={this._renderItem} 
-			onDone={this._onDone}
-			renderDoneButton={this._renderDoneButton}
-			renderNextButton={this._renderNextButton}/>;
+		return (
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={statusBarDark} />
+
+				<AppIntroSlider slides={slides} 
+					renderItem={this.renderSlide} 
+					onDone={this.next}
+					renderDoneButton={this.renderDoneButton}
+					renderNextButton={this.renderNextButton}/>
+			</View>
+		);
 	}
 }
 

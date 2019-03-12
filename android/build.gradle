@@ -2,9 +2,9 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "27.0.3"
+        buildToolsVersion = "28.0.2"
         minSdkVersion = 16
-        compileSdkVersion = 27
+        compileSdkVersion = 28
         targetSdkVersion = 26
         supportLibVersion = "27.1.1"
         googlePlayServicesAuthVersion = "15.0.1"
@@ -12,12 +12,25 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'com.google.gms:google-services:4.0.1'
+    	classpath 'io.fabric.tools:gradle:1.25.4'
+		classpath 'com.google.firebase:firebase-plugins:1.1.5'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+    }
+}
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion 27
+                buildToolsVersion "27.0.3"
+            }
+        }
     }
 }
 
@@ -27,6 +40,7 @@ allprojects {
         google()
         jcenter()
         maven {
+            url 'https://maven.fabric.io/public'
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
