@@ -1,8 +1,7 @@
 import { formatData, getStartDate } from './helper';
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { store } from '../store';
-import { ADD_COURSE } from '../constants';
-import { addGeneratedNonFixedEvent } from '../actions';
+import { addGeneratedNonFixedEvent, addCourse } from '../actions';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -76,7 +75,7 @@ export const InsertDataIntoGoogle = (events) => {
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
 		event.courses.forEach(course => {
-			console.log('course', course);
+			// console.log('course', course);
 			let obj = {
 				'end': {
 					'timeZone': 'UTC'
@@ -123,10 +122,7 @@ export const InsertDataIntoGoogle = (events) => {
 			courseReduxObj.dayOfWeek = event.day;
 			courseReduxObj.hours = d;
 
-			store.dispatch({
-				type: ADD_COURSE,
-				event: courseReduxObj
-			});
+			store.dispatch(addCourse(courseReduxObj));
 			
 			promises.push(insertEvent(calendarID,obj,{}));
 		});
