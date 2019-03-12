@@ -260,7 +260,7 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>School Schedule</Text>
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text>No school schedule added, please go back to add one</Text> : 
+									<Text style={styles.textNoData}>No school schedule added, please go back to add one</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -279,7 +279,7 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>Fixed Events</Text>
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text>No fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No fixed events added, please go back to add some</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -300,7 +300,7 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text>No non-fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No non-fixed events added, please go back to add some</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 

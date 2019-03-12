@@ -962,7 +962,7 @@ export const reviewEventStyles = StyleSheet.create({
 
 	sectionTitle: {
 		color: gray,
-		fontFamily: 'Raleway-SemiBold',
+		fontFamily: 'Raleway-Medium',
 		fontSize: 20,
 		marginTop: 20,
 		marginBottom: 5
@@ -974,6 +974,10 @@ export const reviewEventStyles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 	},
+
+	textNoData: {
+		color: gray,
+	}
 });
 
 export const eventOverviewStyles = StyleSheet.create({
