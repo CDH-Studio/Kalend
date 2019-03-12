@@ -961,9 +961,9 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	sectionTitle: {
-		color: gray,
-		fontFamily: 'Raleway-Medium',
-		fontSize: 20,
+		color: blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 17,
 		marginTop: 20,
 		marginBottom: 5
 	},
