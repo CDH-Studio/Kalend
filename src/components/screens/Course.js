@@ -513,7 +513,8 @@ let mapStateToProps = (state) => {
 
 	return {
 		CourseState: CoursesReducer[selected],
-		CoursesReducer
+		CoursesReducer,
+		selectedIndex: selected
 	};
 };
 
