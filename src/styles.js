@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
