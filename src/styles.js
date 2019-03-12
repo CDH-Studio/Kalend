@@ -858,7 +858,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
