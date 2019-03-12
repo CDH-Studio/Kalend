@@ -382,36 +382,57 @@ export const homeStyles = StyleSheet.create({
 
 	content: {
 		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-evenly',
-		alignItems: 'center',
+		alignItems: 'center'
+	},
+
+	logo: {
+		height: '30%'
+	},
+
+	topSection: {
+		flexGrow: 3,
+		justifyContent: 'center',
+		marginTop: getStatusBarHeight(),
 		paddingLeft: 25,
 		paddingRight: 25
 	},
 
-	logo: {
-		height: 100,
-		width: undefined
+	bottomSection: {
+		flexGrow: 1,
+		alignItems: 'center',
+		backgroundColor: '#0000003C',
+		width: '100%'
 	},
 
-	text: {
-		paddingTop: 10,
-		fontFamily: 'Raleway-Regular',
-		color: white,
-		fontSize: 20,
-		textAlign: 'center',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 20
-	},
-
-	userIcon: {
-		height: '35%'
+	signInSection: {
+		flexGrow: 2,
+		justifyContent: 'center'
 	},
 
 	signInButton: {
 		width: 312,
 		height: 48
+	},
+
+	cdhSection: {
+		flexGrow: 1,
+		width: '100%',
+		paddingVertical: 5,
+		backgroundColor: '#00000060',
+		justifyContent: 'center'
+	},
+
+	cdhSectionText: {
+		color: white,
+		textAlign: 'center'
+	},
+
+	cdhText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	cdhLink: {
+		fontFamily: 'Raleway-SemiBold'
 	}
 });
 
