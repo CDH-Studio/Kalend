@@ -6,7 +6,7 @@ import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
 import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed, DashboardReviewEvent } from '../../constants/screenNames';
 import { connect } from 'react-redux';
-import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
+import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import {setUnavailableHours} from '../../actions';
 
@@ -23,7 +23,7 @@ class UnavailableHours extends React.Component {
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -315,7 +315,7 @@ class UnavailableHours extends React.Component {
 		
 		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
 			tutorialStatus = <TutorialStatus active={5}
-				color={blue}
+				color={dark_blue}
 				backgroundColor={'#ffffff'}
 				skip={this.skip}
 				showTutShadow={showTutShadow} />;
@@ -335,14 +335,14 @@ class UnavailableHours extends React.Component {
 							<Text style={styles.text}>Add the hours for which you're not available or you don't want anything to be booked.</Text>
 							<MaterialCommunityIcons name="clock-alert-outline"
 								size={130}
-								color={blue}/>
+								color={dark_blue}/>
 						</View>
 
 						<View>
 							<View style={styles.row}>
 								<MaterialCommunityIcons name="sleep"
 									size={30}
-									color={blue}/>
+									color={dark_blue}/>
 
 								<Text style={styles.blueTitle}>Sleeping Hours</Text>
 							</View>
@@ -352,9 +352,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.sleepWeek ? orange : 'darkgray'}
+												thumbColor={this.state.sleepWeek ? dark_blue : 'darkgray'}
 												onValueChange={(sleepWeek) => this.setState({sleepWeek})}
 												value={this.state.sleepWeek} />
 										</View>
@@ -413,9 +413,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.sleepWeekEnd ? orange : 'darkgray'}
+												thumbColor={this.state.sleepWeekEnd ? dark_blue : 'darkgray'}
 												onValueChange={(sleepWeekEnd) => this.setState({sleepWeekEnd})}
 												value={this.state.sleepWeekEnd} />
 										</View>
@@ -476,7 +476,7 @@ class UnavailableHours extends React.Component {
 							<View style={styles.row}>
 								<MaterialCommunityIcons name="train-car"
 									size={30}
-									color={blue}/>
+									color={dark_blue}/>
 
 								<Text style={styles.blueTitle}>Commuting Hours</Text>
 							</View>
@@ -487,9 +487,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.commutingWeek ? orange : 'darkgray'}
+												thumbColor={this.state.commutingWeek ? dark_blue : 'darkgray'}
 												onValueChange={(commutingWeek) => this.setState({commutingWeek})}
 												value={this.state.commutingWeek} />
 										</View>
@@ -546,9 +546,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.commutingWeekEnd ? orange : 'darkgray'}
+												thumbColor={this.state.commutingWeekEnd ? dark_blue : 'darkgray'}
 												onValueChange={(commutingWeekEnd) => this.setState({commutingWeekEnd})}
 												value={this.state.commutingWeekEnd} />
 										</View>
@@ -609,7 +609,7 @@ class UnavailableHours extends React.Component {
 							<View style={styles.row}>
 								<MaterialCommunityIcons name="food"
 									size={30}
-									color={blue}/>
+									color={dark_blue}/>
 
 								<Text style={styles.blueTitle}>Eating Hours</Text>
 							</View>
@@ -620,9 +620,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.eatingWeek ? orange : 'darkgray'}
+												thumbColor={this.state.eatingWeek ? dark_blue : 'darkgray'}
 												onValueChange={(eatingWeek) => this.setState({eatingWeek})}
 												value={this.state.eatingWeek} />
 										</View>
@@ -679,9 +679,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.eatingWeekEnd ? orange : 'darkgray'}
+												thumbColor={this.state.eatingWeekEnd ? dark_blue : 'darkgray'}
 												onValueChange={(eatingWeekEnd) => this.setState({eatingWeekEnd})}
 												value={this.state.eatingWeekEnd} />
 										</View>
@@ -742,7 +742,7 @@ class UnavailableHours extends React.Component {
 							<View style={styles.row}>
 								<MaterialCommunityIcons name="timelapse"
 									size={30}
-									color={blue}/>
+									color={dark_blue}/>
 
 								<Text style={styles.blueTitle}>Other Unavailable Hours</Text>
 							</View>
@@ -753,9 +753,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.otherWeek ? orange : 'darkgray'}
+												thumbColor={this.state.otherWeek ? dark_blue : 'darkgray'}
 												onValueChange={(otherWeek) => this.setState({otherWeek})}
 												value={this.state.otherWeek} />
 										</View>
@@ -812,9 +812,9 @@ class UnavailableHours extends React.Component {
 										<View style={styles.row}>
 											<Text style={styles.type}>Week-End</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: lightOrange}}
+											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.otherWeekEnd ? orange : 'darkgray'}
+												thumbColor={this.state.otherWeekEnd ? dark_blue : 'darkgray'}
 												onValueChange={(otherWeekEnd) => this.setState({otherWeekEnd})}
 												value={this.state.otherWeekEnd} />
 										</View>

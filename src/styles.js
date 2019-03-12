@@ -5,9 +5,9 @@ import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1473E6';
-export const statusBlueColor = '#105DBA';
-export const dark_blue = '#0E4BAA';
+export const blue = '#32D2DC'; //#1473E6
+export const statusBlueColor = '#19334d'; //#105DBA
+export const dark_blue = '#345C83'; //#0E4BAA
 export const lightOrange = '#FFBF69';
 export const orange = '#FF9F1C';
 export const imageRollCheck = '#764D16';
@@ -473,7 +473,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blue,
+		color: gray,
 		
 	},
 
@@ -586,14 +586,14 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	dayOfWeekTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		marginRight: 5
 	},
 
 	blueTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 93
@@ -684,7 +684,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	blueTitle: {
 		width: 70,
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18
 	},
@@ -809,14 +809,14 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	blueTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 88
 	},
 
 	blueTitleLong: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 200
@@ -906,7 +906,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 
 
 	blueTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18,
 		paddingVertical: 10,
@@ -986,7 +986,7 @@ export const reviewEventStyles = StyleSheet.create({
 		position: 'absolute',
 		margin: 16,
 		right: 0,
-		bottom: 0,
+		bottom: 0
 	},
 });
 

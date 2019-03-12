@@ -4,7 +4,7 @@ import { FAB, Portal } from 'react-native-paper';
 import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store, persistor } from '../../store';
-import { dashboardStyles as styles, blue } from '../../styles';
+import { dashboardStyles as styles, blue, dark_blue, statusBlueColor } from '../../styles';
 import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent, LoginNavigator } from '../../constants/screenNames';
 
 /**
@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true}
-					backgroundColor={blue} />
+					backgroundColor={statusBlueColor} />
 
 				<Text>Redux Management</Text>
 				<Button title='Purge' 
@@ -85,6 +85,7 @@ class Dashboard extends React.Component {
 				
 				<Portal.Host>
 					<FAB.Group
+						theme={{colors:{accent:blue}}}
 						open={optionsOpen}
 						icon={optionsOpen ? 'close' : 'add'}
 						actions={[

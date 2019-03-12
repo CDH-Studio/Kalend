@@ -8,7 +8,7 @@ import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
 
@@ -31,7 +31,7 @@ class ReviewEvent extends React.Component {
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
@@ -220,7 +220,7 @@ class ReviewEvent extends React.Component {
 
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			tutorialStatus = <TutorialStatus active={4}
-				color={blue}
+				color={dark_blue}
 				backgroundColor={white}
 				showTutShadow={showTutShadow} />;
 		} else {
@@ -314,6 +314,7 @@ class ReviewEvent extends React.Component {
 				
 				<FAB style={styles.fab}
 					icon="check"
+					theme={{colors:{accent:blue}}}
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
 			</View>

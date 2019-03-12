@@ -21,7 +21,16 @@ export const calendarEventColorsInside = {
 	green: '#52CB91',
 	purple: '#9DA6D8'
 };
+// export const gradientColors = [blueColor, '#FFF'];
+// export const gradientColors = ['#6FD6FF', '#BFF098'];
+// export const gradientColors = ['#D8B5FF', '#1EAE98'];
+// export const gradientColors = ['#00B7FF', '#FFFFC7'];
+// export const gradientColors = ['#00B7FF', '#BFF098'];
+// export const gradientColors = ['#D74177', '#FFE98A'];
+// export const gradientColors = ['#38ADAE', '#CD295A'];
 export const gradientColors = ['#32D2DC', '#345C83'];
+
+
 export const slides = [
 	{
 		key: 'integration',
