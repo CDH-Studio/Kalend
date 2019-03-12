@@ -53,28 +53,6 @@ export const formatData = (data) => {
 };
 
 /**
- * Helper method to extract the startTime and endTime of a course from a string
- *
- * @param {String} time course time eg format '11:25 am : 12:55 pm'
- */
-export const convertTimeToGoogle = (time) => {
-	let arr = time.split(' ');
-	let finalTime;
-	if(arr[1] == 'pm') {
-		let tempTime  = arr[0].split(':');
-		let hours = parseInt(tempTime[0]);
-		if( hours != 12) hours += 12;
-		hours = hours.toString();
-		let minutes = tempTime[1];
-		finalTime = `${hours}:${minutes}:00`;
-	} else if( arr[1] == 'am') {
-		finalTime = `${arr[0]}:00`;
-	}
-
-	return finalTime;
-};
-
-/**
  * Helper method to get the startDate of a particular course
  * 
  * @param {Date} date Start Date of the semester
@@ -85,7 +63,7 @@ export const getStartDate = (date, tempDay) => {
 	let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
 	let day = days.indexOf(tempDay) + 1;
 	// Convert time to EST
-	// semesterStart.setTime(semesterStart.getTime()+semesterStart.getTimezoneOffset()*60*1000);
+	semesterStart.setTime(semesterStart.getTime()+semesterStart.getTimezoneOffset()*60*1000);
 	let startDay = semesterStart.getDay();
 
 	if(day < startDay) {

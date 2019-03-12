@@ -4,13 +4,13 @@ import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { InsertFixedEvent } from '../../services/service';
-import { DELETE_NFE, DELETE_FE, DELETE_COURSE } from '../../constants';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 
 const priorityLevels = {
 	0: 'Low',
@@ -72,7 +72,7 @@ class ReviewEvent extends React.Component {
 				if (data.startTime === undefined) {
 					hours = `${data.hours[0][0]}:${data.hours[0][1]} ${data.hours[0][2]} - ${data.hours[1][0]}:${data.hours[1][1]} ${data.hours[1][2]}`;
 				} else {
-					hours = data.startTime + ' - ' + data.endTime;
+					hours = this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime);
 				}
 
 				schoolScheduleData.push({
@@ -90,7 +90,7 @@ class ReviewEvent extends React.Component {
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
 					recurrence: data.recurrenceValue,
-					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
+					hours: data.allDay ? 'All-Day' : (this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime)),
 					location: data.location,
 					description: data.description
 				});
@@ -117,6 +117,17 @@ class ReviewEvent extends React.Component {
 			schoolScheduleData
 		});
 	}
+
+	formatTime = (time) => {
+		if (time.split(':').length === 3) {
+			let timeSplit = time.split(':');
+			let timeSplitSpace = time.split(' ');
+
+			time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
+		}
+
+		return time;
+	}
 	
 	/**
 	 * Hides the FAB when scrolling down */ 
@@ -136,23 +147,23 @@ class ReviewEvent extends React.Component {
 	}
 	
 	deleteEvent = (id, category) => {
+		let dataToDispatch;
 		let newEvents;
-		let eventType;
 		let objectToChange;
 
 		switch (category) {
 			case 'SchoolSchedule':
-				eventType = DELETE_COURSE;
+				dataToDispatch = deleteCourse(id);
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
 			case 'FixedEvent':
-				eventType = DELETE_FE;
+				dataToDispatch = deleteFixedEvent(id);
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
 			case 'NonFixedEvent':
-				eventType = DELETE_NFE;
+				dataToDispatch = deleteNonFixedEvent(id);
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
 				break;
@@ -165,7 +176,7 @@ class ReviewEvent extends React.Component {
 			if (index != id) return event;
 		});
 
-		this.props.dispatch({type: eventType, event: newEvents});
+		this.props.dispatch(dataToDispatch);
 		this.setState({[objectToChange]: newEvents});
 	}
 
@@ -249,7 +260,7 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>School Schedule</Text>
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text>No school schedule added, please go back to add one</Text> : 
+									<Text style={styles.textNoData}>No school schedule added, please go back to add one</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -268,7 +279,7 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>Fixed Events</Text>
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text>No fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No fixed events added, please go back to add some</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -289,7 +300,7 @@ class ReviewEvent extends React.Component {
 							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text>No non-fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No non-fixed events added, please go back to add some</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 

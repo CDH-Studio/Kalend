@@ -879,7 +879,7 @@ class UnavailableHours extends React.Component {
 						
 						<View style={styles.buttons}>
 							<TouchableOpacity style={[styles.button, {width:'100%'}]} onPress={this.next}>
-								<Text style={styles.buttonText}>NEXT</Text>
+								<Text style={styles.buttonText}>Next</Text>
 							</TouchableOpacity>
 						</View>
 					</View>

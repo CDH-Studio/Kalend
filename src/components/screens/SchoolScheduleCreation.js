@@ -9,7 +9,7 @@ import { ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text } fr
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { gradientColors } from '../../../config';
-import { white, orange, blue } from '../../styles';
+import { white, orange, lightOrange } from '../../styles';
 
 /**
  * The loading screen after the User uploads a picture
@@ -72,10 +72,9 @@ class SchoolScheduleCreation extends React.Component {
 						<Progress.Bar style={{alignSelf:'center'}} 
 							indeterminate={true} 
 							width={200} 
-							color={blue} 
+							color={orange} 
 							useNativeDriver={true} 
-							borderWidth={0} 
-							unfilledColor={orange} />
+							unfilledColor={lightOrange} />
 					</Surface>
 				</ImageBackground>
 			</LinearGradient>
@@ -84,11 +83,9 @@ class SchoolScheduleCreation extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-	const imgURI = state.ImageReducer.data;
-	const hasImage = state.ImageReducer.hasImage;
 	return {
-		imgURI,
-		hasImage
+		imgURI: state.ImageReducer.data,
+		hasImage: state.ImageReducer.hasImage
 	};
 };
 

@@ -35,7 +35,7 @@ class FixedEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-		
+		this.state = this.resetField;
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -43,7 +43,7 @@ class FixedEvent extends React.Component {
 		if(this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			this.setState({...this.props.FEditState});
 		} else {
-			this.resetField();
+			this.setState(this.resetField);
 		}
 
 		this.setContainerHeight();
@@ -265,7 +265,8 @@ class FixedEvent extends React.Component {
 			startDate: startDate, 
 			disabledEndDate: false, 
 			minEndDate: startDate, 
-			endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate
+			endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate,
+			endDateValidated: true
 		});
 	}
 
@@ -284,7 +285,7 @@ class FixedEvent extends React.Component {
 			maxStartDate: endDate, 
 			minEndTime: this.setMinEndTime(),
 			disabledEndTime: false,
-			endDateValidated: true
+			endTimeValidated: true
 		});
 	}
 
@@ -383,7 +384,7 @@ class FixedEvent extends React.Component {
 		}
 
 		this.props.dispatch(addFixedEvent(this.state));
-		this.resetField();
+		this.setState(this.resetField);
 		this.refs._scrollView.scrollTo({x: 0});
 		this.setState({
 			snackbarText: 'Event successfully added',
@@ -395,42 +396,40 @@ class FixedEvent extends React.Component {
 	/**
 	 * Reset the fields of the form
 	 */
-	resetField = () => {
-		this.setState({
-			title: '',
-			titleValidated: true,
+	resetField = {
+		title: '',
+		titleValidated: true,
 
-			allDay: false,
+		allDay: false,
 
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
+		startDate: new Date().toDateString(),
+		minStartDate: new Date().toDateString(),
+		maxStartDate: new Date(8640000000000000),
 
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
+		endDate: new Date().toDateString(),
+		minEndDate: this.startDate,
+		disabledEndDate : true,
+		endDateValidated: true,
 
-			startTime: new Date().toLocaleTimeString(),
-			disabledStartTime : false,
-			amPmStart: this.getAmPm(),
+		startTime: new Date().toLocaleTimeString(),
+		disabledStartTime : false,
+		amPmStart: this.getAmPm(),
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime : true,
-			amPmEnd: this.getAmPm(),
-			endTimeValidated: true,
+		endTime: new Date().toLocaleTimeString(),
+		minEndTime: new Date().toLocaleTimeString(),
+		disabledEndTime : true,
+		amPmEnd: this.getAmPm(),
+		endTimeValidated: true,
 
-			location: '',
-			recurrenceValue: 'None',
-			recurrence: 'NONE',
-			description: '',
+		location: '',
+		recurrenceValue: 'None',
+		recurrence: 'NONE',
+		description: '',
 
-			showTutShadow: true,
-			snackbarVisible: false,
-			snackbarText: '',
-			snackbarTime: 3000
-		});
+		showTutShadow: true,
+		snackbarVisible: false,
+		snackbarText: '',
+		snackbarTime: 3000
 	}
 
 	render() {
@@ -530,7 +529,9 @@ class FixedEvent extends React.Component {
 										thumbColor={this.state.allDay ? orange : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
 											allDay: allDay, 
-											disabledStartTime: !this.state.disabledStartTime, disabledEndTime: true})} 
+											disabledStartTime: !this.state.disabledStartTime,
+											disabledEndTime: true,
+											endTimeValidated: true})} 
 										value = {this.state.allDay} />
 								</View>
 								<Text style={styles.empty}>empty</Text>
@@ -544,14 +545,15 @@ class FixedEvent extends React.Component {
 									style={{width:140}}
 									customStyles={{
 										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular'}, 
-										placeholderText:{color:gray}}} 
-									placeholder={this.state.startDate} 
-									format="ddd., MMM DD, YYYY" 
-									minDate={this.state.minStartDate} 
+										dateText:{fontFamily: 'OpenSans-Regular',
+											color: !this.state.endDateValidated ? '#ff0000' : gray}
+									}}
+									placeholder={this.state.startDate}
+									format="ddd., MMM DD, YYYY"
+									minDate={this.state.minStartDate}
 									maxDate={this.state.maxStartDate}
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
+									confirmBtnText="Confirm"
+									cancelBtnText="Cancel"
 									onDateChange={this.startDateOnDateChange} />
 									
 								<DatePicker showIcon={false} 
@@ -563,12 +565,9 @@ class FixedEvent extends React.Component {
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular',
-											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}, 
-										placeholderText:{
-											color: gray, 
-											opacity: this.state.disabledStartTime ? 0 : 1,
-											textDecorationLine: this.state.disabledStartTime ? 'line-through' : 'none'}}}
-									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
+											color: gray,
+											opacity: this.state.allDay ? 0 : 1} 
+									}}
 									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
@@ -588,7 +587,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
-											color: !this.state.endDateValidated ? '#ff0000' : gray,
+											color: !this.state.endTimeValidated ? '#ff0000' : gray,
 											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 									placeholder={this.state.endDate} 
 									format="ddd., MMM DD, YYYY" 
@@ -606,12 +605,10 @@ class FixedEvent extends React.Component {
 										disabled:{backgroundColor: 'transparent'}, 
 										dateInput:{borderWidth: 0}, 
 										dateText:{fontFamily: 'OpenSans-Regular',
-											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
-										placeholderText:{
-											color: !this.state.endTimeValidated ? '#ff0000' : gray, 
 											opacity: this.state.allDay ? 0 : 1,
-											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
-									placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
+											color: !this.state.endTimeValidated ? '#ff0000' : gray,
+											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+									}}
 									format="h:mm A" 
 									minDate={this.state.minEndTime}
 									confirmBtnText="Confirm" 
@@ -693,7 +690,7 @@ class FixedEvent extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const { FixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
@@ -702,6 +699,6 @@ function mapStateToProps(state) {
 		FixedEventsReducer,
 		selectedIndex: NavigationReducer.reviewEventSelected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(FixedEvent);

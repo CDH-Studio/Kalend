@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { HEIGHT } from './components/TutorialStatus';
 import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
@@ -148,13 +148,20 @@ export const welcomeStyles = StyleSheet.create({
 });
 
 export const tutorialStatusStyles = StyleSheet.create({
-
 	section: {
 		position: 'absolute',
 		bottom: 0,
 		left: 0,
 		right: 0,
-		paddingVertical: HEIGHT / 2 + 6
+		paddingVertical: HEIGHT / 2 + 6,
+		paddingBottom: ifIphoneX() ? 30 : 20,
+	},
+
+	sectionDots: {
+		position: 'absolute',
+		width: '100%',
+		paddingTop: 20,
+		alignItems: 'center',
 	},
 
 	sectionIconRow: {
@@ -872,7 +879,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: StatusBar.currentHeight + Header.HEIGHT
+		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -975,9 +982,9 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	sectionTitle: {
-		color: gray,
+		color: blue,
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 20,
+		fontSize: 17,
 		marginTop: 20,
 		marginBottom: 5
 	},
@@ -988,6 +995,10 @@ export const reviewEventStyles = StyleSheet.create({
 		right: 0,
 		bottom: 0
 	},
+
+	textNoData: {
+		color: gray,
+	}
 });
 
 export const eventOverviewStyles = StyleSheet.create({

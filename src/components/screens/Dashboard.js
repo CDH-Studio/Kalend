@@ -1,9 +1,8 @@
 import React from 'react';
 import { StatusBar, View, Button, Text } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
-import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
-import { store, persistor } from '../../store';
+import { persistor } from '../../store';
 import { dashboardStyles as styles, blue, dark_blue, statusBlueColor } from '../../styles';
 import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent, LoginNavigator } from '../../constants/screenNames';
 
@@ -36,47 +35,6 @@ class Dashboard extends React.Component {
 						persistor.purge();
 					}}>
 				</Button>
-
-				<Button title='Clear NavigationRecuder' 
-					onPress={() => {
-						store.dispatch({
-							type: SET_NAV_SCREEN
-						});
-					}}>
-				</Button>
-
-				<Button title='Clear ImageReducer'
-					onPress={() => {
-						store.dispatch({
-							type: SET_IMG
-						});
-					}}>
-				</Button>
-
-				<Button title='Clear ProfileReducer' 
-					onPress={() => {
-						store.dispatch({
-							type: SIGNED_IN
-						});
-					}}>
-				</Button>
-				
-				<Button title='Clear FixedReducer'
-					onPress={() => {
-						store.dispatch({
-							type: ADD_FE
-						});
-					}}>
-				</Button>
-
-				<Button title='Clear NonFixedReducer' 
-					onPress={() => {
-						store.dispatch({
-							type: ADD_NFE
-						});
-					}}>
-				</Button>
-
 				<Button title='Go back home'
 					onPress={() => {
 						this.props.navigation.navigate(LoginNavigator);
