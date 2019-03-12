@@ -21,7 +21,7 @@ export const calendarEventColorsInside = {
 	green: '#52CB91',
 	purple: '#9DA6D8'
 };
-export const gradientColors = [blueColor, darkBlueColor];
+export const gradientColors = ['#32D2DC', '#345C83'];
 export const slides = [
 	{
 		key: 'integration',
