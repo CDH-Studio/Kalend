@@ -11,7 +11,6 @@ import { requestStoragePermission, requestCamera } from '../../services/android_
 import { googleSignOut } from '../../services/google_identity';
 import { schoolScheduleStyles as styles, white } from '../../styles';
 import TutorialStatus from '../TutorialStatus';
-import { store } from '../../store'; 
 import { TutorialSchoolSchedule,
 	LoginNavigator,
 	TutorialSchoolScheduleSelectPicture,
