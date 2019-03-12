@@ -3,6 +3,7 @@ import { StatusBar, Text, ImageBackground } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
+import { generateSchedule } from '../../services/service';
 import { gradientColors } from '../../../config';
 import { scheduleCreateStyles as styles, orange, lightOrange } from '../../styles';
 import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection } from '../../constants/screenNames';
@@ -19,9 +20,13 @@ class ScheduleCreation extends React.Component {
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
-		setTimeout(() => {
+		this.generateScheduleService();
+	}
+	
+	generateScheduleService = () => {
+		generateSchedule().then(() => {
 			this.navigateToSelection();
-		}, 2000);
+		});
 	}
 
 	/**
@@ -34,7 +39,7 @@ class ScheduleCreation extends React.Component {
 			this.props.navigation.navigate(DashboardScheduleSelection);
 		}
 	}
-  
+	
 	render() {
 		return(
 			<LinearGradient style={styles.container} 

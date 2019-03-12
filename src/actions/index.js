@@ -1,4 +1,21 @@
-import { SET_NAV_SCREEN, SET_SELECTED_SCHEDULE, UPDATE_NFE, SIGNED_IN, SIGNED_OUT, SET_IMG, ADD_FE, ADD_NFE, ADD_COURSE, DELETE_NFE, DELETE_FE, DELETE_COURSE, UPDATE_FE, UPDATE_COURSE, SET_UNAVAILABLE_HOURS } from '../constants';
+import { 
+	SET_NAV_SCREEN, 
+	SET_SELECTED_SCHEDULE, 
+	UPDATE_NFE, SIGNED_IN, 
+	SIGNED_OUT, 
+	SET_IMG, 
+	ADD_FE, 
+	ADD_NFE, 
+	ADD_COURSE, 
+	DELETE_NFE, 
+	DELETE_FE, 
+	DELETE_COURSE, 
+	UPDATE_FE, 
+	UPDATE_COURSE, 
+	SET_UNAVAILABLE_HOURS,
+	CREATE_CALENDAR,
+	ADD_GENERATED_NFE 
+} from '../constants';
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -70,6 +87,15 @@ export function addFixedEvent (event) {
 	return action;
 }
 
+export function addGeneratedNonFixedEvent (event) {
+	const action = {
+		type: ADD_GENERATED_NFE,
+		event
+	}; 
+
+	return action;
+}
+
 export function addCourse (event) {
 	const action = {
 		type: ADD_COURSE,
@@ -122,6 +148,15 @@ export function setSelectedSchedule (index) {
 		type: SET_SELECTED_SCHEDULE,
 		index
 	};
+
+	return action;
+}
+
+export function setCalendarID (id) {
+	const action = {
+		type: CREATE_CALENDAR,
+		id
+	}; 
 
 	return action;
 }

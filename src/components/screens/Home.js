@@ -6,9 +6,11 @@ import { connect } from 'react-redux';
 import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
-import { homeStyles as styles } from '../../styles';
+import { createCalendar, getCalendarID2 } from '../../services/service';
 import { TutorialNavigator } from '../../constants/screenNames';
-import { logonUser } from '../../actions';
+import { bindActionCreators } from 'redux';
+import { setCalendarID, logonUser } from '../../actions';
+import { homeStyles as styles } from '../../styles';
 
 
 /** 
@@ -28,7 +30,20 @@ class Home extends React.Component {
 	 * Sets the user information
 	 */
 	setUser = (userInfo) => {
-		this.props.dispatch(logonUser(userInfo));
+		this.props.logonUser(userInfo);	
+	}
+
+
+	setCalendar() {
+		getCalendarID2().then(data => {
+			if(data === undefined) {
+				createCalendar().then(id => {
+					this.props.setCalendarID(id);
+				});
+			} else {
+				this.props.setCalendarID(data);
+			}
+		});
 	}
 	
 	/**
@@ -42,17 +57,20 @@ class Home extends React.Component {
 					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
+							this.setCalendar();
 							this.props.navigation.navigate(TutorialNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
+								this.setCalendar();
 								this.props.navigation.navigate(TutorialNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
+					this.setCalendar();
 					this.props.navigation.navigate(TutorialNavigator);
 				}
 			});
@@ -93,10 +111,19 @@ class Home extends React.Component {
 	}
 }
 
+
 let mapStateToProps = (state) => {
+	const { id } = state.CalendarReducer;
+	const NavigationReducer = state.NavigationReducer;
+
 	return {
-		NavigationReducer: state.NavigationReducer
+		NavigationReducer,
+		calendarID: id
 	};
 };
 
-export default connect(mapStateToProps, null)(Home);
+let mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

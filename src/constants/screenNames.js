@@ -15,15 +15,13 @@ export const TutorialScheduleSelection = 'TutorialScheduleSelection';
 export const TutorialScheduleSelectionDetails = 'TutorialScheduleSelectionDetails';
 
 
+
 // Dashboard Screen
 export const DashboardSchoolSchedule = 'DashboardSchoolSchedule';
 export const DashboardEditFixedEvent = 'DashboardEditFixedEvent';
 export const DashboardEditNonFixedEvent = 'DashboardEditNonFixedEvent';
 export const DashboardUnavailableFixed = 'DashboardUnavailableFixed';
 export const DashboardReviewEvent = 'DashboardReviewEvent';
-
-
-export const WelcomeScreen = 'WelcomeScreen';
 export const DashboardOptionsNavigator = 'DashboardOptionsNavigator';
 export const DashboardScheduleCreation = 'DashboardScheduleCreation';
 export const DashboardScheduleSelection = 'DashboardScheduleSelection';
@@ -34,5 +32,5 @@ export const DashboardAddCourse = 'DashboardAddCourse';
 export const DashboardAddNonFixedEvent = 'DashboardAddNonFixedEvent';
 export const DashboardScheduleSelectionDetails = 'DashboardScheduleSelectionDetails';
 export const DashboardNavigator = 'DashboardNavigator';
-
 export const LoginNavigator = 'LoginNavigator';
+export const WelcomeScreen = 'WelcomeScreen';
