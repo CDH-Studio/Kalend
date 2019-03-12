@@ -38,6 +38,11 @@ export const grabSampleData = () =>  {
 		});
 }; 
 
+/**
+ *	Function call to send base64 img to python server and have OCR extraction on the image
+ * 
+ * @param {String} base64Data base64 img string
+ */
 export const analyzePicture = (base64Data) => {
 	return new Promise( function(resolve, reject) { 
 		fetch(`${serverUrl}/api/analyzepicture`, {
@@ -67,7 +72,11 @@ export const analyzePicture = (base64Data) => {
 	});
 };
 
-
+/**
+ *	Insert's All Courses event into the Google Calendar
+ * 
+ * @param {Array} events an array of all courses events 
+ */
 export const InsertDataIntoGoogle = (events) => {
 	let promises = [];
 	let calendarID = store.getState().CalendarReducer.id;
@@ -130,6 +139,11 @@ export const InsertDataIntoGoogle = (events) => {
 	return Promise.all(promises);
 };
 
+/**
+ *	Insert's fixed Event into the Google Calendar
+ * 
+ * @param {Object} event state object of the event
+ */
 export const  InsertFixedEvent = (event) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let obj = {
@@ -162,6 +176,9 @@ export const  InsertFixedEvent = (event) => {
 	return insertEvent(calendarID,obj,{});	
 };
 
+/**
+ *	Checks if 'Kalend' Calendar is available, if so returns the ID of the 'Kalend' Calendar
+ */
 export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
@@ -177,6 +194,9 @@ export const getCalendarID2 = () => {
 	});
 };
 
+/**
+ *	Creates a new calendar, and returns calendarID as a promise
+ */
 export const createCalendar = () => {
 	return new Promise( function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
@@ -185,6 +205,9 @@ export const createCalendar = () => {
 	});
 };
 
+/**
+ *	Loops through all the non fixed events and generates events which are pushed to redux store
+ */
 export const generateSchedule = () => {
 	return new Promise( function(resolve) {
 		let nonFixedEvents = store.getState().NonFixedEventsReducer;
@@ -199,6 +222,11 @@ export const generateSchedule = () => {
 	});
 };
 
+/**
+ *	Itterates over the number of Occurences
+ * 
+ * @param {Object} event state object of the event
+ */
 async function ItterateOccurence(event) {
 	let testedDates = [];
 	let startDayTime = 8;
@@ -211,6 +239,14 @@ async function ItterateOccurence(event) {
 	}	
 }
 
+/**
+ *	Find the available date in the google calendar
+ * 
+ * @param {integer} startDayTime this is a temporary input atm, which indicates when the user's day starts
+ * @param {integer} endDayTime this is a temporary input atm, which indicates when the user's day ends 
+ * @param {Object} event state object of the event
+ * @param {Array} testedDates Array of dates where the slots are not available
+ */
 function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
 	let calendarID = store.getState().CalendarReducer.id;
 	let obj = {};
@@ -271,6 +307,12 @@ function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
 
 }
 
+/**
+ *	pushes the non fixed event into redux store
+ * 
+ * @param {integer} availableDate {startDate, endDate} object found available in google Calendar
+ * @param {Object} event state object of the event
+ */
 let storeNonFixedEvent = (availableDate, event) => {
 	//let calendarID = store.getState().CalendarReducer.id;
 	let obj = {
@@ -289,10 +331,23 @@ let storeNonFixedEvent = (availableDate, event) => {
 	store.dispatch(addGeneratedNonFixedEvent(obj));
 };
 
-function getRndInteger(min, max) {
-	return Math.floor(Math.random() * (max - min) ) + min;
+/**
+ *	Generates a random number between an interval of max and min
+ * 
+ * @param {integer} __min minimum bound of the interval
+ * @param {integer} __max maximum bound of the interval
+ */
+function getRndInteger(__min, __max) {
+	return Math.floor(Math.random() * (__max - __min) ) + __min;
 }
 
+/**
+ *	Divides the duration by the number of occurences
+ * 
+ * @param {integer} __hours hours of duration
+ * @param {integer} __minutes minutes of duration
+ * @param {integer} __occurence number of occurences
+ */
 function divideDuration(__hours, __minutes, __occurence) {
 	let totalDuration = (__hours * 60) + __minutes;
 	let dividedDuration = totalDuration / __occurence;
@@ -301,7 +356,11 @@ function divideDuration(__hours, __minutes, __occurence) {
 	return {hours, minutes};
 }
 
-
+/**
+ * Helper method to convert total minutes into hours and minutes
+ * 
+ * @param {integer} __duratrion total duration in minutes
+ */
 function convertMintuesToHours(__duration) { 
 	const hours = Math.floor(__duration / 60);  
 	const minutes = __duration % 60;
