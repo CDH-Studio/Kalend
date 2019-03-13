@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, statusBlueColor, gray, dark_blue } from '../../styles';
+import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 
@@ -388,7 +388,7 @@ class Course extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialIcons name="class"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText} 
@@ -478,7 +478,7 @@ class Course extends React.Component {
 						<View style={styles.textInput}>
 							<MaterialIcons name="location-on"
 								size={30}
-								color={dark_blue} />
+								color={blue} />
 							<View style={styles.textInputBorder}>
 								<TextInput style={styles.textInputText} 
 									placeholder="Location" 

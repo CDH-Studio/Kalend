@@ -314,7 +314,7 @@ class UnavailableHours extends React.Component {
 		});
 		
 		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
-			tutorialStatus = <TutorialStatus active={5}
+			tutorialStatus = <TutorialStatus active={4}
 				color={dark_blue}
 				backgroundColor={'#ffffff'}
 				skip={this.skip}

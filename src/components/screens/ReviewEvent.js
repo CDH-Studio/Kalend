@@ -230,7 +230,7 @@ class ReviewEvent extends React.Component {
 		let tutorialStatus;
 
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
-			tutorialStatus = <TutorialStatus active={4}
+			tutorialStatus = <TutorialStatus active={5}
 				color={dark_blue}
 				backgroundColor={white}
 				showTutShadow={showTutShadow} />;

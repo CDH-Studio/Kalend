@@ -5,13 +5,9 @@ import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#40B8BF'; //#1473E6 #32D2DC
-export const statusBlueColor = '#19334d'; //#105DBA
-export const dark_blue = '#345C83'; //#0E4BAA
-export const lightOrange = '#FFBF69';
-export const orange = '#FF9F1C';
-export const imageRollCheck = '#764D16';
-export const darkOrange = '#FF621C';
+export const blue = '#1D84B5'; //#1473E6 
+export const statusBlueColor = '#0A2239'; //#105DBA
+export const dark_blue = '#153d73'; //#0E4BAA
 export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
@@ -448,6 +444,12 @@ export const schoolScheduleStyles = StyleSheet.create({
 		justifyContent: 'space-evenly'
 	},
 
+	shadowIcon : {
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 20
+	},
+
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -459,7 +461,10 @@ export const schoolScheduleStyles = StyleSheet.create({
 		paddingLeft: 15,
 		fontFamily: 'Raleway-Regular',
 		color: white,
-		fontSize: 20
+		fontSize: 20,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 20
 	},
 
 	button: {
@@ -480,7 +485,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: gray,
+		color: blue,
 		
 	},
 
@@ -522,6 +527,39 @@ export const schoolScheduleStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		color: white,
 		fontSize: 15,
+	}
+});
+
+export const schoolScheduleCreationStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+		height: '130%' //Fixes pattern bug
+	},
+
+	surface: {
+		padding: 8,
+		height: 100,
+		width: Dimensions.get('window').width * 0.8,
+		borderRadius: 4,
+		justifyContent: 'center',
+		elevation: 3,
+	},
+
+	title: {
+		fontSize: 20,
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center'
+	},
+
+	subtitle: {
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center',
+		paddingTop: 5,
+		paddingBottom: 10
 	}
 });
 
@@ -982,7 +1020,7 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	sectionTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		marginTop: 20,
@@ -1115,7 +1153,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalTitle: {
-		backgroundColor: orange,
+		backgroundColor: blue,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',

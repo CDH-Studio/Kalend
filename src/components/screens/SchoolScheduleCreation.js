@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
 import { NavigationActions } from 'react-navigation';
-import { ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text } from 'react-native';
+import { ImageBackground, StatusBar, Platform, Text } from 'react-native';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { gradientColors } from '../../../config';
-import { white, orange, lightOrange } from '../../styles';
+import { schoolScheduleCreationStyles as styles, white, dark_blue } from '../../styles';
 
 /**
  * The loading screen after the User uploads a picture
@@ -72,9 +72,9 @@ class SchoolScheduleCreation extends React.Component {
 						<Progress.Bar style={{alignSelf:'center'}} 
 							indeterminate={true} 
 							width={200} 
-							color={orange} 
+							color={dark_blue} 
 							useNativeDriver={true} 
-							unfilledColor={lightOrange} />
+							unfilledColor={'#79A7D2'} />
 					</Surface>
 				</ImageBackground>
 			</LinearGradient>
@@ -90,36 +90,3 @@ let mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(SchoolScheduleCreation);
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-		height: '130%' //Fixes pattern bug
-	},
-
-	surface: {
-		padding: 8,
-		height: 100,
-		width: Dimensions.get('window').width * 0.8,
-		borderRadius: 4,
-		justifyContent: 'center',
-		elevation: 3,
-	},
-
-	title: {
-		fontSize: 20,
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center'
-	},
-
-	subtitle: {
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center',
-		paddingTop: 5,
-		paddingBottom: 10
-	}
-});

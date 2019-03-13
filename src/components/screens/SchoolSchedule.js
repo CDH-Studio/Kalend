@@ -157,7 +157,7 @@ class SchoolSchedule extends React.Component {
 						<View style={styles.instruction}>
 							<FontAwesome5 name="university"
 								size={130}
-								color={white}/>
+								color={white} style={styles.shadowIcon} />
 							<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
 						</View>
 						
