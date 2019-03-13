@@ -9,7 +9,6 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
-import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialReviewEvent } from '../../constants/screenNames';
 import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
@@ -172,12 +171,11 @@ class NonFixedEvent extends React.Component {
 	}
 
 	render() {
-		const { containerHeight, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
+		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
 		let addEventButtonText;
 		let addEventButtonFunction;
-		let tutorialStatus;
-		let paddingBottomContainer = HEIGHT;
+		let paddingBottomContainer = 0;
 		let errorTitle;
 		let errorEndDate;
 		let errorDuration;
@@ -209,17 +207,9 @@ class NonFixedEvent extends React.Component {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === 'NonFixedEvent') {
-			tutorialStatus = <TutorialStatus active={3}
-				color={blue}
-				backgroundColor={white}
-				skip={this.skip}
-				showTutShadow={showTutShadow} />;
-
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			tutorialStatus = null;
-
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
 
@@ -233,7 +223,6 @@ class NonFixedEvent extends React.Component {
 
 				<ScrollView style={styles.scrollView}
 					ref='_scrollView'
-					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
 						<View style={styles.instruction}>
@@ -443,13 +432,11 @@ class NonFixedEvent extends React.Component {
 
 
 						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
+							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
 
-				{tutorialStatus}	
-				
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 

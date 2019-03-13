@@ -488,7 +488,7 @@ class Course extends React.Component {
 
 
 						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
+							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, () => 
 								this.props.navigation.pop()]} />
 					</View>

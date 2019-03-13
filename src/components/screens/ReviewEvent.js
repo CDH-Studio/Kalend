@@ -9,7 +9,6 @@ import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
-import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 
 const priorityLevels = {
@@ -17,7 +16,7 @@ const priorityLevels = {
 	0.5: 'Normal',
 	1: 'High'
 };
-const tutorialHeight = HEIGHT;
+const tutorialHeight = 0;
 const containerHeight = containerHeight;
 
 /**
@@ -214,21 +213,7 @@ class ReviewEvent extends React.Component {
 	}
 
 	render() {
-		const { showTutShadow } = this.state;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-
-		/**
-		 * In order to remove the tutorial status if not needed */
-		let tutorialStatus;
-
-		if (this.props.navigation.state.routeName === 'ReviewEvent') {
-			tutorialStatus = <TutorialStatus active={4}
-				color={blue}
-				backgroundColor={white}
-				showTutShadow={showTutShadow} />;
-		} else {
-			tutorialStatus = null;
-		}
 
 		return(
 			<View style={styles.container}>
@@ -237,7 +222,6 @@ class ReviewEvent extends React.Component {
 
 				<ScrollView style={styles.scrollView}
 					onScroll={(event) => { 
-						this.setState({showTutShadow: onScroll(event, showTutShadow)});
 						this.onScroll(event);
 					}}
 					scrollEventThrottle={100} >
@@ -337,8 +321,6 @@ class ReviewEvent extends React.Component {
 					</View>		
 				</ScrollView>
 
-				{tutorialStatus}
-				
 				<FAB style={styles.fab}
 					icon="check"
 					visible={this.state.showFAB}

@@ -10,7 +10,6 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
-import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 
@@ -432,9 +431,8 @@ class FixedEvent extends React.Component {
 	}
 
 	render() {
-		const { containerHeight, scrollable, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
+		const { containerHeight, scrollable, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
-		let tutorialStatus;
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorTitle;
@@ -467,17 +465,9 @@ class FixedEvent extends React.Component {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === 'FixedEvent') {
-			tutorialStatus = <TutorialStatus active={2}
-				color={blue}
-				backgroundColor={'#ffffff'}
-				skip={this.skip}
-				showTutShadow={showTutShadow} />;
-
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			tutorialStatus = null;
-
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
@@ -490,7 +480,6 @@ class FixedEvent extends React.Component {
 				
 				<ScrollView style={styles.scrollView}
 					ref='_scrollView'
-					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight}]}>
@@ -670,12 +659,10 @@ class FixedEvent extends React.Component {
 						</View>
 
 						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
+							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
-
-				{tutorialStatus}
 
 				<Snackbar
 					visible={snackbarVisible}

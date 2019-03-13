@@ -7,7 +7,6 @@ import updateNavigation from '../NavigationHelper';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
-import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import {setUnavailableHours} from '../../actions';
 
 const viewHeight = 688.3809814453125;
@@ -17,8 +16,8 @@ const viewHeight = 688.3809814453125;
  */
 class UnavailableHours extends React.Component {
 
-	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === 'UnavailableHours' ? 'Add Unavailable Hours' : 'Edit Unavailable Hours',
+	static navigationOptions = {
+		title: 'Set Unavailable Hours',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -26,7 +25,7 @@ class UnavailableHours extends React.Component {
 			backgroundColor: blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
-	});
+	};
 
 	constructor(props) {
 		super(props);
@@ -90,6 +89,12 @@ class UnavailableHours extends React.Component {
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentDidMount() {
+		if (this.props.UnavailableReducer !== undefined) {
+			this.setState({...this.props.UnavailableReducer.info.info});
+		}
 	}
 
 	/**
@@ -277,9 +282,8 @@ class UnavailableHours extends React.Component {
 	}
 	
 	render() {
-		const { containerHeight, showTutShadow } = this.state;
-		let tutorialStatus;
-		let paddingBottomContainer = HEIGHT;
+		const { containerHeight } = this.state;
+		let paddingBottomContainer = 0;
 		let hourTypes = [
 			'sleepWeek',
 			'sleepWeekEnd',
@@ -295,7 +299,6 @@ class UnavailableHours extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-
 		hourTypes.forEach( type => {
 			let endValidated = 'end' + type.charAt(0).toUpperCase() + type.slice(1);
 			if (!this.state[endValidated + 'Validated']) {
@@ -304,17 +307,6 @@ class UnavailableHours extends React.Component {
 				error[endValidated] = null;
 			}
 		});
-		
-		if (this.props.navigation.state.routeName === 'UnavailableHours') {
-			tutorialStatus = <TutorialStatus active={5}
-				color={blue}
-				backgroundColor={'#ffffff'}
-				skip={this.skip}
-				showTutShadow={showTutShadow} />;
-		} else {
-			tutorialStatus = null;
-			paddingBottomContainer = null;
-		}
 
 		return(
 			<View style={styles.container}>
@@ -871,16 +863,24 @@ class UnavailableHours extends React.Component {
 						
 						<View style={styles.buttons}>
 							<TouchableOpacity style={[styles.button, {width:'100%'}]} onPress={this.next}>
-								<Text style={styles.buttonText}>Next</Text>
+								<Text style={styles.buttonText}>Done</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
-
-				{tutorialStatus}
 			</View>
 		);
 	}
 }
 
-export default connect()(UnavailableHours);
+
+let mapStateToProps = (state) => {
+	const { UnavailableReducer } = state;
+
+	return {
+		UnavailableReducer
+	};
+};
+
+
+export default connect(mapStateToProps, null)(UnavailableHours);
