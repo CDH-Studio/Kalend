@@ -28,7 +28,7 @@ export const calendarEventColorsInside = {
 // export const gradientColors = ['#00B7FF', '#BFF098'];
 // export const gradientColors = ['#D74177', '#FFE98A'];
 // export const gradientColors = ['#38ADAE', '#CD295A'];
-export const gradientColors = ['#32D2DC', '#345C83'];
+export const gradientColors = ['#32D2DC', '#153d73'];
 
 
 export const slides = [
@@ -45,8 +45,8 @@ export const slides = [
 		title: 'Schedule Generator',
 		text: 'Add your events and the activities you\nwould like to do and let the application\ngenerate the best schedules for you',
 		icon: 'ios-calendar',
-		colors: [orangeColor,'#FF621C'],
-		color: '#FFE0B6'
+		colors: gradientColors,
+		color: '#CBE0FA'
 	},
 	{
 		key: 'compare',
@@ -61,6 +61,6 @@ export const slides = [
 		title: 'Start right now\nwith Kalend!',
 		text: '',
 		icon: '',
-		colors: [orangeColor,'#FF621C'],
+		colors: gradientColors,
 	}
 ];

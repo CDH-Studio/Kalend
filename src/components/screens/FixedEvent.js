@@ -9,7 +9,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { fixedEventStyles as styles, white, orange, lightOrange, gray, statusBlueColor, dark_blue } from '../../styles';
+import { fixedEventStyles as styles, white, gray, statusBlueColor, dark_blue, blue } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
@@ -507,7 +507,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="format-title"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText}
@@ -524,9 +524,9 @@ class FixedEvent extends React.Component {
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
 								<View style={styles.switch}>
-									<Switch trackColor={{false: 'lightgray', true: lightOrange}} 
+									<Switch trackColor={{false: 'lightgray', true: blue}} 
 										ios_backgroundColor={'lightgray'} 
-										thumbColor={this.state.allDay ? orange : 'darkgray'} 
+										thumbColor={this.state.allDay ? dark_blue : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
 											allDay: allDay, 
 											disabledStartTime: !this.state.disabledStartTime,
@@ -624,7 +624,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -637,7 +637,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -650,7 +650,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<Feather name="repeat"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									{

@@ -61,7 +61,7 @@ class ScheduleCreation extends React.Component {
 							color={dark_blue} 
 							useNativeDriver={true} 
 							borderColor={dark_blue} 
-							unfilledColor={blue}/>
+							unfilledColor={'#79A7D2'}/>
 					</Surface>
 				</ImageBackground>
 			</LinearGradient>

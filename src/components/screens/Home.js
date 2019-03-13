@@ -53,7 +53,7 @@ class Home extends React.Component {
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
-				if (!signedIn || this.props.HomeReducer.profile === null) {
+				if (!signedIn || !this.props.HomeReducer || this.props.HomeReducer.profile === null) {
 					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);

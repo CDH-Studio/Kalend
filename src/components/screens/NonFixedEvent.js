@@ -248,7 +248,7 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="format-title"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText} 
@@ -339,7 +339,7 @@ class NonFixedEvent extends React.Component {
 												onChange={(hours) => this.setState({hours, durationValidated: true})}
 												minValue={0} 
 												leftButtonBackgroundColor={blue}
-												rightButtonBackgroundColor={dark_blue}
+												rightButtonBackgroundColor={blue}
 												rounded={true}
 												borderColor={'lightgray'}
 												textColor={!this.state.durationValidated ? '#ff0000' : gray}
@@ -353,7 +353,7 @@ class NonFixedEvent extends React.Component {
 												onChange={(minutes) => this.setState({minutes, durationValidated: true})}
 												minValue={0} 
 												leftButtonBackgroundColor={blue}
-												rightButtonBackgroundColor={dark_blue}
+												rightButtonBackgroundColor={blue}
 												rounded={true}
 												borderColor={'lightgray'}
 												textColor={!this.state.durationValidated ? '#ff0000' : gray}
@@ -384,7 +384,7 @@ class NonFixedEvent extends React.Component {
 										onChange={(occurence) => this.setState({occurence})}
 										minValue={0} 
 										leftButtonBackgroundColor={blue}
-										rightButtonBackgroundColor={dark_blue}
+										rightButtonBackgroundColor={blue}
 										rounded={true}
 										borderColor={'lightgray'}
 										textColor={gray}
@@ -418,7 +418,7 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -431,7 +431,7 @@ class NonFixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short"
 									size={30}
-									color={dark_blue} />
+									color={blue} />
 								
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 

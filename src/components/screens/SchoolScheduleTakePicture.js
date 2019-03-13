@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { takePictureStyles as styles, orange, red, blue, white } from '../../styles';
+import { takePictureStyles as styles, red, blue, white, dark_blue } from '../../styles';
 import { setImageURI } from '../../actions';
 
 const iconColor = 'white';
@@ -195,7 +195,7 @@ class SchoolScheduleTakePicture extends React.Component {
 
 					<View style={{opacity: takePictureOpacity}}>
 						<TouchableOpacity onPress={this.takePicture}
-							style={[styles.capture, {backgroundColor: changeIcon ? orange : blue }]}>
+							style={[styles.capture, {backgroundColor: changeIcon ? dark_blue : blue }]}>
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
 								color={iconColor} 
