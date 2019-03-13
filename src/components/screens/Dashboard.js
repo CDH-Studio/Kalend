@@ -3,7 +3,7 @@ import { StatusBar, View, Button, Text } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import updateNavigation from '../NavigationHelper';
 import { persistor } from '../../store';
-import { dashboardStyles as styles, blue } from '../../styles';
+import { dashboardStyles as styles, blue, statusBlueColor } from '../../styles';
 import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent, LoginNavigator } from '../../constants/screenNames';
 
 /**
@@ -27,7 +27,7 @@ class Dashboard extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true}
-					backgroundColor={blue} />
+					backgroundColor={statusBlueColor} />
 
 				<Text>Redux Management</Text>
 				<Button title='Purge' 
@@ -43,6 +43,7 @@ class Dashboard extends React.Component {
 				
 				<Portal.Host>
 					<FAB.Group
+						theme={{colors:{accent:blue}}}
 						open={optionsOpen}
 						icon={optionsOpen ? 'close' : 'add'}
 						actions={[

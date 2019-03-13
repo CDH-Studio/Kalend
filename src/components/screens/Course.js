@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { courseStyles as styles, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 
@@ -27,7 +27,7 @@ class Course extends React.Component {
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -381,14 +381,14 @@ class Course extends React.Component {
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
 							<FontAwesome5 name="university"
 								size={130}
-								color={blue}/>
+								color={dark_blue}/>
 						</View>
 						
 						<View>
 							<View style={styles.textInput}>
 								<MaterialIcons name="class"
 									size={30}
-									color={blue} />
+									color={dark_blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText} 
@@ -478,7 +478,7 @@ class Course extends React.Component {
 						<View style={styles.textInput}>
 							<MaterialIcons name="location-on"
 								size={30}
-								color={blue} />
+								color={dark_blue} />
 							<View style={styles.textInputBorder}>
 								<TextInput style={styles.textInputText} 
 									placeholder="Location" 

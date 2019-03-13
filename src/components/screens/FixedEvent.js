@@ -9,7 +9,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
+import { fixedEventStyles as styles, white, orange, lightOrange, gray, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
@@ -28,7 +28,7 @@ class FixedEvent extends React.Component {
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -469,7 +469,7 @@ class FixedEvent extends React.Component {
 		 */
 		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
 			tutorialStatus = <TutorialStatus active={2}
-				color={blue}
+				color={dark_blue}
 				backgroundColor={'#ffffff'}
 				skip={this.skip}
 				showTutShadow={showTutShadow} />;
@@ -500,14 +500,14 @@ class FixedEvent extends React.Component {
 							
 							<MaterialCommunityIcons name="calendar-today"
 								size={130}
-								color={blue}/>
+								color={dark_blue}/>
 						</View>
 
 						<View>
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="format-title"
 									size={30}
-									color={blue} />
+									color={dark_blue} />
 
 								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 									<TextInput style={styles.textInputText}
@@ -624,7 +624,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialIcons name="location-on"
 									size={30}
-									color={blue} />
+									color={dark_blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -637,7 +637,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<MaterialCommunityIcons name="text-short"
 									size={30}
-									color={blue} />
+									color={dark_blue} />
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
@@ -650,7 +650,7 @@ class FixedEvent extends React.Component {
 							<View style={styles.textInput}>
 								<Feather name="repeat"
 									size={30}
-									color={blue} />
+									color={dark_blue} />
 
 								<View style={styles.textInputBorder}>
 									{
