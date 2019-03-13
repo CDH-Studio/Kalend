@@ -433,9 +433,8 @@ class Course extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular',
-											color: gray
-										}, 
-										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+											color:!this.state.endTimeValidated ? '#ff0000' : gray
+										}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="h:mm A" 
@@ -458,10 +457,10 @@ class Course extends React.Component {
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular'}, 
-											placeholderText:{
+											dateText:{fontFamily: 'OpenSans-Regular',
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
+												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
+										}}
 										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 										format="h:mm A" 
 										minDate={this.state.minEndTime}
