@@ -8,7 +8,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor, dark_blue } from '../../styles';
+import { nonFixedEventStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
 import { TutorialNonFixedEvent, TutorialUnavailableHours, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
 import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';

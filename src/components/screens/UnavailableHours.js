@@ -6,7 +6,7 @@ import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
 import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed, DashboardReviewEvent } from '../../constants/screenNames';
 import { connect } from 'react-redux';
-import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor, dark_blue } from '../../styles';
+import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import {setUnavailableHours} from '../../actions';
 

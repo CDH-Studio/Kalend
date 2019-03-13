@@ -5,7 +5,7 @@ import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#32D2DC'; //#1473E6
+export const blue = '#40B8BF'; //#1473E6 #32D2DC
 export const statusBlueColor = '#19334d'; //#105DBA
 export const dark_blue = '#345C83'; //#0E4BAA
 export const lightOrange = '#FFBF69';

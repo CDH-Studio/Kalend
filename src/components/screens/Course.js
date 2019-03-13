@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, blue, statusBlueColor, gray, dark_blue } from '../../styles';
+import { courseStyles as styles, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 

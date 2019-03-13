@@ -4,7 +4,7 @@ import { FAB, Portal } from 'react-native-paper';
 import { SET_NAV_SCREEN, SET_IMG, SIGNED_IN, ADD_NFE, ADD_FE } from '../../constants';
 import updateNavigation from '../NavigationHelper';
 import { store, persistor } from '../../store';
-import { dashboardStyles as styles, blue, dark_blue, statusBlueColor } from '../../styles';
+import { dashboardStyles as styles, blue, statusBlueColor } from '../../styles';
 import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent, LoginNavigator } from '../../constants/screenNames';
 
 /**

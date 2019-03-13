@@ -9,7 +9,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor, dark_blue } from '../../styles';
+import { fixedEventStyles as styles, white, orange, lightOrange, gray, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { updateFixedEvents, addFixedEvent } from '../../actions';

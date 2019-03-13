@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { gradientColors } from '../../../config';
 import CameraRollImage from '../CameraRollImage';
-import { selectPictureStyles as styles, white } from '../../styles';
+import { selectPictureStyles as styles, white, blue } from '../../styles';
 import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
 
 const imagesPerLoad = 99;
@@ -248,6 +248,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 						
 						<FAB style={styles.fab}
 							icon="file-upload"
+							theme={{colors:{accent:blue}}}
 							visible={showFAB}
 							onPress={this.nextScreen} />
 					</View>
