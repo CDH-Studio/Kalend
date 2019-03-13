@@ -7,7 +7,6 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { store } from '../../store';
 import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
@@ -63,10 +62,7 @@ class Course extends React.Component {
 
 	componentWillMount() {
 		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
-			let courses = store.getState().CoursesReducer;
-			let selected = store.getState().NavigationReducer.reviewEventSelected;
-
-			this.setState({...courses[selected]});
+			this.setState({...this.props.CourseState});
 		} else {
 			this.resetField();
 		}	
@@ -511,14 +507,15 @@ class Course extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
-	const {CoursesReducer, NavigationReducer} = state;
+let mapStateToProps = (state) => {
+	const { CoursesReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
 	return {
 		CourseState: CoursesReducer[selected],
-		CoursesReducer
+		CoursesReducer,
+		selectedIndex: selected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(Course);

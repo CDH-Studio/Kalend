@@ -6,10 +6,11 @@ import { connect } from 'react-redux';
 import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
-import { store } from '../../store';
-import { homeStyles as styles } from '../../styles';
-import { SIGNED_IN } from '../../constants';
+import { createCalendar, getCalendarID2 } from '../../services/service';
 import { TutorialNavigator } from '../../constants/screenNames';
+import { bindActionCreators } from 'redux';
+import { setCalendarID, logonUser } from '../../actions';
+import { homeStyles as styles } from '../../styles';
 
 
 /** 
@@ -29,9 +30,19 @@ class Home extends React.Component {
 	 * Sets the user information
 	 */
 	setUser = (userInfo) => {
-		this.props.dispatch({
-			type: SIGNED_IN,
-			user: userInfo
+		this.props.logonUser(userInfo);	
+	}
+
+
+	setCalendar() {
+		getCalendarID2().then(data => {
+			if(data === undefined) {
+				createCalendar().then(id => {
+					this.props.setCalendarID(id);
+				});
+			} else {
+				this.props.setCalendarID(data);
+			}
 		});
 	}
 	
@@ -42,21 +53,24 @@ class Home extends React.Component {
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
-				if (!signedIn || store.getState().HomeReducer.profile === null) {
+				if (!signedIn || this.props.HomeReducer.profile === null) {
 					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
+							this.setCalendar();
 							this.props.navigation.navigate(TutorialNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
+								this.setCalendar();
 								this.props.navigation.navigate(TutorialNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
+					this.setCalendar();
 					this.props.navigation.navigate(TutorialNavigator);
 				}
 			});
@@ -109,15 +123,19 @@ class Home extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
-	const main = state.NavigationReducer.main;
-	const screen = state.NavigationReducer.screen;
-	const profile = state.NavigationReducer.profile;
-	return {
-		main, 
-		screen,
-		profile
-	};
-}
 
-export default connect(mapStateToProps, null)(Home);
+let mapStateToProps = (state) => {
+	const { id } = state.CalendarReducer;
+	const NavigationReducer = state.NavigationReducer;
+
+	return {
+		NavigationReducer,
+		calendarID: id
+	};
+};
+
+let mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

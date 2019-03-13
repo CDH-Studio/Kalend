@@ -1,5 +1,5 @@
 import { store } from '../store';
-import { SET_NAV_SCREEN } from '../constants';
+import { setNavigationScreen } from '../actions';
 
 let updateNavigation = (screen, route) => {
 	console.log(screen + ' ' + route);
@@ -16,13 +16,11 @@ let updateNavigation = (screen, route) => {
 		nav.main = 'SchoolSchedule';
 	}
 
-	store.dispatch({
+	store.dispatch(setNavigationScreen({
 		...nav,
-		type: SET_NAV_SCREEN,
 		screen,
 		route,
-		main: nav.main
-	});
+	}));
 };
 
 export default updateNavigation;

@@ -1,6 +1,7 @@
 import { formatData, getStartDate } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { store } from '../store';
+import { addGeneratedNonFixedEvent, addCourse } from '../actions';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -37,6 +38,11 @@ export const grabSampleData = () =>  {
 		});
 }; 
 
+/**
+ *	Function call to send base64 img to python server and have OCR extraction on the image
+ * 
+ * @param {String} base64Data base64 img string
+ */
 export const analyzePicture = (base64Data) => {
 	return new Promise( function(resolve, reject) { 
 		fetch(`${serverUrl}/api/analyzepicture`, {
@@ -48,7 +54,6 @@ export const analyzePicture = (base64Data) => {
 			}
 		})
 			.then(res => {
-				
 				return res.json();
 			})
 			.then(body => {
@@ -67,27 +72,32 @@ export const analyzePicture = (base64Data) => {
 	});
 };
 
-
+/**
+ *	Insert's All Courses event into the Google Calendar
+ * 
+ * @param {Array} events an array of all courses events 
+ */
 export const InsertDataIntoGoogle = (events) => {
 	let promises = [];
+	let calendarID = store.getState().CalendarReducer.id;
 
 	events.forEach( event => {
 		let tempStartDate = new Date('2019-02-01');
-			
 		event.courses.forEach(course => {
+			// console.log('course', course);
 			let obj = {
 				'end': {
-					'timeZone': 'EST'
+					'timeZone': 'UTC'
 				},
 				'start': {
-					'timeZone': 'EST'
+					'timeZone': 'UTC'
 				}
 			};
 			let startDate = getStartDate(tempStartDate, event.day);
 			let endDate = getStartDate(tempStartDate, event.day);
-			let day = event.day.substr(0,2).toUpperCase();
+			//let day = event.day.substr(0,2).toUpperCase();
 			let recurrence = [
-				`RRULE:FREQ=WEEKLY;UNTIL=20190327;BYDAY=${day}`
+				'RRULE:FREQ=WEEKLY;UNTIL=20190327'
 			];
 			
 			// Convert all letters to lowercase for easier formating
@@ -121,27 +131,21 @@ export const InsertDataIntoGoogle = (events) => {
 			courseReduxObj.dayOfWeek = event.day;
 			courseReduxObj.hours = d;
 
-			store.dispatch({
-				type: 'ADD_COURSE',
-				event: courseReduxObj
-			});
+			store.dispatch(addCourse(courseReduxObj));
 			
-			let promise_temp = (calendarID) => {
-				insertEvent(calendarID,obj,{})
-					.then( data => {
-						return data;
-					})
-					.catch( err => {
-						console.log('error', err);
-					});
-			};
-			promises.push(getCalendarID(promise_temp));
+			promises.push(insertEvent(calendarID,obj,{}));
 		});
 	});
 	return Promise.all(promises);
 };
 
+/**
+ *	Insert's fixed Event into the Google Calendar
+ * 
+ * @param {Object} event state object of the event
+ */
 export const  InsertFixedEvent = (event) => {
+	let calendarID = store.getState().CalendarReducer.id;
 	let obj = {
 		'end': {
 			'timeZone': 'EST'
@@ -169,31 +173,197 @@ export const  InsertFixedEvent = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 
-	let promise = (calendarID) => {
-		return insertEvent(calendarID,obj,{})
-			.then( data => {
-				return data;
-			});
-	};
-
-	return getCalendarID(promise);
+	return insertEvent(calendarID,obj,{});	
 };
 
-const getCalendarID = (promise) => {
-	return getCalendarList().then((data) => {
-		let calendarID = undefined;
-		for (let i = 0; i < data.items.length; i++) {
-			if (data.items[i].summary === 'Kalend') {
-				calendarID = data.items[i].id;
+/**
+ *	Checks if 'Kalend' Calendar is available, if so returns the ID of the 'Kalend' Calendar
+ */
+export const getCalendarID2 = () => {
+	return new Promise( async function(resolve) { 
+		await getCalendarList().then((data) => {
+			let calendarID;
+			for (let i = 0; i < data.items.length; i++) {
+				if (data.items[i].summary === 'Kalend') {
+					calendarID = data.items[i].id;
+					console.log('found one!', calendarID);
+				}
 			}
-		}
-
-		if (calendarID === undefined) {
-			createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-				return promise(data.id);
-			});
-		} else {
-			return promise(calendarID);
-		}
+			resolve(calendarID);
+		});
 	});
 };
+
+/**
+ *	Creates a new calendar, and returns calendarID as a promise
+ */
+export const createCalendar = () => {
+	return new Promise( function(resolve) { 
+		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
+			resolve(data.id);
+		});
+	});
+};
+
+/**
+ *	Loops through all the non fixed events and generates events which are pushed to redux store
+ */
+export const generateSchedule = () => {
+	return new Promise( function(resolve) {
+		let nonFixedEvents = store.getState().NonFixedEventsReducer;
+		
+		if (nonFixedEvents.length == 0) return;
+		
+		nonFixedEvents.forEach(event => {
+			ItterateOccurence(event);
+		});
+
+		resolve();
+	});
+};
+
+/**
+ *	Itterates over the number of Occurences
+ * 
+ * @param {Object} event state object of the event
+ */
+async function ItterateOccurence(event) {
+	let testedDates = [];
+	let startDayTime = 8;
+	let endDayTime = 22;
+
+	for (let i = 0; i < event.occurrence; i++) {
+		await findEmptySlots(startDayTime, endDayTime, event, testedDates).then(availableDate => {
+			storeNonFixedEvent(availableDate, event);
+		});
+	}	
+}
+
+/**
+ *	Find the available date in the google calendar
+ * 
+ * @param {integer} startDayTime this is a temporary input atm, which indicates when the user's day starts
+ * @param {integer} endDayTime this is a temporary input atm, which indicates when the user's day ends 
+ * @param {Object} event state object of the event
+ * @param {Array} testedDates Array of dates where the slots are not available
+ */
+function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
+	let calendarID = store.getState().CalendarReducer.id;
+	let obj = {};
+	obj.timeZone = 'EST';
+	obj.items = [{'id': calendarID}];
+
+	return new Promise( async function(resolve) {
+		let available = false;
+	
+		while(!available) {
+			let startDate = new Date(event.startDate);
+			let endDate = new Date(event.endDate);
+			let eventHours = event.hours;
+			let eventMinutes = event.minutes; 
+
+			// Check if it is a specific Date Range
+			if(event.specificDateRange == false) endDate.setDate(startDate.getDate() + 7);
+			
+			// Check if the total duration must be dicided
+			if (event.isDividable) {
+				let dividedDuration = divideDuration(event.hours, event.minutes, event.occurrence);
+		
+				eventHours = dividedDuration.hours;
+				eventMinutes = dividedDuration.minutes;
+			} 
+
+			let randomStartTime = getRndInteger(startDayTime, endDayTime - eventHours);
+			let randomDay = getRndInteger(startDate.getDate(), endDate.getDate());
+			startDate.setHours(randomStartTime);
+			startDate.setDate(randomDay);
+			startDate = startDate.toISOString();
+
+			// If random generated startDate has already been tested, move to the next itteration
+			if (testedDates.includes(startDate)) continue;
+
+			let randomEndTime = randomStartTime + eventHours;
+			endDate.setHours(randomEndTime, eventMinutes);
+			endDate.setDate(randomDay);
+			endDate = endDate.toISOString();
+
+			obj.timeMin = startDate;
+			obj.timeMax = endDate;
+
+			// Call to google to check whether time conflicts with the specified generated startDate;
+			await getAvailabilities(obj).then(data => {
+				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
+				if (busySchedule.length > 0) {
+					console.log('slot already taken!');
+					testedDates.push(startDate);
+				} else {
+					console.log(`found a free slot! Pushing the event! ${randomStartTime}`);
+					available = true;
+					resolve({startDate, endDate});
+				}
+			});
+		}
+	});
+
+}
+
+/**
+ *	pushes the non fixed event into redux store
+ * 
+ * @param {integer} availableDate {startDate, endDate} object found available in google Calendar
+ * @param {Object} event state object of the event
+ */
+let storeNonFixedEvent = (availableDate, event) => {
+	//let calendarID = store.getState().CalendarReducer.id;
+	let obj = {
+		'end': {},
+		'start': {}
+	};
+
+	obj.end.timeZone = 'EST';
+	obj.start.timeZone = 'EST';
+	obj.summary = event.title;
+	obj.location = event.location;
+	obj.description = event.description;
+	obj.end.dateTime = availableDate.endDate;
+	obj.start.dateTime = availableDate.startDate;
+
+	store.dispatch(addGeneratedNonFixedEvent(obj));
+};
+
+/**
+ *	Generates a random number between an interval of max and min
+ * 
+ * @param {integer} __min minimum bound of the interval
+ * @param {integer} __max maximum bound of the interval
+ */
+function getRndInteger(__min, __max) {
+	return Math.floor(Math.random() * (__max - __min) ) + __min;
+}
+
+/**
+ *	Divides the duration by the number of occurences
+ * 
+ * @param {integer} __hours hours of duration
+ * @param {integer} __minutes minutes of duration
+ * @param {integer} __occurence number of occurences
+ */
+function divideDuration(__hours, __minutes, __occurence) {
+	let totalDuration = (__hours * 60) + __minutes;
+	let dividedDuration = totalDuration / __occurence;
+	let { hours, minutes } = convertMintuesToHours(dividedDuration);
+	
+	return {hours, minutes};
+}
+
+/**
+ * Helper method to convert total minutes into hours and minutes
+ * 
+ * @param {integer} __duratrion total duration in minutes
+ */
+function convertMintuesToHours(__duration) { 
+	const hours = Math.floor(__duration / 60);  
+	const minutes = __duration % 60;
+
+	return {hours, minutes};         
+}

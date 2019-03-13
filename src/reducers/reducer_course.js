@@ -8,7 +8,8 @@ export default function CoursesReducer(state = [], action) {
 			return  [...state, event];
 
 		case DELETE_COURSE:
-			return event;
+			state.splice(index, 1);
+			return [...state]; 
 
 		case CLEAR_COURSE: 
 			return  [];

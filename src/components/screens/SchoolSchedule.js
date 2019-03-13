@@ -73,8 +73,6 @@ class SchoolSchedule extends React.Component {
 	selectAPicture() {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
-				console.log(accepted);
-
 				if (accepted) {
 					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
 						this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
@@ -94,9 +92,7 @@ class SchoolSchedule extends React.Component {
 
 	cameraCapture() {
 		if (Platform.OS !== 'ios') {
-			requestCamera().then((accepted) => {
-				console.log(accepted);
-				
+			requestCamera().then((accepted) => {				
 				if (accepted) {
 					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
 						this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);

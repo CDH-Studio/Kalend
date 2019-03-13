@@ -378,6 +378,7 @@ class NonFixedEvent extends React.Component {
 								<View style={styles.questionLayout}>
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
 
+
 									<NumericInput initValue={this.state.occurence}
 										value={this.state.occurence}
 										onChange={(occurence) => this.setState({occurence})}
@@ -462,7 +463,7 @@ class NonFixedEvent extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
+let mapStateToProps = (state) => {
 	const { NonFixedEventsReducer, NavigationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
 
@@ -471,6 +472,6 @@ function mapStateToProps(state) {
 		NonFixedEventsReducer,
 		selectedIndex: NavigationReducer.reviewEventSelected
 	};
-}
+};
 
 export default connect(mapStateToProps, null)(NonFixedEvent);
