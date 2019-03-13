@@ -5,12 +5,9 @@ import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1D84B5'; //#1473E6 #32D2DC#40B8BF
-export const statusBlueColor = '#0A2239'; //#105DBA#19334d
-export const dark_blue = '#153d73'; //#0E4BAA#345C83
-export const lightOrange = '#FFBF69';
-export const orange = '#FF9F1C';
-export const darkOrange = '#FF621C';
+export const blue = '#1D84B5'; //#1473E6 
+export const statusBlueColor = '#0A2239'; //#105DBA
+export const dark_blue = '#153d73'; //#0E4BAA
 export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
@@ -1156,7 +1153,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalTitle: {
-		backgroundColor: orange,
+		backgroundColor: blue,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',

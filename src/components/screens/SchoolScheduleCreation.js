@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
 import { NavigationActions } from 'react-navigation';
-import { ImageBackground, StatusBar, Platform, StyleSheet, Dimensions, Text } from 'react-native';
+import { ImageBackground, StatusBar, Platform, Text } from 'react-native';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { gradientColors } from '../../../config';
-import { schoolScheduleCreationStyles as styles, white, dark_blue, blue } from '../../styles';
+import { schoolScheduleCreationStyles as styles, white, dark_blue } from '../../styles';
 
 /**
  * The loading screen after the User uploads a picture

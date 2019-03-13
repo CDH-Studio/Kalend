@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { generateSchedule } from '../../services/service';
 import { gradientColors } from '../../../config';
-import { scheduleCreateStyles as styles, dark_blue, blue } from '../../styles';
+import { scheduleCreateStyles as styles, dark_blue } from '../../styles';
 import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection } from '../../constants/screenNames';
 
 /**
