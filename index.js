@@ -121,7 +121,7 @@ const DashboardOptionsNavigator = createStackNavigator(
 		ScheduleCreation: {screen: ScheduleCreation},
 		ScheduleSelection: {screen: ScheduleSelection},
 		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails},
-		
+
 		UnavailableHours: {screen: UnavailableHours},
 		UnavailableFixed: {screen: FixedEvent},
 	}, 

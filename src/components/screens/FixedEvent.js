@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
-import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 
@@ -318,7 +317,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate('DashboardNavigator');
+		this.props.navigation.pop();
 	}
 
 	/**
@@ -366,7 +365,7 @@ class FixedEvent extends React.Component {
 			this.props.navigation.navigate('ReviewEvent');
 		} else {
 			this.props.dispatch(addFixedEvent(this.state));
-			this.props.navigation.navigate('DashboardNavigator');
+			this.props.navigation.pop();
 		}
 	}
 

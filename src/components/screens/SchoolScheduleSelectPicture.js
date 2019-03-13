@@ -8,7 +8,6 @@ import updateNavigation from '../NavigationHelper';
 import { gradientColors } from '../../../config';
 import CameraRollImage from '../CameraRollImage';
 import { selectPictureStyles as styles, white } from '../../styles';
-import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
 import { setImageURI } from '../../actions';
 
 const imagesPerLoad = 99;

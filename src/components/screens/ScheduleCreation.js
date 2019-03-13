@@ -6,7 +6,7 @@ import { Surface } from 'react-native-paper';
 import { generateSchedule } from '../../services/service';
 import { gradientColors } from '../../../config';
 import { scheduleCreateStyles as styles, orange, lightOrange } from '../../styles';
-import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection, DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator } from '../../constants/screenNames';
 
 /**
  * The loading screen shown after the user reviewed their events

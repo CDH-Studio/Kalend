@@ -7,7 +7,6 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
@@ -271,7 +270,7 @@ class Course extends React.Component {
 	nextScreen = () => {
 		if (this.props.navigation.state.routeName === 'AddCourse') {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate('DashboardNavigator');
+				this.props.navigation.pop();
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -491,7 +490,7 @@ class Course extends React.Component {
 						<BottomButtons twoButtons={showNextButton}
 							buttonText={[addEventButtonText, 'Next']}
 							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.navigate('DashboardNavigator')]} />
+								this.props.navigation.pop()]} />
 					</View>
 				</ScrollView>
 

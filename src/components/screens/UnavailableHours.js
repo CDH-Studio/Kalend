@@ -4,12 +4,11 @@ import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
-import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed, DashboardReviewEvent, DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import {setUnavailableHours} from '../../actions';
-import Dashboard from './Dashboard';
 
 const viewHeight = 688.3809814453125;
 

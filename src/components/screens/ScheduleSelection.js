@@ -9,7 +9,7 @@ import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { white, black, gray } from '../../styles';
-import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails, DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
 
 const containerPadding = 10;

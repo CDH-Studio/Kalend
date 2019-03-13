@@ -1,15 +1,15 @@
 import React from 'react';
-import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-native';
+import { Platform, StatusBar, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
-import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 
 const priorityLevels = {
@@ -249,7 +249,15 @@ class ReviewEvent extends React.Component {
 							}
 						}}>
 						<View>
-							<Text style={styles.sectionTitle}>School Schedule</Text>
+							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+								<Text style={styles.sectionTitle}>School Schedule</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('AddCourse')}>
+									<MaterialCommunityIcons name="plus-circle" 
+										size={25} 
+										color={blue}/>
+								</TouchableOpacity>
+							</View>
+
 							{
 								this.state.schoolScheduleData.length === 0 ?
 									<Text style={styles.textNoData}>No school schedule added, please go back to add one</Text> : 
@@ -268,7 +276,15 @@ class ReviewEvent extends React.Component {
 						</View>
 
 						<View>
-							<Text style={styles.sectionTitle}>Fixed Events</Text>
+							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+								<Text style={styles.sectionTitle}>Fixed Events</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('FixedEvent')}>
+									<MaterialCommunityIcons name="plus-circle" 
+										size={25} 
+										color={blue}/>
+								</TouchableOpacity>
+							</View>
+
 							{
 								this.state.fixedEventData.length === 0 ?
 									<Text style={styles.textNoData}>No fixed events added, please go back to add some</Text> : 
@@ -289,7 +305,15 @@ class ReviewEvent extends React.Component {
 						</View>
 
 						<View>
-							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+								<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
+									<MaterialCommunityIcons name="plus-circle" 
+										size={25} 
+										color={blue}/>
+								</TouchableOpacity>
+							</View>
+
 							{
 								this.state.nonFixedEventData.length === 0 ?
 									<Text style={styles.textNoData}>No non-fixed events added, please go back to add some</Text> : 

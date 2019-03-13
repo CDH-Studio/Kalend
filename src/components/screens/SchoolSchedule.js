@@ -1,25 +1,11 @@
 import React from 'react';
 import { ImageBackground, StatusBar, View, Text, Platform, TouchableOpacity, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { IconButton } from 'react-native-paper';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Image from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import { gradientColors } from '../../../config';
-import updateNavigation from '../NavigationHelper';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
-import { googleSignOut } from '../../services/google_identity';
 import { schoolScheduleStyles as styles, white } from '../../styles';
-import TutorialStatus from '../TutorialStatus';
-import { TutorialSchoolSchedule,
-	LoginNavigator,
-	TutorialSchoolScheduleSelectPicture,
-	DashboardSchoolScheduleSelectPicture,
-	TutorialSchoolScheduleTakePicture,
-	DashboardSchoolScheduleTakePicture,
-	TutorialFixedEvent,
-	TutorialAddCourse,
-	DashboardAddCourse } from '../../constants/screenNames';
 
 const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 
@@ -28,17 +14,15 @@ const fixedContainerHeight = Dimensions.get('window').height - StatusBar.current
  */
 class SchoolSchedule extends React.Component {
 
-	static navigationOptions = ({navigation}) => {
-		return {
-			title: 'Add School Schedule',
-			headerTintColor: white,
-			headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-			headerTransparent: true,
-			headerStyle: {
-				backgroundColor: 'rgba(0, 0, 0, 0.2)',
-				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-			},
-		};
+	static navigationOptions =  {
+		title: 'Add School Schedule',
+		headerTintColor: white,
+		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
+		headerTransparent: true,
+		headerStyle: {
+			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+		},
 	};
 
 	constructor(props) {
