@@ -184,11 +184,7 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
-			this.props.navigation.navigate('TutorialEdit' + editScreen, {update:true});
-		} else {
-			this.props.navigation.navigate('DashboardEdit' + editScreen, {update:true});
-		}
+		this.props.navigation.navigate('Edit' + editScreen);
 	}
 
 	/**
@@ -214,11 +210,7 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
-		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
-			this.props.navigation.navigate(TutorialScheduleCreation);
-		} else {
-			this.props.navigation.navigate(DashboardScheduleCreation);
-		}
+		this.props.navigation.navigate('ScheduleCreation');
 	}
 
 	render() {
@@ -229,7 +221,7 @@ class ReviewEvent extends React.Component {
 		 * In order to remove the tutorial status if not needed */
 		let tutorialStatus;
 
-		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
+		if (this.props.navigation.state.routeName === 'ReviewEvent') {
 			tutorialStatus = <TutorialStatus active={4}
 				color={blue}
 				backgroundColor={white}

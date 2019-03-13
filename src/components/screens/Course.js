@@ -22,7 +22,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
+		title: navigation.state.routeName === 'AddCourse' ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -61,10 +61,10 @@ class Course extends React.Component {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
-			this.setState({...this.props.CourseState});
-		} else {
+		if (this.props.navigation.state.routeName === 'AddCourse') {
 			this.resetField();
+		} else {
+			this.setState({...this.props.CourseState});
 		}	
 	}
 
@@ -269,9 +269,9 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === 'AddCourse') {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate(TutorialFixedEvent);
+				this.props.navigation.navigate('DashboardNavigator');
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -280,7 +280,7 @@ class Course extends React.Component {
 			}
 			
 			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('TutorialReviewEvent');
+			this.props.navigation.navigate('ReviewEvent');
 		}
 	}
 
@@ -361,7 +361,7 @@ class Course extends React.Component {
 		}
 		
 
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === 'AddCourse') {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
@@ -491,7 +491,7 @@ class Course extends React.Component {
 						<BottomButtons twoButtons={showNextButton}
 							buttonText={[addEventButtonText, 'Next']}
 							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.navigate(TutorialFixedEvent)]} />
+								this.props.navigation.navigate('DashboardNavigator')]} />
 					</View>
 				</ScrollView>
 

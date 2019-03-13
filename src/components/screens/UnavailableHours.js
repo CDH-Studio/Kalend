@@ -4,11 +4,12 @@ import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
-import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed, DashboardReviewEvent } from '../../constants/screenNames';
+import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed, DashboardReviewEvent, DashboardNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import TutorialStatus, { HEIGHT } from '../TutorialStatus';
 import {setUnavailableHours} from '../../actions';
+import Dashboard from './Dashboard';
 
 const viewHeight = 688.3809814453125;
 
@@ -18,7 +19,7 @@ const viewHeight = 688.3809814453125;
 class UnavailableHours extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialUnavailableHours || navigation.state.routeName === DashboardUnavailableHours ? 'Add Unavailable Hours' : 'Edit Unavailable Hours',
+		title: navigation.state.routeName === 'UnavailableHours' ? 'Add Unavailable Hours' : 'Edit Unavailable Hours',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -227,11 +228,7 @@ class UnavailableHours extends React.Component {
 	 * To go to the appropriate Fixed Event screen according to the current route
 	 */
 	manualImport() {
-		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
-			this.props.navigation.navigate(TutorialUnavailableFixed, {update:false});
-		} else {
-			this.props.navigation.navigate(DashboardUnavailableFixed, {update:false});
-		}
+		this.props.navigation.navigate('UnavailableFixed');
 	}
 
 	/**
@@ -277,11 +274,7 @@ class UnavailableHours extends React.Component {
 
 		this.props.dispatch(setUnavailableHours(this.state));
 		
-		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
-			this.props.navigation.navigate(TutorialReviewEvent);
-		} else {
-			this.props.navigation.navigate(DashboardReviewEvent);
-		}
+		this.props.navigation.navigate(DashboardNavigator);
 	}
 	
 	render() {
@@ -313,7 +306,7 @@ class UnavailableHours extends React.Component {
 			}
 		});
 		
-		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
+		if (this.props.navigation.state.routeName === 'UnavailableHours') {
 			tutorialStatus = <TutorialStatus active={5}
 				color={blue}
 				backgroundColor={'#ffffff'}

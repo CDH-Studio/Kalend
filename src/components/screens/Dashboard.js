@@ -1,10 +1,9 @@
 import React from 'react';
-import { StatusBar, View, Button, Text } from 'react-native';
+import { StatusBar, View, TouchableOpacity, Text } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import updateNavigation from '../NavigationHelper';
-import { persistor } from '../../store';
 import { dashboardStyles as styles, blue } from '../../styles';
-import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent, LoginNavigator } from '../../constants/screenNames';
+import { DashboardSchoolSchedule, DashboardEditFixedEvent, DashboardEditNonFixedEvent } from '../../constants/screenNames';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -25,41 +24,33 @@ class Dashboard extends React.Component {
 	render() {
 		const {optionsOpen} = this.state;
 		return(
-			<View style={styles.content}>
-				<StatusBar translucent={true}
-					backgroundColor={blue} />
+				<Portal.Host style={[styles.content, {flex:1}]}>
+					<StatusBar translucent={true}
+						backgroundColor={blue} />
 
-				<Text>Redux Management</Text>
-				<Button title='Purge' 
-					onPress={() => {
-						persistor.purge();
-					}}>
-				</Button>
-				<Button title='Go back home'
-					onPress={() => {
-						this.props.navigation.navigate(LoginNavigator);
-					}}>
-				</Button>
-				
-				<Portal.Host>
+					<TouchableOpacity style={{elevation: 4, backgroundColor: blue, padding: 5, borderRadius: 5, margin: 5}}
+						onPress={() => {
+							this.props.navigation.navigate('ReviewEvent');
+						}}>
+						<Text style={{color: 'white'}}>Create Schedule</Text>
+					</TouchableOpacity>
 					<FAB.Group
 						open={optionsOpen}
 						icon={optionsOpen ? 'close' : 'add'}
 						actions={[
 							{icon: 'school',
 								label: 'Add School Schedule',
-								onPress: () => this.props.navigation.navigate(DashboardSchoolSchedule)},
+								onPress: () => this.props.navigation.navigate('SchoolSchedule')},
 							{icon: 'today',
 								label: 'Add Fixed Event',
-								onPress: () => this.props.navigation.navigate(DashboardEditFixedEvent)},
+								onPress: () => this.props.navigation.navigate('FixedEvent')},
 							{icon: 'face',
 								label: 'Add Non-Fixed Event',
-								onPress: () => this.props.navigation.navigate(DashboardEditNonFixedEvent)},
+								onPress: () => this.props.navigation.navigate('NonFixedEvent')},
 						]}
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />
 				</Portal.Host>
-			</View>
 		);
 	}
 }

@@ -1,11 +1,13 @@
 import React from 'react';
-import { AppRegistry, StatusBar } from 'react-native';
+import { AppRegistry, StatusBar, Platform } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { name as appName } from './app.json';
 import { blueColor, orangeColor } from './config';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { store, persistor } from './src/store/index';
 import Home from './src/components/screens/Home';
 import SchoolSchedule from './src/components/screens/SchoolSchedule';
@@ -46,74 +48,87 @@ const LoginNavigator = createStackNavigator(
 	}
 );
 
-const TutorialNavigator = createStackNavigator(
-	{
-		TutorialSchoolSchedule: {screen: SchoolSchedule},
-		TutorialSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
-		TutorialSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
-		TutorialAddCourse: {screen: Course},
-		TutorialSchoolScheduleCreation: {screen: SchoolScheduleCreation},
-		TutorialFixedEvent: {screen: FixedEvent},
-		TutorialNonFixedEvent: {screen: NonFixedEvent},
-		TutorialUnavailableHours: {screen: UnavailableHours},
-		TutorialUnavailableFixed: {screen: FixedEvent},
-
-		TutorialReviewEvent: {screen: ReviewEvent},
-		TutorialEditCourse: {screen: Course},
-		TutorialEditFixedEvent: {screen: FixedEvent},
-		TutorialEditNonFixedEvent: {screen: NonFixedEvent},
-		TutorialEditUnavailableHours: {screen: UnavailableHours},
-
-		TutorialScheduleCreation: {screen: ScheduleCreation},
-
-		TutorialScheduleSelection: {screen: ScheduleSelection},
-		TutorialScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
-	}, 
-	{
-		initialRouteName: 'TutorialSchoolSchedule'
-	}
-);
-
 const DashboardNavigator = createBottomTabNavigator(
 	{
-		Dashboard,
-		Chatbot,
-		CompareSchedule,
-		Settings
+		Dashboard: {
+			screen: Dashboard,
+			navigationOptions: {
+				tabBarIcon: ({ focused, tintColor }) => {
+					const iconName = `home-variant${focused ? '' : '-outline'}`;
+					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
+				},
+			}
+		},
+		Chatbot: {
+			screen: Chatbot,
+			navigationOptions: {
+				tabBarIcon: ({ focused, tintColor }) => {
+					const iconName = `chat-bubble${focused ? '' : '-outline'}`;
+					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
+				},
+			}
+		},
+		CompareSchedule: {
+			screen: CompareSchedule,
+			navigationOptions: {
+				title: 'Compare',
+				tabBarIcon: ({ focused, tintColor }) => {
+					const iconName = `people${focused ? '' : '-outline'}`;
+					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
+				},
+			}
+		},
+		Settings: {
+			screen: Settings,
+			navigationOptions: {
+				tabBarIcon: ({ focused, tintColor }) => {
+					const iconName = `settings${focused ? '' : '-outline'}`;
+					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
+				},
+			}
+		}
 	}, 
 	{
-		initialRouteName: 'Dashboard'
+		initialRouteName: 'Dashboard',
 	}
 );
+
+DashboardNavigator.navigationOptions = {
+	headerTintColor: '#fff',
+	headerTitleStyle: {fontFamily: 'Raleway-Regular'},
+	headerStyle: {
+		backgroundColor: blueColor,
+		marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+	}
+};
 
 const DashboardOptionsNavigator = createStackNavigator(
 	{
 		DashboardNavigator,
+		SchoolSchedule: {screen: SchoolSchedule},
+		AddCourse: {screen: Course},
+		SchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
+		SchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
+		SchoolScheduleCreation: {screen: SchoolScheduleCreation},
 
-		DashboardSchoolSchedule: {screen: SchoolSchedule},
-		DashboardSchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
-		DashboardSchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
-		DashboardAddCourse: {screen: Course},
-		DashboardFixedEvent: {screen: FixedEvent},
-		DashboardNonFixedEvent: {screen: NonFixedEvent},
-		DashboardUnavailableHours: {screen: UnavailableHours},
+		FixedEvent: {screen: FixedEvent},
+		NonFixedEvent: {screen: NonFixedEvent},
 
-		DashboardSchoolScheduleCreation: {screen: SchoolScheduleCreation},
-
-		DashboardReviewEvent: {screen: ReviewEvent},
-		DashboardEditCourse: {screen: Course},
-		DashboardEditFixedEvent: {screen: FixedEvent},
-		DashboardEditNonFixedEvent: {screen: NonFixedEvent},
-		DashboardEditUnavailableHours: {screen: UnavailableHours},
+		ReviewEvent: {screen: ReviewEvent},
+		EditCourse: {screen: Course},
+		EditFixedEvent: {screen: FixedEvent},
+		EditNonFixedEvent: {screen: NonFixedEvent},
+		ScheduleCreation: {screen: ScheduleCreation},
+		ScheduleSelection: {screen: ScheduleSelection},
+		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails},
 		
-		DashboardScheduleCreation: {screen: ScheduleCreation},
-
-		DashboardScheduleSelection: {screen: ScheduleSelection},
-		DashboardScheduleSelectionDetails: {screen: ScheduleSelectionDetails}
+		UnavailableHours: {screen: UnavailableHours},
+		UnavailableFixed: {screen: FixedEvent},
 	}, 
 	{
 		initialRouteName: 'DashboardNavigator'
-	});
+	}
+);
 
 const MainNavigator = createSwitchNavigator(
 	{
@@ -121,63 +136,15 @@ const MainNavigator = createSwitchNavigator(
 		LoadingScreen,
 		DashboardOptionsNavigator,
 		LoginNavigator,
-		TutorialNavigator,
 	},
 	{
 		initialRouteName: 'LoadingScreen'
 	}
 );
 
-const defaultGetStateForAction = TutorialNavigator.router.getStateForAction;
 const AppContainer = createAppContainer(MainNavigator);
 
 StatusBar.setBarStyle('light-content', true);
-AppRegistry.registerComponent(appName, () => Main);
-
-TutorialNavigator.router.getStateForAction = (action, state) => {
-	let nav = store.getState().NavigationReducer;
-
-	if (state && state.routes[state.index].routeName === 'TutorialSchoolSchedule' 
-		&& nav.routes && !store.getState().StateReducer.openedApp 
-		&& nav.main === 'SchoolSchedule') {
-		const routes = [
-			...nav.routes,
-		];
-		store.dispatch({
-			...nav,
-			type: 'SET_OPENED',
-			openedApp: true
-		});
-		return {
-			...state,
-			routes,
-			index: routes.length - 1,
-		};
-	} else if (state && state.routes) {
-		if(action && action.action == 'FinishSchoolCreation') {
-			let routes = [
-				{key: '1',
-					routeName: 'TutorialSchoolSchedule',
-					params:{}},
-				{key: '2',
-					routeName: 'TutorialFixedEvent',
-					params:{update:false}}];
-			return {
-				...state,
-				routes,
-				index: routes.length - 1,
-			};
-		} else {
-			store.dispatch({
-				...nav,
-				type: 'SET_NAV_SCREEN',
-				routes: state.routes
-			});
-		}
-	}
-		
-	return defaultGetStateForAction(action, state);
-};
 
 export default function Main() {
 	return (
@@ -191,3 +158,5 @@ export default function Main() {
 		</Provider>
 	);
 }
+
+AppRegistry.registerComponent(appName, () => Main);

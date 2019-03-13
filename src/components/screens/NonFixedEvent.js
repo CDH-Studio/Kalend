@@ -22,7 +22,7 @@ const viewHeight = 780.5714111328125;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
+		title: navigation.state.routeName === 'NonFixedEvent' ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -50,7 +50,7 @@ class NonFixedEvent extends React.Component {
 	}
 	
 	componentWillMount() {	
-		if (this.props.navigation.state.routeName !== TutorialNonFixedEvent) {
+		if (this.props.navigation.state.routeName !== 'NonFixedEvent') {
 			this.setState({...this.props.NFEditState});
 		} else  {
 			this.resetFields();
@@ -61,7 +61,7 @@ class NonFixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate(TutorialUnavailableHours);
+		this.props.navigation.navigate('DashboardNavigator');
 	}
 
 	/**
@@ -104,7 +104,7 @@ class NonFixedEvent extends React.Component {
 			return;
 		}
 
-		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
+		if (this.props.navigation.state.routeName === 'NonFixedEvent') {
 			this.props.dispatch(addNonFixedEvent(this.state));
 			this.props.navigation.navigate(TutorialReviewEvent);
 		} else {
@@ -208,7 +208,7 @@ class NonFixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
+		if (this.props.navigation.state.routeName === 'NonFixedEvent') {
 			tutorialStatus = <TutorialStatus active={3}
 				color={blue}
 				backgroundColor={white}

@@ -38,17 +38,6 @@ class SchoolSchedule extends React.Component {
 				backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 			},
-			headerRight: navigation.state.routeName === TutorialSchoolSchedule ? (
-				<IconButton
-					onPress={navigation.getParam('goBack')}
-					icon={({size, color}) => (
-						<Image name='logout'
-							size={size}
-							color={color} />
-					)}
-					color={white}
-					size={25} /> 
-			) : null
 		};
 	};
 
@@ -57,36 +46,17 @@ class SchoolSchedule extends React.Component {
 		this.state = { 
 			containerHeight: null,
 		};
-		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
-	}
-
-	componentDidMount() {
-		this.props.navigation.setParams({goBack: this.goBack});
-	}
-
-	goBack = () => {
-		googleSignOut();
-		this.props.navigation.navigate(LoginNavigator);
 	}
 
 	selectAPicture() {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				if (accepted) {
-					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-						this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
-					} else {
-						this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
-					}
+					this.props.navigation.navigate('SchoolScheduleSelectPicture');
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-				this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
-			} else {
-				this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
-			}
+			this.props.navigation.navigate('SchoolScheduleSelectPicture');
 		}
 	}
 
@@ -94,49 +64,39 @@ class SchoolSchedule extends React.Component {
 		if (Platform.OS !== 'ios') {
 			requestCamera().then((accepted) => {				
 				if (accepted) {
-					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-						this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
-					} else {
-						this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
-					}
+					this.props.navigation.navigate('SchoolScheduleTakePicture');
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-				this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
-			} else {
-				this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
-			}
+			this.props.navigation.navigate('SchoolScheduleTakePicture');
 		}
 	}
 
 	/**
 	 * To go to the appropriate Add Course screen according to the current route*/
 	manualImport() {
-		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-			this.props.navigation.navigate(TutorialAddCourse);
-		} else {
-			this.props.navigation.navigate(DashboardAddCourse);
-		}
+		this.props.navigation.navigate('AddCourse');
 	}
 
 	/** 
 	 * To go to the next screen without entering any information*/
 	skip = () => {
-		this.props.navigation.navigate(TutorialFixedEvent, {update:false});
+		// this.props.navigation.navigate('FixedEvent', {update:false});
 	}
 
 	render() {
 		const {containerHeight} = this.state;
 		let tutorialStatus;
 
-		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-			tutorialStatus = <TutorialStatus active={1}
-				color={white}
-				skip={this.skip} />;
-		} else {
-			tutorialStatus = null;
-		}
+		// if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
+		// 	tutorialStatus = <TutorialStatus active={1}
+		// 		color={white}
+		// 		skip={this.skip} />;
+		// } else {
+		// 	tutorialStatus = null;
+		// }
+
+		tutorialStatus = null;
 
 		return (
 			<LinearGradient style={styles.container}

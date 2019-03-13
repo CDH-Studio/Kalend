@@ -23,7 +23,7 @@ const containerWidth = Dimensions.get('window').width;
 class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialFixedEvent || navigation.state.routeName === DashboardAddCourse ? 'Add Fixed Events' : 'Edit Fixed Event',
+		title: navigation.state.routeName === 'FixedEvent' ? 'Add Fixed Events' : 'Edit Fixed Event',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -40,10 +40,10 @@ class FixedEvent extends React.Component {
 	}
 
 	componentWillMount() {
-		if(this.props.navigation.state.routeName !== TutorialFixedEvent) {
-			this.setState({...this.props.FEditState});
-		} else {
+		if(this.props.navigation.state.routeName === 'FixedEvent') {
 			this.setState(this.resetField);
+		} else {
+			this.setState({...this.props.FEditState});
 		}
 
 		this.setContainerHeight();
@@ -51,7 +51,7 @@ class FixedEvent extends React.Component {
 
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
-		let tutorialStatusHeight = this.props.navigation.state.routeName === TutorialFixedEvent ? 56.1 : 0;
+		let tutorialStatusHeight = this.props.navigation.state.routeName === 'FixedEvent' ? 56.1 : 0;
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
@@ -318,7 +318,7 @@ class FixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate(TutorialNonFixedEvent);
+		this.props.navigation.navigate('DashboardNavigator');
 	}
 
 	/**
@@ -361,12 +361,12 @@ class FixedEvent extends React.Component {
 			return;
 		}
 
-		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
+		if (this.props.navigation.state.routeName !== 'FixedEvent') {
 			this.props.dispatch(updateFixedEvents(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate(TutorialReviewEvent);
+			this.props.navigation.navigate('ReviewEvent');
 		} else {
 			this.props.dispatch(addFixedEvent(this.state));
-			this.props.navigation.navigate(TutorialNonFixedEvent);
+			this.props.navigation.navigate('DashboardNavigator');
 		}
 	}
 
@@ -467,7 +467,7 @@ class FixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
+		if (this.props.navigation.state.routeName === 'FixedEvent') {
 			tutorialStatus = <TutorialStatus active={2}
 				color={blue}
 				backgroundColor={'#ffffff'}
