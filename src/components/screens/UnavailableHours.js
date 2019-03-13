@@ -305,11 +305,13 @@ class UnavailableHours extends React.Component {
 		 */
 
 		hourTypes.forEach( type => {
-			let endValidated = 'end' + type.charAt(0).toUpperCase() + type.slice(1);
-			if (!this.state[endValidated + 'Validated']) {
-				error[endValidated] = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
-			} else {
-				error[endValidated] = null;
+			if (this.state[type] === true) {
+				let endValidated = 'end' + type.charAt(0).toUpperCase() + type.slice(1);
+				if (!this.state[endValidated + 'Validated']) {
+					error[endValidated] = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
+				} else {
+					error[endValidated] = null;
+				}
 			}
 		});
 		
