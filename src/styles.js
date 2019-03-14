@@ -5,13 +5,9 @@ import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1473E6';
-export const statusBlueColor = '#105DBA';
-export const dark_blue = '#0E4BAA';
-export const lightOrange = '#FFBF69';
-export const orange = '#FF9F1C';
-export const imageRollCheck = '#764D16';
-export const darkOrange = '#FF621C';
+export const blue = '#1D84B5'; //#1473E6 
+export const statusBlueColor = '#0A2239'; //#105DBA
+export const dark_blue = '#153d73'; //#0E4BAA
 export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
@@ -382,36 +378,57 @@ export const homeStyles = StyleSheet.create({
 
 	content: {
 		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-evenly',
-		alignItems: 'center',
+		alignItems: 'center'
+	},
+
+	logo: {
+		height: '30%'
+	},
+
+	topSection: {
+		flexGrow: 3,
+		justifyContent: 'center',
+		marginTop: getStatusBarHeight(),
 		paddingLeft: 25,
 		paddingRight: 25
 	},
 
-	logo: {
-		height: 100,
-		width: undefined
+	bottomSection: {
+		flexGrow: 1,
+		alignItems: 'center',
+		backgroundColor: '#0000003C',
+		width: '100%'
 	},
 
-	text: {
-		paddingTop: 10,
-		fontFamily: 'Raleway-Regular',
-		color: white,
-		fontSize: 20,
-		textAlign: 'center',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 20
-	},
-
-	userIcon: {
-		height: '35%'
+	signInSection: {
+		flexGrow: 2,
+		justifyContent: 'center'
 	},
 
 	signInButton: {
 		width: 312,
 		height: 48
+	},
+
+	cdhSection: {
+		flexGrow: 1,
+		width: '100%',
+		paddingVertical: 5,
+		backgroundColor: '#00000060',
+		justifyContent: 'center'
+	},
+
+	cdhSectionText: {
+		color: white,
+		textAlign: 'center'
+	},
+
+	cdhText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	cdhLink: {
+		fontFamily: 'Raleway-SemiBold'
 	}
 });
 
@@ -427,6 +444,12 @@ export const schoolScheduleStyles = StyleSheet.create({
 		justifyContent: 'space-evenly'
 	},
 
+	shadowIcon : {
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 20
+	},
+
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -438,7 +461,10 @@ export const schoolScheduleStyles = StyleSheet.create({
 		paddingLeft: 15,
 		fontFamily: 'Raleway-Regular',
 		color: white,
-		fontSize: 20
+		fontSize: 20,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 20
 	},
 
 	button: {
@@ -501,6 +527,39 @@ export const schoolScheduleStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		color: white,
 		fontSize: 15,
+	}
+});
+
+export const schoolScheduleCreationStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+		height: '130%' //Fixes pattern bug
+	},
+
+	surface: {
+		padding: 8,
+		height: 100,
+		width: Dimensions.get('window').width * 0.8,
+		borderRadius: 4,
+		justifyContent: 'center',
+		elevation: 3,
+	},
+
+	title: {
+		fontSize: 20,
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center'
+	},
+
+	subtitle: {
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center',
+		paddingTop: 5,
+		paddingBottom: 10
 	}
 });
 
@@ -571,14 +630,14 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	dayOfWeekTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		marginRight: 5
 	},
 
 	blueTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 93
@@ -668,7 +727,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	blueTitle: {
 		width: 70,
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18
 	},
@@ -792,14 +851,14 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	blueTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 88
 	},
 
 	blueTitleLong: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		width: 200
@@ -888,7 +947,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 
 
 	blueTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18,
 		paddingVertical: 10,
@@ -956,7 +1015,7 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	sectionTitle: {
-		color: blue,
+		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
 		marginTop: 20,
@@ -967,7 +1026,7 @@ export const reviewEventStyles = StyleSheet.create({
 		position: 'absolute',
 		margin: 16,
 		right: 0,
-		bottom: 0,
+		bottom: 0
 	},
 
 	textNoData: {
@@ -1089,7 +1148,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalTitle: {
-		backgroundColor: orange,
+		backgroundColor: blue,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',

@@ -1,14 +1,14 @@
 import React from 'react';
 import { StatusBar, Button, View } from 'react-native';
 import { persistor } from '../../store';
-import { settingsStyles as styles, blue } from '../../styles';
+import { settingsStyles as styles, statusBlueColor } from '../../styles';
 import { LoginNavigator, UnavailableRoute } from '../../constants/screenNames';
 
 class Settings extends React.Component {
 	render() {
 		return(
 			<View style={styles.content}>
-				<StatusBar translucent={true} backgroundColor={blue} />
+				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
 
 				<Button title='Purge' 
 					onPress={() => {

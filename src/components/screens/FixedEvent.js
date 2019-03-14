@@ -9,7 +9,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { fixedEventStyles as styles, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
+import { fixedEventStyles as styles, blue, dark_blue, gray, statusBlueColor } from '../../styles';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { FixedEventRoute } from '../../constants/screenNames';
@@ -24,7 +24,7 @@ class FixedEvent extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === FixedEventRoute ? 'Add Fixed Events' : 'Edit Fixed Event',
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 		}
 	});
 
@@ -484,7 +484,7 @@ class FixedEvent extends React.Component {
 							
 							<MaterialCommunityIcons name="calendar-today"
 								size={130}
-								color={blue}/>
+								color={dark_blue}/>
 						</View>
 
 						<View>
@@ -508,9 +508,9 @@ class FixedEvent extends React.Component {
 							<View style={[styles.allDay, {width: containerWidth}]}>
 								<Text style={styles.blueTitle}>All-Day</Text>
 								<View style={styles.switch}>
-									<Switch trackColor={{false: 'lightgray', true: lightOrange}} 
+									<Switch trackColor={{false: 'lightgray', true: blue}} 
 										ios_backgroundColor={'lightgray'} 
-										thumbColor={this.state.allDay ? orange : 'darkgray'} 
+										thumbColor={this.state.allDay ? dark_blue : 'darkgray'} 
 										onValueChange={(allDay) => this.setState({
 											allDay: allDay, 
 											disabledStartTime: !this.state.disabledStartTime,
@@ -571,7 +571,7 @@ class FixedEvent extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
-											color: !this.state.endTimeValidated ? '#ff0000' : gray,
+											color: !this.state.endDateValidated || !this.state.endTimeValidated ? '#ff0000' : gray,
 											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
 									placeholder={this.state.endDate} 
 									format="ddd., MMM DD, YYYY" 

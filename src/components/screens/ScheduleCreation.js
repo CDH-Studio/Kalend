@@ -5,8 +5,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { generateSchedule } from '../../services/service';
 import { gradientColors } from '../../../config';
-import { scheduleCreateStyles as styles, orange, lightOrange } from '../../styles';
 import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
+import { scheduleCreateStyles as styles, dark_blue } from '../../styles';
 
 /**
  * The loading screen shown after the user reviewed their events
@@ -81,10 +81,10 @@ class ScheduleCreation extends React.Component {
 						<Progress.Bar style={styles.progressBar} 
 							indeterminate={true} 
 							width={200} 
-							color={orange} 
+							color={dark_blue} 
 							useNativeDriver={true} 
-							borderColor={orange} 
-							unfilledColor={lightOrange}/>
+							borderColor={dark_blue} 
+							unfilledColor={'#79A7D2'}/>
 					</Surface>
 				</ImageBackground>
 			</LinearGradient>

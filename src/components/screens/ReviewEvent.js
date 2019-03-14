@@ -8,7 +8,7 @@ import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, blue, statusBlueColor } from '../../styles';
+import { reviewEventStyles as styles, blue, statusBlueColor, dark_blue } from '../../styles';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute } from '../../constants/screenNames';
 
@@ -28,7 +28,7 @@ class ReviewEvent extends React.Component {
 	static navigationOptions = {
 		title: 'Review Events',
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 		}
 	};
 
@@ -320,6 +320,7 @@ class ReviewEvent extends React.Component {
 
 				<FAB style={styles.fab}
 					icon="check"
+					theme={{colors:{accent:blue}}}
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
 			</View>

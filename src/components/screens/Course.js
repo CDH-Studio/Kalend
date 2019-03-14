@@ -7,7 +7,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { courseStyles as styles, blue, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { CourseRoute } from '../../constants/screenNames';
@@ -24,7 +24,7 @@ class Course extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
 		headerStyle: {
-			backgroundColor: blue,
+			backgroundColor: dark_blue,
 		}
 	});
 
@@ -377,7 +377,7 @@ class Course extends React.Component {
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
 							<FontAwesome5 name="university"
 								size={130}
-								color={blue}/>
+								color={dark_blue}/>
 						</View>
 						
 						<View>
@@ -429,9 +429,8 @@ class Course extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular',
-											color: gray
-										}, 
-										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+											color:!this.state.endTimeValidated ? '#ff0000' : gray
+										}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="h:mm A" 
@@ -454,10 +453,10 @@ class Course extends React.Component {
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular'}, 
-											placeholderText:{
+											dateText:{fontFamily: 'OpenSans-Regular',
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
+												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
+										}}
 										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 										format="h:mm A" 
 										minDate={this.state.minEndTime}

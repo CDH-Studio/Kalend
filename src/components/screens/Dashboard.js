@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
 		return(
 			<Portal.Host style={[styles.content, {flex:1}]}>
 				<StatusBar translucent={true}
-					backgroundColor={blue} />
+					backgroundColor={statusBlueColor} />
 
 				<TouchableOpacity style={{elevation: 4, backgroundColor: blue, padding: 5, borderRadius: 5, margin: 5}}
 					onPress={() => {
