@@ -274,7 +274,8 @@ class UnavailableHours extends React.Component {
 		if (!validated) {
 			return;
 		}
-
+		
+		console.log('state', this.state);
 		this.props.dispatch(setUnavailableHours(this.state));
 		
 		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {

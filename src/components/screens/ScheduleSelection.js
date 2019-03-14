@@ -5,12 +5,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import converter from 'number-to-words';
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
-import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { white, black, gray } from '../../styles';
+import { eventsToScheduleSelectionData } from '../../services/service';
 import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
+import { store } from '../../store';
 
 const containerPadding = 10;
 const lineThickness = 1;
@@ -64,7 +65,7 @@ class ScheduleEvent extends React.Component {
 			left: day * width + 1,
 			top: ((start - startOffset)* lineSpace + chunks * lineThickness) / timeInterval + lineThickness + 1,
 			color,
-			colorInside,
+			colorInside
 		};
 	}
 
@@ -120,19 +121,22 @@ class Schedule extends React.Component {
 	}
 
 	componentWillMount() {
-		this.createTimes();
+		this.createTimes(this.props.data);
+	}
+	componentWillReceiveProps(props) {
+		console.log('props.data', props.data);
+		this.createTimes(props.data);
 	}
 
 	/**
 	 * Creates the time intervals between two lines according to the events that are present in the calendar
 	 */
-	createTimes = () => {
+	createTimes = (data) => {
 		let hours = [];
-
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
 		let latestHour = 12;
-		Object.entries(scheduleInfo).map((i, index) => {
+		Object.entries(data).map((i, index) => {
 			if (index === 2) {
 				i[1] = i[1][this.props.id];
 			}
@@ -227,7 +231,7 @@ class Schedule extends React.Component {
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' Schedule', id);
+					this.props.nextScreen(ordinal + ' Schedule', id, data);
 				}} 
 				onPressIn={() =>{
 					this.setState({
@@ -300,16 +304,18 @@ class Schedule extends React.Component {
 							}
 
 							{ 
-								data.ai[id].map((info, key) => {
-									return  <ScheduleEvent key={key} 
-										showShadow={showShadow} 
-										chunks={info.chunks} 
-										day={info.day} 
-										start={info.start} 
-										kind='ai' 
-										timeInterval={timeInterval} 
-										startOffset={startOffset} />;
-								})
+								data.ai.length !== 0 ?
+									data.ai[id].map((info, key) => {
+										return  <ScheduleEvent key={key} 
+											showShadow={showShadow} 
+											chunks={info.chunks} 
+											day={info.day} 
+											start={info.start} 
+											kind='ai' 
+											timeInterval={timeInterval} 
+											startOffset={startOffset} />;
+									})
+									: null
 							}
 
 							<View style={styles.hoursTextContainer}>
@@ -351,9 +357,28 @@ class ScheduleSelection extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			data: {
+				school: [],
+				fixed: [],
+				ai: [[]]
+			}
+		};
 
 		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentWillMount() {
+		this.eventsToScheduleSelectionService();
+	}
+
+	eventsToScheduleSelectionService = () => {
+		eventsToScheduleSelectionData().then((data) => {
+			console.log('data for mini calendar', data);
+			console.log('store', store.getState().GeneratedNonFixedEventsReducer);
+			this.setState({data});
+		});
 	}
 
 	/**
@@ -361,13 +386,14 @@ class ScheduleSelection extends React.Component {
 	 * 
 	 * @param {String} title The header title for the next screen
 	 * @param {Integer} index The index of the selected school schedule
+	 * @param {Object} data The data  of all events to be displaced on TutorialScheduleSelectionDetails screen
 	 */
-	nextScreen = (title, index) => {
+	nextScreen = (title, index, data) => {
 		this.setIndex(index);
 		if (this.props.navigation.state.routeName === TutorialScheduleSelection) {
-			this.props.navigation.navigate(TutorialScheduleSelectionDetails, {title});
+			this.props.navigation.navigate(TutorialScheduleSelectionDetails, {title, data});
 		} else {
-			this.props.navigation.navigate(DashboardScheduleSelectionDetails, {title});
+			this.props.navigation.navigate(DashboardScheduleSelectionDetails, {title, data});
 		}
 	}
 	
@@ -381,9 +407,6 @@ class ScheduleSelection extends React.Component {
 	}
 
 	render() {
-		console.log('NavigationHeader', Header.HEIGHT);
-		console.log('StatusBar', StatusBar.HEIGHT);
-
 		return(
 			<LinearGradient style={styles.container} 
 				colors={gradientColors}>
@@ -398,13 +421,22 @@ class ScheduleSelection extends React.Component {
 							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
 							{ 
-								scheduleInfo.ai.map((ai, key) => {
+								this.state.data.ai.map((ai, key) => {
 									return <Schedule nextScreen={this.nextScreen} 
-										data={scheduleInfo} 
+										data={this.state.data} 
 										key={key} 
 										id={key} 
 										numOfLines={6} />;
 								})
+							}
+
+							{
+								this.state.data.ai.length === 0 ? 
+									<Schedule nextScreen={this.nextScreen} 
+										data={this.state.data} 
+										id={0}
+										numOfLines={6} /> 
+									: null
 							}
 						</View>
 					</ScrollView>

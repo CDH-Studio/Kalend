@@ -3,7 +3,6 @@ import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-n
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
@@ -184,24 +183,7 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		store.getState().FixedEventsReducer.map((event) => {
-			let info = {
-				title: event.title,
-				location: event.location,
-				description: event.description,
-				recurrence: event.recurrence,
-				allDay: event.allDay,
-				startDate: event.startDate,
-				startTime: event.startTime,
-				endDate: event.endDate,
-				endTime: event.endTime
-			}; 
-			InsertFixedEvent(info).then(data => {
-				if (data.error) {
-					console.error('ERROR adding event', data);
-				}
-			});
-		});
+		
 
 		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
 			this.props.navigation.navigate(TutorialScheduleCreation);
@@ -238,7 +220,7 @@ class ReviewEvent extends React.Component {
 						this.onScroll(event);
 					}}
 					scrollEventThrottle={100} >
-					<View style={[styles.content, {height: containerHeight, paddingBottom: tutorialHeight + 16}]} 
+					<View style={[styles.content, {paddingBottom: tutorialHeight + 16}]} 
 						onLayout={(event) => {
 							let {height} = event.nativeEvent.layout;
 							if (height < containerHeight) {

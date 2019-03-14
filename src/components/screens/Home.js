@@ -33,7 +33,6 @@ class Home extends React.Component {
 		this.props.logonUser(userInfo);	
 	}
 
-
 	setCalendar() {
 		getCalendarID2().then(data => {
 			if(data === undefined) {

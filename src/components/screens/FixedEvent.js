@@ -13,6 +13,7 @@ import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, sta
 import TutorialStatus, { onScroll } from '../TutorialStatus';
 import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
+import { store } from '../../store';
 import BottomButtons from '../BottomButtons';
 
 const viewHeight = 446.66668701171875;
@@ -45,7 +46,7 @@ class FixedEvent extends React.Component {
 		} else {
 			this.setState(this.resetField);
 		}
-
+		console.log('store', store.getState());
 		this.setContainerHeight();
 	}
 

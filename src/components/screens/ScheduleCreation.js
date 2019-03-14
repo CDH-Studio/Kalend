@@ -3,8 +3,9 @@ import { StatusBar, Text, ImageBackground } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
-import { generateSchedule } from '../../services/service';
+import { generateNonFixedEvents, InsertCourseEventToCalendar, InsertFixedEventToCalendar } from '../../services/service';
 import { gradientColors } from '../../../config';
+import { connect } from 'react-redux';
 import { scheduleCreateStyles as styles, orange, lightOrange } from '../../styles';
 import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection } from '../../constants/screenNames';
 
@@ -20,12 +21,50 @@ class ScheduleCreation extends React.Component {
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
-		this.generateScheduleService();
+		//this.generateScheduleService();
+		this.InsertFixedEventsToGoogle().then(() => {
+			if (this.props.NonFixedEventsReducer.length != 0) this.generateScheduleService();
+			else this.navigateToSelection();
+		});
 	}
 	
 	generateScheduleService = () => {
-		generateSchedule().then(() => {
+		generateNonFixedEvents().then(() => {
+			console.log('Finished creating Non Fixed');
 			this.navigateToSelection();
+		});
+	}
+
+	InsertFixedEventsToGoogle = () => {
+		return new Promise((resolve) => {
+			this.props.CoursesReducer.forEach(async (event) => {
+				await InsertCourseEventToCalendar(event).then(data => {
+					if (data.error) {
+						console.error('ERROR adding event', data);
+					}
+				});
+			});
+			console.log('Finished Inserting Courses');
+			this.props.FixedEventsReducer.map(async (event) => {
+				let info = {
+					title: event.title,
+					location: event.location,
+					description: event.description,
+					recurrence: event.recurrence,
+					allDay: event.allDay,
+					startDate: event.startDate,
+					startTime: event.startTime,
+					endDate: event.endDate,
+					endTime: event.endTime
+				}; 
+				await InsertFixedEventToCalendar(info).then(data => {
+					if (data.error) {
+						console.error('ERROR adding event', data);
+					}
+				});
+			});
+			console.log('Finished Inserting Fixed');
+			resolve();
 		});
 	}
 
@@ -69,4 +108,14 @@ class ScheduleCreation extends React.Component {
 	}
 }
 
-export default ScheduleCreation;
+let mapStateToProps = (state) => {
+	const {FixedEventsReducer, CoursesReducer, NonFixedEventsReducer} = state;
+	
+	return {
+		FixedEventsReducer,
+		CoursesReducer,
+		NonFixedEventsReducer
+	};
+};
+
+export default connect(mapStateToProps, null)(ScheduleCreation);
