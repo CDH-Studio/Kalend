@@ -3,8 +3,8 @@ import { Text, Platform, StatusBar, View, StyleSheet, ScrollView } from 'react-n
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { calendarEventColors, statusBlueColor } from '../../../config';
-import { white, blue, black, gray} from '../../styles';
+import { calendarEventColors } from '../../../config';
+import { white, black, gray, dark_blue, statusBlueColor, blue } from '../../styles';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 
@@ -143,13 +143,8 @@ class ScheduleSelectionDetails extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerStyle: {
-			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: dark_blue,
 		},
 		headerRight: (
 			<IconButton
@@ -283,6 +278,7 @@ class ScheduleSelectionDetails extends React.Component {
 				
 				<FAB
 					style={styles.fab}
+					theme={{colors:{accent:blue}}}
 					icon="check"
 					visible={showFAB}
 					onPress={this.nextScreen} />

@@ -2,7 +2,7 @@ import { store } from '../store';
 import { setNavigationScreen } from '../actions';
 
 let updateNavigation = (screen, route) => {
-	console.log(screen + ' ' + route);
+	console.log(store.getState());
 
 	let nav = store.getState().NavigationReducer;
 

@@ -1,13 +1,13 @@
 import React from 'react';
-import { StatusBar, Text, ImageBackground } from 'react-native';
+import { StatusBar,BackHandler, Alert,  Text, ImageBackground } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { generateNonFixedEvents, InsertCourseEventToCalendar, InsertFixedEventToCalendar } from '../../services/service';
 import { gradientColors } from '../../../config';
 import { connect } from 'react-redux';
-import { scheduleCreateStyles as styles, orange, lightOrange } from '../../styles';
-import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection } from '../../constants/screenNames';
+import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
+import { scheduleCreateStyles as styles, dark_blue } from '../../styles';
 
 /**
  * The loading screen shown after the user reviewed their events
@@ -17,6 +17,8 @@ class ScheduleCreation extends React.Component {
 	// Removes the header
 	static navigationOptions = {
 		header: null,
+		headerLeft: null,
+		gesturesEnabled: false,
 	};
 
 	componentWillMount() {
@@ -26,6 +28,31 @@ class ScheduleCreation extends React.Component {
 			if (this.props.NonFixedEventsReducer.length != 0) this.generateScheduleService();
 			else this.navigateToSelection();
 		});
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+
+	handleBackButton = () => {
+		Alert.alert(
+			'Are you sure you want to stop the schedule creating process?',
+			[
+				{
+					text: 'No',
+					style: 'cancel',
+				},
+				{text: 'Yes', 
+					onPress: () => {
+						this.props.navigation.navigate(DashboardNavigator);
+					},
+				},
+			],
+			{cancelable: false},
+		);
+		return true;
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 	}
 	
 	generateScheduleService = () => {
@@ -72,11 +99,7 @@ class ScheduleCreation extends React.Component {
 	 * Goes to the next screen
 	 */
 	navigateToSelection = () => {
-		if (this.props.navigation.state.routeName === TutorialScheduleCreation) {
-			this.props.navigation.navigate(TutorialScheduleSelection);
-		} else {
-			this.props.navigation.navigate(DashboardScheduleSelection);
-		}
+		this.props.navigation.navigate(ScheduleSelectionRoute);
 	}
 	
 	render() {
@@ -97,10 +120,10 @@ class ScheduleCreation extends React.Component {
 						<Progress.Bar style={styles.progressBar} 
 							indeterminate={true} 
 							width={200} 
-							color={orange} 
+							color={dark_blue} 
 							useNativeDriver={true} 
-							borderColor={orange} 
-							unfilledColor={lightOrange}/>
+							borderColor={dark_blue} 
+							unfilledColor={'#79A7D2'}/>
 					</Surface>
 				</ImageBackground>
 			</LinearGradient>

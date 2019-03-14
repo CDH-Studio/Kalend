@@ -1,22 +1,23 @@
 import React from 'react';
-import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-native';
+import { StatusBar, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
-import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
-import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
+import { reviewEventStyles as styles, blue, statusBlueColor, dark_blue } from '../../styles';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute } from '../../constants/screenNames';
 
 const priorityLevels = {
 	0: 'Low',
 	0.5: 'Normal',
 	1: 'High'
 };
-const tutorialHeight = HEIGHT;
+const tutorialHeight = 0;
 const containerHeight = containerHeight;
 
 /**
@@ -26,12 +27,8 @@ class ReviewEvent extends React.Component {
 
 	static navigationOptions = {
 		title: 'Review Events',
-		headerTintColor: white,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: dark_blue,
 		}
 	};
 
@@ -71,7 +68,7 @@ class ReviewEvent extends React.Component {
 				if (data.startTime === undefined) {
 					hours = `${data.hours[0][0]}:${data.hours[0][1]} ${data.hours[0][2]} - ${data.hours[1][0]}:${data.hours[1][1]} ${data.hours[1][2]}`;
 				} else {
-					hours = data.startTime + ' - ' + data.endTime;
+					hours = this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime);
 				}
 
 				schoolScheduleData.push({
@@ -89,7 +86,7 @@ class ReviewEvent extends React.Component {
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
 					recurrence: data.recurrenceValue,
-					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
+					hours: data.allDay ? 'All-Day' : (this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime)),
 					location: data.location,
 					description: data.description
 				});
@@ -116,6 +113,17 @@ class ReviewEvent extends React.Component {
 			schoolScheduleData
 		});
 	}
+
+	formatTime = (time) => {
+		if (time.split(':').length === 3) {
+			let timeSplit = time.split(':');
+			let timeSplitSpace = time.split(' ');
+
+			time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
+		}
+
+		return time;
+	}
 	
 	/**
 	 * Hides the FAB when scrolling down */ 
@@ -140,17 +148,17 @@ class ReviewEvent extends React.Component {
 		let objectToChange;
 
 		switch (category) {
-			case 'SchoolSchedule':
+			case SchoolScheduleRoute:
 				dataToDispatch = deleteCourse(id);
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
-			case 'FixedEvent':
+			case FixedEventRoute:
 				dataToDispatch = deleteFixedEvent(id);
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
-			case 'NonFixedEvent':
+			case NonFixedEventRoute:
 				dataToDispatch = deleteNonFixedEvent(id);
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
@@ -172,11 +180,7 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
-			this.props.navigation.navigate('TutorialEdit' + editScreen, {update:true});
-		} else {
-			this.props.navigation.navigate('DashboardEdit' + editScreen, {update:true});
-		}
+		this.props.navigation.navigate('Edit' + editScreen);
 	}
 
 	/**
@@ -185,29 +189,11 @@ class ReviewEvent extends React.Component {
 	navigateCreationScreen = () => {
 		
 
-		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
-			this.props.navigation.navigate(TutorialScheduleCreation);
-		} else {
-			this.props.navigation.navigate(DashboardScheduleCreation);
-		}
+		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 
 	render() {
-		const { showTutShadow } = this.state;
 		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-
-		/**
-		 * In order to remove the tutorial status if not needed */
-		let tutorialStatus;
-
-		if (this.props.navigation.state.routeName === TutorialReviewEvent) {
-			tutorialStatus = <TutorialStatus active={4}
-				color={blue}
-				backgroundColor={white}
-				showTutShadow={showTutShadow} />;
-		} else {
-			tutorialStatus = null;
-		}
 
 		return(
 			<View style={styles.container}>
@@ -216,7 +202,6 @@ class ReviewEvent extends React.Component {
 
 				<ScrollView style={styles.scrollView}
 					onScroll={(event) => { 
-						this.setState({showTutShadow: onScroll(event, showTutShadow)});
 						this.onScroll(event);
 					}}
 					scrollEventThrottle={100} >
@@ -228,10 +213,18 @@ class ReviewEvent extends React.Component {
 							}
 						}}>
 						<View>
-							<Text style={styles.sectionTitle}>School Schedule</Text>
+							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+								<Text style={styles.sectionTitle}>School Schedule</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('AddCourse')}>
+									<MaterialCommunityIcons name="plus-circle" 
+										size={25} 
+										color={blue}/>
+								</TouchableOpacity>
+							</View>
+
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text>No school schedule added, please go back to add one</Text> : 
+									<Text style={styles.textNoData}>No school schedule added, please go back to add one</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -247,10 +240,18 @@ class ReviewEvent extends React.Component {
 						</View>
 
 						<View>
-							<Text style={styles.sectionTitle}>Fixed Events</Text>
+							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+								<Text style={styles.sectionTitle}>Fixed Events</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute)}>
+									<MaterialCommunityIcons name="plus-circle" 
+										size={25} 
+										color={blue}/>
+								</TouchableOpacity>
+							</View>
+
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text>No fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No fixed events added, please go back to add some</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -268,10 +269,18 @@ class ReviewEvent extends React.Component {
 						</View>
 
 						<View>
-							<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+								<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute)}>
+									<MaterialCommunityIcons name="plus-circle" 
+										size={25} 
+										color={blue}/>
+								</TouchableOpacity>
+							</View>
+
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text>No non-fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No non-fixed events added, please go back to add some</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 
@@ -292,10 +301,9 @@ class ReviewEvent extends React.Component {
 					</View>		
 				</ScrollView>
 
-				{tutorialStatus}
-				
 				<FAB style={styles.fab}
 					icon="check"
+					theme={{colors:{accent:blue}}}
 					visible={this.state.showFAB}
 					onPress={this.navigateCreationScreen} />
 			</View>

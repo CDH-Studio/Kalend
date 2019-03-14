@@ -7,10 +7,10 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { courseStyles as styles, blue, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { CourseRoute } from '../../constants/screenNames';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -22,13 +22,9 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
-		headerTintColor: '#ffffff',
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
+		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
 		headerStyle: {
-			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: dark_blue,
 		}
 	});
 
@@ -61,10 +57,10 @@ class Course extends React.Component {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
-			this.setState({...this.props.CourseState});
-		} else {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			this.resetField();
+		} else {
+			this.setState({...this.props.CourseState});
 		}	
 	}
 
@@ -269,9 +265,9 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate(TutorialFixedEvent);
+				this.props.navigation.pop();
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -280,7 +276,7 @@ class Course extends React.Component {
 			}
 			
 			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('TutorialReviewEvent');
+			this.props.navigation.pop();
 		}
 	}
 
@@ -361,7 +357,7 @@ class Course extends React.Component {
 		}
 		
 
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
@@ -381,7 +377,7 @@ class Course extends React.Component {
 							<Text style={styles.text}>Add all your courses from your school schedule</Text>
 							<FontAwesome5 name="university"
 								size={130}
-								color={blue}/>
+								color={dark_blue}/>
 						</View>
 						
 						<View>
@@ -433,9 +429,8 @@ class Course extends React.Component {
 										dateInput:{borderWidth: 0}, 
 										dateText:{
 											fontFamily: 'OpenSans-Regular',
-											color: gray
-										}, 
-										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
+											color:!this.state.endTimeValidated ? '#ff0000' : gray
+										}
 									}}
 									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="h:mm A" 
@@ -458,10 +453,10 @@ class Course extends React.Component {
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular'}, 
-											placeholderText:{
+											dateText:{fontFamily: 'OpenSans-Regular',
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
+												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
+										}}
 										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 										format="h:mm A" 
 										minDate={this.state.minEndTime}
@@ -489,9 +484,9 @@ class Course extends React.Component {
 
 
 						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
+							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.navigate(TutorialFixedEvent)]} />
+								this.props.navigation.pop()]} />
 					</View>
 				</ScrollView>
 
@@ -513,7 +508,8 @@ let mapStateToProps = (state) => {
 
 	return {
 		CourseState: CoursesReducer[selected],
-		CoursesReducer
+		CoursesReducer,
+		selectedIndex: selected
 	};
 };
 

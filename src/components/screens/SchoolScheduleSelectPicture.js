@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, Platform, ImageBackground, ActivityIndicator, Text } from 'react-native';
+import { CameraRoll, ScrollView, View, StatusBar, ImageBackground, ActivityIndicator, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { gradientColors } from '../../../config';
 import CameraRollImage from '../CameraRollImage';
-import { selectPictureStyles as styles, white } from '../../styles';
-import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
+import { selectPictureStyles as styles, white, blue } from '../../styles';
 import { setImageURI } from '../../actions';
+import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 
 const imagesPerLoad = 99;
 
@@ -20,14 +20,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 
@@ -189,11 +184,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 	
-		if (this.props.navigation.state.routeName === TutorialSchoolScheduleSelectPicture) {
-			this.props.navigation.navigate(TutorialSchoolScheduleCreation);
-		} else {
-			this.props.navigation.navigate(DashboardSchoolScheduleCreation);
-		}
+		this.props.navigation.navigate(SchoolScheduleCreationRoute);
 	}
 
 	render() {
@@ -245,6 +236,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 						
 						<FAB style={styles.fab}
 							icon="file-upload"
+							theme={{colors:{accent:blue}}}
 							visible={showFAB}
 							onPress={this.nextScreen} />
 					</View>

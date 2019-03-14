@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { Platform, StatusBar, View, StyleSheet, BackHandler, Alert, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { Header } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import updateNavigation from '../NavigationHelper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { white, black, gray } from '../../styles';
 import { eventsToScheduleSelectionData } from '../../services/service';
-import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
+import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
 import { store } from '../../store';
 
@@ -344,15 +344,12 @@ class Schedule extends React.Component {
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? StatusBar.currentHeight : StatusBar.currentHeight
-		}
+		},
+		headerLeft: null,
+		gesturesEnabled: false,
 	};
 
 	constructor(props) {
@@ -371,6 +368,7 @@ class ScheduleSelection extends React.Component {
 
 	componentWillMount() {
 		this.eventsToScheduleSelectionService();
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
 	eventsToScheduleSelectionService = () => {
@@ -379,6 +377,30 @@ class ScheduleSelection extends React.Component {
 			console.log('store', store.getState().GeneratedNonFixedEventsReducer);
 			this.setState({data});
 		});
+	}
+
+
+	handleBackButton = () => {
+		Alert.alert(
+			'Are you sure you want to delete the created schedule?',
+			[
+				{
+					text: 'No',
+					style: 'cancel',
+				},
+				{text: 'Yes', 
+					onPress: () => {
+						this.props.navigation.navigate(DashboardNavigator);
+					},
+				},
+			],
+			{cancelable: false},
+		);
+		return true;
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
 	/**
@@ -390,11 +412,7 @@ class ScheduleSelection extends React.Component {
 	 */
 	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		if (this.props.navigation.state.routeName === TutorialScheduleSelection) {
-			this.props.navigation.navigate(TutorialScheduleSelectionDetails, {title, data});
-		} else {
-			this.props.navigation.navigate(DashboardScheduleSelectionDetails, {title, data});
-		}
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data});
 	}
 	
 	/**
