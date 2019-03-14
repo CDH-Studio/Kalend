@@ -126,7 +126,16 @@ const DashboardOptionsNavigator = createStackNavigator(
 		UnavailableFixed: {screen: FixedEvent},
 	}, 
 	{
-		initialRouteName: 'DashboardNavigator'
+		initialRouteName: 'DashboardNavigator',
+		defaultNavigationOptions: {
+			headerTintColor: 'white',
+			headerTitleStyle: {
+				fontFamily: 'Raleway-Regular'
+			},
+			headerStyle: {
+				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			}
+		}
 	}
 );
 

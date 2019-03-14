@@ -4,12 +4,11 @@ import { Surface } from 'react-native-paper';
 import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
-import { NavigationActions } from 'react-navigation';
-import { ImageBackground, Alert, StatusBar, Platform, StyleSheet, Dimensions, Text, BackHandler } from 'react-native';
+import { ImageBackground, Alert, StatusBar, StyleSheet, Dimensions, Text, BackHandler } from 'react-native';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { gradientColors } from '../../../config';
-import { white, orange, lightOrange } from '../../styles';
+import { orange, lightOrange } from '../../styles';
 import { DashboardNavigator } from '../../constants/screenNames';
 
 /**

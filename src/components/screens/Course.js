@@ -23,12 +23,8 @@ class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
-		headerTintColor: '#ffffff',
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,12 +22,8 @@ class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
-		headerTintColor: white,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
+import { TouchableOpacity, View, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { takePictureStyles as styles, orange, red, blue, white } from '../../styles';
+import { takePictureStyles as styles, orange, red, blue } from '../../styles';
 import { setImageURI } from '../../actions';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 
@@ -23,14 +23,9 @@ class SchoolScheduleTakePicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Take a Picture',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.3)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 	

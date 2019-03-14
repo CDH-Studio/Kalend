@@ -9,7 +9,7 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
+import { fixedEventStyles as styles, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { FixedEventRoute } from '../../constants/screenNames';
@@ -23,12 +23,8 @@ class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === FixedEventRoute ? 'Add Fixed Events' : 'Edit Fixed Event',
-		headerTintColor: white,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
 

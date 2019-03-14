@@ -17,12 +17,9 @@ class SchoolSchedule extends React.Component {
 
 	static navigationOptions =  {
 		title: 'Add School Schedule',
-		headerTintColor: white,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		},
 	};
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Platform, Dimensions, ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
+import { Dimensions, ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
-import { DashboardNavigator, UnavailableFixedRoute } from '../../constants/screenNames';
+import { UnavailableFixedRoute } from '../../constants/screenNames';
 import { connect } from 'react-redux';
-import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
+import { unavailableHoursStyles as styles, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import {setUnavailableHours} from '../../actions';
 
 const viewHeight = 688.3809814453125;
@@ -18,12 +18,8 @@ class UnavailableHours extends React.Component {
 
 	static navigationOptions = {
 		title: 'Set Unavailable Hours',
-		headerTintColor: white,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 

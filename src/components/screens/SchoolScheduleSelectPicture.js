@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, Platform, ImageBackground, ActivityIndicator, Text } from 'react-native';
+import { CameraRoll, ScrollView, View, StatusBar, ImageBackground, ActivityIndicator, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
@@ -20,14 +20,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 

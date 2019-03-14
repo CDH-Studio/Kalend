@@ -512,7 +512,6 @@ export const courseStyles = StyleSheet.create({
 	content: {
 		flex:1,
 		justifyContent:'space-evenly',
-		marginTop: getStatusBarHeight() + Header.HEIGHT,
 		paddingHorizontal: 20
 	},
 
@@ -608,7 +607,6 @@ export const fixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -726,7 +724,6 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 15,
 		marginBottom: 20,
-		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -858,7 +855,6 @@ export const unavailableHoursStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {
@@ -952,7 +948,6 @@ export const reviewEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	content: {

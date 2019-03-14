@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { reviewEventStyles as styles, blue, statusBlueColor } from '../../styles';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute } from '../../constants/screenNames';
 
@@ -27,12 +27,8 @@ class ReviewEvent extends React.Component {
 
 	static navigationOptions = {
 		title: 'Review Events',
-		headerTintColor: white,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
 
