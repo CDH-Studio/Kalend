@@ -7,7 +7,7 @@ import { gradientColors } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
-import { TutorialNavigator } from '../../constants/screenNames';
+import { DashboardNavigator } from '../../constants/screenNames';
 import { bindActionCreators } from 'redux';
 import { setCalendarID, logonUser } from '../../actions';
 import { homeStyles as styles } from '../../styles';
@@ -58,20 +58,20 @@ class Home extends React.Component {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.setCalendar();
-							this.props.navigation.navigate(TutorialNavigator);
+							this.props.navigation.navigate(DashboardNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								this.setCalendar();
-								this.props.navigation.navigate(TutorialNavigator);
+								this.props.navigation.navigate(DashboardNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					this.setCalendar();
-					this.props.navigation.navigate(TutorialNavigator);
+					this.props.navigation.navigate(DashboardNavigator);
 				}
 			});
 		}

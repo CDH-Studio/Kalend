@@ -7,10 +7,10 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue } from '../../styles';
+import { courseStyles as styles, blue, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { CourseRoute } from '../../constants/screenNames';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -22,13 +22,9 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
-		headerTintColor: '#ffffff',
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
+		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
 		headerStyle: {
 			backgroundColor: dark_blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
 
@@ -61,10 +57,10 @@ class Course extends React.Component {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
-			this.setState({...this.props.CourseState});
-		} else {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			this.resetField();
+		} else {
+			this.setState({...this.props.CourseState});
 		}	
 	}
 
@@ -269,9 +265,9 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate(TutorialFixedEvent);
+				this.props.navigation.pop();
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -280,7 +276,7 @@ class Course extends React.Component {
 			}
 			
 			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('TutorialReviewEvent');
+			this.props.navigation.pop();
 		}
 	}
 
@@ -361,7 +357,7 @@ class Course extends React.Component {
 		}
 		
 
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
@@ -488,9 +484,9 @@ class Course extends React.Component {
 
 
 						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
+							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.navigate(TutorialFixedEvent)]} />
+								this.props.navigation.pop()]} />
 					</View>
 				</ScrollView>
 

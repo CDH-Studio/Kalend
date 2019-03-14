@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, Text, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { chatbotStyles as styles, statusBlueColor } from '../../styles';
 
 /**
@@ -10,9 +10,6 @@ class Chatbot extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
-
-				<Text>Chatbot Screen</Text>
-
 			</View>
 		);
 	}
