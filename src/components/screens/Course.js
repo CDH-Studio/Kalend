@@ -10,7 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, blue, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { CourseRoute } from '../../constants/screenNames';
+import { CourseRoute, SchoolScheduleRoute, DashboardNavigator } from '../../constants/screenNames';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -356,7 +356,6 @@ class Course extends React.Component {
 			errorEndTime = null;
 		}
 		
-
 		if (this.props.navigation.state.routeName === CourseRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
@@ -485,8 +484,15 @@ class Course extends React.Component {
 
 						<BottomButtons twoButtons={showNextButton}
 							buttonText={[addEventButtonText, 'Done']}
-							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.pop()]} />
+							buttonMethods={[addEventButtonFunction, () => {
+								let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+								if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
+									this.props.navigation.navigate(DashboardNavigator);
+								} else {
+									this.props.navigation.pop();
+								}
+							}]} />
 					</View>
 				</ScrollView>
 
