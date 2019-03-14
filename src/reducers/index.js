@@ -10,6 +10,7 @@ import CoursesReducer from './reducer_course';
 import CalendarReducer from './reducer_calendar';
 import GeneratedNonFixedEventsReducer from './reducer_generatedNonFixedEvent';
 import UnavailableReducer from './reducer_unavailable';
+import SchoolInformationReducer from './reducer_schoolInformation';
 
 export default combineReducers( 
 	{ 	HomeReducer, 
@@ -22,5 +23,7 @@ export default combineReducers(
 		ScheduleSelectionReducer, 
 		UnavailableReducer,
 		CalendarReducer,
-		GeneratedNonFixedEventsReducer  
-	});
+		GeneratedNonFixedEventsReducer,
+		SchoolInformationReducer
+	}
+);

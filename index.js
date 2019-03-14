@@ -28,7 +28,8 @@ import Dashboard from './src/components/screens/Dashboard';
 import Chatbot from './src/components/screens/Chatbot';
 import CompareSchedule from './src/components/screens/CompareSchedule';
 import Settings from './src/components/screens/Settings';
-import { blue, white, dark_blue } from './src/styles.js';
+import SchoolInformation from './src/components/screens/SchoolInformation';
+import { blue } from './src/styles.js';
 
 const theme = {
 	...DefaultTheme,
@@ -153,6 +154,7 @@ const DashboardOptionsNavigator = createStackNavigator(
 
 		FixedEvent: {screen: FixedEvent},
 		NonFixedEvent: {screen: NonFixedEvent},
+		SchoolInformation: {screen: SchoolInformation}, 
 
 		ReviewEvent: {screen: ReviewEvent},
 		EditCourse: {screen: Course},

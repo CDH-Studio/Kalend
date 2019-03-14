@@ -6,6 +6,7 @@ export const ReviewEventRoute = 'ReviewEvent';
 export const CourseRoute = 'AddCourse';
 export const UnavailableRoute = 'UnavailableHours';
 export const UnavailableFixedRoute = 'UnavailableFixed';
+export const SchoolInformationRoute = 'SchoolInformation';
 
 export const ScheduleCreationRoute = 'ScheduleCreation';
 export const ScheduleSelectionRoute = 'ScheduleSelection';

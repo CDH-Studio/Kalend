@@ -1,7 +1,10 @@
 import { 
 	SET_NAV_SCREEN, 
 	SET_SELECTED_SCHEDULE, 
-	UPDATE_NFE, SIGNED_IN, 
+	SET_UNAVAILABLE_HOURS,
+	SET_SCHOOL_INFORMATION,
+	UPDATE_NFE, 
+	SIGNED_IN, 
 	SIGNED_OUT, 
 	SET_IMG, 
 	ADD_FE, 
@@ -12,7 +15,6 @@ import {
 	DELETE_COURSE, 
 	UPDATE_FE, 
 	UPDATE_COURSE, 
-	SET_UNAVAILABLE_HOURS,
 	CREATE_CALENDAR,
 	ADD_GENERATED_NFE 
 } from '../constants';
@@ -177,6 +179,15 @@ export function setNavigationScreen (data) {
 export function setUnavailableHours (info) {
 	const action = {
 		type: SET_UNAVAILABLE_HOURS,
+		info
+	};
+
+	return action;
+}
+
+export function setSchoolInformation (info) {
+	const action = {
+		type: SET_SCHOOL_INFORMATION,
 		info
 	};
 
