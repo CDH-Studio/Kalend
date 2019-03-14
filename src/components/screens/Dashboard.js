@@ -3,7 +3,7 @@ import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, statusBlueColor, gray } from '../../styles';
+import { dashboardStyles as styles, blue, statusBlueColor } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 
 /**
