@@ -4,7 +4,7 @@ import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import updateNavigation from '../NavigationHelper';
-import { DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator, UnavailableFixedRoute } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import { unavailableHoursStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
 import {setUnavailableHours} from '../../actions';
@@ -232,7 +232,7 @@ class UnavailableHours extends React.Component {
 	 * To go to the appropriate Fixed Event screen according to the current route
 	 */
 	manualImport() {
-		this.props.navigation.navigate('UnavailableFixed');
+		this.props.navigation.navigate(UnavailableFixedRoute);
 	}
 
 	/**
@@ -278,7 +278,7 @@ class UnavailableHours extends React.Component {
 
 		this.props.dispatch(setUnavailableHours(this.state));
 		
-		this.props.navigation.navigate(DashboardNavigator);
+		this.props.navigation.pop();
 	}
 	
 	render() {

@@ -6,6 +6,7 @@ import { Header } from 'react-navigation';
 import { gradientColors } from '../../../config';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import { schoolScheduleStyles as styles, white } from '../../styles';
+import { SchoolScheduleSelectPictureRoute, SchoolScheduleTakePictureRoute, CourseRoute } from '../../constants/screenNames';
 
 const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
 
@@ -36,11 +37,11 @@ class SchoolSchedule extends React.Component {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				if (accepted) {
-					this.props.navigation.navigate('SchoolScheduleSelectPicture');
+					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
 				}
 			});
 		} else {
-			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+			this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
 		}
 	}
 
@@ -48,39 +49,22 @@ class SchoolSchedule extends React.Component {
 		if (Platform.OS !== 'ios') {
 			requestCamera().then((accepted) => {				
 				if (accepted) {
-					this.props.navigation.navigate('SchoolScheduleTakePicture');
+					this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
 				}
 			});
 		} else {
-			this.props.navigation.navigate('SchoolScheduleTakePicture');
+			this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
 		}
 	}
 
 	/**
 	 * To go to the appropriate Add Course screen according to the current route*/
 	manualImport() {
-		this.props.navigation.navigate('AddCourse');
-	}
-
-	/** 
-	 * To go to the next screen without entering any information*/
-	skip = () => {
-		// this.props.navigation.navigate('FixedEvent', {update:false});
+		this.props.navigation.navigate(CourseRoute);
 	}
 
 	render() {
 		const {containerHeight} = this.state;
-		let tutorialStatus;
-
-		// if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-		// 	tutorialStatus = <TutorialStatus active={1}
-		// 		color={white}
-		// 		skip={this.skip} />;
-		// } else {
-		// 	tutorialStatus = null;
-		// }
-
-		tutorialStatus = null;
 
 		return (
 			<LinearGradient style={styles.container}
@@ -125,8 +109,6 @@ class SchoolSchedule extends React.Component {
 								<Text style={styles.textManual}>.</Text>
 							</Text>
 						</View>
-
-						{tutorialStatus}
 					</View>
 				</ImageBackground>
 			</LinearGradient>

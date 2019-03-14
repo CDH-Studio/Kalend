@@ -3,6 +3,7 @@ import { StatusBar, TouchableOpacity, Text } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
+import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -29,7 +30,7 @@ class Dashboard extends React.Component {
 
 				<TouchableOpacity style={{elevation: 4, backgroundColor: blue, padding: 5, borderRadius: 5, margin: 5}}
 					onPress={() => {
-						this.props.navigation.navigate('ReviewEvent');
+						this.props.navigation.navigate(ReviewEventRoute);
 					}}>
 					<Text style={{color: 'white'}}>Create Schedule</Text>
 				</TouchableOpacity>
@@ -39,13 +40,13 @@ class Dashboard extends React.Component {
 					actions={[
 						{icon: 'school',
 							label: 'Add School Schedule',
-							onPress: () => this.props.navigation.navigate('SchoolSchedule')},
+							onPress: () => this.props.navigation.navigate(SchoolScheduleRoute)},
 						{icon: 'today',
 							label: 'Add Fixed Event',
-							onPress: () => this.props.navigation.navigate('FixedEvent')},
+							onPress: () => this.props.navigation.navigate(FixedEventRoute)},
 						{icon: 'face',
 							label: 'Add Non-Fixed Event',
-							onPress: () => this.props.navigation.navigate('NonFixedEvent')},
+							onPress: () => this.props.navigation.navigate(NonFixedEventRoute)},
 					]}
 					onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 					style={styles.fab} />

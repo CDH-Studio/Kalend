@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import updateNavigation from '../NavigationHelper';
 import { slides, statusBarDark } from '../../../config';
 import { welcomeStyles as styles } from '../../styles';
+import { LoginNavigator } from '../../constants/screenNames';
 
 const slidesIconSize = 200;
 const nextIconSize = 24;
@@ -86,7 +87,7 @@ class WelcomeScreen extends React.Component {
 	 * Navigates to the next screen (Login screen)
 	 */
 	next = () => {
-		this.props.navigation.navigate('LoginNavigator');
+		this.props.navigation.navigate(LoginNavigator);
 	}
 
 	render() {

@@ -9,6 +9,7 @@ import { gradientColors } from '../../../config';
 import CameraRollImage from '../CameraRollImage';
 import { selectPictureStyles as styles, white } from '../../styles';
 import { setImageURI } from '../../actions';
+import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 
 const imagesPerLoad = 99;
 
@@ -188,7 +189,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 	
-		this.props.navigation.navigate('SchoolScheduleCreation');
+		this.props.navigation.navigate(SchoolScheduleCreationRoute);
 	}
 
 	render() {

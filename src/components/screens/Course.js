@@ -10,6 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { CourseRoute } from '../../constants/screenNames';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -21,7 +22,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === 'AddCourse' ? 'Add Courses' : 'Edit Course',
+		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -60,7 +61,7 @@ class Course extends React.Component {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName === 'AddCourse') {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			this.resetField();
 		} else {
 			this.setState({...this.props.CourseState});
@@ -268,7 +269,7 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === 'AddCourse') {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			if (this.addAnotherEvent()) {
 				this.props.navigation.pop();
 			}
@@ -279,7 +280,7 @@ class Course extends React.Component {
 			}
 			
 			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('ReviewEvent');
+			this.props.navigation.pop();
 		}
 	}
 
@@ -360,7 +361,7 @@ class Course extends React.Component {
 		}
 		
 
-		if (this.props.navigation.state.routeName === 'AddCourse') {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {

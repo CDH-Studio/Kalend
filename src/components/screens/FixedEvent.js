@@ -12,6 +12,7 @@ import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, white, blue, orange, lightOrange, gray, statusBlueColor } from '../../styles';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { FixedEventRoute } from '../../constants/screenNames';
 
 const viewHeight = 446.66668701171875;
 const containerWidth = Dimensions.get('window').width;
@@ -21,7 +22,7 @@ const containerWidth = Dimensions.get('window').width;
 class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === 'FixedEvent' ? 'Add Fixed Events' : 'Edit Fixed Event',
+		title: navigation.state.routeName === FixedEventRoute ? 'Add Fixed Events' : 'Edit Fixed Event',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -38,7 +39,7 @@ class FixedEvent extends React.Component {
 	}
 
 	componentWillMount() {
-		if(this.props.navigation.state.routeName === 'FixedEvent') {
+		if(this.props.navigation.state.routeName === FixedEventRoute) {
 			this.setState(this.resetField);
 		} else {
 			this.setState({...this.props.FEditState});
@@ -49,8 +50,7 @@ class FixedEvent extends React.Component {
 
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
-		let tutorialStatusHeight = this.props.navigation.state.routeName === 'FixedEvent' ? 56.1 : 0;
-		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - tutorialStatusHeight - statusBarHeight;
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - statusBarHeight;
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
 		// Causes a bug (cannot scroll when keyboard is shown)
@@ -359,13 +359,13 @@ class FixedEvent extends React.Component {
 			return;
 		}
 
-		if (this.props.navigation.state.routeName !== 'FixedEvent') {
+		if (this.props.navigation.state.routeName !== FixedEventRoute) {
 			this.props.dispatch(updateFixedEvents(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('ReviewEvent');
 		} else {
 			this.props.dispatch(addFixedEvent(this.state));
-			this.props.navigation.pop();
 		}
+
+		this.props.navigation.pop();
 	}
 
 	/**
@@ -464,7 +464,7 @@ class FixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === 'FixedEvent') {
+		if (this.props.navigation.state.routeName === FixedEventRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {

@@ -26,21 +26,8 @@ class SchoolScheduleCreation extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	navigateAction = NavigationActions.navigate({
-		action: 'FinishSchoolCreation'
-	})
-
 	static navigationOptions = {
-		title: 'Analyzing Schedule',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		},
+		header: null,
 		headerLeft: null,
 		gesturesEnabled: false,
 	};
@@ -53,7 +40,7 @@ class SchoolScheduleCreation extends React.Component {
 					let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 					fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 					analyzePicture({data: fakeEscape}).then(success => {
-						if (success) this.props.navigation.navigate('DashboardNavigator');
+						if (success) this.props.navigation.navigate(DashboardNavigator);
 						else this.props.navigation.pop();
 					});
 				})

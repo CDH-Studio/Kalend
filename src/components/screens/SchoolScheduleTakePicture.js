@@ -7,6 +7,7 @@ import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { takePictureStyles as styles, orange, red, blue, white } from '../../styles';
 import { setImageURI } from '../../actions';
+import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 
 const iconColor = 'white';
 
@@ -144,7 +145,7 @@ class SchoolScheduleTakePicture extends React.Component {
 				
 				this.props.dispatch(setImageURI(undefined, false));
 
-				this.props.navigation.navigate('SchoolScheduleCreation');
+				this.props.navigation.navigate(SchoolScheduleCreationRoute);
 			}
 		}
 	}

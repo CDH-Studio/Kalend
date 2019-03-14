@@ -10,6 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute } from '../../constants/screenNames';
 
 const priorityLevels = {
 	0: 'Low',
@@ -151,17 +152,17 @@ class ReviewEvent extends React.Component {
 		let objectToChange;
 
 		switch (category) {
-			case 'SchoolSchedule':
+			case SchoolScheduleRoute:
 				dataToDispatch = deleteCourse(id);
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
-			case 'FixedEvent':
+			case FixedEventRoute:
 				dataToDispatch = deleteFixedEvent(id);
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
-			case 'NonFixedEvent':
+			case NonFixedEventRoute:
 				dataToDispatch = deleteNonFixedEvent(id);
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
@@ -209,7 +210,7 @@ class ReviewEvent extends React.Component {
 			});
 		});
 
-		this.props.navigation.navigate('ScheduleCreation');
+		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 
 	render() {
@@ -262,7 +263,7 @@ class ReviewEvent extends React.Component {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>Fixed Events</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate('FixedEvent')}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute)}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -291,7 +292,7 @@ class ReviewEvent extends React.Component {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute)}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>

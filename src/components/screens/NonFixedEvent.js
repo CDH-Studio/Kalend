@@ -9,7 +9,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, lightOrange, orange, statusBlueColor } from '../../styles';
-import { TutorialReviewEvent } from '../../constants/screenNames';
+import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 
@@ -21,7 +21,7 @@ const viewHeight = 780.5714111328125;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === 'NonFixedEvent' ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
+		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerTintColor: white,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
@@ -49,7 +49,7 @@ class NonFixedEvent extends React.Component {
 	}
 	
 	componentWillMount() {	
-		if (this.props.navigation.state.routeName !== 'NonFixedEvent') {
+		if (this.props.navigation.state.routeName !== NonFixedEventRoute) {
 			this.setState({...this.props.NFEditState});
 		} else  {
 			this.resetFields();
@@ -103,12 +103,12 @@ class NonFixedEvent extends React.Component {
 			return;
 		}
 
-		if (this.props.navigation.state.routeName === 'NonFixedEvent') {
+		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
 			this.props.dispatch(addNonFixedEvent(this.state));
-			this.props.navigation.navigate(TutorialReviewEvent);
+			this.props.navigation.navigate(ReviewEventRoute);
 		} else {
 			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+			this.props.navigation.navigate(ReviewEventRoute, {changed:true});
 		}
 	}
 
@@ -206,7 +206,7 @@ class NonFixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === 'NonFixedEvent') {
+		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {

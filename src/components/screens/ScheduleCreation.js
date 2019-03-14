@@ -6,7 +6,7 @@ import { Surface } from 'react-native-paper';
 import { generateSchedule } from '../../services/service';
 import { gradientColors } from '../../../config';
 import { scheduleCreateStyles as styles, orange, lightOrange } from '../../styles';
-import { DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
 
 /**
  * The loading screen shown after the user reviewed their events
@@ -60,7 +60,7 @@ class ScheduleCreation extends React.Component {
 	 * Goes to the next screen
 	 */
 	navigateToSelection = () => {
-		this.props.navigation.navigate('ScheduleSelection');
+		this.props.navigation.navigate(ScheduleSelectionRoute);
 	}
 	
 	render() {
