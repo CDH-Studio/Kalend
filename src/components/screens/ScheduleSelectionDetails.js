@@ -155,7 +155,7 @@ class ScheduleSelectionDetails extends React.Component {
 		title: navigation.state.params.title,
 		headerStyle: {
 			backgroundColor: dark_blue,
-\		},
+		},
 		headerRight: (
 			<IconButton
 				onPress={navigation.getParam('goBack')}

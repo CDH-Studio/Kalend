@@ -88,7 +88,7 @@ class UnavailableHours extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.UnavailableReducer !== undefined) {
+		if (this.props.UnavailableReducer && this.props.UnavailableReducer.info && this.props.UnavailableReducer.info.info) {
 			this.setState({...this.props.UnavailableReducer.info.info});
 		}
 	}

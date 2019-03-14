@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, Text, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { compareScheduleStyles as styles, statusBlueColor } from '../../styles';
 
 class CompareSchedule extends React.Component {
@@ -7,9 +7,6 @@ class CompareSchedule extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
-
-				<Text>CompareSchedule Screen</Text>
-				
 			</View>
 		);
 	}

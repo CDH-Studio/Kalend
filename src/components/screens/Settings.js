@@ -1,36 +1,42 @@
 import React from 'react';
-import { StatusBar, Button, View } from 'react-native';
-import { persistor } from '../../store';
+import { StatusBar, View , TouchableOpacity, Text } from 'react-native';
+import { connect } from 'react-redux';
 import { settingsStyles as styles, statusBlueColor } from '../../styles';
 import { LoginNavigator, UnavailableRoute } from '../../constants/screenNames';
+import { logoffUser } from '../../actions';
 
 class Settings extends React.Component {
 	render() {
 		return(
 			<View style={styles.content}>
-				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
+				<StatusBar translucent={true} 
+					backgroundColor={statusBlueColor} />
 
-				<Button title='Purge' 
+				<TouchableOpacity style={styles.button}
 					onPress={() => {
-						persistor.purge();
+						this.props.dispatch(logoffUser());
+						this.props.navigation.navigate(LoginNavigator);
 					}}>
-				</Button>
-				<Button title='Go back home'
+					<Text style={styles.buttonText}>Log out</Text>
+				</TouchableOpacity>
+
+
+				<TouchableOpacity style={styles.button}
 					onPress={() => {
 						this.props.navigation.navigate(LoginNavigator);
 					}}>
-				</Button>
+					<Text style={styles.buttonText}>Go Back Home</Text>
+				</TouchableOpacity>
 
-
-				<Button title='Set unavailable hours'
+				<TouchableOpacity style={styles.button}
 					onPress={() => {
 						this.props.navigation.navigate(UnavailableRoute);
 					}}>
-				</Button>
-				
+					<Text style={styles.buttonText}>Set unavailable hours</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
 }
 
-export default Settings;
+export default connect()(Settings);

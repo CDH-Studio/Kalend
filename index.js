@@ -28,6 +28,7 @@ import Dashboard from './src/components/screens/Dashboard';
 import Chatbot from './src/components/screens/Chatbot';
 import CompareSchedule from './src/components/screens/CompareSchedule';
 import Settings from './src/components/screens/Settings';
+import { blue, white, dark_blue } from './src/styles.js';
 
 const theme = {
 	...DefaultTheme,
@@ -48,10 +49,27 @@ const LoginNavigator = createStackNavigator(
 	}
 );
 
+const dashboardInnerScreenOptions = {
+	headerTintColor: '#fff',
+	headerTitleStyle: {fontFamily: 'Raleway-Regular'},
+	headerStyle: {
+		backgroundColor: blue,
+		marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+	},
+};
+
 const DashboardNavigator = createBottomTabNavigator(
 	{
 		Dashboard: {
-			screen: Dashboard,
+			screen: createStackNavigator({
+				Dashboard: {
+					screen: Dashboard,
+					navigationOptions:  {
+						...dashboardInnerScreenOptions,
+						title: 'Home'
+					}
+				}
+			}),
 			navigationOptions: {
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `home-variant${focused ? '' : '-outline'}`;
@@ -60,7 +78,15 @@ const DashboardNavigator = createBottomTabNavigator(
 			}
 		},
 		Chatbot: {
-			screen: Chatbot,
+			screen: createStackNavigator({
+				Chatbot: {
+					screen: Chatbot,
+					navigationOptions:  {
+						...dashboardInnerScreenOptions,
+						title: 'Chatbot'
+					}
+				}
+			}),
 			navigationOptions: {
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `chat-bubble${focused ? '' : '-outline'}`;
@@ -69,7 +95,15 @@ const DashboardNavigator = createBottomTabNavigator(
 			}
 		},
 		CompareSchedule: {
-			screen: CompareSchedule,
+			screen: createStackNavigator({
+				CompareSchedule: {
+					screen: CompareSchedule,
+					navigationOptions:  {
+						...dashboardInnerScreenOptions,
+						title: 'Compare Schedules'
+					}
+				}
+			}),
 			navigationOptions: {
 				title: 'Compare',
 				tabBarIcon: ({ focused, tintColor }) => {
@@ -79,7 +113,15 @@ const DashboardNavigator = createBottomTabNavigator(
 			}
 		},
 		Settings: {
-			screen: Settings,
+			screen: createStackNavigator({
+				Settings: {
+					screen: Settings,
+					navigationOptions: {
+						...dashboardInnerScreenOptions,
+						title: 'Settings'
+					}
+				}
+			}),
 			navigationOptions: {
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `settings${focused ? '' : '-outline'}`;
@@ -90,16 +132,14 @@ const DashboardNavigator = createBottomTabNavigator(
 	}, 
 	{
 		initialRouteName: 'Dashboard',
+		tabBarOptions: {
+			activeTintColor: blue,
+		}
 	}
 );
 
 DashboardNavigator.navigationOptions = {
-	headerTintColor: '#fff',
-	headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-	headerStyle: {
-		backgroundColor: blueColor,
-		marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-	}
+	header: null
 };
 
 const DashboardOptionsNavigator = createStackNavigator(

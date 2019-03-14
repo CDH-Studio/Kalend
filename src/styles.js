@@ -1260,16 +1260,67 @@ export const eventOverviewStyles = StyleSheet.create({
 	}
 });
 
+const DashboardButton = StyleSheet.create({
+	button: {
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 2,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+		backgroundColor: blue, 
+		padding: 5, 
+		borderRadius: 5, 
+		marginBottom: 5
+	},
+
+	buttonText: {
+		fontSize: 16,
+		color: white,
+		padding: 4
+	}
+});
+
 export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		padding: 5
 	},
 
 	fab: {
 		position: 'absolute',
 		right: 0
-	}
+	},
+
+	profileImage: {
+		width: 100, 
+		height: 100, 
+		borderRadius: 50, 
+		marginVertical: 5
+	},
+
+	topProfileContainer: {
+		flexDirection: 'row', 
+		justifyContent:'center', 
+		alignItems:'center', 
+		margin: 10
+	},
+
+	profileDescription: {
+		width: '50%', 
+		padding: 10, 
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16
+	},
+
+	...DashboardButton
 });
 
 export const chatbotStyles = StyleSheet.create({
@@ -1289,6 +1340,9 @@ export const compareScheduleStyles = StyleSheet.create({
 export const settingsStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
-	}
+		height: '100%',
+		padding: 5
+	},
+
+	...DashboardButton
 });
