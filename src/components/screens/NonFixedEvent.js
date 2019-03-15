@@ -53,7 +53,7 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			occurence: 1,
+			occurrence: 1,
 			isRecurrent: false,
 
 			priority: 0.5,
@@ -178,7 +178,7 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			occurence: 1,
+			occurrence: 1,
 			isRecurrent: false,
 
 			priority: 0.5,
