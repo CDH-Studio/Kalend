@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { setNavigationScreen } from '../actions';
 import { calendarEventColors, grayColor } from '../../config';
 import { store } from '../store';
 import { eventOverviewStyles as styles } from '../styles';
-import { setNavigationScreen } from '../actions';
+
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
@@ -143,13 +144,13 @@ class EventOverview extends React.Component {
 								reviewEventSelected: this.props.id
 							}));
 						}}>
-							<Feather name="edit"
+							<MaterialCommunityIcons name="square-edit-outline"
 								size={30}
 								color={grayColor} />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}
 							style={{marginLeft: 10}}>
-							<Feather name="trash"
+							<MaterialCommunityIcons name="trash-can-outline"
 								size={30}
 								color={grayColor} />
 						</TouchableOpacity>
@@ -201,14 +202,14 @@ class EventOverview extends React.Component {
 								<View style={styles.actionsModal}>
 									<TouchableOpacity style={styles.actionIconModal}
 										onPress={() => this.navigateAndCloseModal(editScreen)}>
-										<Feather name="edit"
+										<MaterialCommunityIcons name="square-edit-outline"
 											size={40}
 											color={grayColor} />
 									</TouchableOpacity>
 
 									<TouchableOpacity style={styles.actionIconModal}
 										onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}>
-										<Feather name="trash"
+										<MaterialCommunityIcons name="trash-can-outline"
 											size={40}
 											color={grayColor} />
 									</TouchableOpacity>
@@ -230,7 +231,7 @@ class EventOverview extends React.Component {
 						<TouchableWithoutFeedback>
 							<View style={styles.deleteDialogContent}>
 								<View style={styles.deleteDialogMainRow}>
-									<Feather name="trash"
+									<MaterialCommunityIcons name="trash-can-outline"
 										size={80}
 										color={grayColor} />
 

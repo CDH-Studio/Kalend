@@ -1,15 +1,13 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, ImageBackground, ActivityIndicator, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { gradientColors } from '../../../config';
-import CameraRollImage from '../CameraRollImage';
-import { selectPictureStyles as styles, white, blue } from '../../styles';
 import { setImageURI } from '../../actions';
+import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
+import { selectPictureStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
 const imagesPerLoad = 99;
 
@@ -20,10 +18,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-		}
+		headerTransparent: true
 	};
 
 	constructor(props) {
@@ -191,57 +186,48 @@ class SchoolScheduleSelectPicture extends React.Component {
 		const { images, showFAB, activityIndicator, selectedStyle, showNoPhotos } = this.state;
 
 		return (
-			<LinearGradient style={styles.container} 
-				colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={statusBlueColor} />
+					
+				<ScrollView onScroll={this.scrollListener}>
 					<View style={styles.content}>
-						<StatusBar translucent={true} 
-							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
-							
-						<ScrollView style={styles.scroll}
-							onScroll={this.scrollListener}>
+						<View style={styles.imageGrid}>
+							{ 
+								images.map((image, index) => {
+									return (
+										<CameraRollImage key={index}
+											image={image} 
+											index={index} 
+											onUpdate={this.onUpdate}
+											selectedStyle={selectedStyle[index]} />
+									);
+								}) 
+							}
 
-							<View style={styles.imageGrid}>
-								{ 
-									images.map((image, index) => {
-										return (
-											<CameraRollImage key={index}
-												image={image} 
-												index={index} 
-												onUpdate={this.onUpdate}
-												selectedStyle={selectedStyle[index]} />
-										);
-									}) 
-								}
+							{ activityIndicator }
 
-								{ activityIndicator }
+							{ 
+								showNoPhotos ? 
+									<View style={styles.emptyView}>
+										<Ionicons
+											name="ios-images" 
+											size={50} 
+											color={white} />
 
-								{ 
-									showNoPhotos ? 
-										<View style={styles.emptyView}>
-											<Ionicons
-												name="ios-images" 
-												size={50} 
-												color={white} />
-
-											<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
-										</View>
-										:
-										null
-								}
-							</View>
-						</ScrollView>
-						
-						<FAB style={styles.fab}
-							icon="file-upload"
-							theme={{colors:{accent:blue}}}
-							visible={showFAB}
-							onPress={this.nextScreen} />
+										<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
+									</View> : null
+							}
+						</View>
 					</View>
-				</ImageBackground>
-			</LinearGradient>
+				</ScrollView>
+				
+				<FAB style={styles.fab}
+					icon="file-upload"
+					theme={{colors:{accent:blue}}}
+					visible={showFAB}
+					onPress={this.nextScreen} />
+			</View>
 		);
 	}
 }

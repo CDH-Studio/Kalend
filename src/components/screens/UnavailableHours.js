@@ -1,15 +1,12 @@
 import React from 'react';
-import { Dimensions, ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
+import { ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Header } from 'react-navigation';
-import updateNavigation from '../NavigationHelper';
-import { UnavailableFixedRoute } from '../../constants/screenNames';
 import { connect } from 'react-redux';
-import { unavailableHoursStyles as styles, blue, gray, statusBlueColor, dark_blue } from '../../styles';
 import {setUnavailableHours} from '../../actions';
-
-const viewHeight = 688.3809814453125;
+import { UnavailableFixedRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
 
 /**
  * Permits the user to input the hours they are not available or don't want to have anything booked
@@ -19,26 +16,14 @@ class UnavailableHours extends React.Component {
 	static navigationOptions = {
 		title: 'Set Unavailable Hours',
 		headerStyle: {
-			backgroundColor: dark_blue,
-		}
+			backgroundColor: white
+		},
 	};
 
 	constructor(props) {
 		super(props);
 
-		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
-		let containerHeight = null;
-		
-		if (viewHeight < containerHeightTemp) {
-			containerHeight = containerHeightTemp;
-		}
-
 		this.state = { 
-			containerHeight,
-			showTutShadow: true,
-
-			initialAmPm: this.getAmPm(),
-
 			sleepWeek: false,
 			startSleepWeek: new Date().toLocaleTimeString(),
 			endSleepWeek: new Date().toLocaleTimeString(),
@@ -91,44 +76,6 @@ class UnavailableHours extends React.Component {
 		if (this.props.UnavailableReducer && this.props.UnavailableReducer.info && this.props.UnavailableReducer.info.info) {
 			this.setState({...this.props.UnavailableReducer.info.info});
 		}
-	}
-
-	/**
-	 * Returns the time formatted with the AM/PM notation
-	 * 
-	 * @param {String} time The time expressed in the 24 hours format
-	 */
-	getTwelveHourTime(time) {
-		let temp = time.split(' ');
-		let amOrPm = temp[1];
-
-		let info = time.split(':');
-		time = new Date();
-
-		time.setHours(parseInt(info[0]));
-		time.setMinutes(parseInt(info[1]));
-
-		let currentHour = time.getHours();
-		let currentMinute = time.getMinutes();
-
-		if (currentHour > 12) {
-			currentHour = currentHour % 12;
-			time.setHours(currentHour);
-		}
-
-		if (currentMinute < 10) {
-			currentMinute = '0' + currentMinute;
-		}
-
-		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
-	}
-
-	/**
-	 * Gets the current time AM or PM
-	 */
-	getAmPm() {
-		let hours = new Date().getHours();
-		return (hours >= 12) ? ' PM' : ' AM';
 	}
 
 	/**
@@ -278,8 +225,6 @@ class UnavailableHours extends React.Component {
 	}
 	
 	render() {
-		const { containerHeight } = this.state;
-		let paddingBottomContainer = 0;
 		let hourTypes = [
 			'sleepWeek',
 			'sleepWeekEnd',
@@ -311,8 +256,8 @@ class UnavailableHours extends React.Component {
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.scrollView}>
-					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer + 20}]}>
+				<ScrollView>
+					<View style={[styles.content]}>
 						<View style={styles.instruction}>
 							<Text style={styles.text}>Add the hours for which you're not available or you don't want anything to be booked.</Text>
 							<MaterialCommunityIcons name="clock-alert-outline"
@@ -320,546 +265,540 @@ class UnavailableHours extends React.Component {
 								color={dark_blue}/>
 						</View>
 
-						<View>
-							<View style={styles.row}>
-								<MaterialCommunityIcons name="sleep"
-									size={30}
-									color={dark_blue}/>
-
-								<Text style={styles.blueTitle}>Sleeping Hours</Text>
-							</View>
+						<View style={styles.hoursView}>
 							<View>
-								<View style={styles.rowContent}>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week</Text>
+								<View style={styles.row}>
+									<MaterialCommunityIcons name="sleep"
+										size={30}
+										color={dark_blue}/>
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.sleepWeek ? dark_blue : 'darkgray'}
-												onValueChange={(sleepWeek) => this.setState({sleepWeek})}
-												value={this.state.sleepWeek} />
-										</View>
-										{this.state.sleepWeek ?
+									<Text style={styles.blueTitle}>Sleeping Hours</Text>
+								</View>
+								<View>
+									<View style={styles.rowContent}>
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startSleepWeek} 
-													mode="time" 
-													style={styles.timeWidth}
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endSleepWeekValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startSleepWeek) => {
-														this.setState({
-															endSleepWeekValidated: true, 
-															startSleepWeek, 
-															endSleepWeek: this.beforeStartTime(startSleepWeek, 'startSleepWeek', undefined, 'endSleepWeek')
-														});
-														this.setState({disabledEndSleepWeek: this.enableEndTime('disabledEndSleepWeek', 'startSleepWeek', 'endSleepWeek')});
-													}} />
+												<Text style={styles.type}>Week</Text>
 
-												<Text> - </Text>
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.sleepWeek ? dark_blue : 'darkgray'}
+													onValueChange={(sleepWeek) => this.setState({sleepWeek})}
+													value={this.state.sleepWeek} />
+											</View>
+											{this.state.sleepWeek ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startSleepWeek} 
+														mode="time" 
+														style={styles.timeWidth}
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endSleepWeekValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startSleepWeek) => {
+															this.setState({
+																endSleepWeekValidated: true, 
+																startSleepWeek, 
+																endSleepWeek: this.beforeStartTime(startSleepWeek, 'startSleepWeek', undefined, 'endSleepWeek')
+															});
+															this.setState({disabledEndSleepWeek: this.enableEndTime('disabledEndSleepWeek', 'startSleepWeek', 'endSleepWeek')});
+														}} />
 
-												<DatePicker showIcon={false} 
-													date={this.state.endSleepWeek} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndSleepWeek}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endSleepWeekValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndSleepWeek ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endSleepWeek) => this.setState({endSleepWeek, 
-														startSleepWeek: this.beforeStartTime(undefined, 'startSleepWeek', endSleepWeek, 'endSleepWeek')})} />
-											</View> : null}
+													<Text> - </Text>
 
-										{error.endSleepWeek}
-									</View>
+													<DatePicker showIcon={false} 
+														date={this.state.endSleepWeek} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndSleepWeek}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endSleepWeekValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndSleepWeek ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endSleepWeek) => this.setState({endSleepWeek, 
+															startSleepWeek: this.beforeStartTime(undefined, 'startSleepWeek', endSleepWeek, 'endSleepWeek')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
 
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week-End</Text>
-
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.sleepWeekEnd ? dark_blue : 'darkgray'}
-												onValueChange={(sleepWeekEnd) => this.setState({sleepWeekEnd})}
-												value={this.state.sleepWeekEnd} />
+											{error.endSleepWeek}
 										</View>
 
-										{this.state.sleepWeekEnd ?
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startSleepWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startSleepWeekEnd) => {
-														this.setState({endSleepWeekEndValidated: true, 
-															startSleepWeekEnd, 
-															endSleepWeekEnd: this.beforeStartTime(startSleepWeekEnd, 'startSleepWeekEnd', undefined, 'endSleepWeekEnd')});
-														this.setState({disabledEndSleepWeekEnd: this.enableEndTime('disabledEndSleepWeekEnd', 'startSleepWeekEnd', 'endSleepWeekEnd')});
-													}} />
+												<Text style={styles.type}>Week-End</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endSleepWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndSleepWeekEnd}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndSleepWeekEnd ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endSleepWeekEnd) => this.setState({endSleepWeekEnd, 
-														startSleepWeekEnd: this.beforeStartTime(undefined, 'startSleepWeekEnd', endSleepWeekEnd, 'endSleepWeekEnd')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.sleepWeekEnd ? dark_blue : 'darkgray'}
+													onValueChange={(sleepWeekEnd) => this.setState({sleepWeekEnd})}
+													value={this.state.sleepWeekEnd} />
+											</View>
 
-										{error.endSleepWeekEnd}
+											{this.state.sleepWeekEnd ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startSleepWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startSleepWeekEnd) => {
+															this.setState({endSleepWeekEndValidated: true, 
+																startSleepWeekEnd, 
+																endSleepWeekEnd: this.beforeStartTime(startSleepWeekEnd, 'startSleepWeekEnd', undefined, 'endSleepWeekEnd')});
+															this.setState({disabledEndSleepWeekEnd: this.enableEndTime('disabledEndSleepWeekEnd', 'startSleepWeekEnd', 'endSleepWeekEnd')});
+														}} />
+
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endSleepWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndSleepWeekEnd}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndSleepWeekEnd ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endSleepWeekEnd) => this.setState({endSleepWeekEnd, 
+															startSleepWeekEnd: this.beforeStartTime(undefined, 'startSleepWeekEnd', endSleepWeekEnd, 'endSleepWeekEnd')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endSleepWeekEnd}
+										</View>
 									</View>
 								</View>
 							</View>
-						</View>
-
-						<View>
-							<View style={styles.row}>
-								<MaterialCommunityIcons name="train-car"
-									size={30}
-									color={dark_blue}/>
-
-								<Text style={styles.blueTitle}>Commuting Hours</Text>
-							</View>
 
 							<View>
-								<View style={styles.rowContent}>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week</Text>
+								<View style={styles.row}>
+									<MaterialCommunityIcons name="train-car"
+										size={30}
+										color={dark_blue}/>
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.commutingWeek ? dark_blue : 'darkgray'}
-												onValueChange={(commutingWeek) => this.setState({commutingWeek})}
-												value={this.state.commutingWeek} />
-										</View>
+									<Text style={styles.blueTitle}>Commuting Hours</Text>
+								</View>
 
-										{this.state.commutingWeek ?
+								<View>
+									<View style={styles.rowContent}>
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startCommutingWeek} 
-													mode="time" 
-													style={styles.timeWidth}
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startCommutingWeek) => {
-														this.setState({endCommutingWeekValidated: true, 
-															startCommutingWeek, 
-															endCommutingWeek: this.beforeStartTime(startCommutingWeek, 'startCommutingWeek', undefined, 'endCommutingWeek')});
-														this.setState({disabledEndCommutingWeek: this.enableEndTime('disabledEndCommutingWeek', 'startCommutingWeek', 'endCommutingWeek')});
-													}} />
+												<Text style={styles.type}>Week</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endCommutingWeek} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndCommutingWeek}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndCommutingWeek ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endCommutingWeek) => this.setState({endCommutingWeek, 
-														startCommutingWeek: this.beforeStartTime(undefined, 'startCommutingWeek', endCommutingWeek, 'endCommutingWeek')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.commutingWeek ? dark_blue : 'darkgray'}
+													onValueChange={(commutingWeek) => this.setState({commutingWeek})}
+													value={this.state.commutingWeek} />
+											</View>
 
-										{error.endCommutingWeek}
-									</View>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week-End</Text>
+											{this.state.commutingWeek ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startCommutingWeek} 
+														mode="time" 
+														style={styles.timeWidth}
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startCommutingWeek) => {
+															this.setState({endCommutingWeekValidated: true, 
+																startCommutingWeek, 
+																endCommutingWeek: this.beforeStartTime(startCommutingWeek, 'startCommutingWeek', undefined, 'endCommutingWeek')});
+															this.setState({disabledEndCommutingWeek: this.enableEndTime('disabledEndCommutingWeek', 'startCommutingWeek', 'endCommutingWeek')});
+														}} />
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.commutingWeekEnd ? dark_blue : 'darkgray'}
-												onValueChange={(commutingWeekEnd) => this.setState({commutingWeekEnd})}
-												value={this.state.commutingWeekEnd} />
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endCommutingWeek} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndCommutingWeek}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndCommutingWeek ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endCommutingWeek) => this.setState({endCommutingWeek, 
+															startCommutingWeek: this.beforeStartTime(undefined, 'startCommutingWeek', endCommutingWeek, 'endCommutingWeek')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endCommutingWeek}
 										</View>
-
-										{this.state.commutingWeekEnd ?
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startCommutingWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startCommutingWeekEnd) => {
-														this.setState({endCommutingWeekEndValidated: true, 
-															startCommutingWeekEnd,
-															endCommutingWeekEnd: this.beforeStartTime(startCommutingWeekEnd, 'startCommutingWeekEnd', undefined, 'endCommutingWeekEnd')});
-														this.setState({disabledEndCommutingWeekEnd: this.enableEndTime('disabledEndCommutingWeekEnd', 'startCommutingWeekEnd', 'endCommutingWeekEnd')});
-													}} />
+												<Text style={styles.type}>Week-End</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endCommutingWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndCommutingWeekEnd}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndCommutingWeekEnd ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endCommutingWeekEnd) => this.setState({endCommutingWeekEnd, 
-														startCommutingWeekEnd: this.beforeStartTime(undefined, 'startCommutingWeekEnd', endCommutingWeekEnd, 'endCommutingWeekEnd')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.commutingWeekEnd ? dark_blue : 'darkgray'}
+													onValueChange={(commutingWeekEnd) => this.setState({commutingWeekEnd})}
+													value={this.state.commutingWeekEnd} />
+											</View>
 
-										{error.endCommutingWeekEnd}
+											{this.state.commutingWeekEnd ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startCommutingWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startCommutingWeekEnd) => {
+															this.setState({endCommutingWeekEndValidated: true, 
+																startCommutingWeekEnd,
+																endCommutingWeekEnd: this.beforeStartTime(startCommutingWeekEnd, 'startCommutingWeekEnd', undefined, 'endCommutingWeekEnd')});
+															this.setState({disabledEndCommutingWeekEnd: this.enableEndTime('disabledEndCommutingWeekEnd', 'startCommutingWeekEnd', 'endCommutingWeekEnd')});
+														}} />
+
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endCommutingWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndCommutingWeekEnd}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndCommutingWeekEnd ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endCommutingWeekEnd) => this.setState({endCommutingWeekEnd, 
+															startCommutingWeekEnd: this.beforeStartTime(undefined, 'startCommutingWeekEnd', endCommutingWeekEnd, 'endCommutingWeekEnd')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endCommutingWeekEnd}
+										</View>
 									</View>
 								</View>
 							</View>
-						</View>
-
-						<View>
-							<View style={styles.row}>
-								<MaterialCommunityIcons name="food"
-									size={30}
-									color={dark_blue}/>
-
-								<Text style={styles.blueTitle}>Eating Hours</Text>
-							</View>
 
 							<View>
-								<View style={styles.rowContent}>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week</Text>
+								<View style={styles.row}>
+									<MaterialCommunityIcons name="food"
+										size={30}
+										color={dark_blue}/>
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.eatingWeek ? dark_blue : 'darkgray'}
-												onValueChange={(eatingWeek) => this.setState({eatingWeek})}
-												value={this.state.eatingWeek} />
-										</View>
+									<Text style={styles.blueTitle}>Eating Hours</Text>
+								</View>
 
-										{this.state.eatingWeek ?
+								<View>
+									<View style={styles.rowContent}>
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startEatingWeek} 
-													mode="time"
-													style={styles.timeWidth} 
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endEatingWeekValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startEatingWeek) => {
-														this.setState({endEatingWeekValidated: true,
-															startEatingWeek,
-															endEatingWeek: this.beforeStartTime(startEatingWeek, 'startEatingWeek', undefined, 'endEatingWeek')});
-														this.setState({disabledEndEatingWeek: this.enableEndTime('disabledEndEatingWeek', 'startEatingWeek', 'endEatingWeek')});
-													}} />
+												<Text style={styles.type}>Week</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endEatingWeek} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndEatingWeek}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endEatingWeekValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndEatingWeek ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endEatingWeek) => this.setState({endEatingWeek,
-														startEatingWeek: this.beforeStartTime(undefined, 'startEatingWeek', endEatingWeek, 'endEatingWeek')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.eatingWeek ? dark_blue : 'darkgray'}
+													onValueChange={(eatingWeek) => this.setState({eatingWeek})}
+													value={this.state.eatingWeek} />
+											</View>
 
-										{error.endEatingWeek}
-									</View>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week-End</Text>
+											{this.state.eatingWeek ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startEatingWeek} 
+														mode="time"
+														style={styles.timeWidth} 
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endEatingWeekValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startEatingWeek) => {
+															this.setState({endEatingWeekValidated: true,
+																startEatingWeek,
+																endEatingWeek: this.beforeStartTime(startEatingWeek, 'startEatingWeek', undefined, 'endEatingWeek')});
+															this.setState({disabledEndEatingWeek: this.enableEndTime('disabledEndEatingWeek', 'startEatingWeek', 'endEatingWeek')});
+														}} />
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.eatingWeekEnd ? dark_blue : 'darkgray'}
-												onValueChange={(eatingWeekEnd) => this.setState({eatingWeekEnd})}
-												value={this.state.eatingWeekEnd} />
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endEatingWeek} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndEatingWeek}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endEatingWeekValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndEatingWeek ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endEatingWeek) => this.setState({endEatingWeek,
+															startEatingWeek: this.beforeStartTime(undefined, 'startEatingWeek', endEatingWeek, 'endEatingWeek')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endEatingWeek}
 										</View>
-
-										{this.state.eatingWeekEnd ?
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startEatingWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startEatingWeekEnd) => {
-														this.setState({endEatingWeekEndValidated: true,
-															startEatingWeekEnd,
-															endEatingWeekEnd: this.beforeStartTime(startEatingWeekEnd, 'startEatingWeekEnd', undefined, 'endEatingWeekEnd')});
-														this.setState({disabledEndEatingWeekEnd: this.enableEndTime('disabledEndEatingWeekEnd', 'startEatingWeekEnd', 'endEatingWeekEnd')});
-													}} />
+												<Text style={styles.type}>Week-End</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endEatingWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndEatingWeekEnd}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndEatingWeekEnd ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endEatingWeekEnd) => this.setState({endEatingWeekEnd, 
-														startEatingWeekEnd: this.beforeStartTime(undefined, 'startEatingWeekEnd', endEatingWeekEnd, 'endEatingWeekEnd')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.eatingWeekEnd ? dark_blue : 'darkgray'}
+													onValueChange={(eatingWeekEnd) => this.setState({eatingWeekEnd})}
+													value={this.state.eatingWeekEnd} />
+											</View>
 
-										{error.endEatingWeekEnd}
+											{this.state.eatingWeekEnd ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startEatingWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startEatingWeekEnd) => {
+															this.setState({endEatingWeekEndValidated: true,
+																startEatingWeekEnd,
+																endEatingWeekEnd: this.beforeStartTime(startEatingWeekEnd, 'startEatingWeekEnd', undefined, 'endEatingWeekEnd')});
+															this.setState({disabledEndEatingWeekEnd: this.enableEndTime('disabledEndEatingWeekEnd', 'startEatingWeekEnd', 'endEatingWeekEnd')});
+														}} />
+
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endEatingWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndEatingWeekEnd}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndEatingWeekEnd ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endEatingWeekEnd) => this.setState({endEatingWeekEnd, 
+															startEatingWeekEnd: this.beforeStartTime(undefined, 'startEatingWeekEnd', endEatingWeekEnd, 'endEatingWeekEnd')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endEatingWeekEnd}
+										</View>
 									</View>
 								</View>
 							</View>
-						</View>
-
-						<View>
-							<View style={styles.row}>
-								<MaterialCommunityIcons name="timelapse"
-									size={30}
-									color={dark_blue}/>
-
-								<Text style={styles.blueTitle}>Other Unavailable Hours</Text>
-							</View>
 
 							<View>
-								<View style={styles.rowContent}>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week</Text>
+								<View style={styles.row}>
+									<MaterialCommunityIcons name="timelapse"
+										size={30}
+										color={dark_blue}/>
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.otherWeek ? dark_blue : 'darkgray'}
-												onValueChange={(otherWeek) => this.setState({otherWeek})}
-												value={this.state.otherWeek} />
-										</View>
+									<Text style={styles.blueTitle}>Other Unavailable Hours</Text>
+								</View>
 
-										{this.state.otherWeek ?
+								<View>
+									<View style={styles.rowContent}>
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startOtherWeek} 
-													mode="time"
-													style={styles.timeWidth} 
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endOtherWeekValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startOtherWeek) => {
-														this.setState({endOtherWeekValidated: true,
-															startOtherWeek,
-															endOtherWeek: this.beforeStartTime(startOtherWeek, 'startOtherWeek', undefined, 'endOtherWeek')});
-														this.setState({disabledEndOtherWeek: this.enableEndTime('disabledEndOtherWeek', 'startOtherWeek', 'endOtherWeek')});
-													}} />
+												<Text style={styles.type}>Week</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endOtherWeek} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled={this.state.disabledEndOtherWeek}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endOtherWeekValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndOtherWeek ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endOtherWeek) => this.setState({endOtherWeek,
-														startOtherWeek: this.beforeStartTime(undefined, 'startOtherWeek', endOtherWeek, 'endOtherWeek')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.otherWeek ? dark_blue : 'darkgray'}
+													onValueChange={(otherWeek) => this.setState({otherWeek})}
+													value={this.state.otherWeek} />
+											</View>
 
-										{error.endOtherWeek}
-									</View>
-									<View style={styles.colContent}>
-										<View style={styles.row}>
-											<Text style={styles.type}>Week-End</Text>
+											{this.state.otherWeek ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startOtherWeek} 
+														mode="time"
+														style={styles.timeWidth} 
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endOtherWeekValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startOtherWeek) => {
+															this.setState({endOtherWeekValidated: true,
+																startOtherWeek,
+																endOtherWeek: this.beforeStartTime(startOtherWeek, 'startOtherWeek', undefined, 'endOtherWeek')});
+															this.setState({disabledEndOtherWeek: this.enableEndTime('disabledEndOtherWeek', 'startOtherWeek', 'endOtherWeek')});
+														}} />
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.otherWeekEnd ? dark_blue : 'darkgray'}
-												onValueChange={(otherWeekEnd) => this.setState({otherWeekEnd})}
-												value={this.state.otherWeekEnd} />
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endOtherWeek} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled={this.state.disabledEndOtherWeek}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endOtherWeekValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndOtherWeek ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endOtherWeek) => this.setState({endOtherWeek,
+															startOtherWeek: this.beforeStartTime(undefined, 'startOtherWeek', endOtherWeek, 'endOtherWeek')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endOtherWeek}
 										</View>
-
-										{this.state.otherWeekEnd ?
+										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<DatePicker showIcon={false} 
-													date={this.state.startOtherWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													customStyles={{
-														dateInput:{borderWidth: 0}, 
-														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray
-														}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel" 
-													is24Hour={false}
-													onDateChange={(startOtherWeekEnd) => {
-														this.setState({endOtherWeekEndValidated: true,
-															startOtherWeekEnd,
-															endOtherWeekEnd: this.beforeStartTime(startOtherWeekEnd, 'startOtherWeekEnd', undefined, 'endOtherWeekEnd')});
-														this.setState({disabledEndOtherWeekEnd: this.enableEndTime('disabledEndOtherWeekEnd', 'startOtherWeekEnd', 'endOtherWeekEnd')});
-													}} />
+												<Text style={styles.type}>Week-End</Text>
 
-												<Text> - </Text>
-													
-												<DatePicker showIcon={false} 
-													date={this.state.endOtherWeekEnd} 
-													mode="time" 
-													style={styles.timeWidth}
-													disabled= {this.state.disabledEndOtherWeekEnd}
-													customStyles={{
-														disabled:{backgroundColor: 'transparent'}, 
-														dateInput:{borderWidth: 0}, 
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndOtherWeekEnd ? 'line-through' : 'none'}
-													}}
-													format="h:mm A" 
-													confirmBtnText="Confirm" 
-													cancelBtnText="Cancel"
-													is24Hour={false}
-													onDateChange={(endOtherWeekEnd) => this.setState({endOtherWeekEnd, 
-														startOtherWeekEnd: this.beforeStartTime(undefined, 'startOtherWeekEnd', endOtherWeekEnd, 'endOtherWeekEnd')})} />
-											</View> : null}
+												<Switch trackColor={{false: 'lightgray', true: blue}}
+													thumbColor={this.state.otherWeekEnd ? dark_blue : 'darkgray'}
+													onValueChange={(otherWeekEnd) => this.setState({otherWeekEnd})}
+													value={this.state.otherWeekEnd} />
+											</View>
 
-										{error.endOtherWeekEnd}
+											{this.state.otherWeekEnd ?
+												<View style={styles.rowTime}>
+													<DatePicker showIcon={false} 
+														date={this.state.startOtherWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														customStyles={{
+															dateInput:{borderWidth: 0}, 
+															dateText:{
+																fontFamily: 'OpenSans-Regular',
+																color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray
+															}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel" 
+														is24Hour={false}
+														onDateChange={(startOtherWeekEnd) => {
+															this.setState({endOtherWeekEndValidated: true,
+																startOtherWeekEnd,
+																endOtherWeekEnd: this.beforeStartTime(startOtherWeekEnd, 'startOtherWeekEnd', undefined, 'endOtherWeekEnd')});
+															this.setState({disabledEndOtherWeekEnd: this.enableEndTime('disabledEndOtherWeekEnd', 'startOtherWeekEnd', 'endOtherWeekEnd')});
+														}} />
+
+													<Text> - </Text>
+														
+													<DatePicker showIcon={false} 
+														date={this.state.endOtherWeekEnd} 
+														mode="time" 
+														style={styles.timeWidth}
+														disabled= {this.state.disabledEndOtherWeekEnd}
+														customStyles={{
+															disabled:{backgroundColor: 'transparent'}, 
+															dateInput:{borderWidth: 0}, 
+															dateText:{fontFamily: 'OpenSans-Regular',
+																color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray,
+																textDecorationLine: this.state.disabledEndOtherWeekEnd ? 'line-through' : 'none'}
+														}}
+														format="h:mm A" 
+														confirmBtnText="Confirm" 
+														cancelBtnText="Cancel"
+														is24Hour={false}
+														onDateChange={(endOtherWeekEnd) => this.setState({endOtherWeekEnd, 
+															startOtherWeekEnd: this.beforeStartTime(undefined, 'startOtherWeekEnd', endOtherWeekEnd, 'endOtherWeekEnd')})} />
+												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
+
+											{error.endOtherWeekEnd}
+										</View>
 									</View>
 								</View>
 							</View>
-						</View>
-
-						<Text style={styles.manual}>
-							<Text style={styles.textManual}>Want to add more specific unavailable hours? Add them as </Text>
-							<Text style={styles.buttonManual} onPress={() => this.manualImport()}>Fixed Events</Text>
-							<Text style={styles.textManual}>!</Text>
-						</Text>
 						
-						<View style={styles.buttons}>
+							<Text style={styles.manual}>
+								<Text style={styles.textManual}>Want to add more specific unavailable hours? Add them as </Text>
+								<Text style={styles.buttonManual} onPress={() => this.manualImport()}>Fixed Events</Text>
+								<Text style={styles.textManual}>!</Text>
+							</Text>
+						</View>
+
+						<View style={[styles.buttons, {marginBottom: 20}]}>
 							<TouchableOpacity style={[styles.button, {width:'100%'}]} onPress={this.next}>
 								<Text style={styles.buttonText}>Done</Text>
 							</TouchableOpacity>
