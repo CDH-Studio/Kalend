@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { IconButton } from 'react-native-paper';
 import { logoffUser } from '../../actions';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
-import { settingsStyles as styles } from '../../styles';
+import { settingsStyles as styles, blue } from '../../styles';
 
 class Settings extends React.Component {
 	static navigationOptions = ({navigation}) => ({
