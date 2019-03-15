@@ -1,13 +1,13 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, Platform, ActivityIndicator, Text } from 'react-native';
+import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
-import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
-import { selectPictureStyles as styles, white, blue, dark_blue, statusBlueColor } from '../../styles';
+import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
+import { selectPictureStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
 const imagesPerLoad = 99;
 
@@ -18,14 +18,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTintColor: dark_blue,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
-		headerStyle: {
-			backgroundColor: white,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		}
+		headerTransparent: true
 	};
 
 	constructor(props) {
@@ -186,11 +179,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 	
-		if (this.props.navigation.state.routeName === TutorialSchoolScheduleSelectPicture) {
-			this.props.navigation.navigate(TutorialSchoolScheduleCreation);
-		} else {
-			this.props.navigation.navigate(DashboardSchoolScheduleCreation);
-		}
+		this.props.navigation.navigate(SchoolScheduleCreationRoute);
 	}
 
 	render() {
@@ -198,11 +187,11 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.content}>
-					<StatusBar translucent={true} 
-						backgroundColor={statusBlueColor} />
-						
-					<ScrollView onScroll={this.scrollListener}>
+				<StatusBar translucent={true} 
+					backgroundColor={statusBlueColor} />
+					
+				<ScrollView onScroll={this.scrollListener}>
+					<View style={styles.content}>
 						<View style={styles.imageGrid}>
 							{ 
 								images.map((image, index) => {
@@ -227,19 +216,17 @@ class SchoolScheduleSelectPicture extends React.Component {
 											color={white} />
 
 										<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
-									</View>
-									:
-									null
+									</View> : null
 							}
 						</View>
-					</ScrollView>
-					
-					<FAB style={styles.fab}
-						icon="file-upload"
-						theme={{colors:{accent:blue}}}
-						visible={showFAB}
-						onPress={this.nextScreen} />
-				</View>
+					</View>
+				</ScrollView>
+				
+				<FAB style={styles.fab}
+					icon="file-upload"
+					theme={{colors:{accent:blue}}}
+					visible={showFAB}
+					onPress={this.nextScreen} />
 			</View>
 		);
 	}

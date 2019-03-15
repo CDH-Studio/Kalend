@@ -1,51 +1,21 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TouchableOpacity, Dimensions } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { StatusBar, View, Text, Platform, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Image from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Header } from 'react-navigation';
-import { TutorialSchoolSchedule,
-	LoginNavigator,
-	TutorialSchoolScheduleSelectPicture,
-	DashboardSchoolScheduleSelectPicture,
-	TutorialSchoolScheduleTakePicture,
-	DashboardSchoolScheduleTakePicture,
-	TutorialFixedEvent,
-	TutorialAddCourse,
-	DashboardAddCourse } from '../../constants/screenNames';
-import updateNavigation from '../NavigationHelper';
+import { SchoolScheduleSelectPictureRoute, SchoolScheduleTakePictureRoute, CourseRoute } from '../../constants/screenNames';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
-import { googleSignOut } from '../../services/google_identity';
-import { schoolScheduleStyles as styles, white, dark_blue, statusBlueColor } from '../../styles';
-
-const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
+import { schoolScheduleStyles as styles, dark_blue, statusBlueColor } from '../../styles';
 
 /**
  * Permits the user to import their school schedule by selecting or taking a picture or by manual import.
  */
 class SchoolSchedule extends React.Component {
 
-	static navigationOptions = ({navigation}) => {
-		return {
-			title: 'Add School Schedule',
-			headerTintColor: dark_blue,
-			headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-			headerStyle: {
-				backgroundColor: white,
-				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-			},
-			headerRight: navigation.state.routeName === TutorialSchoolSchedule ? (
-				<IconButton
-					onPress={navigation.getParam('goBack')}
-					icon={({size, color}) => (
-						<Image name='logout'
-							size={size}
-							color={color} />
-					)}
-					color={dark_blue}
-					size={25} /> 
-			) : null
-		};
+	static navigationOptions =  {
+		title: 'Add School Schedule',
+		headerTransparent: true,
+		headerStyle: {
+			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+		},
 	};
 
 	constructor(props) {
@@ -53,20 +23,6 @@ class SchoolSchedule extends React.Component {
 		this.state = { 
 			containerHeight: null,
 		};
-		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
-	}
-
-	componentDidMount() {
-		this.props.navigation.setParams({goBack: this.goBack});
-	}
-
-	/**
-	 * In order to sign out from the app
-	 */
-	goBack = () => {
-		googleSignOut();
-		this.props.navigation.navigate(LoginNavigator);
 	}
 
 	/**
@@ -76,19 +32,11 @@ class SchoolSchedule extends React.Component {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				if (accepted) {
-					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-						this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
-					} else {
-						this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
-					}
+					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-				this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
-			} else {
-				this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
-			}
+			this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
 		}
 	}
 
@@ -99,19 +47,11 @@ class SchoolSchedule extends React.Component {
 		if (Platform.OS !== 'ios') {
 			requestCamera().then((accepted) => {				
 				if (accepted) {
-					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-						this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
-					} else {
-						this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
-					}
+					this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-				this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
-			} else {
-				this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
-			}
+			this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
 		}
 	}
 
@@ -119,18 +59,7 @@ class SchoolSchedule extends React.Component {
 	 * To go to the appropriate Add Course screen according to the current route
 	 */
 	manualImport() {
-		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-			this.props.navigation.navigate(TutorialAddCourse);
-		} else {
-			this.props.navigation.navigate(DashboardAddCourse);
-		}
-	}
-
-	/** 
-	 * To go to the next screen without entering any information
-	 */
-	skip = () => {
-		this.props.navigation.navigate(TutorialFixedEvent, {update:false});
+		this.props.navigation.navigate(CourseRoute);
 	}
 
 	render() {
@@ -157,14 +86,15 @@ class SchoolSchedule extends React.Component {
 							onPress={() => this.cameraCapture()}>
 							<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
 						</TouchableOpacity>
-						
+							
 						<Text style={styles.manual}>
 							<Text style={styles.textManual}>or import your school schedule </Text>
-							
+								
 							<Text style={styles.buttonManual}
 								onPress={() => this.manualImport()}>manually</Text>
 
 							<Text style={styles.textManual}>.</Text>
+
 						</Text>
 					</View>
 				</View>

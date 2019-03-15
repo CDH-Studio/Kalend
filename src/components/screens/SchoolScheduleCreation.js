@@ -1,13 +1,13 @@
 import React from 'react';
-import { Surface } from 'react-native-paper';
-import { connect } from 'react-redux';
+import { Alert, StatusBar, Text, View, BackHandler } from 'react-native';
 import ImgToBase64 from 'react-native-image-base64';
+import { Surface } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
-import { NavigationActions } from 'react-navigation';
-import { StatusBar, Platform, Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { schoolScheduleCreationStyles as styles, white, dark_blue } from '../../styles';
+import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
 
 /**
  * The loading screen after the User uploads a picture
@@ -23,20 +23,10 @@ class SchoolScheduleCreation extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	navigateAction = NavigationActions.navigate({
-		action: 'FinishSchoolCreation'
-	})
-
 	static navigationOptions = {
-		title: 'Analysing Schedule',
-		headerTintColor: dark_blue,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
-		headerStyle: {
-			backgroundColor: white,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		}
+		header: null,
+		headerLeft: null,
+		gesturesEnabled: false,
 	};
 	
 	componentWillMount() {	
@@ -47,12 +37,38 @@ class SchoolScheduleCreation extends React.Component {
 					let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 					fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 					analyzePicture({data: fakeEscape}).then(success => {
-						if (success) this.props.navigation.dispatch(this.navigateAction);
+						if (success) this.props.navigation.navigate(DashboardNavigator);
 						else this.props.navigation.pop();
 					});
 				})
 				.catch(err => console.log('error', err));
 		}
+
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+
+	handleBackButton = () => {
+		Alert.alert(
+			'Are you sure you want to stop the schedule analyzing process?',
+			[
+				{
+					text: 'No',
+					style: 'cancel',
+				},
+				{text: 'Yes', 
+					onPress: () => {
+						this.props.navigation.navigate(DashboardNavigator);
+					},
+				},
+			],
+			{cancelable: false},
+		);
+		return true;
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
 	render() {

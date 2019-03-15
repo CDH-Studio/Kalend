@@ -1,13 +1,14 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Header } from 'react-navigation';
-import { HEIGHT } from './components/TutorialStatus';
+import { containerPadding, lineThickness, lineColor, lineSpace, lineViewHorizontalPadding, lineViewLeftPadding } from '../src/components/screens/ScheduleSelection';
+import { containerPaddingDetails } from '../src/components/screens/ScheduleSelectionDetails';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1D84B5'; //#1473E6 
-export const statusBlueColor = '#00000040'; //#105DBA#0A2239
-export const dark_blue = '#153d73'; //#0E4BAA
+export const blue = '#1D84B5';
+export const statusBlueColor = '#00000040';
+export const dark_blue = '#153d73';
 export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
@@ -59,53 +60,6 @@ export const bottomButtonsStyles = StyleSheet.create({
 	},
 });
 
-export const tutorialStatusStyles = StyleSheet.create({
-	section: {
-		position: 'absolute',
-		bottom: 0,
-		left: 0,
-		right: 0,
-		paddingVertical: HEIGHT / 2 + 6,
-		paddingBottom: ifIphoneX() ? 30 : 20,
-	},
-
-	sectionDots: {
-		position: 'absolute',
-		width: '100%',
-		paddingTop: 20,
-		alignItems: 'center',
-	},
-
-	sectionIconRow: {
-		flexDirection: 'row',
-		marginLeft: 10,
-	},
-
-	sectionIcon: {
-		width: 20,
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		marginBottom: ifIphoneX() ? 17 : 7,
-		right: 0,
-		bottom: 0,
-	},
-
-	skipButtonText: {
-		fontFamily: 'Raleway-SemiBold',
-		paddingHorizontal: 20,
-		marginBottom: 10,
-		fontSize: 15,
-		color: 'white',
-	},
-
-	skipButton: {
-		position: 'absolute',
-	}
-});
-
 export const loadingStyles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -138,7 +92,7 @@ export const welcomeStyles = StyleSheet.create({
 
 	image: {
 		width: 320,
-		height: 320,
+		height: 320
 	},
 
 	text: {
@@ -171,7 +125,7 @@ export const welcomeStyles = StyleSheet.create({
 		backgroundColor: 'rgba(0, 0, 0, .2)',
 		borderRadius: 20,
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 
 	icon: {
@@ -336,7 +290,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 export const selectPictureStyles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: dark_blue
 	},
 
 	imageGrid: {
@@ -344,18 +299,19 @@ export const selectPictureStyles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		paddingBottom: 88 + 5
+		paddingBottom: 88 + 5,
+		paddingTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	fab: {
 		position: 'absolute',
 		margin: 16,
 		right: 0,
-		bottom: 0,
+		bottom: 0
 	},
 
 	content: {
-		flex: 1,
+		flex: 1
 	},
 
 	emptyText: {
@@ -379,7 +335,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 		width: Dimensions.get('window').width/3 - 14,
 		height: Dimensions.get('window').width/3 - 14,
 		borderRadius: 5,
-		backgroundColor: black,
+		backgroundColor: black
 	},
 
 	touch: {
@@ -390,10 +346,10 @@ export const cameraRollImageStyles = StyleSheet.create({
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.8,
-				shadowRadius: 2,    
+				shadowRadius: 2  
 			},
 			android: {
-				elevation: 5,
+				elevation: 5
 			},
 		}),
 	},
@@ -412,7 +368,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 		position: 'absolute', 
 		bottom: -10, 
 		right: -10, 
-		padding: 5,
+		padding: 5
 	},
 
 	shadow : {
@@ -446,10 +402,10 @@ export const takePictureStyles = StyleSheet.create({
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.8,
-				shadowRadius: 2,    
+				shadowRadius: 2  
 			},
 			android: {
-				elevation: 5,
+				elevation: 5
 			},
 		}),
 	},
@@ -485,7 +441,7 @@ export const schoolScheduleCreationStyles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		elevation: 3,
+		elevation: 3
 	},
 
 	title: {
@@ -510,7 +466,6 @@ export const courseStyles = StyleSheet.create({
 	content: {
 		flex:1,
 		justifyContent:'space-evenly',
-		marginTop: Header.HEIGHT,
 		paddingHorizontal: 20
 	},
 
@@ -560,7 +515,7 @@ export const courseStyles = StyleSheet.create({
 		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 
 	dayOfWeekSection: {
@@ -573,7 +528,7 @@ export const courseStyles = StyleSheet.create({
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: 150,
-		marginLeft: 5,
+		marginLeft: 5
 	},
 
 	dayOfWeekTitle: {
@@ -620,7 +575,6 @@ export const fixedEventStyles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-evenly',
 		paddingHorizontal: 20,
-		marginTop: getStatusBarHeight() + Header.HEIGHT,
 		marginBottom: 20
 	},
 
@@ -671,7 +625,7 @@ export const fixedEventStyles = StyleSheet.create({
 		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 
 	blueTitle: {
@@ -688,7 +642,7 @@ export const fixedEventStyles = StyleSheet.create({
 
 	empty: {
 		width:65.8,
-		opacity:0
+		opacity: 0
 	},
 	
 	timeSection: {
@@ -729,8 +683,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		marginBottom: 20,
-		marginTop: getStatusBarHeight() + Header.HEIGHT
+		marginBottom: 20
 	},
 
 	content: {
@@ -791,7 +744,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 
 	sectionTitle: {
@@ -953,13 +906,13 @@ export const unavailableHoursStyles = StyleSheet.create({
 	textManual: {
 		fontFamily: 'Raleway-Regular',
 		color: gray,
-		fontSize: 15,
+		fontSize: 15
 	},
 
 	buttonManual: {
 		fontFamily: 'Raleway-SemiBold',
 		color: gray,
-		fontSize: 15,
+		fontSize: 15
 	},
 
 	...bottomButtonsStyles
@@ -971,8 +924,7 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	scrollView: {
-		flex: 1,
-		marginTop: getStatusBarHeight() + Header.HEIGHT
+		flex: 1
 	},
 
 	content: {
@@ -1016,10 +968,10 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
-				shadowRadius: 3,    
+				shadowRadius: 3  
 			},
 			android: {
-				elevation: 4,
+				elevation: 4
 			},
 		}),
 	},
@@ -1072,10 +1024,10 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.6,
-				shadowRadius: 7,    
+				shadowRadius: 7  
 			},
 			android: {
-				elevation: 4,
+				elevation: 4
 			},
 		}),
 	},
@@ -1091,7 +1043,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'flex-end',
 		paddingHorizontal: 15,
-		paddingVertical: 10,
+		paddingVertical: 10
 	},
 
 	modalInfoDate: {
@@ -1175,7 +1127,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: white,
+		backgroundColor: white
 	},
 
 	actionIconModal: {
@@ -1226,52 +1178,214 @@ export const eventOverviewStyles = StyleSheet.create({
 	}
 });
 
-export const scheduleCreateStyles = StyleSheet.create({
+export const scheduleSelectionStyle = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
 		backgroundColor: dark_blue
 	},
 
-	surface: {
-		padding: 8,
-		height: 110,
-		width: Dimensions.get('window').width * 0.8,
-		borderRadius: 4,
-		justifyContent: 'center',
-		elevation: 3,
+	content: {
+		paddingHorizontal: containerPadding,
+		marginTop: getStatusBarHeight(),
+	},
+
+	description: {
+		color: gray,
+		fontFamily: 'Raleway-Regular',
+	},
+
+	hoursTextContainer: {
+		flexDirection: 'column', 
+		justifyContent: 'space-between', 
+		position: 'absolute',
+		paddingBottom: 10,
+		marginTop: -13.5,
+		marginLeft: -22.5,
+		alignItems: 'center'
+	},
+
+	hoursText: {
+		paddingVertical: Platform.OS === 'ios' ? 4.6 : 3.4, 
+		opacity: 0.5
+	}, 
+
+	thickLine: {
+		borderBottomColor: lineColor,
+		borderBottomWidth: lineThickness
+	},
+
+	weekLetters: {
+		fontFamily: 'Raleway-Medium', 
+		fontSize: 17, 
+		color: gray
+	}, 
+
+	weekLetterContainer: {
+		flexDirection: 'row', 
+		justifyContent: 'space-between', 
+		padding: 5, 
+		paddingHorizontal: 20 
+	},
+
+	card: {
+		backgroundColor: white, 
+		borderRadius: 3, 
+		paddingTop: 5, 
+		paddingHorizontal: lineViewHorizontalPadding,
+		paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding
 	},
 
 	title: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 18, 
+		marginBottom: 10
+	}, 
+
+	scheduleContainer: {
+		paddingTop: 20
+	},
+
+	line: {
+		borderBottomColor: lineColor,
+		borderBottomWidth: lineThickness,
+		opacity: 0.3,
+		marginTop: lineSpace
+	}
+});
+
+export const scheduleSelectionDetailsStyle = StyleSheet.create({
+	container: {
+		width: '100%', 
+		height: '100%'
+	},
+
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		right: 0,
+		bottom: 0
+	},
+	
+	content: {
+		padding: containerPaddingDetails
+	},
+
+	dayContainer: {
+		marginBottom: 15
+	},
+
+	dayTitle: {
+		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center'
+		marginVertical: 7,
+		color: gray
 	},
 
-	subtitle: {
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center',
-		paddingTop: 5,
-		paddingBottom: 10
+	eventContainer: {
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 5
+			},
+		}),
+		backgroundColor: white, 
+		borderRadius: 5, 
+		marginVertical: 7,
+		display: 'flex',
+		flexDirection: 'row'
 	},
 
-	progressBar: {
-		alignSelf:'center'
+	eventData: {
+		padding: 7
+	},
+
+	eventTitle: {
+		fontFamily: 'Raleway-Bold',
+		color: gray
+	},
+
+	eventTime : {
+		color: gray
+	},
+
+	eventLocation : {
+		color: gray
+	},
+
+	scheduleEventColor: {
+		width: 20,
+		borderBottomLeftRadius: 5, 
+		borderTopLeftRadius: 5
+	}
+});
+
+const DashboardButton = StyleSheet.create({
+	button: {
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 2
+			},
+			android: {
+				elevation: 4
+			},
+		}),
+		backgroundColor: blue, 
+		padding: 5, 
+		borderRadius: 5, 
+		marginBottom: 5
+	},
+
+	buttonText: {
+		fontSize: 16,
+		color: white,
+		padding: 4
 	}
 });
 
 export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		padding: 5
 	},
 
 	fab: {
 		position: 'absolute',
 		right: 0
-	}
+	},
+
+	profileImage: {
+		width: 100, 
+		height: 100, 
+		borderRadius: 50, 
+		marginVertical: 5
+	},
+
+	topProfileContainer: {
+		flexDirection: 'row', 
+		justifyContent:'center', 
+		alignItems:'center', 
+		margin: 10
+	},
+
+	profileDescription: {
+		width: '50%', 
+		padding: 10, 
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16
+	},
+
+	...DashboardButton
 });
 
 export const chatbotStyles = StyleSheet.create({
@@ -1291,6 +1405,9 @@ export const compareScheduleStyles = StyleSheet.create({
 export const settingsStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
-	}
+		height: '100%',
+		padding: 5
+	},
+
+	...DashboardButton
 });

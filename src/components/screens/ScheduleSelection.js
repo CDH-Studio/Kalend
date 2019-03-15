@@ -1,22 +1,20 @@
 import React from 'react';
-import { Platform, StatusBar, View, StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import { Header } from 'react-navigation';
+import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import converter from 'number-to-words';
-import { calendarEventColors, calendarEventColorsInside } from '../../../config';
-import { data as scheduleInfo } from '../../scheduleInfo';
-import updateNavigation from '../NavigationHelper';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { white, black, gray, dark_blue } from '../../styles';
-import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
+import { calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import converter from 'number-to-words';
+import { data as scheduleInfo } from '../../scheduleInfo';
+import { scheduleSelectionStyle as styles, black } from '../../styles';
 
-const containerPadding = 10;
-const lineThickness = 1;
-const lineColor = '#999';
-const lineSpace = 25;
-const lineViewHorizontalPadding = 15;
-const lineViewLeftPadding = 15;
+export const containerPadding = 10;
+export const lineThickness = 1;
+export const lineColor = '#999';
+export const lineSpace = 25;
+export const lineViewHorizontalPadding = 15;
+export const lineViewLeftPadding = 15;
 
 /**
  * The component of an event on a schedule
@@ -337,14 +335,12 @@ class Schedule extends React.Component {
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
-		headerTintColor: dark_blue,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
+		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: white,
-			marginTop: Platform.OS === 'ios' ? StatusBar.currentHeight : StatusBar.currentHeight
-		}
+			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+		},
+		headerLeft: null,
+		gesturesEnabled: false,
 	};
 
 	constructor(props) {
@@ -352,6 +348,34 @@ class ScheduleSelection extends React.Component {
 
 		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentWillMount() {
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+
+	handleBackButton = () => {
+		Alert.alert(
+			'Are you sure you want to delete the created schedule?',
+			[
+				{
+					text: 'No',
+					style: 'cancel',
+				},
+				{text: 'Yes', 
+					onPress: () => {
+						this.props.navigation.navigate(DashboardNavigator);
+					},
+				},
+			],
+			{cancelable: false},
+		);
+		return true;
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
 	/**
@@ -362,11 +386,7 @@ class ScheduleSelection extends React.Component {
 	 */
 	nextScreen = (title, index) => {
 		this.setIndex(index);
-		if (this.props.navigation.state.routeName === TutorialScheduleSelection) {
-			this.props.navigation.navigate(TutorialScheduleSelectionDetails, {title});
-		} else {
-			this.props.navigation.navigate(DashboardScheduleSelectionDetails, {title});
-		}
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title});
 	}
 	
 	/**
@@ -379,9 +399,6 @@ class ScheduleSelection extends React.Component {
 	}
 
 	render() {
-		console.log('NavigationHeader', Header.HEIGHT);
-		console.log('StatusBar', StatusBar.HEIGHT);
-
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
@@ -408,79 +425,3 @@ class ScheduleSelection extends React.Component {
 }
 
 export default connect()(ScheduleSelection);
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: dark_blue
-	},
-
-	content: {
-		paddingHorizontal: containerPadding,
-		marginTop: getStatusBarHeight(),
-	},
-
-	description: {
-		color: gray,
-		fontFamily: 'Raleway-Regular',
-	},
-
-	hoursTextContainer: {
-		flexDirection: 'column', 
-		justifyContent: 'space-between', 
-		position: 'absolute',
-		paddingBottom: 10,
-		marginTop: -13.5,
-		marginLeft: -22.5,
-		alignItems: 'center'
-	},
-
-	hoursText: {
-		paddingVertical: Platform.OS === 'ios' ? 4.6 : 3.4, 
-		opacity: 0.5
-	}, 
-
-	thickLine: {
-		borderBottomColor: lineColor,
-		borderBottomWidth: lineThickness 
-	},
-
-	weekLetters: {
-		fontFamily: 'Raleway-Medium', 
-		fontSize: 17, 
-		color: gray
-	}, 
-
-	weekLetterContainer: {
-		flexDirection: 'row', 
-		justifyContent: 'space-between', 
-		padding: 5, 
-		paddingHorizontal: 20 
-	},
-
-	card: {
-		backgroundColor: white, 
-		borderRadius: 3, 
-		paddingTop: 5, 
-		paddingHorizontal: lineViewHorizontalPadding,
-		paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding
-	},
-
-	title: {
-		fontFamily: 'Raleway-Medium', 
-		color: dark_blue, 
-		fontSize: 18, 
-		marginBottom: 10
-	}, 
-
-	scheduleContainer: {
-		paddingTop: 20
-	},
-
-	line: {
-		borderBottomColor: lineColor,
-		borderBottomWidth: lineThickness,
-		opacity: 0.3,
-		marginTop: lineSpace ,
-	}
-});

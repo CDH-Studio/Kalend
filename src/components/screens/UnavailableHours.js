@@ -1,31 +1,24 @@
 import React from 'react';
-import { Platform, Dimensions, ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
+import { ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import {setUnavailableHours} from '../../actions';
-import { TutorialUnavailableHours, TutorialUnavailableFixed, TutorialReviewEvent, DashboardUnavailableHours, DashboardUnavailableFixed, DashboardReviewEvent } from '../../constants/screenNames';
+import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
-import { HEIGHT } from '../TutorialStatus';
-
-const containerHeight = Dimensions.get('window').height;
 
 /**
  * Permits the user to input the hours they are not available or don't want to have anything booked
  */
 class UnavailableHours extends React.Component {
 
-	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialUnavailableHours || navigation.state.routeName === DashboardUnavailableHours ? 'Add Unavailable Hours' : 'Edit Unavailable Hours',
-		headerTintColor: dark_blue,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
+	static navigationOptions = {
+		title: 'Set Unavailable Hours',
 		headerStyle: {
-			backgroundColor: white,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		}
-	});
+			backgroundColor: white
+		},
+	};
 
 	constructor(props) {
 		super(props);
@@ -77,6 +70,12 @@ class UnavailableHours extends React.Component {
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentDidMount() {
+		if (this.props.UnavailableReducer && this.props.UnavailableReducer.info && this.props.UnavailableReducer.info.info) {
+			this.setState({...this.props.UnavailableReducer.info.info});
+		}
 	}
 
 	/**
@@ -176,11 +175,7 @@ class UnavailableHours extends React.Component {
 	 * To go to the appropriate Fixed Event screen according to the current route
 	 */
 	manualImport() {
-		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
-			this.props.navigation.navigate(TutorialUnavailableFixed, {update:false});
-		} else {
-			this.props.navigation.navigate(DashboardUnavailableFixed, {update:false});
-		}
+		this.props.navigation.navigate(UnavailableFixedRoute);
 	}
 
 	/**
@@ -226,11 +221,7 @@ class UnavailableHours extends React.Component {
 
 		this.props.dispatch(setUnavailableHours(this.state));
 		
-		if (this.props.navigation.state.routeName === TutorialUnavailableHours) {
-			this.props.navigation.navigate(TutorialReviewEvent);
-		} else {
-			this.props.navigation.navigate(DashboardReviewEvent);
-		}
+		this.props.navigation.pop();
 	}
 	
 	render() {
@@ -249,7 +240,6 @@ class UnavailableHours extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-
 		hourTypes.forEach( type => {
 			if (this.state[type] === true) {
 				let endValidated = 'end' + type.charAt(0).toUpperCase() + type.slice(1);
@@ -810,7 +800,7 @@ class UnavailableHours extends React.Component {
 
 						<View style={[styles.buttons, {marginBottom: 20}]}>
 							<TouchableOpacity style={[styles.button, {width:'100%'}]} onPress={this.next}>
-								<Text style={styles.buttonText}>Next</Text>
+								<Text style={styles.buttonText}>Done</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -820,4 +810,14 @@ class UnavailableHours extends React.Component {
 	}
 }
 
-export default connect()(UnavailableHours);
+
+let mapStateToProps = (state) => {
+	const { UnavailableReducer } = state;
+
+	return {
+		UnavailableReducer
+	};
+};
+
+
+export default connect(mapStateToProps, null)(UnavailableHours);

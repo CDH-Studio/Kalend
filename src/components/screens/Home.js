@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { setCalendarID, logonUser } from '../../actions';
 import { gradientColors } from '../../../config';
-import { TutorialNavigator } from '../../constants/screenNames';
+import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
@@ -59,20 +59,20 @@ class Home extends React.Component {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.setCalendar();
-							this.props.navigation.navigate(TutorialNavigator);
+							this.props.navigation.navigate(DashboardNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								this.setCalendar();
-								this.props.navigation.navigate(TutorialNavigator);
+								this.props.navigation.navigate(DashboardNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					this.setCalendar();
-					this.props.navigation.navigate(TutorialNavigator);
+					this.props.navigation.navigate(DashboardNavigator);
 				}
 			});
 		}

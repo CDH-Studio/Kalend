@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text, Platform, StatusBar, View, StyleSheet, ScrollView } from 'react-native';
+import { Text, StatusBar, View, ScrollView } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
-import updateNavigation from '../NavigationHelper';
 import { calendarEventColors } from '../../../config';
-import { white, black, gray, dark_blue, statusBlueColor, blue } from '../../styles';
 import { DashboardNavigator } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
 
-const containerPadding = 10;
+export const containerPaddingDetails = 10;
 const data = {
 	fixed: [
 		{
@@ -153,13 +153,8 @@ class ScheduleSelectionDetails extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
-		headerTintColor: dark_blue,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerStyle: {
-			backgroundColor: white,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: white
 		},
 		headerRight: (
 			<IconButton
@@ -263,74 +258,3 @@ let mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(ScheduleSelectionDetails);
-
-const styles = StyleSheet.create({
-	container: {
-		width: '100%', 
-		height: '100%'
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		right: 0,
-		bottom: 0,
-	},
-	
-	content: {
-		padding: containerPadding
-	},
-
-	dayContainer: {
-		marginBottom: 15
-	},
-
-	dayTitle: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 20,
-		marginVertical: 7,
-		color: gray
-	},
-
-	eventContainer: {
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-		backgroundColor: white, 
-		borderRadius: 5, 
-		marginVertical: 7,
-		display: 'flex',
-		flexDirection: 'row'
-	},
-
-	eventData: {
-		padding: 7
-	},
-
-	eventTitle: {
-		fontFamily: 'Raleway-Bold',
-		color: gray
-	},
-
-	eventTime : {
-		color: gray
-	},
-
-	eventLocation : {
-		color: gray
-	},
-
-	scheduleEventColor: {
-		width: 20,
-		borderBottomLeftRadius: 5, 
-		borderTopLeftRadius: 5,
-	}
-});

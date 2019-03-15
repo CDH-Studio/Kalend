@@ -3,9 +3,10 @@ import { StatusBar, View, Animated, Easing} from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
+import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
 import { gradientColors, statusBarDark } from '../../../config';
 import { loadingStyles as styles, blue } from '../../styles';
-import { WelcomeScreen, LoginNavigator, TutorialNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
+
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
 const logoAnimDuration = 3000;
@@ -54,7 +55,7 @@ class LoadingScreen extends React.Component {
 				break;
 			case 'SchoolSchedule':
 				this.setState({
-					nextScreen: TutorialNavigator
+					nextScreen: DashboardOptionsNavigator
 				});
 				break;
 			case 'Dashboard':

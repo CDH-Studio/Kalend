@@ -1,10 +1,10 @@
 import React from 'react';
-import { StatusBar, Text, View } from 'react-native';
+import { StatusBar, BackHandler, Alert, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
+import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
 import { generateSchedule } from '../../services/service';
 import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
-import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection } from '../../constants/screenNames';
 
 /**
  * The loading screen shown after the user reviewed their events
@@ -14,11 +14,38 @@ class ScheduleCreation extends React.Component {
 	// Removes the header
 	static navigationOptions = {
 		header: null,
+		headerLeft: null,
+		gesturesEnabled: false,
 	};
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
 		this.generateScheduleService();
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+
+	handleBackButton = () => {
+		Alert.alert(
+			'Are you sure you want to stop the schedule creating process?',
+			[
+				{
+					text: 'No',
+					style: 'cancel',
+				},
+				{text: 'Yes', 
+					onPress: () => {
+						this.props.navigation.navigate(DashboardNavigator);
+					},
+				},
+			],
+			{cancelable: false},
+		);
+		return true;
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 	}
 	
 	generateScheduleService = () => {
@@ -31,11 +58,7 @@ class ScheduleCreation extends React.Component {
 	 * Goes to the next screen
 	 */
 	navigateToSelection = () => {
-		if (this.props.navigation.state.routeName === TutorialScheduleCreation) {
-			this.props.navigation.navigate(TutorialScheduleSelection);
-		} else {
-			this.props.navigation.navigate(DashboardScheduleSelection);
-		}
+		this.props.navigation.navigate(ScheduleSelectionRoute);
 	}
 	
 	render() {

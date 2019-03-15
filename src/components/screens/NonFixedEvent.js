@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,10 +9,9 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { TutorialNonFixedEvent, TutorialUnavailableHours, TutorialReviewEvent, DashboardAddNonFixedEvent } from '../../constants/screenNames';
+import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor } from '../../styles';
-import { onScroll } from '../TutorialStatus';
 
 const viewHeight = 843.4285888671875;
 
@@ -22,13 +21,9 @@ const viewHeight = 843.4285888671875;
 class NonFixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialNonFixedEvent || navigation.state.routeName === DashboardAddNonFixedEvent ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
-		headerTintColor: dark_blue,
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
+		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerStyle: {
-			backgroundColor: white,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: white
 		}
 	});
 
@@ -75,7 +70,7 @@ class NonFixedEvent extends React.Component {
 	}
 	
 	componentWillMount() {	
-		if (this.props.navigation.state.routeName !== TutorialNonFixedEvent) {
+		if (this.props.navigation.state.routeName !== NonFixedEventRoute) {
 			this.setState({...this.props.NFEditState});
 		} else  {
 			this.resetFields();
@@ -86,7 +81,7 @@ class NonFixedEvent extends React.Component {
 	 * To go to the next screen without entering any information
 	 */
 	skip = () => {
-		this.props.navigation.navigate(TutorialUnavailableHours);
+		this.props.navigation.pop();
 	}
 
 	/**
@@ -129,12 +124,12 @@ class NonFixedEvent extends React.Component {
 			return;
 		}
 
-		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
+		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
 			this.props.dispatch(addNonFixedEvent(this.state));
-			this.props.navigation.navigate(TutorialReviewEvent);
+			this.props.navigation.navigate(ReviewEventRoute);
 		} else {
 			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate(TutorialReviewEvent, {changed:true});
+			this.props.navigation.navigate(ReviewEventRoute, {changed:true});
 		}
 	}
 
@@ -198,7 +193,7 @@ class NonFixedEvent extends React.Component {
 	}
 
 	render() {
-		const { containerHeight, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
+		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
 		let addEventButtonText;
 		let addEventButtonFunction;
@@ -232,7 +227,7 @@ class NonFixedEvent extends React.Component {
 		/**
 		 * In order to show components based on current route
 		 */
-		if (this.props.navigation.state.routeName === TutorialNonFixedEvent) {
+		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
@@ -247,7 +242,6 @@ class NonFixedEvent extends React.Component {
 
 				<ScrollView style={styles.scrollView}
 					ref='_scrollView'
-					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
@@ -483,11 +477,11 @@ class NonFixedEvent extends React.Component {
 
 
 						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
+							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
-				</ScrollView>	
-				
+				</ScrollView>
+
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 

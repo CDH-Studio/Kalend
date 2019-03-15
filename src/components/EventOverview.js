@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { setNavigationScreen } from '../actions';
 import { calendarEventColors, grayColor } from '../../config';
 import { store } from '../store';
 import { eventOverviewStyles as styles } from '../styles';
-import { setNavigationScreen } from '../actions';
+
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
