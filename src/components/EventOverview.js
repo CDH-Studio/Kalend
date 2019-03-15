@@ -143,13 +143,13 @@ class EventOverview extends React.Component {
 								reviewEventSelected: this.props.id
 							}));
 						}}>
-							<Feather name="edit"
+							<MaterialCommunityIcons name="square-edit-outline"
 								size={30}
 								color={grayColor} />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}
 							style={{marginLeft: 10}}>
-							<Feather name="trash"
+							<MaterialCommunityIcons name="trash-can-outline"
 								size={30}
 								color={grayColor} />
 						</TouchableOpacity>
@@ -200,14 +200,14 @@ class EventOverview extends React.Component {
 								<View style={styles.actionsModal}>
 									<TouchableOpacity style={styles.actionIconModal}
 										onPress={() => this.navigateAndCloseModal(editScreen)}>
-										<Feather name="edit"
+										<MaterialCommunityIcons name="square-edit-outline"
 											size={40}
 											color={grayColor} />
 									</TouchableOpacity>
 
 									<TouchableOpacity style={styles.actionIconModal}
 										onPress={() => this.setState({deleteDialogVisible: true})}>
-										<Feather name="trash"
+										<MaterialCommunityIcons name="trash-can-outline"
 											size={40}
 											color={grayColor} />
 									</TouchableOpacity>
@@ -229,7 +229,7 @@ class EventOverview extends React.Component {
 						<TouchableWithoutFeedback>
 							<View style={styles.deleteDialogContent}>
 								<View style={styles.deleteDialogMainRow}>
-									<Feather name="trash"
+									<MaterialCommunityIcons name="trash-can-outline"
 										size={80}
 										color={grayColor} />
 

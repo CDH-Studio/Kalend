@@ -1,14 +1,13 @@
 import React from 'react';
-import { Platform, StatusBar, View, StyleSheet, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { Platform, StatusBar, View, StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { Header } from 'react-navigation';
-import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import converter from 'number-to-words';
-import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { data as scheduleInfo } from '../../scheduleInfo';
 import updateNavigation from '../NavigationHelper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { white, black, gray } from '../../styles';
+import { white, black, gray, dark_blue } from '../../styles';
 import { TutorialScheduleSelectionDetails, TutorialScheduleSelection, DashboardScheduleSelectionDetails } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
 
@@ -338,13 +337,12 @@ class Schedule extends React.Component {
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
-		headerTintColor: white,
+		headerTintColor: dark_blue,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
-		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? StatusBar.currentHeight : StatusBar.currentHeight
 		}
 	};
@@ -385,31 +383,26 @@ class ScheduleSelection extends React.Component {
 		console.log('StatusBar', StatusBar.HEIGHT);
 
 		return(
-			<LinearGradient style={styles.container} 
-				colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
-					<StatusBar translucent={true} 
-						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
-					<ScrollView >
-						<View style={styles.content}>
-							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
+				<ScrollView >
+					<View style={styles.content}>
+						<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
-							{ 
-								scheduleInfo.ai.map((ai, key) => {
-									return <Schedule nextScreen={this.nextScreen} 
-										data={scheduleInfo} 
-										key={key} 
-										id={key} 
-										numOfLines={6} />;
-								})
-							}
-						</View>
-					</ScrollView>
-				</ImageBackground>
-			</LinearGradient>
+						{ 
+							scheduleInfo.ai.map((ai, key) => {
+								return <Schedule nextScreen={this.nextScreen} 
+									data={scheduleInfo} 
+									key={key} 
+									id={key} 
+									numOfLines={6} />;
+							})
+						}
+					</View>
+				</ScrollView>
+			</View>
 		);
 	}
 }
@@ -419,18 +412,16 @@ export default connect()(ScheduleSelection);
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column',
-		width: '100%',
-		height: '130%'
+		backgroundColor: dark_blue
 	},
 
 	content: {
-		padding: containerPadding,
-		paddingTop: getStatusBarHeight() + Header.HEIGHT + 10,
+		paddingHorizontal: containerPadding,
+		marginTop: getStatusBarHeight(),
 	},
 
 	description: {
-		color: white,
+		color: gray,
 		fontFamily: 'Raleway-Regular',
 	},
 
@@ -477,7 +468,7 @@ const styles = StyleSheet.create({
 
 	title: {
 		fontFamily: 'Raleway-Medium', 
-		color: white, 
+		color: dark_blue, 
 		fontSize: 18, 
 		marginBottom: 10
 	}, 

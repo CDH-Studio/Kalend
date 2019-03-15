@@ -6,13 +6,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import updateNavigation from '../NavigationHelper';
-import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
 
-const viewHeight = 718.8571166992188;
+const viewHeight = 774.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 /**
@@ -23,11 +23,11 @@ class Course extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
-		headerTintColor: '#ffffff',
+		headerTintColor: dark_blue,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: dark_blue,
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
@@ -44,15 +44,13 @@ class Course extends React.Component {
 			courseCode: '',
 
 			dayOfWeek: 'Monday',
-			dayOfWeekValue: 'MONDAY',
+			dayOfWeekValue: 'Monday',
 
 			startTime: new Date().toLocaleTimeString(),
-			amPmStart: this.getAmPm(),
 
 			endTime: new Date().toLocaleTimeString(),
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime: true,
-			amPmEnd: this.getAmPm(),
 
 			location: ''
 		};
@@ -69,44 +67,6 @@ class Course extends React.Component {
 	}
 
 	/**
-	 * Returns the time formatted with the AM/PM notation
-	 * 
-	 * @param {String} time The time expressed in the 24 hours format
-	 */
-	getTwelveHourTime(time) {
-		let temp = time.split(' ');
-		let amOrPm = temp[1];
-
-		let info = time.split(':');
-		time = new Date();
-
-		time.setHours(parseInt(info[0]));
-		time.setMinutes(parseInt(info[1]));
-
-		let currentHour = time.getHours();
-		let currentMinute = time.getMinutes();
-
-		if (currentHour > 12) {
-			currentHour = currentHour % 12;
-			time.setHours(currentHour);
-		}
-
-		if (currentMinute < 10) {
-			currentMinute = '0' + currentMinute;
-		}
-
-		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
-	}
-
-	/**
-	 * Gets the current time AM or PM
-	 */
-	getAmPm() {
-		let hours = new Date().getHours();
-		return (hours >= 12) ? ' PM' : ' AM';
-	}
-
-	/**
 	 * Enables endTime and sets it to the startTime
 	 */
 	enableEndTime() {
@@ -115,20 +75,6 @@ class Course extends React.Component {
 			return false;
 		} else {
 			//do nothing
-		}
-	}
-
-	/**
-	 * Sets the minimum endTime on iOS devices
-	 */
-	setMinEndTime() {
-		let min = new Date();
-
-		if (this.state.startDate === this.state.endDate) {
-			this.state.endTime = this.state.startTime;
-			min = min.toLocaleTimeString();
-			min = this.state.startTime;
-			return min;
 		}
 	}
 
@@ -223,19 +169,19 @@ class Course extends React.Component {
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.state.dayOfWeekValue = 'MONDAY';
+					this.state.dayOfWeekValue = 'Monday';
 				} else if (buttonIndex === 1) {
-					this.state.dayOfWeekValue = 'TUESDAY';
+					this.state.dayOfWeekValue = 'Tuesday';
 				} else if (buttonIndex === 2) {
-					this.state.dayOfWeekValue = 'WEDNESDAY';
+					this.state.dayOfWeekValue = 'Wednesday';
 				} else if (buttonIndex === 3) {
-					this.state.dayOfWeekValue = 'THURSDAY';
+					this.state.dayOfWeekValue = 'Thursday';
 				} else if (buttonIndex === 4) {
-					this.state.dayOfWeekValue = 'FRIDAY';
+					this.state.dayOfWeekValue = 'Friday';
 				} else if (buttonIndex === 5) {
-					this.state.dayOfWeekValue = 'SATURDAY';
+					this.state.dayOfWeekValue = 'Saturday';
 				} else if (buttonIndex === 6) {
-					this.state.dayOfWeekValue = 'SUNDAY';
+					this.state.dayOfWeekValue = 'Sunday';
 				}
 				this.forceUpdate();
 			},
@@ -300,7 +246,7 @@ class Course extends React.Component {
 
 		this.props.dispatch(addCourse(this.state));
 
-		if(validated) {
+		if (validated) {
 			this.resetField();
 			this.refs._scrollView.scrollTo({x: 0});
 			this.setState({
@@ -321,15 +267,13 @@ class Course extends React.Component {
 			courseCodeValidated: true,
 			
 			dayOfWeek: 'Monday',
-			dayOfWeekValue: 'MONDAY',
+			dayOfWeekValue: 'Monday',
 
 			startTime: new Date().toLocaleTimeString(),
-			amPmStart: this.getAmPm(),
 
 			endTime: new Date().toLocaleTimeString(),
 			minEndTime: new Date().toLocaleTimeString(),
 			disabledEndTime: true,
-			amPmEnd: this.getAmPm(),
 			endTimeValidated: true,
 
 			location: '',
@@ -401,7 +345,7 @@ class Course extends React.Component {
 							{errorCourseCode}
 						</View>
 
-						<View style={styles.textInput}>
+						<View style={styles.dayOfWeekSection}>
 							<Text style={styles.dayOfWeekTitle}>Day of Week</Text>
 
 							<View style={styles.dayOfWeekBorder}>
@@ -412,18 +356,18 @@ class Course extends React.Component {
 										<Picker style={styles.dayOfWeekValues} 
 											selectedValue={this.state.dayOfWeek} 
 											onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue})}>
-											<Picker.Item label="Monday" value="MONDAY" />
-											<Picker.Item label="Tuesday" value="TUESDAY" />
-											<Picker.Item label="Wednesday" value="WEDNESDAY" />
-											<Picker.Item label="Thursday" value="THURSDAY" />
-											<Picker.Item label="Friday" value="FRIDAY" />
-											<Picker.Item label="Saturday" value="SATURDAY" />
-											<Picker.Item label="Sunday" value="SUNDAY" />
+											<Picker.Item label="Monday" value="Monday" />
+											<Picker.Item label="Tuesday" value="Tuesday" />
+											<Picker.Item label="Wednesday" value="Wednesday" />
+											<Picker.Item label="Thursday" value="Thursday" />
+											<Picker.Item label="Friday" value="Friday" />
+											<Picker.Item label="Saturday" value="Saturday" />
+											<Picker.Item label="Sunday" value="Sunday" />
 										</Picker>
 								}
 							</View>
 						</View>
-						<View>
+						<View style={styles.timeSection}>
 							<View style={styles.time}>
 								<Text style={styles.blueTitle}>Start Time</Text>
 								<DatePicker showIcon={false} 
@@ -436,14 +380,13 @@ class Course extends React.Component {
 											color:!this.state.endTimeValidated ? '#ff0000' : gray
 										}
 									}}
-									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
 									format="h:mm A" 
 									confirmBtnText="Confirm" 
 									cancelBtnText="Cancel" 
 									is24Hour={false}
 									onDateChange={(startTime) => {
-										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime), undefined)});
-										this.setState({ disabledEndTime: this.enableEndTime()});
+										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(startTime, undefined)});
+										this.setState({disabledEndTime: this.enableEndTime()});
 									}} />
 							</View>
 
@@ -461,13 +404,12 @@ class Course extends React.Component {
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
 												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
 										}}
-										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
 										format="h:mm A" 
 										minDate={this.state.minEndTime}
 										confirmBtnText="Confirm" 
 										cancelBtnText="Cancel" 
 										is24Hour={false}
-										onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
+										onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, endTime)})}/>
 								</View>
 
 								{errorEndTime}

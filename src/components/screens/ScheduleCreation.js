@@ -1,11 +1,9 @@
 import React from 'react';
-import { StatusBar, Text, ImageBackground } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
-import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { generateSchedule } from '../../services/service';
-import { gradientColors } from '../../../config';
-import { scheduleCreateStyles as styles, dark_blue } from '../../styles';
+import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
 import { TutorialScheduleCreation, TutorialScheduleSelection, DashboardScheduleSelection } from '../../constants/screenNames';
 
 /**
@@ -42,29 +40,24 @@ class ScheduleCreation extends React.Component {
 	
 	render() {
 		return(
-			<LinearGradient style={styles.container} 
-				colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
-					<StatusBar translucent={true} 
-						backgroundColor={'rgba(0, 0, 0, 0.2)'} />
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={statusBlueColor} />
 
-					<Surface style={styles.surface}>
-						<Text style={styles.title}>Creating your Schedule</Text>
+				<Surface style={styles.surface}>
+					<Text style={styles.title}>Creating your Schedule</Text>
 
-						<Text style={styles.subtitle}>Our AI is now perfecting multiple schedule for you</Text>
+					<Text style={styles.subtitle}>Our AI is now perfecting multiple schedule for you</Text>
 
-						<Progress.Bar style={styles.progressBar} 
-							indeterminate={true} 
-							width={200} 
-							color={dark_blue} 
-							useNativeDriver={true} 
-							borderColor={dark_blue} 
-							unfilledColor={'#79A7D2'}/>
-					</Surface>
-				</ImageBackground>
-			</LinearGradient>
+					<Progress.Bar style={styles.progressBar} 
+						indeterminate={true} 
+						width={200} 
+						color={dark_blue} 
+						useNativeDriver={true} 
+						borderColor={dark_blue} 
+						unfilledColor={'#79A7D2'}/>
+				</Surface>
+			</View>
 		);
 	}
 }

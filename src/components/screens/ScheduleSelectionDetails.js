@@ -153,19 +153,19 @@ class ScheduleSelectionDetails extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
-		headerTintColor: white,
+		headerTintColor: dark_blue,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
 		headerStyle: {
-			backgroundColor: dark_blue,
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		},
 		headerRight: (
 			<IconButton
 				onPress={navigation.getParam('goBack')}
 				icon='delete'
-				color='white'
+				color={dark_blue}
 				size={25}
 			/>
 		),

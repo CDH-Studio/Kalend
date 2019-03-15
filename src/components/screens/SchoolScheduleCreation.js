@@ -1,14 +1,12 @@
 import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 import { Surface } from 'react-native-paper';
 import { connect } from 'react-redux';
 import ImgToBase64 from 'react-native-image-base64';
 import * as Progress from 'react-native-progress';
 import { NavigationActions } from 'react-navigation';
-import { ImageBackground, StatusBar, Platform, Text } from 'react-native';
+import { StatusBar, Platform, Text, View } from 'react-native';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { gradientColors } from '../../../config';
 import { schoolScheduleCreationStyles as styles, white, dark_blue } from '../../styles';
 
 /**
@@ -31,13 +29,12 @@ class SchoolScheduleCreation extends React.Component {
 
 	static navigationOptions = {
 		title: 'Analysing Schedule',
-		headerTintColor: white,
+		headerTintColor: dark_blue,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
-		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
@@ -60,24 +57,20 @@ class SchoolScheduleCreation extends React.Component {
 
 	render() {
 		return(
-			<LinearGradient style={styles.container} colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat" >
-					<StatusBar translucent={true} 
-						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
-					<Surface style={styles.surface}>
-						<Text style={styles.title}>Analysing your Picture</Text>
-						<Text style={styles.subtitle}>Extracting the information from your picture</Text>
-						<Progress.Bar style={{alignSelf:'center'}} 
-							indeterminate={true} 
-							width={200} 
-							color={dark_blue} 
-							useNativeDriver={true} 
-							unfilledColor={'#79A7D2'} />
-					</Surface>
-				</ImageBackground>
-			</LinearGradient>
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+				<Surface style={styles.surface}>
+					<Text style={styles.title}>Analysing your Picture</Text>
+					<Text style={styles.subtitle}>Extracting the information from your picture</Text>
+					<Progress.Bar style={{alignSelf:'center'}} 
+						indeterminate={true} 
+						width={200} 
+						color={dark_blue} 
+						useNativeDriver={true} 
+						unfilledColor={'#79A7D2'} />
+				</Surface>
+			</View>
 		);
 	}
 }

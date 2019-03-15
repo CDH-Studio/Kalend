@@ -1,16 +1,15 @@
 import React from 'react';
-import { Platform, StatusBar, ScrollView, View, Text, Dimensions } from 'react-native';
+import { Platform, StatusBar, ScrollView, View, Text } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import { InsertFixedEvent } from '../../services/service';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
+import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
+import { InsertFixedEvent } from '../../services/service';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';
 import TutorialStatus, { HEIGHT, onScroll } from '../TutorialStatus';
-import { TutorialReviewEvent, TutorialScheduleCreation, DashboardScheduleCreation } from '../../constants/screenNames';
-import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 
 const priorityLevels = {
 	0: 'Low',
@@ -18,7 +17,6 @@ const priorityLevels = {
 	1: 'High'
 };
 const tutorialHeight = HEIGHT;
-const containerHeight = containerHeight;
 
 /**
  * Permits users to verify and edit the events they added
@@ -27,11 +25,11 @@ class ReviewEvent extends React.Component {
 
 	static navigationOptions = {
 		title: 'Review Events',
-		headerTintColor: white,
+		headerTintColor: dark_blue,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: dark_blue,
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
@@ -41,7 +39,6 @@ class ReviewEvent extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		this.state = {
-			containerHeight: null,
 			showFAB: true,
 			currentY: 0,
 			fixedEventData: [],
@@ -103,7 +100,7 @@ class ReviewEvent extends React.Component {
 					title: data.title,
 					location: data.location,
 					priorityLevel: priorityLevels[data.priority],
-					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
+					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'Week',
 					description: data.description,
 					occurence: `${data.occurrence} times/week`,
 					duration: `${data.hours}h ${data.minutes}m`
@@ -223,7 +220,6 @@ class ReviewEvent extends React.Component {
 
 	render() {
 		const { showTutShadow } = this.state;
-		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 		/**
 		 * In order to remove the tutorial status if not needed */
@@ -248,14 +244,8 @@ class ReviewEvent extends React.Component {
 						this.setState({showTutShadow: onScroll(event, showTutShadow)});
 						this.onScroll(event);
 					}}
-					scrollEventThrottle={100} >
-					<View style={[styles.content, {height: containerHeight, paddingBottom: tutorialHeight + 16}]} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if (height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					scrollEventThrottle={100}>
+					<View style={[styles.content, {paddingBottom: tutorialHeight + 16}]}>
 						<View>
 							<Text style={styles.sectionTitle}>School Schedule</Text>
 							{

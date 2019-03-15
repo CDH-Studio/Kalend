@@ -1,15 +1,13 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, Platform, ImageBackground, ActivityIndicator, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { CameraRoll, ScrollView, View, StatusBar, Platform, ActivityIndicator, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { gradientColors } from '../../../config';
-import CameraRollImage from '../CameraRollImage';
-import { selectPictureStyles as styles, white, blue } from '../../styles';
-import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
 import { setImageURI } from '../../actions';
+import CameraRollImage from '../CameraRollImage';
+import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
+import { selectPictureStyles as styles, white, blue, dark_blue, statusBlueColor } from '../../styles';
 
 const imagesPerLoad = 99;
 
@@ -20,13 +18,12 @@ class SchoolScheduleSelectPicture extends React.Component {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTintColor: white,
+		headerTintColor: dark_blue,
 		headerTitleStyle: {
 			fontFamily: 'Raleway-Regular'
 		},
-		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	};
@@ -200,57 +197,50 @@ class SchoolScheduleSelectPicture extends React.Component {
 		const { images, showFAB, activityIndicator, selectedStyle, showNoPhotos } = this.state;
 
 		return (
-			<LinearGradient style={styles.container} 
-				colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
-					<View style={styles.content}>
-						<StatusBar translucent={true} 
-							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
-							
-						<ScrollView style={styles.scroll}
-							onScroll={this.scrollListener}>
-
-							<View style={styles.imageGrid}>
-								{ 
-									images.map((image, index) => {
-										return (
-											<CameraRollImage key={index}
-												image={image} 
-												index={index} 
-												onUpdate={this.onUpdate}
-												selectedStyle={selectedStyle[index]} />
-										);
-									}) 
-								}
-
-								{ activityIndicator }
-
-								{ 
-									showNoPhotos ? 
-										<View style={styles.emptyView}>
-											<Ionicons
-												name="ios-images" 
-												size={50} 
-												color={white} />
-
-											<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
-										</View>
-										:
-										null
-								}
-							</View>
-						</ScrollView>
+			<View style={styles.container}>
+				<View style={styles.content}>
+					<StatusBar translucent={true} 
+						backgroundColor={statusBlueColor} />
 						
-						<FAB style={styles.fab}
-							icon="file-upload"
-							theme={{colors:{accent:blue}}}
-							visible={showFAB}
-							onPress={this.nextScreen} />
-					</View>
-				</ImageBackground>
-			</LinearGradient>
+					<ScrollView onScroll={this.scrollListener}>
+						<View style={styles.imageGrid}>
+							{ 
+								images.map((image, index) => {
+									return (
+										<CameraRollImage key={index}
+											image={image} 
+											index={index} 
+											onUpdate={this.onUpdate}
+											selectedStyle={selectedStyle[index]} />
+									);
+								}) 
+							}
+
+							{ activityIndicator }
+
+							{ 
+								showNoPhotos ? 
+									<View style={styles.emptyView}>
+										<Ionicons
+											name="ios-images" 
+											size={50} 
+											color={white} />
+
+										<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
+									</View>
+									:
+									null
+							}
+						</View>
+					</ScrollView>
+					
+					<FAB style={styles.fab}
+						icon="file-upload"
+						theme={{colors:{accent:blue}}}
+						visible={showFAB}
+						onPress={this.nextScreen} />
+				</View>
+			</View>
 		);
 	}
 }

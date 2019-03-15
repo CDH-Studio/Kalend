@@ -2,48 +2,87 @@ import React from 'react';
 import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
+import { updateFixedEvents, addFixedEvent } from '../../actions';
+import BottomButtons from '../BottomButtons';
+import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, white, gray, statusBlueColor, dark_blue, blue } from '../../styles';
 import TutorialStatus, { onScroll } from '../TutorialStatus';
-import { TutorialFixedEvent, TutorialNonFixedEvent, TutorialReviewEvent, DashboardAddCourse } from '../../constants/screenNames';
-import { updateFixedEvents, addFixedEvent } from '../../actions';
-import BottomButtons from '../BottomButtons';
 
-const viewHeight = 446.66668701171875;
+const viewHeight = 515.1428833007812;
 const containerWidth = Dimensions.get('window').width;
 
 /**
- * Permits the user to add their fixed events such as meetings and appointments. */
+ * Permits the user to add their fixed events such as meetings and appointments.
+ */
 class FixedEvent extends React.Component {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === TutorialFixedEvent || navigation.state.routeName === DashboardAddCourse ? 'Add Fixed Events' : 'Edit Fixed Event',
-		headerTintColor: white,
+		headerTintColor: dark_blue,
 		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
 		headerTransparent: true,
 		headerStyle: {
-			backgroundColor: dark_blue,
+			backgroundColor: white,
 			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 		}
 	});
 
 	constructor(props) {
 		super(props);
-		this.state = this.resetField;
+
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+
+		this.state = {
+			containerHeight,
+
+			title: '',
+			titleValidated: true,
+
+			allDay: false,
+
+			startDate: new Date().toDateString(),
+			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
+
+			endDate: new Date().toDateString(),
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+			endDateValidated: true,
+
+			startTime: new Date().toLocaleTimeString(),
+			disabledStartTime : false,
+
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime : true,
+			endTimeValidated: true,
+
+			location: '',
+			recurrenceValue: 'None',
+			recurrence: 'NONE',
+			description: '',
+
+			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
+		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
-		if(this.props.navigation.state.routeName !== TutorialFixedEvent) {
+		if (this.props.navigation.state.routeName !== TutorialFixedEvent) {
 			this.setState({...this.props.FEditState});
 		} else {
-			this.setState(this.resetField);
+			this.setState(this.resetField());
 		}
 
 		this.setContainerHeight();
@@ -65,57 +104,6 @@ class FixedEvent extends React.Component {
 			containerHeight,
 			showTutShadow
 		});
-	}
-
-	/**
-	 * Returns the time formatted with the AM/PM notation
-	 * 
-	 * @param {String} time The time expressed in the 24 hours format
-	 */
-	getTwelveHourTime(time) {
-		let temp = time.split(' ');
-		let amOrPm = temp[1];
-
-		let info = time.split(':');
-		time = new Date();
-
-		time.setHours(parseInt(info[0]));
-		time.setMinutes(parseInt(info[1]));
-
-		let currentHour = time.getHours();
-		let currentMinute = time.getMinutes();
-
-		if (currentHour > 12) {
-			currentHour = currentHour % 12;
-			time.setHours(currentHour);
-		}
-
-		if (currentMinute < 10) {
-			currentMinute = '0' + currentMinute;
-		}
-		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
-	}
-
-	/**
-	 * Gets the current time AM or PM
-	 */
-	getAmPm() {
-		let hours = new Date().getHours();
-		return (hours >= 12) ? ' PM' : ' AM';
-	}
-
-	/**
-	 * Sets the min end time on iOS
-	 */
-	setMinEndTime() {
-		let min = new Date();
-
-		if (this.state.startDate === this.state.endDate) {
-			this.state.endTime = this.state.startTime;
-			min = min.toLocaleTimeString();
-			min = this.state.startTime;
-			return min;
-		}
 	}
 
 	/**
@@ -211,12 +199,10 @@ class FixedEvent extends React.Component {
 		if (this.state.disabledEndTime) {
 			endTime = startTime;
 		} else if (firstDate === endDate) {
-			endTime = this.beforeStartTime(this.getTwelveHourTime(startTime));
+			endTime = this.beforeStartTime(startTime, undefined);
 		} else {
 			endTime = this.state.endTime;
 		}
-
-		startTime = this.getTwelveHourTime(startTime);
 
 		this.setState({
 			startTime, 
@@ -237,12 +223,11 @@ class FixedEvent extends React.Component {
 
 		let startTime;
 		if (firstDate === endDate) {
-			startTime = this.beforeStartTime(undefined, this.getTwelveHourTime(endTime));
+			startTime = this.beforeStartTime(undefined, endTime);
 		} else {
 			startTime = this.state.startTime;
 		} 
 
-		endTime = this.getTwelveHourTime(endTime);
 		this.setState({
 			startTime,
 			endTime, 
@@ -282,8 +267,7 @@ class FixedEvent extends React.Component {
 
 		this.setState({
 			endDate: endDate, 
-			maxStartDate: endDate, 
-			minEndTime: this.setMinEndTime(),
+			maxStartDate: endDate,
 			disabledEndTime: false,
 			endTimeValidated: true
 		});
@@ -384,7 +368,7 @@ class FixedEvent extends React.Component {
 		}
 
 		this.props.dispatch(addFixedEvent(this.state));
-		this.setState(this.resetField);
+		this.setState(this.resetField());
 		this.refs._scrollView.scrollTo({x: 0});
 		this.setState({
 			snackbarText: 'Event successfully added',
@@ -396,46 +380,45 @@ class FixedEvent extends React.Component {
 	/**
 	 * Reset the fields of the form
 	 */
-	resetField = {
-		title: '',
-		titleValidated: true,
+	resetField = () => {
+		this.setState({
+			title: '',
+			titleValidated: true,
 
-		allDay: false,
+			allDay: false,
 
-		startDate: new Date().toDateString(),
-		minStartDate: new Date().toDateString(),
-		maxStartDate: new Date(8640000000000000),
+			startDate: new Date().toDateString(),
+			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
 
-		endDate: new Date().toDateString(),
-		minEndDate: this.startDate,
-		disabledEndDate : true,
-		endDateValidated: true,
+			endDate: new Date().toDateString(),
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+			endDateValidated: true,
 
-		startTime: new Date().toLocaleTimeString(),
-		disabledStartTime : false,
-		amPmStart: this.getAmPm(),
+			startTime: new Date().toLocaleTimeString(),
+			disabledStartTime : false,
 
-		endTime: new Date().toLocaleTimeString(),
-		minEndTime: new Date().toLocaleTimeString(),
-		disabledEndTime : true,
-		amPmEnd: this.getAmPm(),
-		endTimeValidated: true,
+			endTime: new Date().toLocaleTimeString(),
+			minEndTime: new Date().toLocaleTimeString(),
+			disabledEndTime : true,
+			endTimeValidated: true,
 
-		location: '',
-		recurrenceValue: 'None',
-		recurrence: 'NONE',
-		description: '',
+			location: '',
+			recurrenceValue: 'None',
+			recurrence: 'NONE',
+			description: '',
 
-		showTutShadow: true,
-		snackbarVisible: false,
-		snackbarText: '',
-		snackbarTime: 3000
+			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
+		});
 	}
 
 	render() {
 		const { containerHeight, scrollable, showTutShadow, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
-		let tutorialStatus;
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorTitle;
@@ -468,17 +451,9 @@ class FixedEvent extends React.Component {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === TutorialFixedEvent) {
-			tutorialStatus = <TutorialStatus active={2}
-				color={dark_blue}
-				backgroundColor={'#ffffff'}
-				skip={this.skip}
-				showTutShadow={showTutShadow} />;
-
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			tutorialStatus = null;
-
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
@@ -489,8 +464,7 @@ class FixedEvent extends React.Component {
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 				
-				<ScrollView style={styles.scrollView}
-					ref='_scrollView'
+				<ScrollView ref='_scrollView'
 					onScroll={(event) => this.setState({showTutShadow: onScroll(event, showTutShadow)})}
 					scrollEnabled={scrollable}
 					scrollEventThrottle={100}>
@@ -548,7 +522,6 @@ class FixedEvent extends React.Component {
 										dateText:{fontFamily: 'OpenSans-Regular',
 											color: !this.state.endDateValidated ? '#ff0000' : gray}
 									}}
-									placeholder={this.state.startDate}
 									format="ddd., MMM DD, YYYY"
 									minDate={this.state.minStartDate}
 									maxDate={this.state.maxStartDate}
@@ -588,8 +561,7 @@ class FixedEvent extends React.Component {
 										dateText:{
 											fontFamily: 'OpenSans-Regular', 
 											color: !this.state.endDateValidated || !this.state.endTimeValidated ? '#ff0000' : gray,
-											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
-									placeholder={this.state.endDate} 
+											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
 									format="ddd., MMM DD, YYYY" 
 									minDate={this.state.minEndDate}
 									confirmBtnText="Confirm" 
@@ -675,8 +647,6 @@ class FixedEvent extends React.Component {
 							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
-
-				{tutorialStatus}
 
 				<Snackbar
 					visible={snackbarVisible}
