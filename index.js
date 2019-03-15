@@ -142,40 +142,50 @@ DashboardNavigator.navigationOptions = {
 	header: null
 };
 
+const DashboardOptionsNavigatorOptions = {
+	headerTintColor: dark_blue,
+	headerTitleStyle: {
+		fontFamily: 'Raleway-Regular'
+	},
+	headerStyle: {
+		marginTop: StatusBar.currentHeight
+	}
+};
+
 const DashboardOptionsNavigator = createStackNavigator(
 	{
 		DashboardNavigator,
-		SchoolSchedule: {screen: SchoolSchedule},
-		AddCourse: {screen: Course},
-		SchoolScheduleSelectPicture: {screen: SchoolScheduleSelectPicture},
-		SchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture},
-		SchoolScheduleCreation: {screen: SchoolScheduleCreation},
+		SchoolSchedule: {screen: SchoolSchedule, navigationOptions:DashboardOptionsNavigatorOptions},
+		AddCourse: {screen: Course, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolScheduleSelectPicture: {
+			screen: SchoolScheduleSelectPicture, 
+			navigationOptions: {
+				...DashboardOptionsNavigatorOptions,
+				headerTintColor: white
+			},
+			headerStyle: {
+				backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			}
+		},
+		SchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolScheduleCreation: {screen: SchoolScheduleCreation, navigationOptions:DashboardOptionsNavigatorOptions},
 
-		FixedEvent: {screen: FixedEvent},
-		NonFixedEvent: {screen: NonFixedEvent},
+		FixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		NonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
 
-		ReviewEvent: {screen: ReviewEvent},
-		EditCourse: {screen: Course},
-		EditFixedEvent: {screen: FixedEvent},
-		EditNonFixedEvent: {screen: NonFixedEvent},
-		ScheduleCreation: {screen: ScheduleCreation},
-		ScheduleSelection: {screen: ScheduleSelection},
-		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails},
+		ReviewEvent: {screen: ReviewEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		EditCourse: {screen: Course, navigationOptions:DashboardOptionsNavigatorOptions},
+		EditFixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		EditNonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		ScheduleCreation: {screen: ScheduleCreation, navigationOptions:DashboardOptionsNavigatorOptions},
+		ScheduleSelection: {screen: ScheduleSelection, navigationOptions:DashboardOptionsNavigatorOptions},
+		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
 
-		UnavailableHours: {screen: UnavailableHours},
-		UnavailableFixed: {screen: FixedEvent},
+		UnavailableHours: {screen: UnavailableHours, navigationOptions:DashboardOptionsNavigatorOptions},
+		UnavailableFixed: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
 	}, 
 	{
 		initialRouteName: 'DashboardNavigator',
-		defaultNavigationOptions: {
-			headerTintColor: 'white',
-			headerTitleStyle: {
-				fontFamily: 'Raleway-Regular'
-			},
-			headerStyle: {
-				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-			}
-		}
 	}
 );
 

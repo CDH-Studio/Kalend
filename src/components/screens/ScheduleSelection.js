@@ -1,9 +1,12 @@
 import React from 'react';
-import { Platform, StatusBar, View, StyleSheet, BackHandler, Alert, ImageBackground, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import { Header } from 'react-navigation';
-import LinearGradient from 'react-native-linear-gradient';
+import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { setSelectedSchedule } from '../../actions';
+import { calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
+<<<<<<< HEAD
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -12,13 +15,17 @@ import { eventsToScheduleSelectionData } from '../../services/service';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
 import { store } from '../../store';
+=======
+import { data as scheduleInfo } from '../../scheduleInfo';
+import { scheduleSelectionStyle as styles, black } from '../../styles';
+>>>>>>> 1f6b1a45ca783627b7b77703b528fcd7d8d5d559
 
-const containerPadding = 10;
-const lineThickness = 1;
-const lineColor = '#999';
-const lineSpace = 25;
-const lineViewHorizontalPadding = 15;
-const lineViewLeftPadding = 15;
+export const containerPadding = 10;
+export const lineThickness = 1;
+export const lineColor = '#999';
+export const lineSpace = 25;
+export const lineViewHorizontalPadding = 15;
+export const lineViewLeftPadding = 15;
 
 /**
  * The component of an event on a schedule
@@ -423,120 +430,39 @@ class ScheduleSelection extends React.Component {
 
 	render() {
 		return(
-			<LinearGradient style={styles.container} 
-				colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
-					<StatusBar translucent={true} 
-						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
-					<ScrollView >
-						<View style={styles.content}>
-							<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
-							{ 
-								this.state.data.ai.map((ai, key) => {
-									return <Schedule nextScreen={this.nextScreen} 
-										data={this.state.data} 
-										key={key} 
-										id={key} 
-										numOfLines={6} />;
-								})
-							}
+				<ScrollView >
+					<View style={styles.content}>
+						<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
-							{
-								this.state.data.ai.length === 0 ? 
-									<Schedule nextScreen={this.nextScreen} 
-										data={this.state.data} 
-										id={0}
-										numOfLines={6} /> 
-									: null
-							}
-						</View>
-					</ScrollView>
-				</ImageBackground>
-			</LinearGradient>
+						{ 
+							this.state.data.ai.map((ai, key) => {
+								return <Schedule nextScreen={this.nextScreen} 
+									data={this.state.data} 
+									key={key} 
+									id={key} 
+									numOfLines={6} />;
+							})
+						}
+
+						{
+							this.state.data.ai.length === 0 ? 
+								<Schedule nextScreen={this.nextScreen} 
+									data={this.state.data} 
+									id={0}
+									numOfLines={6} /> 
+								: null
+						}
+					</View>
+				</ScrollView>
+			</View>
+>>>>>>> 1f6b1a45ca783627b7b77703b528fcd7d8d5d559
 		);
 	}
 }
 
 export default connect()(ScheduleSelection);
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		width: '100%',
-		height: '130%'
-	},
-
-	content: {
-		padding: containerPadding,
-		paddingTop: getStatusBarHeight() + Header.HEIGHT + 10,
-	},
-
-	description: {
-		color: white,
-		fontFamily: 'Raleway-Regular',
-	},
-
-	hoursTextContainer: {
-		flexDirection: 'column', 
-		justifyContent: 'space-between', 
-		position: 'absolute',
-		paddingBottom: 10,
-		marginTop: -13.5,
-		marginLeft: -22.5,
-		alignItems: 'center'
-	},
-
-	hoursText: {
-		paddingVertical: Platform.OS === 'ios' ? 4.6 : 3.4, 
-		opacity: 0.5
-	}, 
-
-	thickLine: {
-		borderBottomColor: lineColor,
-		borderBottomWidth: lineThickness 
-	},
-
-	weekLetters: {
-		fontFamily: 'Raleway-Medium', 
-		fontSize: 17, 
-		color: gray
-	}, 
-
-	weekLetterContainer: {
-		flexDirection: 'row', 
-		justifyContent: 'space-between', 
-		padding: 5, 
-		paddingHorizontal: 20 
-	},
-
-	card: {
-		backgroundColor: white, 
-		borderRadius: 3, 
-		paddingTop: 5, 
-		paddingHorizontal: lineViewHorizontalPadding,
-		paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding
-	},
-
-	title: {
-		fontFamily: 'Raleway-Medium', 
-		color: white, 
-		fontSize: 18, 
-		marginBottom: 10
-	}, 
-
-	scheduleContainer: {
-		paddingTop: 20
-	},
-
-	line: {
-		borderBottomColor: lineColor,
-		borderBottomWidth: lineThickness,
-		opacity: 0.3,
-		marginTop: lineSpace ,
-	}
-});

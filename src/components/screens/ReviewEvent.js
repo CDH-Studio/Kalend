@@ -1,23 +1,21 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { Header } from 'react-navigation';
-import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import EventOverview from '../EventOverview';
-import updateNavigation from '../NavigationHelper';
-import { store } from '../../store';
-import { reviewEventStyles as styles, blue, statusBlueColor, dark_blue } from '../../styles';
+import { connect } from 'react-redux';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute } from '../../constants/screenNames';
+import EventOverview from '../EventOverview';
+import updateNavigation from '../NavigationHelper';
+import { InsertFixedEvent } from '../../services/service';
+import { store } from '../../store';
+import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
 const priorityLevels = {
 	0: 'Low',
 	0.5: 'Normal',
 	1: 'High'
 };
-const tutorialHeight = 0;
-const containerHeight = containerHeight;
 
 /**
  * Permits users to verify and edit the events they added
@@ -27,7 +25,7 @@ class ReviewEvent extends React.Component {
 	static navigationOptions = {
 		title: 'Review Events',
 		headerStyle: {
-			backgroundColor: dark_blue,
+			backgroundColor: white,
 		}
 	};
 
@@ -36,7 +34,6 @@ class ReviewEvent extends React.Component {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		this.state = {
-			containerHeight: null,
 			showFAB: true,
 			currentY: 0,
 			fixedEventData: [],
@@ -98,7 +95,7 @@ class ReviewEvent extends React.Component {
 					title: data.title,
 					location: data.location,
 					priorityLevel: priorityLevels[data.priority],
-					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'No specific date range',
+					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'Week',
 					description: data.description,
 					occurence: `${data.occurrence} times/week`,
 					duration: `${data.hours}h ${data.minutes}m`
@@ -192,8 +189,6 @@ class ReviewEvent extends React.Component {
 	}
 
 	render() {
-		const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
-
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
@@ -203,14 +198,8 @@ class ReviewEvent extends React.Component {
 					onScroll={(event) => { 
 						this.onScroll(event);
 					}}
-					scrollEventThrottle={100} >
-					<View style={[styles.content, {paddingBottom: tutorialHeight + 16}]} 
-						onLayout={(event) => {
-							let {height} = event.nativeEvent.layout;
-							if (height < containerHeight) {
-								this.setState({containerHeight});
-							}
-						}}>
+					scrollEventThrottle={100}>
+					<View style={styles.content}>
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>School Schedule</Text>
