@@ -364,9 +364,9 @@ class NonFixedEvent extends React.Component {
 									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
 
 
-									<NumericInput initValue={this.state.occurence}
+									<NumericInput initValue={this.state.occurrence}
 										value={this.state.occurence}
-										onChange={(occurence) => this.setState({occurence})}
+										onChange={(occurrence) => this.setState({occurrence})}
 										minValue={0} 
 										leftButtonBackgroundColor={blue}
 										rightButtonBackgroundColor={blue}

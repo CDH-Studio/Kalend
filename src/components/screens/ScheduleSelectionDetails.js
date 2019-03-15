@@ -61,7 +61,8 @@ class ScheduleEvent extends React.Component  {
 		time = new Date(time);
 		let hours = time.getHours();
 		let minutes = time.getMinutes();
-		let period = hours > 12 ? 'PM' : 'AM';
+		minutes = (minutes < 10) ? `0${minutes}`: minutes;
+		let period = hours >= 12 ? 'PM' : 'AM';
 
 		return {hours, minutes, period};
 	}
@@ -208,7 +209,7 @@ class ScheduleSelectionDetails extends React.Component {
 			let day = new Date(event.start.dateTime).getDay();
 			temp_days[days[day]].push(event);
 		});
-		console.log('temp_days', temp_days);
+		
 		this.setState({daysTemp: temp_days});
 	}
 

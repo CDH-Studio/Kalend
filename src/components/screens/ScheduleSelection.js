@@ -116,15 +116,14 @@ class Schedule extends React.Component {
 		this.state = {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
-			showShadow: true
+			showShadow: true,
+			hours: [],
+			startOffset: 0,
+			timeInterval: 0
 		};
 	}
-
-	componentWillMount() {
-		this.createTimes(this.props.data);
-	}
 	componentWillReceiveProps(props) {
-		console.log('props.data', props.data);
+		//console.log('props.data', props.data);
 		this.createTimes(props.data);
 	}
 
@@ -154,7 +153,6 @@ class Schedule extends React.Component {
 				}
 			});
 		});
-
 		// If the range of the earliest and latest hours divided by the number of lines 
 		// is odd, change it to be event
 		let interval = (latestHour - earliestHour);
@@ -191,7 +189,6 @@ class Schedule extends React.Component {
 				count ++;
 			}
 		}		
-
 		// Saves the information in the state
 		this.setState({
 			hours,

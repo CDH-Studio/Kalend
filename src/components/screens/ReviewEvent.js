@@ -4,7 +4,6 @@ import { FAB } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { InsertFixedEvent } from '../../services/service';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
