@@ -3,15 +3,14 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
+import { setCalendarID, logonUser } from '../../actions';
 import { gradientColors } from '../../../config';
+import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
+import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
-import { DashboardNavigator } from '../../constants/screenNames';
-import { bindActionCreators } from 'redux';
-import { setCalendarID, logonUser } from '../../actions';
 import { homeStyles as styles } from '../../styles';
-
 
 /** 
  * Home/Login screen of the app.
@@ -33,10 +32,12 @@ class Home extends React.Component {
 		this.props.logonUser(userInfo);	
 	}
 
-
+	/**
+	 * Creates the Kalend calendar in the user's Google Account
+	 */
 	setCalendar() {
 		getCalendarID2().then(data => {
-			if(data === undefined) {
+			if (data === undefined) {
 				createCalendar().then(id => {
 					this.props.setCalendarID(id);
 				});
@@ -96,8 +97,6 @@ class Home extends React.Component {
 						
 						<View style={styles.bottomSection}>
 							<View style={styles.signInSection}>
-								
-
 								<GoogleSigninButton 
 									style={styles.signInButton} 
 									size={GoogleSigninButton.Size.Wide} 
@@ -122,7 +121,6 @@ class Home extends React.Component {
 		);
 	}
 }
-
 
 let mapStateToProps = (state) => {
 	const { id } = state.CalendarReducer;

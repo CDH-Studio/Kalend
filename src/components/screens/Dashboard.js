@@ -3,7 +3,7 @@ import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, statusBlueColor } from '../../styles';
+import { dashboardStyles as styles, blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 
 /**
@@ -26,17 +26,16 @@ class Dashboard extends React.Component {
 		const {optionsOpen} = this.state;
 		return(
 			<Portal.Host style={{flex:1}}>
-
 				<View style={styles.content}>
 					<StatusBar translucent={true}
-						backgroundColor={statusBlueColor} />
+						backgroundColor={'#2d6986'} />
 	
 					<View style={styles.topProfileContainer}>
 						<Image style={styles.profileImage}
 							source={{uri: this.props.HomeReducer.profile.profile.user.photo}} />
 
 						<Text style={styles.profileDescription}>
-							Hi {this.props.HomeReducer.profile.profile.user.name}, here are your events for you day
+							Hi {this.props.HomeReducer.profile.profile.user.name}, here are your events for the day
 						</Text>
 					</View>
 

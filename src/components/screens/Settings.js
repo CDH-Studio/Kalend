@@ -1,16 +1,16 @@
 import React from 'react';
 import { StatusBar, View , TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { settingsStyles as styles, statusBlueColor } from '../../styles';
-import { LoginNavigator, UnavailableRoute } from '../../constants/screenNames';
 import { logoffUser } from '../../actions';
+import { LoginNavigator, UnavailableRoute } from '../../constants/screenNames';
+import { settingsStyles as styles } from '../../styles';
 
 class Settings extends React.Component {
 	render() {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'#2d6986'} />
 
 				<TouchableOpacity style={styles.button}
 					onPress={() => {

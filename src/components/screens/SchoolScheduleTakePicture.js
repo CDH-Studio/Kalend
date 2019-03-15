@@ -3,13 +3,11 @@ import { TouchableOpacity, View, StatusBar, NativeModules, LayoutAnimation } fro
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
-import updateNavigation from '../NavigationHelper';
-import { analyzePicture } from '../../services/service';
-import { takePictureStyles as styles, red, blue, dark_blue } from '../../styles';
 import { setImageURI } from '../../actions';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
-
-const iconColor = 'white';
+import updateNavigation from '../NavigationHelper';
+import { analyzePicture } from '../../services/service';
+import { takePictureStyles as styles, red, blue, white, dark_blue } from '../../styles';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -180,7 +178,7 @@ class SchoolScheduleTakePicture extends React.Component {
 							style={[styles.capture, {backgroundColor: red}]}>
 							<Entypo name='cross' 
 								size={dismissIcon}
-								color={iconColor} 
+								color={white} 
 								style={styles.icon} />
 						</TouchableOpacity>
 					</View>
@@ -190,7 +188,7 @@ class SchoolScheduleTakePicture extends React.Component {
 							style={[styles.capture, {backgroundColor: changeIcon ? dark_blue : blue }]}>
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
-								color={iconColor} 
+								color={white} 
 								style={styles.icon} />
 						</TouchableOpacity>
 					</View>

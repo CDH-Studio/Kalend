@@ -1,14 +1,12 @@
 import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import { Surface } from 'react-native-paper';
-import { connect } from 'react-redux';
+import { Alert, StatusBar, Text, View, BackHandler } from 'react-native';
 import ImgToBase64 from 'react-native-image-base64';
+import { Surface } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
-import { ImageBackground, Alert, StatusBar, Text, BackHandler } from 'react-native';
+import { connect } from 'react-redux';
+import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { gradientColors } from '../../../config';
-import { DashboardNavigator } from '../../constants/screenNames';
 import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
 
 /**
@@ -75,24 +73,20 @@ class SchoolScheduleCreation extends React.Component {
 
 	render() {
 		return(
-			<LinearGradient style={styles.container} colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat" >
-					<StatusBar translucent={true} 
-						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
-					<Surface style={styles.surface}>
-						<Text style={styles.title}>Analysing your Picture</Text>
-						<Text style={styles.subtitle}>Extracting the information from your picture</Text>
-						<Progress.Bar style={{alignSelf:'center'}} 
-							indeterminate={true} 
-							width={200} 
-							color={dark_blue} 
-							useNativeDriver={true} 
-							unfilledColor={'#79A7D2'} />
-					</Surface>
-				</ImageBackground>
-			</LinearGradient>
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+				<Surface style={styles.surface}>
+					<Text style={styles.title}>Analysing your Picture</Text>
+					<Text style={styles.subtitle}>Extracting the information from your picture</Text>
+					<Progress.Bar style={{alignSelf:'center'}} 
+						indeterminate={true} 
+						width={200} 
+						color={dark_blue} 
+						useNativeDriver={true} 
+						unfilledColor={'#79A7D2'} />
+				</Surface>
+			</View>
 		);
 	}
 }
