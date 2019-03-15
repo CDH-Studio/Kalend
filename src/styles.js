@@ -1341,7 +1341,7 @@ const DashboardButton = StyleSheet.create({
 		backgroundColor: blue, 
 		padding: 5, 
 		borderRadius: 5, 
-		marginBottom: 5
+		marginBottom: 10
 	},
 
 	buttonText: {
@@ -1355,7 +1355,7 @@ export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 5
+		padding: 10
 	},
 
 	fab: {
@@ -1406,8 +1406,86 @@ export const settingsStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 5
+		padding: 10
 	},
 
 	...DashboardButton
+});
+
+export const cleanReducersStyles = StyleSheet.create({
+	content: {
+		width: '100%',
+		height: '100%',
+		padding: 10
+	},
+
+	...DashboardButton
+});
+
+export const schoolInformationStyles = StyleSheet.create({
+	content: {
+		flex: 1,
+		padding: 20,
+		height: null, 
+		alignContent: 'space-between'
+	},
+
+	smallText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	instruction: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex:1,
+	},
+
+	text: {
+		width: 240,
+		paddingRight: 15,
+		fontFamily: 'Raleway-Regular',
+		color: gray,
+		fontSize: 20,
+		textAlign: 'right'
+	},
+
+	subHeader: {
+		fontFamily: 'Raleway-Medium',
+		color: dark_blue,
+		fontSize: 18,
+		marginBottom: 10
+	},
+
+	radioButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginLeft: -8
+	},
+
+	bottomContent: {
+		flex:3,
+		alignContent: 'space-between'
+	},
+
+	school: {
+		justifyContent: 'center',
+		flex:1,
+	},
+
+	duration: {
+		flex:1,
+		justifyContent: 'center',
+	},
+
+	date: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	errorTitle: {
+		fontFamily: 'Raleway-Regular',
+		color: red,
+		marginTop: 10
+	},
 });

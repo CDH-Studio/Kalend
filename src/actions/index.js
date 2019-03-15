@@ -1,7 +1,10 @@
 import { 
 	SET_NAV_SCREEN, 
 	SET_SELECTED_SCHEDULE, 
-	UPDATE_NFE, SIGNED_IN, 
+	SET_UNAVAILABLE_HOURS,
+	SET_SCHOOL_INFORMATION,
+	UPDATE_NFE, 
+	SIGNED_IN, 
 	SIGNED_OUT, 
 	SET_IMG, 
 	ADD_FE, 
@@ -12,9 +15,18 @@ import {
 	DELETE_COURSE, 
 	UPDATE_FE, 
 	UPDATE_COURSE, 
-	SET_UNAVAILABLE_HOURS,
 	CREATE_CALENDAR,
-	ADD_GENERATED_NFE 
+	ADD_GENERATED_NFE,
+	CLEAR_CALENDAR,
+	CLEAR_COURSE,
+	CLEAR_GENERATED_NFE,
+	CLEAR_FE,
+	CLEAR_NFE,
+	CLEAR_NAV_SCREEN,
+	CLEAR_SCHEDULE,
+	CLEAR_SCHOOL_INFORMATION,
+	CLEAR_UNAVAILABLE_HOURS,
+	CLEAR_OPENED,
 } from '../constants';
 
 /*** UPDATE ***/
@@ -178,6 +190,96 @@ export function setUnavailableHours (info) {
 	const action = {
 		type: SET_UNAVAILABLE_HOURS,
 		info
+	};
+
+	return action;
+}
+
+export function setSchoolInformation (info) {
+	const action = {
+		type: SET_SCHOOL_INFORMATION,
+		info
+	};
+
+	return action;
+}
+
+/*** CLEAR ***/
+export function clearCalendarID () {
+	const action = {
+		type: CLEAR_CALENDAR
+	};
+
+	return action;
+}
+
+export function clearCourse () {
+	const action = {
+		type: CLEAR_COURSE
+	};
+
+	return action;
+}
+
+export function clearFixedEvents () {
+	const action = {
+		type: CLEAR_FE
+	};
+
+	return action;
+}
+
+export function clearNonFixedEvents () {
+	const action = {
+		type: CLEAR_NFE
+	};
+
+	return action;
+}
+
+export function clearGeneratedNonFixedEvents () {
+	const action = {
+		type: CLEAR_GENERATED_NFE
+	};
+
+	return action;
+}
+
+export function clearNavigation () {
+	const action = {
+		type: CLEAR_NAV_SCREEN
+	};
+
+	return action;
+}
+
+export function clearSchedule () {
+	const action = {
+		type: CLEAR_SCHEDULE
+	};
+
+	return action;
+}
+
+export function clearSchoolInformation () {
+	const action = {
+		type: CLEAR_SCHOOL_INFORMATION
+	};
+
+	return action;
+}
+
+export function clearState () {
+	const action = {
+		type: CLEAR_OPENED
+	};
+
+	return action;
+}
+
+export function clearUnavailableHours () {
+	const action = {
+		type: CLEAR_UNAVAILABLE_HOURS
 	};
 
 	return action;

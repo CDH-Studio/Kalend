@@ -4,7 +4,7 @@ import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
-import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, CourseRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
@@ -203,7 +203,13 @@ class ReviewEvent extends React.Component {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>School Schedule</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate('AddCourse')}>
+								<TouchableOpacity onPress={() => {
+									if (this.props.hasSchoolInformation) {
+										this.props.navigation.navigate(CourseRoute);
+									} else {
+										this.props.navigation.navigate(SchoolInformationRoute, {reviewEvent: true});
+									}
+								}}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -300,13 +306,14 @@ class ReviewEvent extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer, NavigationReducer } = state;
+	const { FixedEventsReducer, NonFixedEventsReducer, CoursesReducer, NavigationReducer, SchoolInformationReducer } = state;
 
 	return {
 		FixedEventsReducer,
 		NonFixedEventsReducer,
 		CoursesReducer, 
-		selectedIndex: NavigationReducer.reviewEventSelected
+		selectedIndex: NavigationReducer.reviewEventSelected,
+		hasSchoolInformation: SchoolInformationReducer.info
 	};
 }
 
