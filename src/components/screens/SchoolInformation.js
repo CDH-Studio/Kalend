@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, TextInput } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { dark_blue, statusBlueColor, gray, white } from '../../styles';
+import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white, red } from '../../styles';
 import DatePicker from 'react-native-datepicker';
 import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
@@ -30,7 +30,8 @@ class SchoolInformation extends React.Component {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			schoolValue: 'Select School',
+			schoolValidated: true,
+
 			checked: 'none',
 			otherSchool: ''
 		};
@@ -84,13 +85,23 @@ class SchoolInformation extends React.Component {
 	 * Checks if the user has entered an end date
 	 */
 	validateDates = () => {
+		let validated = true;
+
 		if (this.state.disabledEndDate === true) {
 			this.setState({endDateValidated: false});
-			return false;
+			validated = false;
+		} else {
+			this.setState({endDateValidated: true});
+		}
+
+		if (this.state.checked === 'none') {
+			this.setState({schoolValidated: false});
+			validated = false;
+		} else {
+			this.setState({schoolValidated: true});
 		}
 		
-		this.setState({endDateValidated: true});
-		return true;
+		return validated;
 	}
 
 	/**
@@ -116,7 +127,7 @@ class SchoolInformation extends React.Component {
 	}
 
 	render() {
-		const { startDate, minStartDate, maxStartDate, minEndDate, endDate, disabledEndDate, endDateValidated, checked } = this.state;
+		const { startDate, minStartDate, maxStartDate, minEndDate, endDate, disabledEndDate, endDateValidated, checked, schoolValidated } = this.state;
 
 		return (
 			<View style={styles.content}>
@@ -139,19 +150,25 @@ class SchoolInformation extends React.Component {
 						<View style={styles.radioGroup}>
 							<View style={styles.radioButton}>
 								<RadioButton.Android color={dark_blue}
-									uncheckedColor={gray}
+									uncheckedColor={schoolValidated ? gray : red}
 									value="first"
 									status={checked === 'first' ? 'checked' : 'unchecked'}
 									onPress={() => {
-										this.setState({checked: 'first'});
+										this.setState({
+											checked: 'first',
+											schoolValidated: true
+										});
 										this.refs._other.blur();
 									}} />
 
 								<TouchableOpacity onPress={() => {
-									this.setState({checked: 'first'});
+									this.setState({
+										checked: 'first',
+										schoolValidated: true
+									});
 									this.refs._other.blur();
 								}}>
-									<Text style={styles.smallText}>
+									<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
 										University of Ottawa
 									</Text>
 								</TouchableOpacity>
@@ -159,19 +176,25 @@ class SchoolInformation extends React.Component {
 							
 							<View style={styles.radioButton}>
 								<RadioButton.Android color={dark_blue}
-									uncheckedColor={gray}
+									uncheckedColor={schoolValidated ? gray : red}
 									value="second"
 									status={checked === 'second' ? 'checked' : 'unchecked'}
 									onPress={() => {
-										this.setState({checked: 'second'});
+										this.setState({
+											checked: 'second',
+											schoolValidated: true
+										});
 										this.refs._other.blur();
 									}} />
 
 								<TouchableOpacity onPress={() => {
-									this.setState({checked: 'second'});
+									this.setState({
+										checked: 'second',
+										schoolValidated: true
+									});
 									this.refs._other.blur();
 								}}>
-									<Text style={styles.smallText}>
+									<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
 										Carleton University
 									</Text>
 								</TouchableOpacity>
@@ -179,21 +202,34 @@ class SchoolInformation extends React.Component {
 
 							<View style={styles.radioButton}>
 								<RadioButton.Android color={dark_blue}
-									uncheckedColor={gray}
+									uncheckedColor={schoolValidated ? gray : red}
 									value="third"
 									status={checked === 'third' ? 'checked' : 'unchecked'}
 									onPress={() => {
-										this.setState({ checked: 'third' });
+										this.setState({ 
+											checked: 'third',
+											schoolValidated: true
+										});
 										this.refs._other.focus();
 									}} />
 
 								<TextInput placeholder="Other"
 									ref="_other"
-									style={styles.smallText}
-									onFocus={() => this.setState({checked: 'third'}) }
+									style={[styles.smallText, {color: schoolValidated ? null : red}]}
+									onFocus={() => this.setState({
+										checked: 'third',
+										schoolValidated: true
+									})}
 									onChangeText={(otherSchool) => this.setState({checked: 'third', otherSchool})}
 									value={this.state.otherSchool}/>
 							</View>
+
+							{ 
+								schoolValidated ?
+									null
+									:
+									<Text style={styles.errorTitle}>Please select an institution</Text>
+							}
 						</View>
 					</View>
 
@@ -213,7 +249,7 @@ class SchoolInformation extends React.Component {
 									dateInput:{borderWidth: 0}, 
 									dateText:{
 										fontFamily: 'OpenSans-Regular',
-										color: !endDateValidated ? '#ff0000' : gray
+										color: !endDateValidated ? red : gray
 									}
 								}}
 								placeholder={startDate}
@@ -240,7 +276,7 @@ class SchoolInformation extends React.Component {
 									dateInput:{borderWidth: 0}, 
 									dateText:{
 										fontFamily: 'OpenSans-Regular', 
-										color: !endDateValidated ? '#ff0000' : gray,
+										color: !endDateValidated ? red : gray,
 										textDecorationLine: disabledEndDate ? 'line-through' : 'none'}}} 
 								placeholder={endDate} 
 								format="ddd., MMM DD, YYYY" 
@@ -249,6 +285,13 @@ class SchoolInformation extends React.Component {
 								cancelBtnText="Cancel" 
 								onDateChange={this.endDateOnDateChange} />
 						</View>
+
+						{ 
+							endDateValidated ?
+								null
+								:
+								<Text style={styles.errorTitle}>Please select a start date</Text>
+						}
 					</View>
 				</View>
 
@@ -261,68 +304,6 @@ class SchoolInformation extends React.Component {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	content: {
-		flex: 1,
-		padding: 20,
-		height: null, 
-		alignContent: 'space-between'
-	},
-
-	smallText: {
-		fontFamily: 'Raleway-Regular'
-	},
-
-	instruction: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flex:1,
-	},
-
-	text: {
-		width: 240,
-		paddingRight: 15,
-		fontFamily: 'Raleway-Regular',
-		color: gray,
-		fontSize: 20,
-		textAlign: 'right'
-	},
-
-	subHeader: {
-		fontFamily: 'Raleway-Medium',
-		color: dark_blue,
-		fontSize: 18,
-		marginBottom: 10
-	},
-
-	radioButton: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginLeft: -8
-	},
-
-	bottomContent: {
-		flex:3,
-		alignContent: 'space-between'
-	},
-
-	school: {
-		justifyContent: 'center',
-		flex:1,
-	},
-
-	duration: {
-		flex:1,
-		justifyContent: 'center',
-	},
-
-	date: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	}
-});
 
 let mapStateToProps = (state) => {
 	const { SchoolInformationReducer } = state;
