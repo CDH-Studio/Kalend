@@ -2,9 +2,9 @@ import React from 'react';
 import { StatusBar, View , TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { IconButton } from 'react-native-paper';
-import { settingsStyles as styles, statusBlueColor, blue } from '../../styles';
-import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
 import { logoffUser } from '../../actions';
+import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
+import { settingsStyles as styles } from '../../styles';
 
 class Settings extends React.Component {
 	static navigationOptions = ({navigation}) => ({
@@ -19,7 +19,7 @@ class Settings extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'#2d6986'} />
 
 				<TouchableOpacity style={styles.button}
 					onPress={() => {
