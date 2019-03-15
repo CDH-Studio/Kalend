@@ -1,4 +1,4 @@
-import {SET_SELECTED_SCHEDULE, CLEAR_SELECTED_SCHEDULE} from '../constants';
+import { SET_SELECTED_SCHEDULE, CLEAR_SELECTED_SCHEDULE, CLEAR_SCHEDULE } from '../constants';
 
 export default function ScheduleSelectionReducer(state = [], action) {
 	switch (action.type) {
@@ -13,6 +13,9 @@ export default function ScheduleSelectionReducer(state = [], action) {
 				...state,
 				index: null,
 			};
+
+		case CLEAR_SCHEDULE:
+			return [];
 			
 		default:
 			return state;

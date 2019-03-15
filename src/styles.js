@@ -1276,7 +1276,7 @@ const DashboardButton = StyleSheet.create({
 		backgroundColor: blue, 
 		padding: 5, 
 		borderRadius: 5, 
-		marginBottom: 5
+		marginBottom: 10
 	},
 
 	buttonText: {
@@ -1290,7 +1290,7 @@ export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 5
+		padding: 10
 	},
 
 	fab: {
@@ -1341,7 +1341,17 @@ export const settingsStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 5
+		padding: 10
+	},
+
+	...DashboardButton
+});
+
+export const cleanReducersStyles = StyleSheet.create({
+	content: {
+		width: '100%',
+		height: '100%',
+		padding: 10
 	},
 
 	...DashboardButton

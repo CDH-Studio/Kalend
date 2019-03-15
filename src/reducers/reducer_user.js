@@ -1,4 +1,4 @@
-import {SIGNED_IN, SIGNED_OUT} from '../constants';
+import { SIGNED_IN, SIGNED_OUT } from '../constants';
 
 let user = {
 	profile: null
@@ -15,10 +15,9 @@ export default function HomeReducer(state = user, action) {
 			return user;
 
 		case SIGNED_OUT:
-			user = {
+			return {
 				profile: null
 			};
-			return user;
 
 		default:
 			return state;

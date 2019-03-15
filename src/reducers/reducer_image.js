@@ -9,8 +9,9 @@ export default function ImageReducer(state = [], action) {
 				data: action.data,
 				hasImage: action.hasImage
 			};
+
 		case CLEAR_IMG:
-			return {};
+			return [];
 			
 		default:
 			return state;

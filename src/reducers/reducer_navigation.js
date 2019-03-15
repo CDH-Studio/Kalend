@@ -1,4 +1,4 @@
-import {SET_NAV_SCREEN} from '../constants';
+import { SET_NAV_SCREEN, CLEAR_NAV_SCREEN } from '../constants';
 
 let nav = {
 	screen: null,
@@ -18,6 +18,9 @@ export default function NavigationReducer(state = nav, action) {
 				routes: action.routes,
 				reviewEventSelected: action.reviewEventSelected
 			};
+		
+		case CLEAR_NAV_SCREEN:
+			return [];
 
 		default:
 			return state;

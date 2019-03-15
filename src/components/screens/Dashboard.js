@@ -34,11 +34,12 @@ class Dashboard extends React.Component {
 						backgroundColor={statusBlueColor} />
 	
 					<View style={styles.topProfileContainer}>
+
 						<Image style={styles.profileImage}
-							source={{uri: this.props.HomeReducer.profile.profile.user.photo}} />
+							source={{uri: this.props.profileImage}} />
 
 						<Text style={styles.profileDescription}>
-							Hi {this.props.HomeReducer.profile.profile.user.name}, here are your events for you day
+							Hi {this.props.userName}, here are your events for you day
 						</Text>
 					</View>
 
@@ -83,9 +84,13 @@ class Dashboard extends React.Component {
 let mapStateToProps = (state) => {
 	const { HomeReducer, SchoolInformationReducer } = state;
 
+	let hasUserInfo = HomeReducer.profile != null;
+
 	return {
 		HomeReducer,
-		hasSchoolInformation: SchoolInformationReducer.info != null
+		hasSchoolInformation: SchoolInformationReducer.info != null,
+		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
 	};
 };
 

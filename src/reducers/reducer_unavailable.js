@@ -1,4 +1,4 @@
-import { SET_UNAVAILABLE_HOURS } from '../constants';
+import { SET_UNAVAILABLE_HOURS, CLEAR_UNAVAILABLE_HOURS } from '../constants';
 
 let data = {
 	info: null
@@ -13,6 +13,11 @@ export default function UnavailableReducer(state = data, action) {
 				info
 			};	
 			return data;
+
+		case CLEAR_UNAVAILABLE_HOURS:
+			return {
+				info: null
+			};
 
 		default:
 			return state;

@@ -1,11 +1,20 @@
 import React from 'react';
 import { StatusBar, View , TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { settingsStyles as styles, statusBlueColor } from '../../styles';
-import { LoginNavigator, UnavailableRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { IconButton } from 'react-native-paper';
+import { settingsStyles as styles, statusBlueColor, blue } from '../../styles';
+import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
 import { logoffUser } from '../../actions';
 
 class Settings extends React.Component {
+	static navigationOptions = ({navigation}) => ({
+		headerRight: (__DEV__ ? <IconButton
+			icon="delete"
+			onPress={() => navigation.navigate(CleanReducersRoute)}
+			size={20}
+			color={blue}/> : null)
+	});
+
 	render() {
 		return(
 			<View style={styles.content}>
@@ -18,13 +27,6 @@ class Settings extends React.Component {
 						this.props.navigation.navigate(LoginNavigator);
 					}}>
 					<Text style={styles.buttonText}>Log out</Text>
-				</TouchableOpacity>
-
-				<TouchableOpacity style={styles.button}
-					onPress={() => {
-						this.props.navigation.navigate(LoginNavigator);
-					}}>
-					<Text style={styles.buttonText}>Go Back Home</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.button}

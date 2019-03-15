@@ -20,3 +20,5 @@ export const DashboardOptionsNavigator = 'DashboardOptionsNavigator';
 export const DashboardNavigator = 'DashboardNavigator';
 export const LoginNavigator = 'LoginNavigator';
 export const WelcomeScreen = 'WelcomeScreen';
+
+export const CleanReducersRoute = 'CleanReducers';
