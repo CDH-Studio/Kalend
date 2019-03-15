@@ -30,7 +30,7 @@ import CompareSchedule from './src/components/screens/CompareSchedule';
 import Settings from './src/components/screens/Settings';
 import SchoolInformation from './src/components/screens/SchoolInformation';
 import CleanReducers from './src/components/screens/CleanReducers';
-import { blue } from './src/styles.js';
+import { blue, dark_blue, white } from './src/styles.js';
 
 const theme = {
 	...DefaultTheme,
@@ -184,6 +184,7 @@ const DashboardOptionsNavigator = createStackNavigator(
 		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
 
 		CleanReducers,
+		SchoolInformation,
 
 		UnavailableHours: {screen: UnavailableHours, navigationOptions:DashboardOptionsNavigatorOptions},
 		UnavailableFixed: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions}
