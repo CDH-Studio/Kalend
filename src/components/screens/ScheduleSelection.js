@@ -455,7 +455,6 @@ class ScheduleSelection extends React.Component {
 					</View>
 				</ScrollView>
 			</View>
->>>>>>> 1f6b1a45ca783627b7b77703b528fcd7d8d5d559
 		);
 	}
 }
