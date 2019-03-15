@@ -7,7 +7,6 @@ import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actio
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, CourseRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
-import { InsertFixedEvent } from '../../services/service';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
@@ -315,6 +314,6 @@ function mapStateToProps(state) {
 		selectedIndex: NavigationReducer.reviewEventSelected,
 		hasSchoolInformation: SchoolInformationReducer.info
 	};
-}
+} 
 
 export default connect(mapStateToProps, null)(ReviewEvent);

@@ -6,19 +6,14 @@ import { calendarEventColors, calendarEventColorsInside } from '../../../config'
 import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
-<<<<<<< HEAD
 import { gradientColors, calendarEventColors, calendarEventColorsInside } from '../../../config';
 import updateNavigation from '../NavigationHelper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { white, black, gray } from '../../styles';
 import { eventsToScheduleSelectionData } from '../../services/service';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import { setSelectedSchedule } from '../../actions';
 import { store } from '../../store';
-=======
-import { data as scheduleInfo } from '../../scheduleInfo';
-import { scheduleSelectionStyle as styles, black } from '../../styles';
->>>>>>> 1f6b1a45ca783627b7b77703b528fcd7d8d5d559
+import { scheduleSelectionStyle as styles, black, white, gray } from '../../styles';
 
 export const containerPadding = 10;
 export const lineThickness = 1;
