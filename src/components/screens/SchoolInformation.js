@@ -7,6 +7,7 @@ import DatePicker from 'react-native-datepicker';
 import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
+import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 
 class SchoolInformation extends React.Component {
 	static navigationOptions = {
@@ -98,7 +99,19 @@ class SchoolInformation extends React.Component {
 	saveInformation = () => {
 		if (this.validateDates()) {
 			this.props.dispatch(setSchoolInformation(this.state));
-			this.props.navigation.pop();
+			let temp = this.props.navigation.state.params;
+
+			if (temp) {
+				if (temp.schoolSchedule) {
+					this.props.navigation.navigate(SchoolScheduleRoute);
+				} else if (temp.reviewEvent) {
+					this.props.navigation.navigate(CourseRoute);
+				} else {
+					this.props.navigation.pop();
+				}
+			} else {
+				this.props.navigation.pop();
+			}
 		}
 	}
 

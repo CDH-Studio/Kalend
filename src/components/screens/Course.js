@@ -10,7 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, blue, statusBlueColor, gray, dark_blue } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { CourseRoute, SchoolScheduleRoute, DashboardNavigator } from '../../constants/screenNames';
+import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 
 const viewHeight = 718.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -481,14 +481,16 @@ class Course extends React.Component {
 							</View>
 						</View>
 
-
 						<BottomButtons twoButtons={showNextButton}
 							buttonText={[addEventButtonText, 'Done']}
 							buttonMethods={[addEventButtonFunction, () => {
 								let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
+								console.log(routes[routes.length - 3].routeName);
 								if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
 									this.props.navigation.navigate(DashboardNavigator);
+								} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {
+									this.props.navigation.navigate(ReviewEventRoute);
 								} else {
 									this.props.navigation.pop();
 								}

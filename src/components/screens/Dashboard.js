@@ -2,9 +2,10 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
+import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue, statusBlueColor } from '../../styles';
-import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
+import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -24,6 +25,7 @@ class Dashboard extends React.Component {
 
 	render() {
 		const {optionsOpen} = this.state;
+
 		return(
 			<Portal.Host style={{flex:1}}>
 
@@ -54,7 +56,14 @@ class Dashboard extends React.Component {
 						actions={[
 							{icon: 'school',
 								label: 'Add School Schedule',
-								onPress: () => this.props.navigation.navigate(SchoolScheduleRoute)},
+								onPress: () => {
+									if (store.getState().SchoolInformationReducer.info) {
+										this.props.navigation.navigate(SchoolScheduleRoute);
+									} else {
+										this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
+									}
+								}
+							},
 							{icon: 'today',
 								label: 'Add Fixed Event',
 								onPress: () => this.props.navigation.navigate(FixedEventRoute)},
@@ -72,10 +81,11 @@ class Dashboard extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-	const { HomeReducer } = state;
+	const { HomeReducer, SchoolInformationReducer } = state;
 
 	return {
 		HomeReducer,
+		hasSchoolInformation: SchoolInformationReducer.info != null
 	};
 };
 
