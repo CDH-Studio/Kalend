@@ -28,7 +28,9 @@ import Dashboard from './src/components/screens/Dashboard';
 import Chatbot from './src/components/screens/Chatbot';
 import CompareSchedule from './src/components/screens/CompareSchedule';
 import Settings from './src/components/screens/Settings';
-import { blue, white, dark_blue } from './src/styles.js';
+import SchoolInformation from './src/components/screens/SchoolInformation';
+import CleanReducers from './src/components/screens/CleanReducers';
+import { blue } from './src/styles.js';
 
 const theme = {
 	...DefaultTheme,
@@ -181,8 +183,10 @@ const DashboardOptionsNavigator = createStackNavigator(
 		ScheduleSelection: {screen: ScheduleSelection, navigationOptions:DashboardOptionsNavigatorOptions},
 		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
 
+		CleanReducers,
+
 		UnavailableHours: {screen: UnavailableHours, navigationOptions:DashboardOptionsNavigatorOptions},
-		UnavailableFixed: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		UnavailableFixed: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions}
 	}, 
 	{
 		initialRouteName: 'DashboardNavigator',

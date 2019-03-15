@@ -1,4 +1,4 @@
-import { CREATE_CALENDAR } from '../constants';
+import { CREATE_CALENDAR, CLEAR_CALENDAR } from '../constants';
 
 export default function CalendarReducer(state = [], action) {
 	const { id } = action;
@@ -9,6 +9,9 @@ export default function CalendarReducer(state = [], action) {
 				...state,
 				id
 			};
+
+		case CLEAR_CALENDAR:
+			return [];
 
 		default:
 			return state;

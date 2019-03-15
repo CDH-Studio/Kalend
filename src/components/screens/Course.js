@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { CourseRoute } from '../../constants/screenNames';
+import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
 
@@ -300,7 +300,6 @@ class Course extends React.Component {
 			errorEndTime = null;
 		}
 		
-
 		if (this.props.navigation.state.routeName === CourseRoute) {
 			addEventButtonText = 'Add';
 			addEventButtonFunction = this.addAnotherEvent;
@@ -424,11 +423,20 @@ class Course extends React.Component {
 							</View>
 						</View>
 
-
 						<BottomButtons twoButtons={showNextButton}
 							buttonText={[addEventButtonText, 'Done']}
-							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.pop()]} />
+							buttonMethods={[addEventButtonFunction, () => {
+								let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+								console.log(routes[routes.length - 3].routeName);
+								if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
+									this.props.navigation.navigate(DashboardNavigator);
+								} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {
+									this.props.navigation.navigate(ReviewEventRoute);
+								} else {
+									this.props.navigation.pop();
+								}
+							}]} />
 					</View>
 				</ScrollView>
 

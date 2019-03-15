@@ -6,6 +6,7 @@ export default function GeneratedNonFixedEventsReducer(state = [], action) {
 
 		case ADD_GENERATED_NFE:
 			return  [...state, event];
+			
 		case CLEAR_GENERATED_NFE:
 			return [];
 			

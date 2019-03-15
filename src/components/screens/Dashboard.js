@@ -2,9 +2,10 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
+import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
-import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
+import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -24,6 +25,7 @@ class Dashboard extends React.Component {
 
 	render() {
 		const {optionsOpen} = this.state;
+
 		return(
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
@@ -31,8 +33,9 @@ class Dashboard extends React.Component {
 						backgroundColor={'#2d6986'} />
 	
 					<View style={styles.topProfileContainer}>
+
 						<Image style={styles.profileImage}
-							source={{uri: this.props.HomeReducer.profile.profile.user.photo}} />
+							source={{uri: this.props.profileImage}} />
 
 						<Text style={styles.profileDescription}>
 							Hi {this.props.HomeReducer.profile.profile.user.name}, here are your events for the day
@@ -53,7 +56,14 @@ class Dashboard extends React.Component {
 						actions={[
 							{icon: 'school',
 								label: 'Add School Schedule',
-								onPress: () => this.props.navigation.navigate(SchoolScheduleRoute)},
+								onPress: () => {
+									if (store.getState().SchoolInformationReducer.info) {
+										this.props.navigation.navigate(SchoolScheduleRoute);
+									} else {
+										this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
+									}
+								}
+							},
 							{icon: 'today',
 								label: 'Add Fixed Event',
 								onPress: () => this.props.navigation.navigate(FixedEventRoute)},
@@ -71,10 +81,15 @@ class Dashboard extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-	const { HomeReducer } = state;
+	const { HomeReducer, SchoolInformationReducer } = state;
+
+	let hasUserInfo = HomeReducer.profile != null;
 
 	return {
 		HomeReducer,
+		hasSchoolInformation: SchoolInformationReducer.info != null,
+		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
 	};
 };
 
