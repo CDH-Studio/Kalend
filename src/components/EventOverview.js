@@ -45,7 +45,7 @@ class EventOverview extends React.Component {
 	 * To delete the event from the database and delete the component 
 	 */
 	deleteEvent = () => {
-		this.setState({deleteDialogVisible: false, modalVisible: false});
+		this.setState({deleteDialogVisible: false, modalVisible: false, edited: false});
 		this.props.action(this.props.id, this.props.category);
 	}
 
@@ -158,9 +158,10 @@ class EventOverview extends React.Component {
 
 
 				<Modal visible={this.state.modalVisible}
+					ref='editModal'
 					transparent={true}
 					onRequestClose={() => this.setState({modalVisible: false})}
-					animationType={'slide'}>
+					animationType={'none'}>
 					<TouchableOpacity style={styles.modalView} 
 						onPress={() => this.setState({modalVisible: false})}
 						activeOpacity={1}>
@@ -206,7 +207,7 @@ class EventOverview extends React.Component {
 									</TouchableOpacity>
 
 									<TouchableOpacity style={styles.actionIconModal}
-										onPress={() => this.setState({deleteDialogVisible: true})}>
+										onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}>
 										<Feather name="trash"
 											size={40}
 											color={grayColor} />
@@ -222,9 +223,9 @@ class EventOverview extends React.Component {
 					onRequestClose={() => {
 						//do nothing;
 					}}
-					animationType={'slide'}>
+					animationType={'none'}>
 					<TouchableOpacity style={styles.modalView} 
-						onPress={() => this.setState({deleteDialogVisible: false})}
+						onPress={() => this.setState({deleteDialogVisible: false, edited: false})}
 						activeOpacity={1}>
 						<TouchableWithoutFeedback>
 							<View style={styles.deleteDialogContent}>
@@ -237,7 +238,7 @@ class EventOverview extends React.Component {
 										<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
 
 										<View style={styles.deleteDialogOptions}>
-											<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false})}>
+											<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false, edited: false, modalVisible: this.state.edited})}>
 												<Text style={styles.deleteDialogCancel}>Cancel</Text>
 											</TouchableOpacity>
 
