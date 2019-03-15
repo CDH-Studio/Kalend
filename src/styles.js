@@ -1489,3 +1489,39 @@ export const schoolInformationStyles = StyleSheet.create({
 		marginTop: 10
 	},
 });
+
+export const scheduleCreateStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: dark_blue
+	},
+
+	surface: {
+		padding: 8,
+		height: 110,
+		width: Dimensions.get('window').width * 0.8,
+		borderRadius: 4,
+		justifyContent: 'center',
+		elevation: 3,
+	},
+
+	title: {
+		fontSize: 20,
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center'
+	},
+
+	subtitle: {
+		fontFamily: 'Raleway-Regular',
+		textAlign: 'center',
+		paddingTop: 5,
+		paddingBottom: 10
+	},
+
+	progressBar: {
+		alignSelf:'center'
+	}
+});
