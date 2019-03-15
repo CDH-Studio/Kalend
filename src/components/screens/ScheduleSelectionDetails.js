@@ -4,33 +4,10 @@ import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { calendarEventColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
+import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
-
 export const containerPaddingDetails = 10;
-const data = {
-	fixed: [
-		{
-			title: 'Test',
-			location: 'FSS',
-			time: '1PM - 3PM'
-		}
-	],
-	nonFixed: [
-		{
-			title: 'AI',
-			location: 'CBY 032',
-			time: '3PM - 9:40PM'
-		}
-	],
-	school: [
-		{
-			title: 'School',
-			location: 'SITE 323',
-			time: '8AM - 2PM'
-		}
-	]
-};
 
 const days = [
 	'Sunday',
@@ -41,6 +18,8 @@ const days = [
 	'Friday',
 	'Saturday'
 ];
+
+
 
 /**
  * An event in the list of events
@@ -74,17 +53,40 @@ class ScheduleEvent extends React.Component  {
 			color
 		};
 	}
+	componentDidMount() {
+		console.log('data recieved in Schedule Event', this.props.info);
+	}
+	getTime = (time) => {
+		time = new Date(time);
+		let hours = time.getHours();
+		let minutes = time.getMinutes();
+		minutes = (minutes < 10) ? `0${minutes}`: minutes;
+		let period = hours >= 12 ? 'PM' : 'AM';
+
+		return {hours, minutes, period};
+	}
 
 	render() {
 		const { color } = this.state;
-		const { title, location, time } = this.props.info;
+		const { location, end, start, title, summary } = this.props.info;
+		let startTime, endTime, time;
+		if (end != undefined) {
+			startTime = this.getTime(start.dateTime);
+			endTime = this.getTime(end.dateTime);
+			time = `${startTime.hours}:${startTime.minutes} ${startTime.period} - ${endTime.hours}:${endTime.minutes} ${endTime.period}`;
+		} else {
+			const { startTime, endTime } = this.props.info;
+			time = `${startTime} - ${endTime}`;
+		}
+
+		let actualTitle =  (title == undefined) ? summary: title;
 
 		return (
 			<View style={styles.eventContainer}>
 				<View style={[styles.scheduleEventColor, {backgroundColor: calendarEventColors[color]}]} />	
 
 				<View style={styles.eventData}>
-					<Text style={styles.eventTitle}>{title}</Text>
+					<Text style={styles.eventTitle}>{actualTitle}</Text>
 					<Text style={styles.eventLocation}>{location}</Text>
 					<Text style={styles.eventTime}>{time}</Text>
 				</View>
@@ -108,27 +110,15 @@ class ScheduleDay extends React.Component {
 		super(props);
 
 		this.state = {
-			data: this.constructData(props.data),
+			data:[ ],
 			day: props.day
 		};
 	}
-
-	/**
-	 * Adds the type of event in data
-	 */
-	constructData = (data) => {
-		let events = [];
-		for (let key in data) {
-			for (let i = 0; i < data[key].length; i++ ) {
-				events.push({
-					...data[key][i],
-					type: key
-				});
-			}
-		}
-
-		return events;
+	
+	componentWillMount() {
+		this.setState({day:this.props.day, data: this.props.data});
 	}
+	
 
 	render() {
 		const { day, data } = this.state;
@@ -171,15 +161,55 @@ class ScheduleSelectionDetails extends React.Component {
 		this.state = {
 			showFAB: true,
 			currentY: 0,
+			daysTemp: {
+				'Monday': []
+
+			}
 		};
+		
 		
 		// Waits for the animation to finish, then goes to the next screen
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentDidMount() {
-		// Sets the onPress for the delete icon in the header
 		this.props.navigation.setParams({ goBack: this.goBack });
+	}
+
+	
+	componentWillMount() {
+		this.seperateEventsIntoDays(this.props.navigation.state.params.data);
+		this.setState({data: this.props.navigation.state.params.data});
+	}
+
+	seperateEventsIntoDays = (data) =>{
+
+		const temp_days = {
+			'Sunday': [],
+			'Monday': [],
+			'Tuesday': [],
+			'Wednesday': [],
+			'Thursday': [],
+			'Friday': [],
+			'Saturday': []
+		};
+
+		data.schoolEvents.forEach(event => {
+			event.type = 'school';
+			temp_days[event.dayOfWeek].push(event);
+		});
+		data.fixedEvents.forEach(event => {
+			event.type = 'fixed';
+			let day = new Date(event.startDate).getDay();
+			temp_days[days[day]].push(event);
+		});
+		data.aiEvents[0].forEach(event => {
+			event.type = 'nonFixed';
+			let day = new Date(event.start.dateTime).getDay();
+			temp_days[days[day]].push(event);
+		});
+		
+		this.setState({daysTemp: temp_days});
 	}
 
 	/**
@@ -210,7 +240,8 @@ class ScheduleSelectionDetails extends React.Component {
 	/**
 	 * TODO: Returns the data for the specified weekday
 	 */
-	getEventForWeekday = () => {
+	getEventForWeekday = (day) => {
+		let data = this.state.daysTemp[day];
 		return data;
 	}
 
@@ -218,11 +249,15 @@ class ScheduleSelectionDetails extends React.Component {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
+		this.props.GeneratedNonFixedEventsReducer.forEach(event => {
+			insertGeneratedEvent(event);
+		});
 		this.props.navigation.navigate(DashboardNavigator);
 	}
 
 	render() {
-		const { showFAB } = this.state;
+		const { showFAB, daysTemp } = this.state;
+		const objectArray  = Object.keys(daysTemp);
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
@@ -231,10 +266,11 @@ class ScheduleSelectionDetails extends React.Component {
 				<ScrollView onScroll={this.onScroll}>
 					<View style={styles.content}>
 						{
-							days.map((day, key) => {
-								return <ScheduleDay key={key} 
+							objectArray.map((day, key) => {
+							
+								return (<ScheduleDay key={key} 
 									day={day} 
-									data={this.getEventForWeekday(day)} />;
+									data={this.getEventForWeekday(day)} />);
 							})
 						}
 					</View>
@@ -252,8 +288,12 @@ class ScheduleSelectionDetails extends React.Component {
 }
 
 let mapStateToProps = (state) => {
+	const { index } = state.ScheduleSelectionReducer;
+	const { GeneratedNonFixedEventsReducer } = state;
+
 	return {
-		index: state.ScheduleSelectionReducer.index
+		index,
+		GeneratedNonFixedEventsReducer
 	};
 };
 

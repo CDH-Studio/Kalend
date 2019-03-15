@@ -7,7 +7,6 @@ import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actio
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, CourseRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
-import { InsertFixedEvent } from '../../services/service';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
@@ -183,24 +182,7 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		store.getState().FixedEventsReducer.map((event) => {
-			let info = {
-				title: event.title,
-				location: event.location,
-				description: event.description,
-				recurrence: event.recurrence,
-				allDay: event.allDay,
-				startDate: event.startDate,
-				startTime: event.startTime,
-				endDate: event.endDate,
-				endTime: event.endTime
-			}; 
-			InsertFixedEvent(info).then(data => {
-				if (data.error) {
-					console.error('ERROR adding event', data);
-				}
-			});
-		});
+		
 
 		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
@@ -332,6 +314,6 @@ function mapStateToProps(state) {
 		selectedIndex: NavigationReducer.reviewEventSelected,
 		hasSchoolInformation: SchoolInformationReducer.info
 	};
-}
+} 
 
 export default connect(mapStateToProps, null)(ReviewEvent);

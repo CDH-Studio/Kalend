@@ -59,9 +59,9 @@ export const analyzePicture = (base64Data) => {
 			.then(body => {
 				formatData(body.data)
 					.then(data => {
-						InsertDataIntoGoogle(data)
-							.then((promises) => {
-								if(promises) resolve(true);
+						storeCoursesEvents(data)
+							.then((success) => {
+								if(success) resolve(true);
 								else reject(false);
 							})
 							.catch(err => {
@@ -77,66 +77,67 @@ export const analyzePicture = (base64Data) => {
  * 
  * @param {Array} events an array of all courses events 
  */
-export const InsertDataIntoGoogle = (events) => {
-	let promises = [];
-	let calendarID = store.getState().CalendarReducer.id;
+export const storeCoursesEvents = (events) => {
+	// let promises = [];
+	// let calendarID = store.getState().CalendarReducer.id;
+	return new Promise( function(resolve) {
+		events.forEach( event => {
+			let tempStartDate = new Date('2019-02-01');
+			event.courses.forEach(course => {
+				// console.log('course', course);
+				let obj = {
+					'end': {
+						'timeZone': 'UTC'
+					},
+					'start': {
+						'timeZone': 'UTC'
+					}
+				};
+				let startDate = getStartDate(tempStartDate, event.day);
+				let endDate = getStartDate(tempStartDate, event.day);
+				//let day = event.day.substr(0,2).toUpperCase();
+				let recurrence = [
+					'RRULE:FREQ=WEEKLY;UNTIL=20190327'
+				];
+				
+				// Convert all letters to lowercase for easier formating
+				let d = course.time.toLowerCase();
+				// Split date accordingly if it has '-' or ' '
+				d = (d.indexOf('-') !== -1) ? d.split('-') : d.split(' ');	
+				d = d.map(i => {
+					// Remove spaces
+					i =  i.replace(' ', '');
+					// Get am/pm
+					let period = i.substr(-2);
+					// Fix the case where Tesseract reads PM as PN
+					period = (period == 'pn') ? 'pm': period;
+					// Split on colon
+					i = i.slice(0, -2).split(':');
+					// Add period to the array after split: format['11','20','am']
+					i.push(period);
+					return i;
+				});
+				// Check if startDate, EndDate period is pm, if so add 12 to it to convert it into 24hours clock
+				startDate.setHours((d[0][2] === 'pm'  && parseInt(d[0][0]) !== 12 ? 12 : 0) + parseInt(d[0][0]), parseInt(d[0][1]), 0);
+				endDate.setHours((d[1][2] === 'pm' && parseInt(d[1][0]) !== 12 ? 12 : 0) + parseInt(d[1][0]), parseInt(d[1][1]), 0);
 
-	events.forEach( event => {
-		let tempStartDate = new Date('2019-02-01');
-		event.courses.forEach(course => {
-			// console.log('course', course);
-			let obj = {
-				'end': {
-					'timeZone': 'UTC'
-				},
-				'start': {
-					'timeZone': 'UTC'
-				}
-			};
-			let startDate = getStartDate(tempStartDate, event.day);
-			let endDate = getStartDate(tempStartDate, event.day);
-			//let day = event.day.substr(0,2).toUpperCase();
-			let recurrence = [
-				'RRULE:FREQ=WEEKLY;UNTIL=20190327'
-			];
-			
-			// Convert all letters to lowercase for easier formating
-			let d = course.time.toLowerCase();
-			// Split date accordingly if it has '-' or ' '
-			d = (d.indexOf('-') !== -1) ? d.split('-') : d.split(' ');	
-			d = d.map(i => {
-				// Remove spaces
-				i =  i.replace(' ', '');
-				// Get am/pm
-				let period = i.substr(-2);
-				// Fix the case where Tesseract reads PM as PN
-				period = (period == 'pn') ? 'pm': period;
-				// Split on colon
-				i = i.slice(0, -2).split(':');
-				// Add period to the array after split: format['11','20','am']
-				i.push(period);
-				return i;
+				obj.end.dateTime = endDate.toJSON();
+				obj.start.dateTime = startDate.toJSON();
+				obj.summary = course.name;
+				obj.location = course.location;
+				obj.recurrence = recurrence;
+				
+				let courseReduxObj = obj;
+				courseReduxObj.dayOfWeek = event.day;
+				courseReduxObj.hours = d;
+
+				store.dispatch(addCourse(courseReduxObj));	
+				//promises.push(insertEvent(calendarID,obj,{}));
 			});
-			// Check if startDate, EndDate period is pm, if so add 12 to it to convert it into 24hours clock
-			startDate.setHours((d[0][2] === 'pm'  && parseInt(d[0][0]) !== 12 ? 12 : 0) + parseInt(d[0][0]), parseInt(d[0][1]), 0);
-			endDate.setHours((d[1][2] === 'pm' && parseInt(d[1][0]) !== 12 ? 12 : 0) + parseInt(d[1][0]), parseInt(d[1][1]), 0);
-
-			obj.end.dateTime = endDate.toJSON();
-			obj.start.dateTime = startDate.toJSON();
-			obj.summary = course.name;
-			obj.location = course.location;
-			obj.recurrence = recurrence;
-			
-			let courseReduxObj = obj;
-			courseReduxObj.dayOfWeek = event.day;
-			courseReduxObj.hours = d;
-
-			store.dispatch(addCourse(courseReduxObj));
-			
-			promises.push(insertEvent(calendarID,obj,{}));
 		});
+		resolve(true);
+	//return Promise.all(promises);
 	});
-	return Promise.all(promises);
 };
 
 /**
@@ -144,14 +145,14 @@ export const InsertDataIntoGoogle = (events) => {
  * 
  * @param {Object} event state object of the event
  */
-export const  InsertFixedEvent = (event) => {
+export const  InsertFixedEventToCalendar = (event) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let obj = {
 		'end': {
-			'timeZone': 'EST'
+			'timeZone': 'UTC'
 		},
 		'start': {
-			'timeZone': 'EST'
+			'timeZone': 'UTC'
 		}
 	};
 
@@ -176,6 +177,24 @@ export const  InsertFixedEvent = (event) => {
 	return insertEvent(calendarID,obj,{});	
 };
 
+export const InsertCourseEventToCalendar = (event) => {
+	let calendarID = store.getState().CalendarReducer.id;
+
+	let obj = { 
+		'end': {},
+		'start': {}
+	};
+	obj.end.timeZone = 'UTC';
+	obj.start.timeZone = 'UTC';
+	obj.end.dateTime = event.end.dateTime;
+	obj.start.dateTime = event.start.dateTime;
+	obj.recurrence = event.recurrence;
+	obj.location = event.location;
+	obj.description = event.description;
+	obj.summary = event.summary;
+
+	return insertEvent(calendarID,event,{});	
+};
 /**
  *	Checks if 'Kalend' Calendar is available, if so returns the ID of the 'Kalend' Calendar
  */
@@ -208,17 +227,84 @@ export const createCalendar = () => {
 /**
  *	Loops through all the non fixed events and generates events which are pushed to redux store
  */
-export const generateSchedule = () => {
-	return new Promise( function(resolve) {
-		let nonFixedEvents = store.getState().NonFixedEventsReducer;
-		
-		if (nonFixedEvents.length == 0) return;
-		
-		nonFixedEvents.forEach(event => {
-			ItterateOccurence(event);
+export const generateNonFixedEvents =  () => {
+	
+	let nonFixedEvents = store.getState().NonFixedEventsReducer;
+
+	let promises = [];
+	if (nonFixedEvents.length == 0) return;
+	
+	nonFixedEvents.forEach( (event) => {
+		promises.push(new Promise(async function (resolve) {
+			await ItterateOccurence(event).then( () => {
+				resolve();
+			});
+		}));
+	});
+	return Promise.all(promises);
+};
+
+export const eventsToScheduleSelectionData = () => {
+	let data = {
+		fixedEvents: [],
+		schoolEvents: [],
+		aiEvents:[[]],
+		school: [],
+		fixed: [],
+		ai: [[]]
+	};
+	data.schoolEvents = store.getState().CoursesReducer;
+	data.fixedEvents = store.getState().FixedEventsReducer;
+	data.aiEvents[0] = store.getState().GeneratedNonFixedEventsReducer;
+	return new Promise((resolve) => {
+		data.schoolEvents.forEach(event  => {
+			let startDateTime = new Date(event.start.dateTime);
+			let endDateTime = new Date(event.end.dateTime);
+			let day = startDateTime.getDay();
+			let start =  startDateTime.getHours();
+			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let chunks = end - start;
+			
+			let obj = {
+				day,
+				chunks,
+				start
+			};
+			data.school.push(obj);
 		});
 
-		resolve();
+		data.fixedEvents.forEach(event  => {
+			let startDateTime = new Date(`${event.startDate} ${event.startTime}`); 
+			let endDateTime = new Date(`${event.endDate} ${event.endTime}`); 
+			let day = startDateTime.getDay();
+			let start =  startDateTime.getHours();
+			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let chunks = end - start;
+			
+			let obj = {
+				day,
+				chunks,
+				start
+			};
+			data.fixed.push(obj);
+		});
+
+		data.aiEvents[0].forEach(event  => {
+			let startDateTime = new Date(event.start.dateTime);
+			let endDateTime = new Date(event.end.dateTime);
+			let day = startDateTime.getDay();
+			let start =  startDateTime.getHours();
+			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let chunks = end - start;
+			
+			let obj = {
+				day,
+				chunks,
+				start
+			};
+			data.ai[0].push(obj);
+		});
+		resolve(data);
 	});
 };
 
@@ -228,15 +314,19 @@ export const generateSchedule = () => {
  * @param {Object} event state object of the event
  */
 async function ItterateOccurence(event) {
+	
 	let testedDates = [];
 	let startDayTime = 8;
 	let endDayTime = 22;
+	let promises = [];
 
 	for (let i = 0; i < event.occurrence; i++) {
+	
 		await findEmptySlots(startDayTime, endDayTime, event, testedDates).then(availableDate => {
-			storeNonFixedEvent(availableDate, event);
+			promises.push(storeNonFixedEvent(availableDate, event));
 		});
-	}	
+	}
+	return Promise.all(promises);	
 }
 
 /**
@@ -250,7 +340,7 @@ async function ItterateOccurence(event) {
 function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
 	let calendarID = store.getState().CalendarReducer.id;
 	let obj = {};
-	obj.timeZone = 'EST';
+	obj.timeZone = 'UTC';
 	obj.items = [{'id': calendarID}];
 
 	return new Promise( async function(resolve) {
@@ -263,9 +353,10 @@ function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
 			let eventMinutes = event.minutes; 
 
 			// Check if it is a specific Date Range
+			//
 			if(event.specificDateRange == false) endDate.setDate(startDate.getDate() + 7);
 			
-			// Check if the total duration must be dicided
+			// Check if the total duration must be divided
 			if (event.isDividable) {
 				let dividedDuration = divideDuration(event.hours, event.minutes, event.occurrence);
 		
@@ -275,36 +366,40 @@ function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
 
 			let randomStartTime = getRndInteger(startDayTime, endDayTime - eventHours);
 			let randomDay = getRndInteger(startDate.getDate(), endDate.getDate());
+
 			startDate.setHours(randomStartTime);
 			startDate.setDate(randomDay);
 			startDate = startDate.toISOString();
-
-			// If random generated startDate has already been tested, move to the next itteration
-			if (testedDates.includes(startDate)) continue;
 
 			let randomEndTime = randomStartTime + eventHours;
 			endDate.setHours(randomEndTime, eventMinutes);
 			endDate.setDate(randomDay);
 			endDate = endDate.toISOString();
 
+			// If random generated startDate has already been tested, move to the next itteration
+			if (testedDates.includes(`${startDate}${endDate}`)) continue;
+
 			obj.timeMin = startDate;
 			obj.timeMax = endDate;
-
+			//console.log('obj', obj);
 			// Call to google to check whether time conflicts with the specified generated startDate;
 			await getAvailabilities(obj).then(data => {
+				//console.log('data', data);
 				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
 				if (busySchedule.length > 0) {
 					console.log('slot already taken!');
-					testedDates.push(startDate);
+					testedDates.push(`${startDate}${endDate}`);
+					
 				} else {
 					console.log(`found a free slot! Pushing the event! ${randomStartTime}`);
 					available = true;
+					testedDates.push(`${startDate}${endDate}`);
 					resolve({startDate, endDate});
 				}
+				console.log('testedDates', testedDates);
 			});
 		}
 	});
-
 }
 
 /**
@@ -315,20 +410,27 @@ function findEmptySlots(startDayTime, endDayTime, event, testedDates) {
  */
 let storeNonFixedEvent = (availableDate, event) => {
 	//let calendarID = store.getState().CalendarReducer.id;
-	let obj = {
-		'end': {},
-		'start': {}
-	};
+	return new Promise( function(resolve) {
+		let obj = {
+			'end': {},
+			'start': {}
+		};
 
-	obj.end.timeZone = 'EST';
-	obj.start.timeZone = 'EST';
-	obj.summary = event.title;
-	obj.location = event.location;
-	obj.description = event.description;
-	obj.end.dateTime = availableDate.endDate;
-	obj.start.dateTime = availableDate.startDate;
-
-	store.dispatch(addGeneratedNonFixedEvent(obj));
+		obj.end.timeZone = 'UTC';
+		obj.start.timeZone = 'UTC';
+		obj.summary = event.title;
+		obj.location = event.location;
+		obj.description = event.description;
+		obj.end.dateTime = availableDate.endDate;
+		obj.start.dateTime = availableDate.startDate;
+	
+		store.dispatch(addGeneratedNonFixedEvent(obj));
+		resolve();
+	});
+};
+export const insertGeneratedEvent = async (event) => {
+	let calendarID = store.getState().CalendarReducer.id;
+	return await insertEvent(calendarID,event,{});	
 };
 
 /**

@@ -6,7 +6,8 @@ import { calendarEventColors, calendarEventColorsInside } from '../../../config'
 import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
-import { data as scheduleInfo } from '../../scheduleInfo';
+import { eventsToScheduleSelectionData } from '../../services/service';
+import { store } from '../../store';
 import { scheduleSelectionStyle as styles, black } from '../../styles';
 
 export const containerPadding = 10;
@@ -61,7 +62,7 @@ class ScheduleEvent extends React.Component {
 			left: day * width + 1,
 			top: ((start - startOffset)* lineSpace + chunks * lineThickness) / timeInterval + lineThickness + 1,
 			color,
-			colorInside,
+			colorInside
 		};
 	}
 
@@ -112,24 +113,26 @@ class Schedule extends React.Component {
 		this.state = {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
-			showShadow: true
+			showShadow: true,
+			hours: [],
+			startOffset: 0,
+			timeInterval: 0
 		};
 	}
-
-	componentWillMount() {
-		this.createTimes();
+	componentWillReceiveProps(props) {
+		//console.log('props.data', props.data);
+		this.createTimes(props.data);
 	}
 
 	/**
 	 * Creates the time intervals between two lines according to the events that are present in the calendar
 	 */
-	createTimes = () => {
+	createTimes = (data) => {
 		let hours = [];
-
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
 		let latestHour = 12;
-		Object.entries(scheduleInfo).map((i, index) => {
+		Object.entries(data).map((i, index) => {
 			if (index === 2) {
 				i[1] = i[1][this.props.id];
 			}
@@ -147,7 +150,6 @@ class Schedule extends React.Component {
 				}
 			});
 		});
-
 		// If the range of the earliest and latest hours divided by the number of lines 
 		// is odd, change it to be event
 		let interval = (latestHour - earliestHour);
@@ -184,7 +186,6 @@ class Schedule extends React.Component {
 				count ++;
 			}
 		}		
-
 		// Saves the information in the state
 		this.setState({
 			hours,
@@ -224,7 +225,7 @@ class Schedule extends React.Component {
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' Schedule', id);
+					this.props.nextScreen(ordinal + ' Schedule', id, data);
 				}} 
 				onPressIn={() =>{
 					this.setState({
@@ -297,16 +298,18 @@ class Schedule extends React.Component {
 							}
 
 							{ 
-								data.ai[id].map((info, key) => {
-									return  <ScheduleEvent key={key} 
-										showShadow={showShadow} 
-										chunks={info.chunks} 
-										day={info.day} 
-										start={info.start} 
-										kind='ai' 
-										timeInterval={timeInterval} 
-										startOffset={startOffset} />;
-								})
+								data.ai.length !== 0 ?
+									data.ai[id].map((info, key) => {
+										return  <ScheduleEvent key={key} 
+											showShadow={showShadow} 
+											chunks={info.chunks} 
+											day={info.day} 
+											start={info.start} 
+											kind='ai' 
+											timeInterval={timeInterval} 
+											startOffset={startOffset} />;
+									})
+									: null
 							}
 
 							<View style={styles.hoursTextContainer}>
@@ -345,13 +348,29 @@ class ScheduleSelection extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			data: {
+				school: [],
+				fixed: [],
+				ai: [[]]
+			}
+		};
 
 		// Updates the navigation location in redux
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
+		this.eventsToScheduleSelectionService();
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	eventsToScheduleSelectionService = () => {
+		eventsToScheduleSelectionData().then((data) => {
+			console.log('data for mini calendar', data);
+			console.log('store', store.getState().GeneratedNonFixedEventsReducer);
+			this.setState({data});
+		});
 	}
 
 
@@ -383,10 +402,11 @@ class ScheduleSelection extends React.Component {
 	 * 
 	 * @param {String} title The header title for the next screen
 	 * @param {Integer} index The index of the selected school schedule
+	 * @param {Object} data The data  of all events to be displaced on TutorialScheduleSelectionDetails screen
 	 */
-	nextScreen = (title, index) => {
+	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title});
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data});
 	}
 	
 	/**
@@ -400,6 +420,7 @@ class ScheduleSelection extends React.Component {
 
 	render() {
 		return(
+
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
@@ -409,13 +430,22 @@ class ScheduleSelection extends React.Component {
 						<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
 
 						{ 
-							scheduleInfo.ai.map((ai, key) => {
+							this.state.data.ai.map((ai, key) => {
 								return <Schedule nextScreen={this.nextScreen} 
-									data={scheduleInfo} 
+									data={this.state.data} 
 									key={key} 
 									id={key} 
 									numOfLines={6} />;
 							})
+						}
+
+						{
+							this.state.data.ai.length === 0 ? 
+								<Schedule nextScreen={this.nextScreen} 
+									data={this.state.data} 
+									id={0}
+									numOfLines={6} /> 
+								: null
 						}
 					</View>
 				</ScrollView>
