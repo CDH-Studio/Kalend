@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { InsertFixedEvent } from '../../services/service';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
 const priorityLevels = {
 	0: 'Low',
