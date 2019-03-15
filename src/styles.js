@@ -1,20 +1,21 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Header } from 'react-navigation';
-import { HEIGHT } from './components/TutorialStatus';
-import { getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
+import { containerPadding, lineThickness, lineColor, lineSpace, lineViewHorizontalPadding, lineViewLeftPadding } from '../src/components/screens/ScheduleSelection';
+import { containerPaddingDetails } from '../src/components/screens/ScheduleSelectionDetails';
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1D84B5'; //#1473E6 
-export const statusBlueColor = '#0A2239'; //#105DBA
-export const dark_blue = '#153d73'; //#0E4BAA
+export const blue = '#1D84B5';
+export const statusBlueColor = '#00000040';
+export const dark_blue = '#153d73';
 export const red = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {
-		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - 90, 
+		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT*2), 
 		marginHorizontal: '5%'
 	}
 });
@@ -91,7 +92,7 @@ export const welcomeStyles = StyleSheet.create({
 
 	image: {
 		width: 320,
-		height: 320,
+		height: 320
 	},
 
 	text: {
@@ -124,7 +125,7 @@ export const welcomeStyles = StyleSheet.create({
 		backgroundColor: 'rgba(0, 0, 0, .2)',
 		borderRadius: 20,
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 
 	icon: {
@@ -141,232 +142,6 @@ export const welcomeStyles = StyleSheet.create({
 	container: {
 		flex: 1
 	}
-});
-
-export const tutorialStatusStyles = StyleSheet.create({
-	section: {
-		position: 'absolute',
-		bottom: 0,
-		left: 0,
-		right: 0,
-		paddingVertical: HEIGHT / 2 + 6,
-		paddingBottom: ifIphoneX() ? 30 : 20,
-	},
-
-	sectionDots: {
-		position: 'absolute',
-		width: '100%',
-		paddingTop: 20,
-		alignItems: 'center',
-	},
-
-	sectionIconRow: {
-		flexDirection: 'row',
-		marginLeft: 10,
-	},
-
-	sectionIcon: {
-		width: 20,
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		marginBottom: ifIphoneX() ? 17 : 7,
-		right: 0,
-		bottom: 0,
-	},
-
-	skipButtonText: {
-		fontFamily: 'Raleway-SemiBold',
-		paddingHorizontal: 20,
-		marginBottom: 10,
-		fontSize: 15,
-		color: 'white',
-	},
-
-	skipButton: {
-		position: 'absolute',
-	}
-});
-
-export const cameraRollImageStyles = StyleSheet.create({
-	image: {
-		width: Dimensions.get('window').width/3 - 14,
-		height: Dimensions.get('window').width/3 - 14,
-		borderRadius: 5,
-		backgroundColor: black,
-	},
-
-	touch: {
-		margin: 5,
-		borderRadius: 5,
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-	},
-
-	circleIcon: {
-		position: 'absolute', 
-		bottom: -15, 
-		right: -15, 
-		padding: 5,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 20
-	},
-
-	checkIcon: {
-		position: 'absolute', 
-		bottom: -10, 
-		right: -10, 
-		padding: 5,
-	},
-
-	shadow : {
-		backgroundColor:'#232323',
-		position:'absolute', 
-		opacity: 0.4
-	}
-});
-
-export const scheduleCreateStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-		height: '130%' //Fixes pattern bug
-	},
-
-	surface: {
-		padding: 8,
-		height: 110,
-		width: Dimensions.get('window').width * 0.8,
-		borderRadius: 4,
-		justifyContent: 'center',
-		elevation: 3,
-	},
-
-	title: {
-		fontSize: 20,
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center'
-	},
-
-	subtitle: {
-		fontFamily: 'Raleway-Regular',
-		textAlign: 'center',
-		paddingTop: 5,
-		paddingBottom: 10
-	},
-
-	progressBar: {
-		alignSelf:'center'
-	}
-});
-
-export const selectPictureStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-		width: '100%',
-		height: '130%', //Fixes pattern bug
-	},
-
-	imageGrid: {
-		padding: 5,
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'center',
-		paddingBottom: 88 + 5
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		right: 0,
-		bottom: 0,
-	},
-
-	content: {
-		flex: 1,
-	},
-
-	scroll: {
-		paddingTop: 88,
-	},
-
-	emptyText: {
-		color: white, 
-		padding: 20, 
-		fontFamily: 'Raleway-Regular', 
-		fontSize: 17, 
-		textAlign: 'center'
-	},
-	
-	emptyView: {
-		alignItems: 'center', 
-		padding: 20, 
-		height: Dimensions.get('window').height*0.85, 
-		justifyContent: 'center'
-	}
-});
-
-export const takePictureStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		backgroundColor: black
-	},
-
-	preview: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		alignItems: 'center'
-	},
-
-	capture: {
-		flex: 0,
-		padding: 15,
-		borderRadius: 50,
-		margin: 20,
-		alignSelf: 'center',
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-	},
-
-	icon: {
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: {width: -1, height: 1},
-		textShadowRadius: 10
-	}, 
-	
-	buttonContainer: { 
-		justifyContent: 'center', 
-		alignItems: 'center',
-		position: 'absolute',
-		right: 0,
-		left: 0,
-		bottom: 0 
-	},
 });
 
 export const homeStyles = StyleSheet.create({
@@ -434,49 +209,38 @@ export const homeStyles = StyleSheet.create({
 
 export const schoolScheduleStyles = StyleSheet.create({
 	container: {
-		flex: 1,
-		width: '100%',
-		height: '130%' /** Fixes pattern bug*/
+		flex: 1
 	},
 
 	content: {
 		flex: 1,
-		justifyContent: 'space-evenly'
-	},
-
-	shadowIcon : {
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: { width: -1, height: 1 },
-		textShadowRadius: 20
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingHorizontal: 10
 	},
 
 	instruction: {
 		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: 50
 	},
 
 	text: {
-		width: 220,
+		width: 190,
 		paddingLeft: 15,
 		fontFamily: 'Raleway-Regular',
-		color: white,
-		fontSize: 20,
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: { width: -1, height: 1 },
-		textShadowRadius: 20
+		color: gray,
+		fontSize: 20
 	},
 
 	button: {
-		alignItems: 'center',
-		marginTop: -100
+		alignItems: 'center'
 	},
 
 	buttonSelect: {
 		borderRadius: 12,
-		backgroundColor: white,
-		padding: 17,
-		paddingVertical: 21.15,
+		backgroundColor: blue,
+		padding: 20,
 		alignItems: 'center',
 		width: 300,
 		elevation: 4
@@ -485,16 +249,13 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: blue,
-		
+		color: white
 	},
 
 	buttonTake: {
 		borderRadius: 12,
-		backgroundColor: 'transparent',
-		borderWidth: 3,
-		borderColor: white,
-		padding: 17,
+		backgroundColor: dark_blue,
+		padding: 20,
 		alignItems: 'center',
 		marginTop: 20,
 		width: 300,
@@ -504,30 +265,165 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonTakeText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: white,
-		fontWeight:'500',
-		textShadowColor: 'rgba(0, 0, 0, 0.40)',
-		textShadowOffset: { width: -1, height: 1 },
-		textShadowRadius: 20
+		color: white
 	},
 
 	manual: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: 20
+		textAlign: 'center',
+		marginTop: 40
 	},
 
 	textManual: {
 		fontFamily: 'Raleway-Regular',
-		color: white,
-		fontSize: 15,
+		color: gray,
+		fontSize: 16
 	},
 
 	buttonManual: {
 		fontFamily: 'Raleway-SemiBold',
-		color: white,
-		fontSize: 15,
+		color: gray,
+		fontSize: 16
 	}
+});
+
+export const selectPictureStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: dark_blue
+	},
+
+	imageGrid: {
+		padding: 5,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		paddingBottom: 88 + 5,
+		paddingTop: getStatusBarHeight() + Header.HEIGHT
+	},
+
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		right: 0,
+		bottom: 0
+	},
+
+	content: {
+		flex: 1
+	},
+
+	emptyText: {
+		color: white, 
+		padding: 20, 
+		fontFamily: 'Raleway-Regular', 
+		fontSize: 17, 
+		textAlign: 'center'
+	},
+	
+	emptyView: {
+		alignItems: 'center', 
+		padding: 20, 
+		height: Dimensions.get('window').height*0.85, 
+		justifyContent: 'center'
+	}
+});
+
+export const cameraRollImageStyles = StyleSheet.create({
+	image: {
+		width: Dimensions.get('window').width/3 - 14,
+		height: Dimensions.get('window').width/3 - 14,
+		borderRadius: 5,
+		backgroundColor: black
+	},
+
+	touch: {
+		margin: 5,
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.8,
+				shadowRadius: 2  
+			},
+			android: {
+				elevation: 5
+			},
+		}),
+	},
+
+	circleIcon: {
+		position: 'absolute', 
+		bottom: -15, 
+		right: -15, 
+		padding: 5,
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 20
+	},
+
+	checkIcon: {
+		position: 'absolute', 
+		bottom: -10, 
+		right: -10, 
+		padding: 5
+	},
+
+	shadow : {
+		backgroundColor:'#232323',
+		position:'absolute', 
+		opacity: 0.4
+	}
+});
+
+export const takePictureStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		backgroundColor: black
+	},
+
+	preview: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+
+	capture: {
+		flex: 0,
+		padding: 15,
+		borderRadius: 50,
+		margin: 20,
+		alignSelf: 'center',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.8,
+				shadowRadius: 2  
+			},
+			android: {
+				elevation: 5
+			},
+		}),
+	},
+
+	icon: {
+		textShadowColor: 'rgba(0, 0, 0, 0.40)',
+		textShadowOffset: {width: -1, height: 1},
+		textShadowRadius: 10
+	}, 
+	
+	buttonContainer: { 
+		justifyContent: 'center', 
+		alignItems: 'center',
+		position: 'absolute',
+		right: 0,
+		left: 0,
+		bottom: 0 
+	},
 });
 
 export const schoolScheduleCreationStyles = StyleSheet.create({
@@ -536,8 +432,7 @@ export const schoolScheduleCreationStyles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
-		width: '100%',
-		height: '130%' //Fixes pattern bug
+		backgroundColor: dark_blue
 	},
 
 	surface: {
@@ -546,7 +441,7 @@ export const schoolScheduleCreationStyles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		elevation: 3,
+		elevation: 3
 	},
 
 	title: {
@@ -581,7 +476,7 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	text: {
-		width: 210,
+		width: 185,
 		paddingRight: 15,
 		fontFamily: 'Raleway-Regular',
 		color: gray,
@@ -597,7 +492,8 @@ export const courseStyles = StyleSheet.create({
 
 	errorEndTime: {
 		color: 'red',
-		fontSize: 12
+		fontSize: 12,
+		paddingLeft: 5
 	},
 
 	textInput: {
@@ -605,7 +501,7 @@ export const courseStyles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'flex-end',
 		marginRight: 5,
-		height: 40
+		paddingVertical: 5
 	},
 
 	textInputText: {
@@ -619,21 +515,27 @@ export const courseStyles = StyleSheet.create({
 		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 10,
+		marginLeft: 10
+	},
+
+	dayOfWeekSection: {
+		flexDirection: 'row',
+		alignItems: 'flex-end',
+		marginLeft: 5
 	},
 
 	dayOfWeekBorder: {
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
-		width: '60%',
-		marginLeft: 10,
+		width: 150,
+		marginLeft: 5
 	},
 
 	dayOfWeekTitle: {
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
-		marginRight: 5
+		marginRight: 20
 	},
 
 	blueTitle: {
@@ -646,14 +548,19 @@ export const courseStyles = StyleSheet.create({
 	dayOfWeekValues:{
 		color: gray,
 		height: 40,
-		width: '105%',
+		width: '110%',
 		marginLeft: -5,
 		marginBottom:-8
 	},
 
+	timeSection: {
+		paddingVertical: 5
+	},
+
 	time: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingLeft: 5
 	},
 
 	...snackbarStyle
@@ -664,21 +571,17 @@ export const fixedEventStyles = StyleSheet.create({
 		flex: 1
 	},
 
-	scrollView: {
-		flex: 1,
-	},
-
 	content: {
 		flex: 1,
 		justifyContent: 'space-evenly',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginBottom: 20
 	},
 
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center',
-		paddingBottom: -200
+		alignItems: 'center'
 	},
 
 	errorTitle: {
@@ -708,7 +611,7 @@ export const fixedEventStyles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'flex-end',
 		marginRight: 5,
-		height: 40
+		paddingVertical: 5
 	},
 	
 	textInputText: {
@@ -722,7 +625,7 @@ export const fixedEventStyles = StyleSheet.create({
 		borderBottomColor: '#D4D4D4',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 
 	blueTitle: {
@@ -739,12 +642,12 @@ export const fixedEventStyles = StyleSheet.create({
 
 	empty: {
 		width:65.8,
-		opacity:0
+		opacity: 0
 	},
 	
 	timeSection: {
 		alignItems: 'center',
-		marginBottom: -20
+		marginTop: 10
 	},
 
 	allDay: {
@@ -764,7 +667,6 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	recurrence:{
-		height: 40,
 		width: '105%',
 		marginLeft: -5,
 		marginBottom: -8,
@@ -781,14 +683,14 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	scrollView: {
 		flex: 1,
-		paddingHorizontal: 15,
-		marginBottom: 20,
+		marginBottom: 20
 	},
 
 	content: {
 		flex: 1,
 		justifyContent:'space-evenly',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginBottom: 20
 	},
 
 	instruction: {
@@ -798,7 +700,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	instructionText: {
-		width: 205,
+		width: 190,
 		marginLeft: 15,
 		fontFamily: 'Raleway-Regular',
 		color: gray,
@@ -808,24 +710,27 @@ export const nonFixedEventStyles = StyleSheet.create({
 	errorTitle: {
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 40
+		marginLeft: 40,
+		paddingBottom: 5
 	},
 
 	errorEndDate: {
 		color: 'red',
 		fontSize: 12,
-		alignSelf: 'flex-start'
+		alignSelf: 'flex-start',
+		paddingBottom: 5
 	},
 	
 	errorDuration: {
 		color: 'red',
-		fontSize: 12
+		fontSize: 12,
+		paddingBottom: 5
 	},
 	textInput: {
 		flexDirection: 'row',
 		alignItems: 'flex-end',
 		marginRight: 5,
-		height: 40
+		paddingVertical: 5
 	},
 
 	textInputText: {
@@ -839,7 +744,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
 		width: '87%',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 
 	sectionTitle: {
@@ -853,15 +758,13 @@ export const nonFixedEventStyles = StyleSheet.create({
 	blueTitle: {
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 17,
-		width: 88
+		fontSize: 17
 	},
 
-	blueTitleLong: {
-		color: dark_blue,
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 17,
-		width: 200
+	optionDate: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 15,
+		color: gray
 	},
 
 	timeSection: {
@@ -872,20 +775,30 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginBottom: 5
+		paddingVertical: 5
 	},
 
-	questionLayout: {
+	dateRangeCol: {
+		flexDirection: 'column'
+	},
+
+	date: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 
-	duration: {
+	questionLayout: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginBottom: 5
+		paddingVertical: 5
+	},
+
+	duration: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingVertical: 5
 	},
 
 	timePicker: {
@@ -895,13 +808,13 @@ export const nonFixedEventStyles = StyleSheet.create({
 
 	switch:{
 		flexDirection:'row',
-		alignItems:'center'
+		alignItems:'center',
+		paddingVertical: 5
 	},
 
 	optionsText: {
 		color: gray,
-		fontFamily: 'OpenSans-Regular',
-		marginBottom: 5
+		fontFamily: 'OpenSans-Regular'
 	},
 
 	...snackbarStyle
@@ -912,21 +825,20 @@ export const unavailableHoursStyles = StyleSheet.create({
 		flex: 1
 	},
 
-	scrollView: {
-		flex: 1,
-	},
-
 	content: {
 		flex: 1,
-		justifyContent: 'space-evenly',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginTop: getStatusBarHeight()
 	},
 
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center',
-		paddingTop: 20
+		alignItems: 'center'
+	},
+
+	hoursView: {
+		paddingVertical: 20
 	},
 
 	errorEndTime: {
@@ -937,7 +849,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 	},
 
 	text: {
-		width: 240,
+		width: 200,
 		paddingRight: 15,
 		fontFamily: 'Raleway-Regular',
 		color: gray,
@@ -969,9 +881,16 @@ export const unavailableHoursStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
+	rowTime: {
+		flexDirection:'row',
+		alignItems: 'center',
+		width: 155
+	},
+
 	type: {
 		fontSize: 15,
-		fontFamily: 'Raleway-SemiBold'
+		fontFamily: 'Raleway-SemiBold',
+		paddingRight: 5
 	},
 
 	timeWidth: {
@@ -981,20 +900,19 @@ export const unavailableHoursStyles = StyleSheet.create({
 	manual: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		textAlign:'center',
-		paddingTop: 20
+		textAlign:'center'
 	},
 
 	textManual: {
 		fontFamily: 'Raleway-Regular',
 		color: gray,
-		fontSize: 15,
+		fontSize: 15
 	},
 
 	buttonManual: {
 		fontFamily: 'Raleway-SemiBold',
 		color: gray,
-		fontSize: 15,
+		fontSize: 15
 	},
 
 	...bottomButtonsStyles
@@ -1006,7 +924,7 @@ export const reviewEventStyles = StyleSheet.create({
 	},
 
 	scrollView: {
-		flex: 1,
+		flex: 1
 	},
 
 	content: {
@@ -1050,10 +968,10 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
-				shadowRadius: 3,    
+				shadowRadius: 3  
 			},
 			android: {
-				elevation: 4,
+				elevation: 4
 			},
 		}),
 	},
@@ -1106,10 +1024,10 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.6,
-				shadowRadius: 7,    
+				shadowRadius: 7  
 			},
 			android: {
-				elevation: 4,
+				elevation: 4
 			},
 		}),
 	},
@@ -1125,7 +1043,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'flex-end',
 		paddingHorizontal: 15,
-		paddingVertical: 10,
+		paddingVertical: 10
 	},
 
 	modalInfoDate: {
@@ -1209,7 +1127,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: white,
+		backgroundColor: white
 	},
 
 	actionIconModal: {
@@ -1260,6 +1178,153 @@ export const eventOverviewStyles = StyleSheet.create({
 	}
 });
 
+export const scheduleSelectionStyle = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: dark_blue
+	},
+
+	content: {
+		paddingHorizontal: containerPadding,
+		marginTop: getStatusBarHeight(),
+	},
+
+	description: {
+		color: gray,
+		fontFamily: 'Raleway-Regular',
+	},
+
+	hoursTextContainer: {
+		flexDirection: 'column', 
+		justifyContent: 'space-between', 
+		position: 'absolute',
+		paddingBottom: 10,
+		marginTop: -13.5,
+		marginLeft: -22.5,
+		alignItems: 'center'
+	},
+
+	hoursText: {
+		paddingVertical: Platform.OS === 'ios' ? 4.6 : 3.4, 
+		opacity: 0.5
+	}, 
+
+	thickLine: {
+		borderBottomColor: lineColor,
+		borderBottomWidth: lineThickness
+	},
+
+	weekLetters: {
+		fontFamily: 'Raleway-Medium', 
+		fontSize: 17, 
+		color: gray
+	}, 
+
+	weekLetterContainer: {
+		flexDirection: 'row', 
+		justifyContent: 'space-between', 
+		padding: 5, 
+		paddingHorizontal: 20 
+	},
+
+	card: {
+		backgroundColor: white, 
+		borderRadius: 3, 
+		paddingTop: 5, 
+		paddingHorizontal: lineViewHorizontalPadding,
+		paddingLeft: lineViewHorizontalPadding + lineViewLeftPadding
+	},
+
+	title: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 18, 
+		marginBottom: 10
+	}, 
+
+	scheduleContainer: {
+		paddingTop: 20
+	},
+
+	line: {
+		borderBottomColor: lineColor,
+		borderBottomWidth: lineThickness,
+		opacity: 0.3,
+		marginTop: lineSpace
+	}
+});
+
+export const scheduleSelectionDetailsStyle = StyleSheet.create({
+	container: {
+		width: '100%', 
+		height: '100%'
+	},
+
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		right: 0,
+		bottom: 0
+	},
+	
+	content: {
+		padding: containerPaddingDetails
+	},
+
+	dayContainer: {
+		marginBottom: 15
+	},
+
+	dayTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 20,
+		marginVertical: 7,
+		color: gray
+	},
+
+	eventContainer: {
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 5
+			},
+		}),
+		backgroundColor: white, 
+		borderRadius: 5, 
+		marginVertical: 7,
+		display: 'flex',
+		flexDirection: 'row'
+	},
+
+	eventData: {
+		padding: 7
+	},
+
+	eventTitle: {
+		fontFamily: 'Raleway-Bold',
+		color: gray
+	},
+
+	eventTime : {
+		color: gray
+	},
+
+	eventLocation : {
+		color: gray
+	},
+
+	scheduleEventColor: {
+		width: 20,
+		borderBottomLeftRadius: 5, 
+		borderTopLeftRadius: 5
+	}
+});
+
 const DashboardButton = StyleSheet.create({
 	button: {
 		...Platform.select({
@@ -1267,10 +1332,10 @@ const DashboardButton = StyleSheet.create({
 				shadowColor: '#000000',
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.4,
-				shadowRadius: 2,    
+				shadowRadius: 2
 			},
 			android: {
-				elevation: 4,
+				elevation: 4
 			},
 		}),
 		backgroundColor: blue, 

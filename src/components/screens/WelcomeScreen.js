@@ -3,10 +3,10 @@ import { View, Text, StatusBar } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import updateNavigation from '../NavigationHelper';
 import { slides, statusBarDark } from '../../../config';
-import { welcomeStyles as styles } from '../../styles';
 import { LoginNavigator } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import { welcomeStyles as styles } from '../../styles';
 
 const slidesIconSize = 200;
 const nextIconSize = 24;

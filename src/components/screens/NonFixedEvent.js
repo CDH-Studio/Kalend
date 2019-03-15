@@ -4,16 +4,16 @@ import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Snackbar } from 'react-native-paper';
+import { Snackbar, RadioButton } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import updateNavigation from '../NavigationHelper';
-import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
-import { nonFixedEventStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
 import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor } from '../../styles';
 
-const viewHeight = 780.5714111328125;
+const viewHeight = 843.4285888671875;
 
 /**
  * Permits the user to add Non-Fixed events i.e. events that can be moved around in the calendar
@@ -23,7 +23,7 @@ class NonFixedEvent extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
 		headerStyle: {
-			backgroundColor: dark_blue,
+			backgroundColor: white
 		}
 	});
 
@@ -31,14 +31,39 @@ class NonFixedEvent extends React.Component {
 		super(props);
 
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
-		let containerHeight = null;
-		
-		if (viewHeight < containerHeightTemp) {
-			containerHeight = containerHeightTemp;
-		}
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
 		this.state = { 
-			containerHeight
+			containerHeight,
+
+			title: '',
+			titleValidated: true,
+
+			specificDateRange: false,
+			startDate: new Date().toDateString(),
+			disabledStartDate: false,
+			minStartDate: new Date().toDateString(),
+			maxStartDate: new Date(8640000000000000),
+			endDate: new Date().toDateString(),
+			minEndDate: this.startDate,
+			disabledEndDate : true,
+			endDateValidated: true,
+
+			hours: 0,
+			minutes: 0,
+			durationValidated: true,
+			isDividable: false,
+			occurence: 1,
+			isRecurrent: false,
+
+			priority: 0.5,
+			location: '',
+			description: '',
+
+			showTutShadow: true,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -153,7 +178,8 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			occurrence: 1,
+			occurence: 1,
+			isRecurrent: false,
 
 			priority: 0.5,
 			location: '',
@@ -171,7 +197,6 @@ class NonFixedEvent extends React.Component {
 
 		let addEventButtonText;
 		let addEventButtonFunction;
-		let paddingBottomContainer = 0;
 		let errorTitle;
 		let errorEndDate;
 		let errorDuration;
@@ -183,7 +208,7 @@ class NonFixedEvent extends React.Component {
 			errorTitle = null;
 		}
 
-		if(this.state.specificDateRange === true) {
+		if (this.state.specificDateRange === true) {
 			if (!this.state.endDateValidated) {
 				errorEndDate = <Text style={styles.errorEndDate}>Please select a Start and End Date.</Text>;
 			} else {
@@ -208,8 +233,6 @@ class NonFixedEvent extends React.Component {
 		} else {
 			addEventButtonText = 'Done';
 			addEventButtonFunction = this.nextScreen;
-
-			paddingBottomContainer = null;
 			showNextButton = false;
 		}
 
@@ -220,7 +243,7 @@ class NonFixedEvent extends React.Component {
 				<ScrollView style={styles.scrollView}
 					ref='_scrollView'
 					scrollEventThrottle={100}>
-					<View style={[styles.content, {height: containerHeight, paddingBottom: paddingBottomContainer}]}>
+					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
 							<MaterialCommunityIcons name="face"
 								size={130}
@@ -251,14 +274,31 @@ class NonFixedEvent extends React.Component {
 
 							<View style={styles.timeSection}>
 								<View style={styles.dateRange}>
-									<Text style={styles.blueTitleLong}>Specific Date Range</Text>
+									<Text style={styles.blueTitle}>Dates</Text>
+									<View style={styles.dateRangeCol}>
+										<RadioButton.Group
+											onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
+											value={this.state.specificDateRange}>
 
-									<Switch trackColor={{false: 'lightgray', true: blue}}
-										ios_backgroundColor={'lightgray'}
-										thumbColor={this.state.specificDateRange ? dark_blue : 'darkgray'}
-										onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
-										value = {this.state.specificDateRange} />
+											<View style={styles.date}>
+												<Text style={styles.optionDate}>Week</Text>
+
+												<RadioButton value={false}
+													uncheckedColor={'lightgray'}
+													color={blue} />
+											</View>
+
+											<View style={styles.date}>
+												<Text style={[styles.optionDate, {width: 200}]}>Specific Date Range</Text>
+
+												<RadioButton value={true}
+													uncheckedColor={'lightgray'}
+													color={blue} />
+											</View>
+										</RadioButton.Group>
+									</View>
 								</View>
+								
 								
 								{this.state.specificDateRange ? /*To hide/show the date*/
 									<View>
@@ -275,8 +315,7 @@ class NonFixedEvent extends React.Component {
 													dateInput:{borderWidth: 0},
 													dateText:{
 														fontFamily: 'OpenSans-Regular',
-														color: !this.state.endDateValidated ? '#FF0000' : gray}}} 
-												placeholder={this.state.startDate} 
+														color: !this.state.endDateValidated ? '#FF0000' : gray}}}
 												format="ddd., MMM DD, YYYY" 
 												minDate={this.state.minStartDate} 
 												maxDate={this.state.maxStartDate}
@@ -302,8 +341,7 @@ class NonFixedEvent extends React.Component {
 													dateInput:{borderWidth: 0},
 													dateText:{fontFamily: 'OpenSans-Regular',
 														color: !this.state.endDateValidated ? '#ff0000' : gray,
-														textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}} 
-												placeholder={this.state.endDate} 
+														textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
 												format="ddd., MMM DD, YYYY" 
 												minDate={this.state.minEndDate}
 												confirmBtnText="Confirm" 
@@ -316,7 +354,7 @@ class NonFixedEvent extends React.Component {
 
 								<View>
 									<View style={styles.duration}>
-										<Text style={styles.blueTitle}>Duration</Text>
+										<Text style={[styles.blueTitle, {paddingTop: 14}]}>Duration</Text>
 
 										<View style={styles.timePicker}>
 											<NumericInput initValue = {this.state.hours}
@@ -351,7 +389,7 @@ class NonFixedEvent extends React.Component {
 								</View>
 
 								<View style={styles.switch}>
-									<Text style={[styles.blueTitle, {width:150}]}>Is Dividable</Text>
+									<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? 'Divide duration over date range?' : 'Divide duration over week?'}</Text>
 
 									<Switch trackColor={{false: 'lightgray', true: blue}}
 										ios_backgroundColor={'lightgray'}
@@ -361,20 +399,30 @@ class NonFixedEvent extends React.Component {
 								</View>
 
 								<View style={styles.questionLayout}>
-									<Text style={styles.blueTitleLong}>{this.state.specificDateRange ? 'Number of Occurences in Date Range' : 'Number of Occurences per Week'}</Text>
-
+									<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? 'Number of Times It Will Happen in Date Range' : 'Number of Times It Will Happen in Week'}</Text>
 
 									<NumericInput initValue={this.state.occurence}
 										value={this.state.occurence}
 										onChange={(occurence) => this.setState({occurence})}
-										minValue={0} 
+										minValue={1} 
 										leftButtonBackgroundColor={blue}
 										rightButtonBackgroundColor={blue}
 										rounded={true}
 										borderColor={'lightgray'}
 										textColor={gray}
-										iconStyle={{color: white}}  />
+										iconStyle={{color: white}} />
 								</View>
+								
+								{!this.state.specificDateRange ? 
+									<View style={styles.switch}>
+										<Text style={[styles.blueTitle, {width: 200}]}>Every Week?</Text>
+
+										<Switch trackColor={{false: 'lightgray', true: blue}}
+											ios_backgroundColor={'lightgray'}
+											thumbColor={this.state.isRecurrent ? dark_blue : 'darkgray'}
+											onValueChange={(isRecurrent) => this.setState({isRecurrent})}
+											value = {this.state.isRecurrent} />
+									</View> : null}
 							</View>
 						</View>
 
