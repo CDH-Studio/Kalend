@@ -681,16 +681,11 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flex: 1
 	},
 
-	scrollView: {
-		flex: 1,
-		marginBottom: 20
-	},
-
 	content: {
 		flex: 1,
 		justifyContent:'space-evenly',
 		paddingHorizontal: 20,
-		marginBottom: 20
+		marginBottom: 40
 	},
 
 	instruction: {

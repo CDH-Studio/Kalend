@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, ScrollView, Dimensions } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -458,191 +458,192 @@ class FixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
-				
-				<ScrollView style={styles.scrollView}
-					ref='_scrollView'
-					scrollEnabled={scrollable}
-					scrollEventThrottle={100}>
-					<View style={[styles.content, {height: containerHeight}]}>
-						<View style={styles.instruction}>
-							<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
-							
-							<MaterialCommunityIcons name="calendar-today"
-								size={130}
-								color={dark_blue}/>
+
+				<KeyboardAvoidingView 
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+					<ScrollView ref='_scrollView'
+						scrollEventThrottle={100}>
+						<View style={[styles.content, {height: containerHeight}]}>
+							<View style={styles.instruction}>
+								<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
+								
+								<MaterialCommunityIcons name="calendar-today"
+									size={130}
+									color={dark_blue}/>
+							</View>
+
+							<View>
+								<View style={styles.textInput}>
+									<MaterialCommunityIcons name="format-title"
+										size={30}
+										color={blue} />
+
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+										<TextInput style={styles.textInputText}
+											placeholder="Title" 
+											onChangeText={(title) => this.setState({title, titleValidated: true})}
+											value={this.state.title}/>
+									</View>
+								</View>
+
+								{errorTitle}
+							</View>
+
+							<View style={styles.timeSection}>
+								<View style={[styles.allDay, {width: containerWidth}]}>
+									<Text style={styles.blueTitle}>All-Day</Text>
+									<View style={styles.switch}>
+										<Switch trackColor={{false: 'lightgray', true: blue}} 
+											ios_backgroundColor={'lightgray'} 
+											thumbColor={this.state.allDay ? dark_blue : 'darkgray'} 
+											onValueChange={(allDay) => this.setState({
+												allDay: allDay, 
+												disabledStartTime: !this.state.disabledStartTime,
+												disabledEndTime: true,
+												endTimeValidated: true})} 
+											value = {this.state.allDay} />
+									</View>
+									<Text style={styles.empty}>empty</Text>
+								</View>
+
+								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
+									<Text style={styles.blueTitle}>Start</Text>
+									<DatePicker showIcon={false} 
+										date={this.state.startDate} 
+										mode="date" 
+										style={{width:140}}
+										customStyles={{
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular',
+												color: !this.state.endDateValidated ? '#ff0000' : gray}
+										}}
+										format="ddd., MMM DD, YYYY"
+										minDate={this.state.minStartDate}
+										maxDate={this.state.maxStartDate}
+										confirmBtnText="Confirm"
+										cancelBtnText="Cancel"
+										onDateChange={this.startDateOnDateChange} />
+										
+									<DatePicker showIcon={false} 
+										date={this.state.startTime} 
+										mode="time"
+										disabled={this.state.disabledStartTime}
+										style={{width:80}}
+										customStyles={{
+											disabled:{backgroundColor: 'transparent'}, 
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular',
+												color: gray,
+												opacity: this.state.allDay ? 0 : 1} 
+										}}
+										format="h:mm A" 
+										confirmBtnText="Confirm" 
+										cancelBtnText="Cancel" 
+										is24Hour={false}
+										onDateChange={this.startTimeOnDateChange}/>
+								</View>
+
+								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
+									<Text style={styles.blueTitle}>End</Text>
+									<DatePicker showIcon={false} 
+										date={this.state.endDate} 
+										mode="date" 
+										style={{width:140}}
+										disabled = {this.state.disabledEndDate}
+										customStyles={{
+											disabled:{backgroundColor: 'transparent'}, 
+											dateInput:{borderWidth: 0}, 
+											dateText:{
+												fontFamily: 'OpenSans-Regular', 
+												color: !this.state.endDateValidated || !this.state.endTimeValidated ? '#ff0000' : gray,
+												textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
+										format="ddd., MMM DD, YYYY" 
+										minDate={this.state.minEndDate}
+										confirmBtnText="Confirm" 
+										cancelBtnText="Cancel" 
+										onDateChange={this.endDateOnDateChange} />
+
+									<DatePicker showIcon={false} 
+										date={this.state.endTime} 
+										mode="time" 
+										disabled = {this.state.disabledEndTime}
+										style={{width:80}}
+										customStyles={{
+											disabled:{backgroundColor: 'transparent'}, 
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular',
+												opacity: this.state.allDay ? 0 : 1,
+												color: !this.state.endTimeValidated ? '#ff0000' : gray,
+												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+										}}
+										format="h:mm A" 
+										minDate={this.state.minEndTime}
+										confirmBtnText="Confirm" 
+										cancelBtnText="Cancel" 
+										is24Hour={false}
+										onDateChange={this.endTimeOnDateChange}/>
+								</View>
+
+								{errorEnd}
+							</View>
+
+							<View style={styles.description}>
+								<View style={styles.textInput}>
+									<MaterialIcons name="location-on"
+										size={30}
+										color={blue} />
+
+									<View style={styles.textInputBorder}>
+										<TextInput style={styles.textInputText} 
+											placeholder="Location" 
+											onChangeText={(location) => this.setState({location})} 
+											value={this.state.location}/>
+									</View>
+								</View>
+
+								<View style={styles.textInput}>
+									<MaterialCommunityIcons name="text-short"
+										size={30}
+										color={blue} />
+
+									<View style={styles.textInputBorder}>
+										<TextInput style={styles.textInputText} 
+											placeholder="Description" 
+											onChangeText={(description) => this.setState({description})} 
+											value={this.state.description}/>
+									</View>
+								</View>
+
+								<View style={styles.textInput}>
+									<Feather name="repeat"
+										size={30}
+										color={blue} />
+
+									<View style={styles.textInputBorder}>
+										{
+											Platform.OS === 'ios' ? 
+												<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
+												:	
+												<Picker style={styles.recurrence} 
+													selectedValue={this.state.recurrence} 
+													onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
+													<Picker.Item label="None" value="NONE" />
+													<Picker.Item label="Everyday" value="DAILY" />
+													<Picker.Item label="Weekly" value="WEEKLY" />
+													<Picker.Item label="Monthly" value="MONTHLY" />
+												</Picker>
+										}
+									</View>
+								</View>
+							</View>
+
+							<BottomButtons twoButtons={showNextButton}
+								buttonText={[addEventButtonText, 'Done']}
+								buttonMethods={[addEventButtonFunction, this.skip]} />
 						</View>
-
-						<View>
-							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="format-title"
-									size={30}
-									color={blue} />
-
-								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
-									<TextInput style={styles.textInputText}
-										placeholder="Title" 
-										onChangeText={(title) => this.setState({title, titleValidated: true})}
-										value={this.state.title}/>
-								</View>
-							</View>
-
-							{errorTitle}
-						</View>
-
-						<View style={styles.timeSection}>
-							<View style={[styles.allDay, {width: containerWidth}]}>
-								<Text style={styles.blueTitle}>All-Day</Text>
-								<View style={styles.switch}>
-									<Switch trackColor={{false: 'lightgray', true: blue}} 
-										ios_backgroundColor={'lightgray'} 
-										thumbColor={this.state.allDay ? dark_blue : 'darkgray'} 
-										onValueChange={(allDay) => this.setState({
-											allDay: allDay, 
-											disabledStartTime: !this.state.disabledStartTime,
-											disabledEndTime: true,
-											endTimeValidated: true})} 
-										value = {this.state.allDay} />
-								</View>
-								<Text style={styles.empty}>empty</Text>
-							</View>
-
-							<View style={[styles.rowTimeSection, {width: containerWidth}]}>
-								<Text style={styles.blueTitle}>Start</Text>
-								<DatePicker showIcon={false} 
-									date={this.state.startDate} 
-									mode="date" 
-									style={{width:140}}
-									customStyles={{
-										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular',
-											color: !this.state.endDateValidated ? '#ff0000' : gray}
-									}}
-									format="ddd., MMM DD, YYYY"
-									minDate={this.state.minStartDate}
-									maxDate={this.state.maxStartDate}
-									confirmBtnText="Confirm"
-									cancelBtnText="Cancel"
-									onDateChange={this.startDateOnDateChange} />
-									
-								<DatePicker showIcon={false} 
-									date={this.state.startTime} 
-									mode="time"
-									disabled={this.state.disabledStartTime}
-									style={{width:80}}
-									customStyles={{
-										disabled:{backgroundColor: 'transparent'}, 
-										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular',
-											color: gray,
-											opacity: this.state.allDay ? 0 : 1} 
-									}}
-									format="h:mm A" 
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									is24Hour={false}
-									onDateChange={this.startTimeOnDateChange}/>
-							</View>
-
-							<View style={[styles.rowTimeSection, {width: containerWidth}]}>
-								<Text style={styles.blueTitle}>End</Text>
-								<DatePicker showIcon={false} 
-									date={this.state.endDate} 
-									mode="date" 
-									style={{width:140}}
-									disabled = {this.state.disabledEndDate}
-									customStyles={{
-										disabled:{backgroundColor: 'transparent'}, 
-										dateInput:{borderWidth: 0}, 
-										dateText:{
-											fontFamily: 'OpenSans-Regular', 
-											color: !this.state.endDateValidated || !this.state.endTimeValidated ? '#ff0000' : gray,
-											textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
-									format="ddd., MMM DD, YYYY" 
-									minDate={this.state.minEndDate}
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									onDateChange={this.endDateOnDateChange} />
-
-								<DatePicker showIcon={false} 
-									date={this.state.endTime} 
-									mode="time" 
-									disabled = {this.state.disabledEndTime}
-									style={{width:80}}
-									customStyles={{
-										disabled:{backgroundColor: 'transparent'}, 
-										dateInput:{borderWidth: 0}, 
-										dateText:{fontFamily: 'OpenSans-Regular',
-											opacity: this.state.allDay ? 0 : 1,
-											color: !this.state.endTimeValidated ? '#ff0000' : gray,
-											textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
-									}}
-									format="h:mm A" 
-									minDate={this.state.minEndTime}
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									is24Hour={false}
-									onDateChange={this.endTimeOnDateChange}/>
-							</View>
-
-							{errorEnd}
-						</View>
-
-						<View style={styles.description}>
-							<View style={styles.textInput}>
-								<MaterialIcons name="location-on"
-									size={30}
-									color={blue} />
-
-								<View style={styles.textInputBorder}>
-									<TextInput style={styles.textInputText} 
-										placeholder="Location" 
-										onChangeText={(location) => this.setState({location})} 
-										value={this.state.location}/>
-								</View>
-							</View>
-
-							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="text-short"
-									size={30}
-									color={blue} />
-
-								<View style={styles.textInputBorder}>
-									<TextInput style={styles.textInputText} 
-										placeholder="Description" 
-										onChangeText={(description) => this.setState({description})} 
-										value={this.state.description}/>
-								</View>
-							</View>
-
-							<View style={styles.textInput}>
-								<Feather name="repeat"
-									size={30}
-									color={blue} />
-
-								<View style={styles.textInputBorder}>
-									{
-										Platform.OS === 'ios' ? 
-											<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
-											:	
-											<Picker style={styles.recurrence} 
-												selectedValue={this.state.recurrence} 
-												onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-												<Picker.Item label="None" value="NONE" />
-												<Picker.Item label="Everyday" value="DAILY" />
-												<Picker.Item label="Weekly" value="WEEKLY" />
-												<Picker.Item label="Monthly" value="MONTHLY" />
-											</Picker>
-									}
-								</View>
-							</View>
-						</View>
-
-						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Done']}
-							buttonMethods={[addEventButtonFunction, this.skip]} />
-					</View>
-				</ScrollView>
-
+					</ScrollView>
+				</KeyboardAvoidingView>
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 

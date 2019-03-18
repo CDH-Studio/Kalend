@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -240,8 +240,10 @@ class NonFixedEvent extends React.Component {
 			<View style={styles.container}>
 				<StatusBar backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.scrollView}
-					ref='_scrollView'
+				<KeyboardAvoidingView 
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+				<ScrollView ref='_scrollView'
 					scrollEventThrottle={100}>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
@@ -481,7 +483,7 @@ class NonFixedEvent extends React.Component {
 							buttonMethods={[addEventButtonFunction, this.skip]} />
 					</View>
 				</ScrollView>
-
+				</KeyboardAvoidingView>
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 

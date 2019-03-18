@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -314,6 +314,9 @@ class Course extends React.Component {
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor} />
 
+<KeyboardAvoidingView 
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
 				<ScrollView ref='_scrollView'>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.instruction}>
@@ -440,6 +443,7 @@ class Course extends React.Component {
 					</View>
 				</ScrollView>
 
+				</KeyboardAvoidingView>
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 
