@@ -494,7 +494,7 @@ class FixedEvent extends React.Component {
 									<View style={styles.switch}>
 										<Switch trackColor={{false: 'lightgray', true: blue}} 
 											ios_backgroundColor={'lightgray'} 
-											thumbColor={this.state.allDay ? dark_blue : 'darkgray'} 
+											thumbColor={(this.state.allDay && Platform.OS !== 'ios') ? dark_blue : null}
 											onValueChange={(allDay) => this.setState({
 												allDay: allDay, 
 												disabledStartTime: !this.state.disabledStartTime,

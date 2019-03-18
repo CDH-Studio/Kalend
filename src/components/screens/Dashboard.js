@@ -4,8 +4,10 @@ import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue } from '../../styles';
+import { dashboardStyles as styles, blue, gray } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import Popover from 'react-native-popover-view';
+import Feather from 'react-native-vector-icons/Feather';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -19,8 +21,21 @@ class Dashboard extends React.Component {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
+			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentDidMount() {
+		this.setState({isVisible: true});
+	}
+
+	showPopover = () =>{
+		this.setState({isVisible: true});
+	}
+	
+	closePopover = () => {
+		this.setState({isVisible: false});
 	}
 
 	render() {
@@ -31,7 +46,7 @@ class Dashboard extends React.Component {
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						backgroundColor={'#2d6986'} />
-	
+
 					<View style={styles.topProfileContainer}>
 
 						<Image style={styles.profileImage}
@@ -43,6 +58,7 @@ class Dashboard extends React.Component {
 					</View>
 
 					<TouchableOpacity style={styles.button}
+						ref={ref => this.touchable = ref}
 						onPress={() => {
 							this.props.navigation.navigate(ReviewEventRoute);
 						}}>
@@ -74,6 +90,15 @@ class Dashboard extends React.Component {
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />
 
+					<Popover popoverStyle={styles.tooltipView}
+						isVisible={this.state.isVisible}
+						fromView={this.touchable}
+						onClose={() => this.closePopover()}>
+						<Feather name="x"
+							size={30}
+							color={gray} />
+						<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
+					</Popover>
 				</View>
 			</Portal.Host>
 		);

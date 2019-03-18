@@ -1381,7 +1381,25 @@ export const dashboardStyles = StyleSheet.create({
 		fontSize: 16
 	},
 
-	...DashboardButton
+	tooltipText: {
+		padding: 10,
+		fontFamily: 'Raleway-Regular'
+	},
+
+	tooltipView: {
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.9,
+				shadowRadius: 2
+			},
+			android: {
+				elevation: 4
+			},
+		}),
+	},
+	...DashboardButton,
 });
 
 export const chatbotStyles = StyleSheet.create({

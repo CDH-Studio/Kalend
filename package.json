@@ -27,15 +27,18 @@
     "react-native-linear-gradient": "^2.5.3",
     "react-native-numeric-input": "^1.6.5",
     "react-native-paper": "^2.12.0",
+    "react-native-popover-view": "^1.0.18",
     "react-native-progress": "^3.5.0",
     "react-native-router-flux": "^4.0.6",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-vector-icons": "^6.2.0",
+    "react-native-walkthrough-tooltip": "^0.5.0",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
+    "rn-tooltip": "^1.1.2",
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
