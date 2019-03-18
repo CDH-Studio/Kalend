@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StatusBar, View, ScrollView } from 'react-native';
+import { Text, StatusBar, View, ScrollView, BackHandler } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { calendarEventColors } from '../../../config';
@@ -177,10 +177,19 @@ class ScheduleSelectionDetails extends React.Component {
 	componentWillMount() {
 		this.seperateEventsIntoDays(this.props.navigation.state.params.data);
 		this.setState({data: this.props.navigation.state.params.data});
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	handleBackButton = () => {
+		this.props.navigation.pop();
+		return true;
 	}
 
 	seperateEventsIntoDays = (data) =>{
-
 		const temp_days = {
 			'Sunday': [],
 			'Monday': [],

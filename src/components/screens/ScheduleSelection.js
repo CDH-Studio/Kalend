@@ -375,6 +375,7 @@ class ScheduleSelection extends React.Component {
 
 	handleBackButton = () => {
 		Alert.alert(
+			'',
 			'Are you sure you want to delete the created schedule?',
 			[
 				{
@@ -387,7 +388,7 @@ class ScheduleSelection extends React.Component {
 					},
 				},
 			],
-			{cancelable: false},
+			{cancelable: true},
 		);
 		return true;
 	}

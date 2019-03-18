@@ -50,6 +50,7 @@ class SchoolScheduleCreation extends React.Component {
 
 	handleBackButton = () => {
 		Alert.alert(
+			'',
 			'Are you sure you want to stop the schedule analyzing process?',
 			[
 				{
@@ -62,7 +63,7 @@ class SchoolScheduleCreation extends React.Component {
 					},
 				},
 			],
-			{cancelable: false},
+			{cancelable: true},
 		);
 		return true;
 	}
