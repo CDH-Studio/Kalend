@@ -423,7 +423,7 @@ class ScheduleSelection extends React.Component {
 
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle="dark-content"
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
 				<ScrollView >

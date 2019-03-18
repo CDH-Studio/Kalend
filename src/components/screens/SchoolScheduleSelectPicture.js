@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text } from 'react-native';
+import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text, Platform } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -188,7 +188,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 					
 				<ScrollView onScroll={this.scrollListener}>

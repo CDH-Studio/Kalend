@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text, StatusBar, Platform } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -94,7 +94,7 @@ class WelcomeScreen extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBarDark} />
 
 				<AppIntroSlider slides={slides} 

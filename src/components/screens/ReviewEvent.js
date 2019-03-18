@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -190,7 +190,7 @@ class ReviewEvent extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					barStyle="dark-content"
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}

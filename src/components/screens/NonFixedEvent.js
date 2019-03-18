@@ -239,7 +239,7 @@ class NonFixedEvent extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar backgroundColor={statusBlueColor} 
-					barStyle="dark-content"/>
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
 				<KeyboardAvoidingView 
 					behavior={Platform.OS === 'ios' ? 'padding' : null}

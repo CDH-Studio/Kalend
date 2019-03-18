@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, BackHandler, Alert, Text, View } from 'react-native';
+import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { generateNonFixedEvents, InsertCourseEventToCalendar, InsertFixedEventToCalendar } from '../../services/service';
@@ -111,7 +111,7 @@ class ScheduleCreation extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<Surface style={styles.surface}>

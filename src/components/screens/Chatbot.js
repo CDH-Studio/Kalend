@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, View, Platform } from 'react-native';
 import { chatbotStyles as styles } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
@@ -17,7 +17,7 @@ class Chatbot extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'#2d6986'} />
 			</View>
 		);

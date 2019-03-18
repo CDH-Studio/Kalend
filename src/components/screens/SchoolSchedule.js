@@ -70,7 +70,7 @@ class SchoolSchedule extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<View style={styles.content}>

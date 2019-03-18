@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, Image, View, Platform } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
@@ -45,7 +45,7 @@ class Dashboard extends React.Component {
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
-						barStyle="light-content"
+						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#2d6986'} />
 
 					<View style={styles.topProfileContainer}>

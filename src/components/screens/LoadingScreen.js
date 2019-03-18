@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Animated, Easing} from 'react-native';
+import { StatusBar, View, Animated, Easing, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
@@ -81,7 +81,7 @@ class LoadingScreen extends React.Component {
 					end={{ x: 0, y: 1 }}/>
 
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBarDark} />
 				
 				<View style={styles.animView}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { IconButton } from 'react-native-paper';
 import { logoffUser } from '../../actions';
@@ -27,7 +27,7 @@ class Settings extends React.Component {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'#2d6986'} />
 
 				<TouchableOpacity style={styles.button}

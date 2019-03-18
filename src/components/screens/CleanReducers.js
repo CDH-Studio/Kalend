@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { StatusBar, ScrollView, TouchableOpacity, Text, Platform } from 'react-native';
 import { cleanReducersStyles as styles, statusBlueColor, blue, dark_blue } from '../../styles';
 import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../../actions';
 import { LoginNavigator } from '../../constants/screenNames';
@@ -38,7 +38,7 @@ class CleanReducers extends React.Component {
 		return(
 			<ScrollView style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				{

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StatusBar, View, ScrollView, BackHandler } from 'react-native';
+import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { calendarEventColors } from '../../../config';
@@ -267,7 +267,7 @@ class ScheduleSelectionDetails extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle="dark-content"
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView onScroll={this.onScroll}>

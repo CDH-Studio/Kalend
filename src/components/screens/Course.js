@@ -313,7 +313,7 @@ class Course extends React.Component {
 			<View style={styles.container}>
 				<StatusBar translucent={true}
 					backgroundColor={statusBlueColor}
-					barStyle="dark-content" />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
 				<KeyboardAvoidingView 
 					behavior={Platform.OS === 'ios' ? 'padding' : null}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
+import { ScrollView, StatusBar, Text, View, Switch, TouchableOpacity, Platform } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -255,7 +255,7 @@ class UnavailableHours extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					barStyle="dark-content"
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StatusBar, Text, View, BackHandler } from 'react-native';
+import { Alert, StatusBar, Text, View, BackHandler, Platform } from 'react-native';
 import ImgToBase64 from 'react-native-image-base64';
 import { Surface } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
@@ -76,7 +76,7 @@ class SchoolScheduleCreation extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle="light-content"
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 				<Surface style={styles.surface}>
 					<Text style={styles.title}>Analysing your Picture</Text>

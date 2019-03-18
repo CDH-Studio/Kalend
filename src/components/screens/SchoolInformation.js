@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StatusBar, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, TextInput, Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white, red } from '../../styles';
 import DatePicker from 'react-native-datepicker';
@@ -136,7 +136,7 @@ class SchoolInformation extends React.Component {
 		return (
 			<View style={styles.content}>
 				<StatusBar translucent={true}
-					barStyle="dark-content"
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 				
 				<View style={{flex:1}}>
