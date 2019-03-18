@@ -5279,10 +5279,18 @@ react-native-image-base64@^0.1.3:
   resolved "https://registry.yarnpkg.com/react-native-image-base64/-/react-native-image-base64-0.1.3.tgz#bfc9eaf7cd3ec705aa25f00f6a11d0c379217fe8"
   integrity sha512-0n1gLLvA9VJZ1w0zyaDYZQH/Re2VOQFW5kt0P/qYhqs4f1MvWsaTs+7CxXIQR3L2wgEsfDJ1sIKyrAZ0RoR2Hg==
 
-react-native-iphone-x-helper@^1.2.0:
+react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
   integrity sha512-xIeTo4s77wwKgBZLVRIZC9tM9/PkXS46Ul76NXmvmixEb3ZwqGdQesR3zRiLMOoIdfOURB6N9bba9po7+x9Bag==
+
+react-native-keyboard-aware-scroll-view@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.8.0.tgz#00bcaa38c91323913bb7a733059ad2bc4875f88c"
+  integrity sha512-gPfhgHQI/z7Cc5aeNOEmK0b250QkAeU6V+4oH8EC7mmFneEKn6MAIDjpoiwqt6bV+lFJPABXfx9MtrRmtCeJ/Q==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-linear-gradient@^2.5.3:
   version "2.5.3"
