@@ -53,7 +53,7 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			occurence: 1,
+			occurrence: 1,
 			isRecurrent: false,
 
 			priority: 0.5,
@@ -178,7 +178,7 @@ class NonFixedEvent extends React.Component {
 			minutes: 0,
 			durationValidated: true,
 			isDividable: false,
-			occurence: 1,
+			occurrence: 1,
 			isRecurrent: false,
 
 			priority: 0.5,
@@ -283,7 +283,7 @@ class NonFixedEvent extends React.Component {
 											<View style={styles.date}>
 												<Text style={styles.optionDate}>Week</Text>
 
-												<RadioButton value={false}
+												<RadioButton.Android value={false}
 													uncheckedColor={'lightgray'}
 													color={blue} />
 											</View>
@@ -291,7 +291,7 @@ class NonFixedEvent extends React.Component {
 											<View style={styles.date}>
 												<Text style={[styles.optionDate, {width: 200}]}>Specific Date Range</Text>
 
-												<RadioButton value={true}
+												<RadioButton.Android value={true}
 													uncheckedColor={'lightgray'}
 													color={blue} />
 											</View>

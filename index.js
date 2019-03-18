@@ -184,7 +184,7 @@ const DashboardOptionsNavigator = createStackNavigator(
 		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
 
 		CleanReducers,
-		SchoolInformation,
+		SchoolInformation: {screen: SchoolInformation, navigationOptions:DashboardOptionsNavigatorOptions},
 
 		UnavailableHours: {screen: UnavailableHours, navigationOptions:DashboardOptionsNavigatorOptions},
 		UnavailableFixed: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions}

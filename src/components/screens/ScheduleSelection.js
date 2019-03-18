@@ -338,7 +338,6 @@ class Schedule extends React.Component {
 class ScheduleSelection extends React.Component {
 	static navigationOptions = {
 		title: 'Schedule Selection',
-		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
 		},
