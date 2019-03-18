@@ -91,11 +91,9 @@ class FixedEvent extends React.Component {
 
 		// Causes a bug (cannot scroll when keyboard is shown)
 		// let scrollable = containerHeight !== containerHeightTemp;
-		let scrollable = true;
 		let showTutShadow = containerHeight !== containerHeightTemp;
 
 		this.setState({
-			scrollable,
 			containerHeight,
 			showTutShadow
 		});
@@ -412,7 +410,7 @@ class FixedEvent extends React.Component {
 	}
 
 	render() {
-		const { containerHeight, scrollable, snackbarVisible, snackbarText, snackbarTime } = this.state;
+		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
 		let addEventButtonText;
 		let addEventButtonFunction;
