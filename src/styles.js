@@ -464,8 +464,8 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	content: {
-		flex:1,
-		justifyContent:'space-evenly',
+		flex: 1,
+		justifyContent: 'space-evenly',
 		paddingHorizontal: 20
 	},
 

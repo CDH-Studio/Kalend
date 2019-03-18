@@ -22,7 +22,7 @@ const priorityLevels = {
 class ReviewEvent extends React.Component {
 
 	static navigationOptions = {
-		title: 'Review Events',
+		title: 'Create a Schedule',
 		headerStyle: {
 			backgroundColor: white,
 		}
@@ -217,7 +217,7 @@ class ReviewEvent extends React.Component {
 
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text style={styles.textNoData}>No school schedule added, please go back to add one</Text> : 
+									<Text style={styles.textNoData}>No School Schedule or Courses added</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -244,7 +244,7 @@ class ReviewEvent extends React.Component {
 
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No Fixed events added</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -273,7 +273,7 @@ class ReviewEvent extends React.Component {
 
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No non-fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No Non-Fixed events added</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 
