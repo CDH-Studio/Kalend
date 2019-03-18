@@ -215,7 +215,7 @@ class SchoolInformation extends React.Component {
 
 								<TextInput placeholder="Other"
 									ref="_other"
-									style={[styles.smallText, {color: schoolValidated ? null : red}]}
+									style={styles.smallText}
 									onFocus={() => this.setState({
 										checked: 'third',
 										schoolValidated: true

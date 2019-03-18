@@ -15,7 +15,7 @@ export const gray = '#565454';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {
-		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT*2), 
+		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT + 20), 
 		marginHorizontal: '5%'
 	}
 });
@@ -929,7 +929,8 @@ export const reviewEventStyles = StyleSheet.create({
 
 	content: {
 		flex:1,
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		paddingBottom: 60
 	},
 
 	sectionTitle: {
@@ -1186,11 +1187,11 @@ export const scheduleSelectionStyle = StyleSheet.create({
 
 	content: {
 		paddingHorizontal: containerPadding,
-		marginTop: getStatusBarHeight(),
+		marginTop: 10,
 	},
 
 	description: {
-		color: gray,
+		color: white,
 		fontFamily: 'Raleway-Regular',
 	},
 
@@ -1237,7 +1238,7 @@ export const scheduleSelectionStyle = StyleSheet.create({
 
 	title: {
 		fontFamily: 'Raleway-Medium', 
-		color: dark_blue, 
+		color: white, 
 		fontSize: 18, 
 		marginBottom: 10
 	}, 
