@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StatusBar, Text, View, Switch, TouchableOpacity } from 'react-native';
+import { ScrollView, StatusBar, Text, View, Switch, TouchableOpacity, Platform } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -282,7 +282,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.sleepWeek ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.sleepWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(sleepWeek) => this.setState({sleepWeek})}
 													value={this.state.sleepWeek} />
 											</View>
@@ -342,7 +342,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week-End</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.sleepWeekEnd ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.sleepWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(sleepWeekEnd) => this.setState({sleepWeekEnd})}
 													value={this.state.sleepWeekEnd} />
 											</View>
@@ -415,7 +415,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.commutingWeek ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.commutingWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(commutingWeek) => this.setState({commutingWeek})}
 													value={this.state.commutingWeek} />
 											</View>
@@ -473,7 +473,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week-End</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.commutingWeekEnd ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.commutingWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(commutingWeekEnd) => this.setState({commutingWeekEnd})}
 													value={this.state.commutingWeekEnd} />
 											</View>
@@ -546,7 +546,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.eatingWeek ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.eatingWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(eatingWeek) => this.setState({eatingWeek})}
 													value={this.state.eatingWeek} />
 											</View>
@@ -604,7 +604,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week-End</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.eatingWeekEnd ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.eatingWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(eatingWeekEnd) => this.setState({eatingWeekEnd})}
 													value={this.state.eatingWeekEnd} />
 											</View>
@@ -677,7 +677,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.otherWeek ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.otherWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(otherWeek) => this.setState({otherWeek})}
 													value={this.state.otherWeek} />
 											</View>
@@ -735,7 +735,7 @@ class UnavailableHours extends React.Component {
 												<Text style={styles.type}>Week-End</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
-													thumbColor={this.state.otherWeekEnd ? dark_blue : 'darkgray'}
+													thumbColor={(this.state.otherWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(otherWeekEnd) => this.setState({otherWeekEnd})}
 													value={this.state.otherWeekEnd} />
 											</View>

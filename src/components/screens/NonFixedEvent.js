@@ -391,11 +391,11 @@ class NonFixedEvent extends React.Component {
 									</View>
 
 									<View style={styles.switch}>
-										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? 'Divide duration over date range?' : 'Divide duration over week?'}</Text>
+										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? 'Split duration over date range?' : 'Split duration over week?'}</Text>
 
 										<Switch trackColor={{false: 'lightgray', true: blue}}
 											ios_backgroundColor={'lightgray'}
-											thumbColor={this.state.isDividable ? dark_blue : 'darkgray'}
+											thumbColor={(this.state.isDividable && Platform.OS !== 'ios') ? dark_blue : null}
 											onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
 											value = {this.state.isDividable} />
 									</View>
@@ -421,7 +421,7 @@ class NonFixedEvent extends React.Component {
 
 											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
-												thumbColor={this.state.isRecurrent ? dark_blue : 'darkgray'}
+												thumbColor={(this.state.isRecurrent && Platform.OS !== 'ios') ? dark_blue : null}
 												onValueChange={(isRecurrent) => this.setState({isRecurrent})}
 												value = {this.state.isRecurrent} />
 										</View> : null}
