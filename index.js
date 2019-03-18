@@ -41,20 +41,6 @@ const theme = {
 	}
 };
 
-const screensWithDarkStatusIcons = [
-	'FixedEvent',
-	'NonFixedEvent',
-	'SchoolSchedule',
-	'AddCourse',
-	'ReviewEvent',
-	'EditFixedEvent',
-	'EditNonFixedEvent',
-	'EditCourse',
-	'UnavailableHours',
-	'SchoolInformation',
-	'ScheduleSelection'
-];
-
 const LoginNavigator = createStackNavigator(
 	{
 		Home
@@ -225,32 +211,6 @@ const MainNavigator = createSwitchNavigator(
 );
 
 const AppContainer = createAppContainer(MainNavigator);
-
-const getCurrentRoute = (obj) => {
-	if ('index' in obj) {
-		return getCurrentRoute(obj.routes[obj.index]);
-	}
-	return obj.routeName;
-};
-
-const defaultGetStateForAction = MainNavigator.router.getStateForAction;
-MainNavigator.router.getStateForAction = (action, state) => {
-	if (state && state.routes) {
-		let currentScreen = getCurrentRoute(state);
-		console.log('currentScreen', currentScreen);
-		console.log('state', state);
-
-		if (screensWithDarkStatusIcons.includes(currentScreen)) {
-			StatusBar.setBarStyle('dark-content', true);
-		} else {
-			StatusBar.setBarStyle('light-content', true);
-		}
-	} else {
-		StatusBar.setBarStyle('light-content', true);
-	}
-		
-	return defaultGetStateForAction(action, state);
-};
 
 export default function Main() {
 	return (

@@ -94,6 +94,7 @@ class WelcomeScreen extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle="light-content"
 					backgroundColor={statusBarDark} />
 
 				<AppIntroSlider slides={slides} 

@@ -255,6 +255,7 @@ class UnavailableHours extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle="dark-content"
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView>

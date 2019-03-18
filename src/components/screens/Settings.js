@@ -5,6 +5,7 @@ import { IconButton } from 'react-native-paper';
 import { logoffUser } from '../../actions';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue } from '../../styles';
+import updateNavigation from '../NavigationHelper';
 
 class Settings extends React.Component {
 	static navigationOptions = ({navigation}) => ({
@@ -15,10 +16,18 @@ class Settings extends React.Component {
 			color={blue}/> : null)
 	});
 
+	constructor(props) {
+		super(props);
+
+		// Updates the navigation location in redux
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
 	render() {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
+					barStyle="light-content"
 					backgroundColor={'#2d6986'} />
 
 				<TouchableOpacity style={styles.button}

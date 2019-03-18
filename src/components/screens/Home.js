@@ -86,6 +86,7 @@ class Home extends React.Component {
 					source={require('../../assets/img/loginScreen/backPattern.png')}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
+						barStyle="light-content"
 						backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>

@@ -19,8 +19,6 @@ const days = [
 	'Saturday'
 ];
 
-
-
 /**
  * An event in the list of events
  * 
@@ -167,7 +165,6 @@ class ScheduleSelectionDetails extends React.Component {
 			}
 		};
 		
-		
 		// Waits for the animation to finish, then goes to the next screen
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -261,6 +258,7 @@ class ScheduleSelectionDetails extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle="dark-content"
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView onScroll={this.onScroll}>

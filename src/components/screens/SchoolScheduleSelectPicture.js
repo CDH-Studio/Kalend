@@ -188,6 +188,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle="light-content"
 					backgroundColor={statusBlueColor} />
 					
 				<ScrollView onScroll={this.scrollListener}>

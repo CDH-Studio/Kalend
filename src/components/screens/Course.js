@@ -312,7 +312,8 @@ class Course extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={statusBlueColor}
+					barStyle="dark-content" />
 
 				<KeyboardAvoidingView 
 					behavior={Platform.OS === 'ios' ? 'padding' : null}

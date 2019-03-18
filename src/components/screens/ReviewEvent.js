@@ -30,7 +30,6 @@ class ReviewEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		this.state = {
 			showFAB: true,
@@ -40,6 +39,8 @@ class ReviewEvent extends React.Component {
 			schoolScheduleData: [],
 			showTutShadow: true
 		};
+
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -182,8 +183,6 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		
-
 		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 
@@ -191,6 +190,7 @@ class ReviewEvent extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle="dark-content"
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}

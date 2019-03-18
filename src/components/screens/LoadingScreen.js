@@ -81,6 +81,7 @@ class LoadingScreen extends React.Component {
 					end={{ x: 0, y: 1 }}/>
 
 				<StatusBar translucent={true} 
+					barStyle="light-content"
 					backgroundColor={statusBarDark} />
 				
 				<View style={styles.animView}>

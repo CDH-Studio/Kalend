@@ -45,6 +45,7 @@ class Dashboard extends React.Component {
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
+						barStyle="light-content"
 						backgroundColor={'#2d6986'} />
 
 					<View style={styles.topProfileContainer}>

@@ -75,6 +75,7 @@ class SchoolScheduleCreation extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle="light-content"
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 				<Surface style={styles.surface}>
 					<Text style={styles.title}>Analysing your Picture</Text>

@@ -8,6 +8,7 @@ import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
 
 class SchoolInformation extends React.Component {
 	static navigationOptions = {
@@ -35,6 +36,9 @@ class SchoolInformation extends React.Component {
 			checked: 'none',
 			otherSchool: ''
 		};
+
+		// Updates the navigation location in redux
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -132,6 +136,7 @@ class SchoolInformation extends React.Component {
 		return (
 			<View style={styles.content}>
 				<StatusBar translucent={true}
+					barStyle="dark-content"
 					backgroundColor={statusBlueColor} />
 				
 				<View style={{flex:1}}>

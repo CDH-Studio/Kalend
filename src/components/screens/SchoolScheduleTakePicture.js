@@ -161,6 +161,7 @@ class SchoolScheduleTakePicture extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle="light-content"
 					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 
 				<RNCamera captureAudio={false}
