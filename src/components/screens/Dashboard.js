@@ -1,5 +1,6 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View } from 'react-native';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
@@ -19,9 +20,49 @@ class Dashboard extends React.Component {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
+			items: {}
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
+
+	loadItems(day) {
+		setTimeout(() => {
+			for (let i = -15; i < 85; i++) {
+				const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+				const strTime = this.timeToString(time);
+				if (!this.state.items[strTime]) {
+					this.state.items[strTime] = [];
+				}
+			}
+			const newItems = {};
+			Object.keys(this.state.items).forEach(key => {
+				newItems[key] = this.state.items[key];
+			});
+			this.setState({
+				items: newItems
+			});
+		}, 1000);
+	}
+	
+	renderItem(item) {
+		return (
+			<View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+		);
+	}
+	
+	renderEmptyDate() {
+		return null;
+	}
+	
+	rowHasChanged(r1, r2) {
+		return r1.name !== r2.name;
+	}
+	
+	timeToString(time) {
+		const date = new Date(time);
+		return date.toISOString().split('T')[0];
+	}
+	
 
 	render() {
 		const {optionsOpen} = this.state;
@@ -31,16 +72,14 @@ class Dashboard extends React.Component {
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						backgroundColor={'#2d6986'} />
-	
-					<View style={styles.topProfileContainer}>
 
-						<Image style={styles.profileImage}
-							source={{uri: this.props.profileImage}} />
-
-						<Text style={styles.profileDescription}>
-							Hi {this.props.HomeReducer.profile.profile.user.name}, here are your events for the day
-						</Text>
-					</View>
+					<Agenda
+						items={this.state.items}
+						loadItemsForMonth={this.loadItems.bind(this)}
+						renderItem={this.renderItem.bind(this)}
+						renderEmptyDate={this.renderEmptyDate.bind(this)}
+						rowHasChanged={this.rowHasChanged.bind(this)}
+					/>
 
 					<TouchableOpacity style={styles.button}
 						onPress={() => {
@@ -80,17 +119,5 @@ class Dashboard extends React.Component {
 	}
 }
 
-let mapStateToProps = (state) => {
-	const { HomeReducer, SchoolInformationReducer } = state;
 
-	let hasUserInfo = HomeReducer.profile != null;
-
-	return {
-		HomeReducer,
-		hasSchoolInformation: SchoolInformationReducer.info != null,
-		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
-		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
-	};
-};
-
-export default connect(mapStateToProps, null)(Dashboard);
+export default connect()(Dashboard);

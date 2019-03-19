@@ -1359,27 +1359,19 @@ export const dashboardStyles = StyleSheet.create({
 		right: 0
 	},
 
-	profileImage: {
-		width: 100, 
-		height: 100, 
-		borderRadius: 50, 
-		marginVertical: 5
-	},
-
-	topProfileContainer: {
-		flexDirection: 'row', 
-		justifyContent:'center', 
-		alignItems:'center', 
-		margin: 10
-	},
-
-	profileDescription: {
-		width: '50%', 
-		padding: 10, 
-		fontFamily: 'Raleway-Regular', 
-		color: gray, 
-		fontSize: 16
-	},
+	item: {
+		backgroundColor: 'white',
+		flex: 1,
+		borderRadius: 5,
+		padding: 10,
+		marginRight: 10,
+		marginTop: 17
+	  },
+	  emptyDate: {
+		height: 15,
+		flex:1,
+		paddingTop: 30
+	  },
 
 	...DashboardButton
 });
@@ -1403,6 +1395,28 @@ export const settingsStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		padding: 10
+	},
+
+	topProfileContainer: {
+		flexDirection: 'row', 
+		justifyContent:'center', 
+		alignItems:'center', 
+		margin: 10
+	},
+
+	profileImage: {
+		width: 100, 
+		height: 100, 
+		borderRadius: 50, 
+		marginVertical: 5
+	},
+
+	profileDescription: {
+		width: '50%', 
+		padding: 10, 
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16
 	},
 
 	...DashboardButton

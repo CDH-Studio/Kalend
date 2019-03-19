@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { IconButton } from 'react-native-paper';
 import { logoffUser } from '../../actions';
@@ -20,6 +20,15 @@ class Settings extends React.Component {
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
 					backgroundColor={'#2d6986'} />
+
+				<View style={styles.topProfileContainer}>
+					<Image style={styles.profileImage}
+						source={{uri: this.props.profileImage}} />
+
+					<Text style={styles.profileDescription}>
+						Hi {this.props.userName}, here are your events for the day
+					</Text>
+				</View>
 
 				<TouchableOpacity style={styles.button}
 					onPress={() => {
@@ -47,4 +56,15 @@ class Settings extends React.Component {
 	}
 }
 
-export default connect()(Settings);
+let mapStateToProps = (state) => {
+	const { HomeReducer } = state;
+
+	let hasUserInfo = HomeReducer.profile != null;
+
+	return {
+		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
+	};
+};
+
+export default connect(mapStateToProps, null)(Settings);
