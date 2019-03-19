@@ -4,10 +4,8 @@ import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, gray } from '../../styles';
+import { dashboardStyles as styles, blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
-import Popover from 'react-native-popover-view';
-import Feather from 'react-native-vector-icons/Feather';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -59,7 +57,6 @@ class Dashboard extends React.Component {
 					</View>
 
 					<TouchableOpacity style={styles.button}
-						ref={ref => this.touchable = ref}
 						onPress={() => {
 							this.props.navigation.navigate(ReviewEventRoute);
 						}}>
@@ -67,6 +64,7 @@ class Dashboard extends React.Component {
 					</TouchableOpacity>
 
 					<FAB.Group
+						ref={ref => this.touchable = ref}
 						theme={{colors:{accent:blue}}}
 						open={optionsOpen}
 						icon={optionsOpen ? 'close' : 'add'}
@@ -91,15 +89,18 @@ class Dashboard extends React.Component {
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />
 
-					<Popover popoverStyle={styles.tooltipView}
-						isVisible={this.state.isVisible}
-						fromView={this.touchable}
-						onClose={() => this.closePopover()}>
-						<Feather name="x"
-							size={30}
-							color={gray} />
-						<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
-					</Popover>
+					{/* <View>
+						<Popover popoverStyle={styles.tooltipView}
+							isVisible={this.state.isVisible}
+							fromView={this.touchable}
+							onClose={() => this.closePopover()}>
+							<Feather name="x"
+								style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
+								size={25}
+								color={black} />
+							<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
+						</Popover>
+					</View> */}
 				</View>
 			</Portal.Host>
 		);

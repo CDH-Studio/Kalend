@@ -1382,11 +1382,11 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	tooltipText: {
-		padding: 10,
 		fontFamily: 'Raleway-Regular'
 	},
 
 	tooltipView: {
+		padding: 10,
 		...Platform.select({
 			ios: {
 				shadowColor: '#000000',
