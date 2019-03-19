@@ -48,12 +48,12 @@ exports[`Icons render correctly 1`] = `
       },
       undefined,
       Object {
-        "fontFamily": "Font Awesome 5 Free",
+        "fontFamily": "FontAwesome5Free-Solid",
         "fontStyle": "normal",
         "fontWeight": "normal",
       },
       Object {
-        "fontWeight": "700",
+        "fontWeight": "900",
       },
     ]
   }
