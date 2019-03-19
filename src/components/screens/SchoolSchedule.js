@@ -4,6 +4,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { SchoolScheduleSelectPictureRoute, SchoolScheduleTakePictureRoute, CourseRoute } from '../../constants/screenNames';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import { schoolScheduleStyles as styles, dark_blue, statusBlueColor } from '../../styles';
+import updateNavigation from '../NavigationHelper';
 
 /**
  * Permits the user to import their school schedule by selecting or taking a picture or by manual import.
@@ -23,6 +24,9 @@ class SchoolSchedule extends React.Component {
 		this.state = { 
 			containerHeight: null,
 		};
+
+		// Updates the navigation location in redux
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	/**
@@ -66,6 +70,7 @@ class SchoolSchedule extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<View style={styles.content}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StatusBar, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, TextInput, Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white, red } from '../../styles';
 import DatePicker from 'react-native-datepicker';
@@ -8,6 +8,7 @@ import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
 
 class SchoolInformation extends React.Component {
 	static navigationOptions = {
@@ -35,6 +36,9 @@ class SchoolInformation extends React.Component {
 			checked: 'none',
 			otherSchool: ''
 		};
+
+		// Updates the navigation location in redux
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -132,6 +136,7 @@ class SchoolInformation extends React.Component {
 		return (
 			<View style={styles.content}>
 				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 				
 				<View style={{flex:1}}>

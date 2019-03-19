@@ -455,6 +455,7 @@ class FixedEvent extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<KeyboardAvoidingView 
@@ -480,6 +481,9 @@ class FixedEvent extends React.Component {
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText}
 											placeholder="Title" 
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.locationInput.focus()}
+											blurOnSubmit={false}
 											onChangeText={(title) => this.setState({title, titleValidated: true})}
 											value={this.state.title}/>
 									</View>
@@ -595,6 +599,10 @@ class FixedEvent extends React.Component {
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
 											placeholder="Location" 
+											ref={(input) => this.locationInput = input}
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.descriptionInput.focus()}
+											blurOnSubmit={false}
 											onChangeText={(location) => this.setState({location})} 
 											value={this.state.location}/>
 									</View>
@@ -608,6 +616,11 @@ class FixedEvent extends React.Component {
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
 											placeholder="Description" 
+											ref={(input) => this.descriptionInput = input}
+											returnKeyType = {'done'}
+											onSubmitEditing={() => {
+												addEventButtonFunction();
+											}}
 											onChangeText={(description) => this.setState({description})} 
 											value={this.state.description}/>
 									</View>

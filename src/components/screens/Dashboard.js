@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, Image, View } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, Image, View, Platform } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
@@ -19,8 +19,21 @@ class Dashboard extends React.Component {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
+			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
+
+	componentDidMount() {
+		this.setState({isVisible: true});
+	}
+
+	showPopover = () =>{
+		this.setState({isVisible: true});
+	}
+	
+	closePopover = () => {
+		this.setState({isVisible: false});
 	}
 
 	render() {
@@ -30,8 +43,9 @@ class Dashboard extends React.Component {
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
+						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#2d6986'} />
-	
+
 					<View style={styles.topProfileContainer}>
 
 						<Image style={styles.profileImage}
@@ -50,6 +64,7 @@ class Dashboard extends React.Component {
 					</TouchableOpacity>
 
 					<FAB.Group
+						ref={ref => this.touchable = ref}
 						theme={{colors:{accent:blue}}}
 						open={optionsOpen}
 						icon={optionsOpen ? 'close' : 'add'}
@@ -74,6 +89,18 @@ class Dashboard extends React.Component {
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />
 
+					{/* <View>
+						<Popover popoverStyle={styles.tooltipView}
+							isVisible={this.state.isVisible}
+							fromView={this.touchable}
+							onClose={() => this.closePopover()}>
+							<Feather name="x"
+								style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
+								size={25}
+								color={black} />
+							<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
+						</Popover>
+					</View> */}
 				</View>
 			</Portal.Host>
 		);

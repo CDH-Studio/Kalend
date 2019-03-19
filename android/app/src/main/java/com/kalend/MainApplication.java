@@ -8,7 +8,6 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import fr.snapp.imagebase64.RNImgToBase64Package;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.RNFirebasePackage;
