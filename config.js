@@ -20,7 +20,7 @@ export const slides = [
 	{
 		key: 'integration',
 		title: 'School Schedule Integration',
-		text: 'Add your school schedule by importing\na picture or a screenshot of your schedule',
+		text: 'Add your school schedule by importing a picture or a screenshot of your schedule',
 		icon: 'ios-school',
 		colors: gradientColors,
 		color: '#CBE0FA'
@@ -28,7 +28,7 @@ export const slides = [
 	{
 		key: 'generator',
 		title: 'Schedule Generator',
-		text: 'Add your events and the activities you\nwould like to do and let the application\ngenerate the best schedules for you',
+		text: 'Add your events and the activities you would like to do and let the application generate the best schedules for you',
 		icon: 'ios-calendar',
 		colors: gradientColors,
 		color: '#CBE0FA'
@@ -36,7 +36,7 @@ export const slides = [
 	{
 		key: 'compare',
 		title: 'Compare Schedule',
-		text: 'Find availabilities by comparing schedules\nwith your friends and colleagues',
+		text: 'Find availabilities by comparing schedules with your friends and colleagues',
 		icon: 'ios-people',
 		colors: gradientColors,
 		color: '#CBE0FA'
