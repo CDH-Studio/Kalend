@@ -1,14 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StatusBar, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, TextInput, Platform, Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white, red } from '../../styles';
 import DatePicker from 'react-native-datepicker';
+import { Header } from 'react-navigation';
 import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
-import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
+import { ScrollView } from 'react-native-gesture-handler';
+
+const viewHeight = 584;
 
 class SchoolInformation extends React.PureComponent {
 	static navigationOptions = {
@@ -22,7 +26,12 @@ class SchoolInformation extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
+		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT;
+		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
+
 		this.state = {
+			containerHeight,
+
 			startDate: new Date().toDateString(),
 			maxStartDate: new Date(8640000000000000),
 	
@@ -117,10 +126,8 @@ class SchoolInformation extends React.PureComponent {
 			let temp = this.props.navigation.state.params;
 
 			if (temp) {
-				if (temp.schoolSchedule) {
+				if (temp.schoolSchedule || temp.reviewEvent) {
 					this.props.navigation.navigate(SchoolScheduleRoute);
-				} else if (temp.reviewEvent) {
-					this.props.navigation.navigate(CourseRoute);
 				} else {
 					this.props.navigation.pop();
 				}
@@ -131,180 +138,188 @@ class SchoolInformation extends React.PureComponent {
 	}
 
 	render() {
-		const { startDate, minStartDate, maxStartDate, minEndDate, endDate, disabledEndDate, endDateValidated, checked, schoolValidated } = this.state;
+		const { containerHeight, startDate, minStartDate, maxStartDate, minEndDate, endDate, disabledEndDate, endDateValidated, checked, schoolValidated } = this.state;
 
 		return (
-			<View style={styles.content}>
+			<View style={styles.container}>
 				<StatusBar translucent={true}
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
-				
-				<View style={{flex:1}}>
-					<View style={styles.instruction}>
-						<Text style={styles.text}>Please enter the information about your current semester</Text>
-						<MaterialIcons name="info-outline"
-							size={130}
-							color={dark_blue}/>
-					</View>
-				</View>
 
-				<View style={styles.bottomContent}>
-					<View style={styles.school}> 
-						<Text style={styles.subHeader}>Post-Secondary Institution</Text>
-
-						<View style={styles.radioGroup}>
-							<View style={styles.radioButton}>
-								<RadioButton.Android color={dark_blue}
-									uncheckedColor={schoolValidated ? gray : red}
-									value="first"
-									status={checked === 'first' ? 'checked' : 'unchecked'}
-									onPress={() => {
-										this.setState({
-											checked: 'first',
-											schoolValidated: true
-										});
-										this.refs._other.blur();
-									}} />
-
-								<TouchableOpacity onPress={() => {
-									this.setState({
-										checked: 'first',
-										schoolValidated: true
-									});
-									this.refs._other.blur();
-								}}>
-									<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-										University of Ottawa
-									</Text>
-								</TouchableOpacity>
-							</View>
+				<ScrollView>
+					<View style={[styles.content, {height: containerHeight}]} onLayout={(event) => {
+						let height = event.nativeEvent;
+						console.log(height);
+					}}>
+						<View style={styles.instruction}>
+							<Text style={styles.text}>Please enter the information about your current semester</Text>
 							
-							<View style={styles.radioButton}>
-								<RadioButton.Android color={dark_blue}
-									uncheckedColor={schoolValidated ? gray : red}
-									value="second"
-									status={checked === 'second' ? 'checked' : 'unchecked'}
-									onPress={() => {
-										this.setState({
-											checked: 'second',
-											schoolValidated: true
-										});
-										this.refs._other.blur();
-									}} />
-
-								<TouchableOpacity onPress={() => {
-									this.setState({
-										checked: 'second',
-										schoolValidated: true
-									});
-									this.refs._other.blur();
-								}}>
-									<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-										Carleton University
-									</Text>
-								</TouchableOpacity>
-							</View>
-
-							<View style={styles.radioButton}>
-								<RadioButton.Android color={dark_blue}
-									uncheckedColor={schoolValidated ? gray : red}
-									value="third"
-									status={checked === 'third' ? 'checked' : 'unchecked'}
-									onPress={() => {
-										this.setState({ 
-											checked: 'third',
-											schoolValidated: true
-										});
-										this.refs._other.focus();
-									}} />
-
-								<TextInput placeholder="Other"
-									ref="_other"
-									style={styles.smallText}
-									onFocus={() => this.setState({
-										checked: 'third',
-										schoolValidated: true
-									})}
-									onChangeText={(otherSchool) => this.setState({checked: 'third', otherSchool})}
-									value={this.state.otherSchool}/>
-							</View>
-
-							{ 
-								schoolValidated ?
-									null
-									:
-									<Text style={styles.errorTitle}>Please select an institution</Text>
-							}
+							<MaterialIcons name="info-outline"
+								size={130}
+								color={dark_blue}/>
 						</View>
-					</View>
 
-					<View style={styles.duration}>
-						<Text style={styles.subHeader}>Sequence Duration</Text>
-						
-						<View style={styles.date}>
-							<Text style={styles.smallText}>
-								Start
-							</Text>
-							
-							<DatePicker showIcon={false} 
-								date={startDate} 
-								mode="date" 
-								style={{width:140}}
-								customStyles={{
-									dateInput:{borderWidth: 0}, 
-									dateText:{
-										fontFamily: 'OpenSans-Regular',
-										color: !endDateValidated ? red : gray
+						<View style={styles.bottomContent}>
+							<View style={styles.school}> 
+								<Text style={styles.subHeader}>Post-Secondary Institution</Text>
+
+								<View>
+									<View style={styles.radioButton}>
+										<RadioButton.Android color={dark_blue}
+											uncheckedColor={schoolValidated ? gray : red}
+											value="first"
+											status={checked === 'first' ? 'checked' : 'unchecked'}
+											onPress={() => {
+												this.setState({
+													checked: 'first',
+													schoolValidated: true
+												});
+												this.refs._other.blur();
+											}} />
+
+										<TouchableOpacity onPress={() => {
+											this.setState({
+												checked: 'first',
+												schoolValidated: true
+											});
+											this.refs._other.blur();
+										}}>
+											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
+												University of Ottawa
+											</Text>
+										</TouchableOpacity>
+									</View>
+									
+									<View style={styles.radioButton}>
+										<RadioButton.Android color={dark_blue}
+											uncheckedColor={schoolValidated ? gray : red}
+											value="second"
+											status={checked === 'second' ? 'checked' : 'unchecked'}
+											onPress={() => {
+												this.setState({
+													checked: 'second',
+													schoolValidated: true
+												});
+												this.refs._other.blur();
+											}} />
+
+										<TouchableOpacity onPress={() => {
+											this.setState({
+												checked: 'second',
+												schoolValidated: true
+											});
+											this.refs._other.blur();
+										}}>
+											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
+												Carleton University
+											</Text>
+										</TouchableOpacity>
+									</View>
+
+									<View style={styles.radioButton}>
+										<RadioButton.Android color={dark_blue}
+											uncheckedColor={schoolValidated ? gray : red}
+											value="third"
+											status={checked === 'third' ? 'checked' : 'unchecked'}
+											onPress={() => {
+												this.setState({ 
+													checked: 'third',
+													schoolValidated: true
+												});
+												this.refs._other.focus();
+											}} />
+
+										<TextInput placeholder="Other"
+											ref="_other"
+											style={styles.otherInput}
+											onFocus={() => this.setState({
+												checked: 'third',
+												schoolValidated: true
+											})}
+											onChangeText={(otherSchool) => this.setState({checked: 'third', otherSchool})}
+											value={this.state.otherSchool}/>
+									</View>
+
+									{ 
+										schoolValidated ?
+											null
+											:
+											<Text style={styles.error}>Please select an institution</Text>
 									}
-								}}
-								placeholder={startDate}
-								format="ddd., MMM DD, YYYY"
-								minDate={minStartDate}
-								maxDate={maxStartDate}
-								confirmBtnText="Confirm"
-								cancelBtnText="Cancel"
-								onDateChange={this.startDateOnDateChange} />
+								</View>
+							</View>
+
+							<View style={styles.duration}>
+								<Text style={styles.subHeader}>Semester Duration</Text>
+								
+								<View style={styles.date}>
+									<Text style={styles.blueTitle}>
+										Start
+									</Text>
+									
+									<DatePicker showIcon={false} 
+										date={startDate} 
+										mode="date" 
+										style={{width:140}}
+										customStyles={{
+											dateInput:{borderWidth: 0}, 
+											dateText:{
+												fontFamily: 'OpenSans-Regular',
+												color: !endDateValidated ? red : gray
+											}
+										}}
+										placeholder={startDate}
+										format="ddd., MMM DD, YYYY"
+										minDate={minStartDate}
+										maxDate={maxStartDate}
+										confirmBtnText="Confirm"
+										cancelBtnText="Cancel"
+										onDateChange={this.startDateOnDateChange} />
+								</View>
+								
+								<View style={styles.date}>
+									<Text style={styles.blueTitle}>
+										End
+									</Text>
+
+									<DatePicker showIcon={false} 
+										date={endDate} 
+										mode="date" 
+										style={{width:140}}
+										disabled = {disabledEndDate}
+										customStyles={{
+											disabled:{backgroundColor: 'transparent'}, 
+											dateInput:{borderWidth: 0}, 
+											dateText:{
+												fontFamily: 'OpenSans-Regular', 
+												color: !endDateValidated ? red : gray,
+												textDecorationLine: disabledEndDate ? 'line-through' : 'none'}}} 
+										placeholder={endDate} 
+										format="ddd., MMM DD, YYYY" 
+										minDate={minEndDate}
+										confirmBtnText="Confirm" 
+										cancelBtnText="Cancel" 
+										onDateChange={this.endDateOnDateChange} />
+								</View>
+
+								{ 
+									endDateValidated ?
+										null
+										:
+										<Text style={styles.error}>Please select a start and end date</Text>
+								}
+							</View>
+						</View>
+
+						<View style={{marginBottom:20}}>
+							<BottomButtons twoButtons={false} 
+								buttonText={['Done']}
+								buttonMethods={[this.saveInformation]}
+							/>
 						</View>
 						
-						<View style={styles.date}>
-							<Text style={styles.smallText}>
-								End
-							</Text>
-
-							<DatePicker showIcon={false} 
-								date={endDate} 
-								mode="date" 
-								style={{width:140}}
-								disabled = {disabledEndDate}
-								customStyles={{
-									disabled:{backgroundColor: 'transparent'}, 
-									dateInput:{borderWidth: 0}, 
-									dateText:{
-										fontFamily: 'OpenSans-Regular', 
-										color: !endDateValidated ? red : gray,
-										textDecorationLine: disabledEndDate ? 'line-through' : 'none'}}} 
-								placeholder={endDate} 
-								format="ddd., MMM DD, YYYY" 
-								minDate={minEndDate}
-								confirmBtnText="Confirm" 
-								cancelBtnText="Cancel" 
-								onDateChange={this.endDateOnDateChange} />
-						</View>
-
-						{ 
-							endDateValidated ?
-								null
-								:
-								<Text style={styles.errorTitle}>Please select a start date</Text>
-						}
 					</View>
-				</View>
-
-				<View style={{flex: 1}}>
-					<BottomButtons twoButtons={false} 
-						buttonText={['Done']}
-						buttonMethods={[this.saveInformation]}/>
-				</View>
+				</ScrollView>
 			</View>
 		);
 	}

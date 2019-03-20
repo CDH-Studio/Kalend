@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, ScrollView, TouchableOpacity, Text, Platform } from 'react-native';
-import { cleanReducersStyles as styles, statusBlueColor, blue, dark_blue } from '../../styles';
+import { cleanReducersStyles as styles, blue, dark_blue } from '../../styles';
 import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../../actions';
 import { LoginNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
@@ -39,7 +39,7 @@ class CleanReducers extends React.PureComponent {
 			<ScrollView style={styles.content}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'#2d6986'} />
 
 				{
 					Object.keys(this.reducersDeleteActions).map((data, key) => {
