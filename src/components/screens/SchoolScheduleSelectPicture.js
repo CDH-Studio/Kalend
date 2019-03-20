@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text, Platform } from 'react-native';
+import { CameraRoll, ScrollView, FlatList, View, StatusBar, ActivityIndicator, Text, Platform, NativeModules } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -9,12 +9,16 @@ import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import { selectPictureStyles as styles, white, blue, statusBlueColor } from '../../styles';
 
+// Enables the LayoutAnimation on Android
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+
 const imagesPerLoad = 99;
 
 /**
  * Camera roll screen to let the user select a schedule
  */
-class SchoolScheduleSelectPicture extends React.Component {
+class SchoolScheduleSelectPicture extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Select Picture',

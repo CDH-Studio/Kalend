@@ -6,6 +6,7 @@ import { logoffUser } from '../../actions';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { googleSignOut } from '../../services/google_identity';
 
 class Settings extends React.Component {
 	static navigationOptions = ({navigation}) => ({
@@ -32,6 +33,7 @@ class Settings extends React.Component {
 
 				<TouchableOpacity style={styles.button}
 					onPress={() => {
+						googleSignOut();
 						this.props.dispatch(logoffUser());
 						this.props.navigation.navigate(LoginNavigator);
 					}}>
