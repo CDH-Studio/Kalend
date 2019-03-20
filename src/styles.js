@@ -1437,20 +1437,17 @@ export const cleanReducersStyles = StyleSheet.create({
 });
 
 export const schoolInformationStyles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+
 	content: {
 		flex: 1,
-		padding: 20,
-		height: null, 
+		marginTop: 10,
+		paddingHorizontal: 20,
+		justifyContent: 'space-around'
 	},
-
-	smallText: {
-		fontFamily: 'Raleway-Regular'
-	},
-
-	otherInput: {
-		width: '90%',
-	},
-
+	
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -1458,7 +1455,7 @@ export const schoolInformationStyles = StyleSheet.create({
 	},
 
 	text: {
-		width: 240,
+		width: 200,
 		paddingRight: 15,
 		fontFamily: 'Raleway-Regular',
 		color: gray,
@@ -1466,31 +1463,35 @@ export const schoolInformationStyles = StyleSheet.create({
 		textAlign: 'right'
 	},
 
+	school: {
+		marginVertical: 20
+	},
+	
 	subHeader: {
 		fontFamily: 'Raleway-Medium',
 		color: dark_blue,
 		fontSize: 18,
-		marginBottom: 10,
-		marginTop: 40
+		marginBottom: 10
 	},
-
+	
 	radioButton: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginLeft: -8
+		alignItems: 'center'
+	},
+	
+	smallText: {
+		fontFamily: 'Raleway-Regular',
+		marginLeft: 5
 	},
 
-	bottomContent: {
-		flex:3,
-		alignContent: 'space-between'
-	},
-
-	school: {
-		justifyContent: 'center',
+	otherInput: {
+		width: '90%',
+		fontFamily: 'Raleway-Regular',
+		height: 40
 	},
 
 	duration: {
-		justifyContent: 'center',
+		marginTop: 20
 	},
 
 	date: {
@@ -1498,11 +1499,21 @@ export const schoolInformationStyles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	errorTitle: {
+	blueTitle: {
+		width: 70,
+		color: dark_blue,
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		marginLeft: 5
+	},
+
+	error: {
 		fontFamily: 'Raleway-Regular',
 		color: red,
-		marginTop: 10
-	},
+		marginVertical: 10,
+		marginLeft: 5
+	}
+
 });
 
 export const scheduleCreateStyles = StyleSheet.create({
