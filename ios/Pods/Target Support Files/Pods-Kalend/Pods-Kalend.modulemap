@@ -1,0 +1,6 @@
+module Pods_Kalend {
+  umbrella header "Pods-Kalend-umbrella.h"
+
+  export *
+  module * { export * }
+}
