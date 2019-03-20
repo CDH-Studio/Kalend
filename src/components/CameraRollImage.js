@@ -12,13 +12,10 @@ const selectedIconSize = 35;
  * @prop {Integer} index The index of the picture in the camera roll
  * @prop {Integer} selectedStyle A number either 1 or 0, defining if it is selected
  */
-class CameraRollImage extends React.Component {
+class CameraRollImage extends React.PureComponent {
 
 	/**
 	 * Calls the parent function onUpdate to update which image was selected
-	 * 
-	 * @param {String} selected The image URI that has been selected
-	 * @param {Integer} index The id of the image that has been selected
 	 */
 	update = (selected, index) => {
 		this.props.onUpdate({selected, index});

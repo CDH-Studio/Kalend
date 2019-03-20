@@ -6,8 +6,9 @@ import { logoffUser } from '../../actions';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { googleSignOut } from '../../services/google_identity';
 
-class Settings extends React.Component {
+class Settings extends React.PureComponent {
 	static navigationOptions = ({navigation}) => ({
 		headerRight: (__DEV__ ? <IconButton
 			icon="delete"
@@ -32,6 +33,7 @@ class Settings extends React.Component {
 
 				<TouchableOpacity style={styles.button}
 					onPress={() => {
+						googleSignOut();
 						this.props.dispatch(logoffUser());
 						this.props.navigation.navigate(LoginNavigator);
 					}}>

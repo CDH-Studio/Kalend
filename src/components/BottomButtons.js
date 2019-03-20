@@ -8,7 +8,7 @@ import { bottomButtonsStyles as styles } from '../styles';
  * @prop {Array} buttonText An array of the title of the buttons
  * @prop {Array} buttonMethods An array of the methods of the buttons
  */
-class BottomButtons extends React.Component {
+class BottomButtons extends React.PureComponent {
 
 	constructor(props) {
 		super(props);

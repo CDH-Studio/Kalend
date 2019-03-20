@@ -17,7 +17,7 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
  * The camera screen which allows the user to take a picture of their schedule
  * and upload it to the server to extract the information about their school schedule
  */
-class SchoolScheduleTakePicture extends React.Component {
+class SchoolScheduleTakePicture extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Take a Picture',

@@ -6,7 +6,7 @@ import { LoginNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
 
-class CleanReducers extends React.Component {
+class CleanReducers extends React.PureComponent {
 	static navigationOptions = {
 		title: 'Clean Reducers',
 		headerStyle: {

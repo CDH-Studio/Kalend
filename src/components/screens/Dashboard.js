@@ -11,7 +11,7 @@ import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRo
  * Dashboard of the application which shows the user's calendar and
  * the differents options they can access.
  */
-class Dashboard extends React.Component {
+class Dashboard extends React.PureComponent {
 
 	constructor(props) {
 		super(props);

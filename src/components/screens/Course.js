@@ -19,7 +19,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  * Permits the user to input their school schedule manually 
  * or to edit the previously entred courses
  */
-class Course extends React.Component {
+class Course extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',

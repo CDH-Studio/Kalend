@@ -3,7 +3,7 @@ import { StatusBar, View, Platform } from 'react-native';
 import { compareScheduleStyles as styles } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
-class CompareSchedule extends React.Component {
+class CompareSchedule extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
