@@ -1409,7 +1409,7 @@ export const settingsStyles = StyleSheet.create({
 	profileImage: {
 		width: 80, 
 		height: 80, 
-		borderRadius: 50,
+		borderRadius: 40,
 		marginTop: 20,
 		marginBottom: 10
 	},

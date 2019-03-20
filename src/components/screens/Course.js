@@ -440,7 +440,6 @@ class Course extends React.PureComponent {
 								buttonMethods={[addEventButtonFunction, () => {
 									let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
-									console.log(routes[routes.length - 3].routeName);
 									if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
 										this.props.navigation.navigate(DashboardNavigator);
 									} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {

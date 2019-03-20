@@ -80,7 +80,6 @@ class FixedEvent extends React.PureComponent {
 		} else {
 			this.setState({...this.props.FEditState});
 		}
-		console.log('store', store.getState());
 		this.setContainerHeight();
 	}
 
