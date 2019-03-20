@@ -132,8 +132,8 @@ class Settings extends React.PureComponent {
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
 								googleSignOut();
-					    	this.props.dispatch(logoffUser());
-						    this.props.navigation.navigate(LoginNavigator);
+								this.props.dispatch(logoffUser());
+								this.props.navigation.navigate(LoginNavigator);
 							}}>
 							<Text style={styles.buttonLogOutText}>Log out</Text>
 						</TouchableOpacity>
