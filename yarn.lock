@@ -5562,10 +5562,10 @@ react-native-app-intro-slider@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-1.0.1.tgz#712bf3dc1d66b3432bf4092971db4dfc01b916bd"
   integrity sha512-5Gzg5FG2uP/RHkSDFB5+2df4vQ2FpyUJ5PGYd23lLEISsEOJe0Zredh1hHMJj+fB5D9B7ZoL0IlR+SNn8iFxHg==
 
-react-native-camera@^1.12.0:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.13.1.tgz#19277ccae0a49dbf1b96049da5b95c847ea7aff2"
-  integrity sha512-wYjMi06ygYIiHRM4dSCH914xFUay7Wplx0bAej4iBkZeh54M4AxJDcF4vVZ5vdkpuAg8zvof3l+L1VhcKziMgw==
+react-native-camera@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.0.2.tgz#484e1116c0b6cb53147385a1b4aeb0fba59466de"
+  integrity sha512-SEEQvl3pwQXl1Qwd+SNuInemQanK1WcWBzEri9E1vlYA1M4SGYNp8Lxyrm+JFDDKJ890ec0MDJuzIvKUyXsK9g==
   dependencies:
     prop-types "^15.6.2"
 
@@ -5606,11 +5606,6 @@ react-native-google-signin@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-google-signin/-/react-native-google-signin-1.2.1.tgz#c4d442c24039ba3ef6983aab18cf13991a29a71f"
   integrity sha512-i19hQF/HYXdDjwFMM4tx3b7IbztHpKqrpDbjyH7jm+d26F2ow/51iUVRFekTIFRkdSHaKjqprtw9HKCntxXetA==
-
-react-native-image-base64@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-image-base64/-/react-native-image-base64-0.1.3.tgz#bfc9eaf7cd3ec705aa25f00f6a11d0c379217fe8"
-  integrity sha512-0n1gLLvA9VJZ1w0zyaDYZQH/Re2VOQFW5kt0P/qYhqs4f1MvWsaTs+7CxXIQR3L2wgEsfDJ1sIKyrAZ0RoR2Hg==
 
 react-native-iphone-x-helper@^1.2.0:
   version "1.2.0"
@@ -5863,7 +5858,7 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@^16.8.4:
+react@^16.8.3:
   version "16.8.4"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.4.tgz#fdf7bd9ae53f03a9c4cd1a371432c206be1c4768"
   integrity sha512-0GQ6gFXfUH7aZcjGVymlPOASTuSjlQL4ZtVC5YKH+3JL6bBLCVO21DknzmaPlI90LN253ojj02nsapy+j7wIjg==
