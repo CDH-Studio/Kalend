@@ -3,14 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:colorPrimary">@color/main_blue</item>
         <item name="android:datePickerDialogTheme">@style/Dialog.Theme</item>
         <item name="android:timePickerDialogTheme">@style/Dialog.Theme</item>
-        <item name="android:windowBackground">@color/main_blue</item>
+        <item name="android:windowBackground">@color/lightBlue</item>
     </style>
 
     <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">#153d73</item>
-        <item name="android:textColorPrimary">#153d73</item>
+        <item name="colorAccent">@color/main_blue</item>
+        <item name="android:textColorPrimary">@color/main_blue</item>
     </style>
 
 </resources>
