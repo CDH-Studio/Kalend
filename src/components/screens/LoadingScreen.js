@@ -14,7 +14,7 @@ const logoAnimDuration = 3000;
 /**
  * The logo animation screen when the application is opened.
  */
-class LoadingScreen extends React.Component {
+class LoadingScreen extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -85,8 +85,7 @@ class LoadingScreen extends React.Component {
 					backgroundColor={statusBarDark} />
 				
 				<View style={styles.animView}>
-					<LottieView
-						progress={animProgress}
+					<LottieView progress={animProgress}
 						source={logoFile}
 						loop={false}
 						speed={1}

@@ -19,7 +19,7 @@ const priorityLevels = {
 /**
  * Permits users to verify and edit the events they added
  */
-class ReviewEvent extends React.Component {
+class ReviewEvent extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Create a Schedule',

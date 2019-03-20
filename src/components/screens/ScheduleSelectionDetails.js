@@ -28,7 +28,7 @@ const days = [
  * @prop {String} info.location The location of the event
  * @prop {String} info.time The time of the event
  */
-class ScheduleEvent extends React.Component  {
+class ScheduleEvent extends React.PureComponent  {
 
 	constructor(props) {
 		super(props);
@@ -102,7 +102,7 @@ class ScheduleEvent extends React.Component  {
  * @prop {String} data.location The location of the event
  * @prop {String} data.time The time of the event
  */
-class ScheduleDay extends React.Component {
+class ScheduleDay extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -137,7 +137,7 @@ class ScheduleDay extends React.Component {
 /**
  * The screen with more information about the selected generated school schedule
  */
-class ScheduleSelectionDetails extends React.Component {
+class ScheduleSelectionDetails extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,

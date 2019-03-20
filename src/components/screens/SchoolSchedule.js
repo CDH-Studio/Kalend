@@ -9,7 +9,7 @@ import updateNavigation from '../NavigationHelper';
 /**
  * Permits the user to import their school schedule by selecting or taking a picture or by manual import.
  */
-class SchoolSchedule extends React.Component {
+class SchoolSchedule extends React.PureComponent {
 
 	static navigationOptions =  {
 		title: 'Add School Schedule',
@@ -70,7 +70,7 @@ class SchoolSchedule extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<View style={styles.content}>

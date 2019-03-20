@@ -11,7 +11,7 @@ import updateNavigation from '../NavigationHelper';
 /**
  * The loading screen shown after the user reviewed their events
  */
-class ScheduleCreation extends React.Component {
+class ScheduleCreation extends React.PureComponent {
 
 	// Removes the header
 	static navigationOptions = {

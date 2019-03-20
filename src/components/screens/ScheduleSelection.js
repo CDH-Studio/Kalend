@@ -28,7 +28,7 @@ export const lineViewLeftPadding = 15;
  * @prop {Integer} timeInterval The number of hours there is between two lines (max 4 hours, min 1 hour)
  * @prop {Boolean} startOffset The number of hours offset if the startTime is not equal to 0
  */
-class ScheduleEvent extends React.Component {
+class ScheduleEvent extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -102,7 +102,7 @@ class ScheduleEvent extends React.Component {
  * @prop {Integer} numOfLines The number of lines to be drawn on the schedule
  * @prop {Integer} id The number of the schedule
  */
-class Schedule extends React.Component {
+class Schedule extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -335,7 +335,7 @@ class Schedule extends React.Component {
 /**
  * The component which encloses all of the schedules which has been generated
  */
-class ScheduleSelection extends React.Component {
+class ScheduleSelection extends React.PureComponent {
 	static navigationOptions = {
 		title: 'Schedule Selection',
 		headerStyle: {

@@ -1,6 +1,6 @@
 {
   "name": "react-native-camera",
-  "version": "2.0.1",
+  "version": "1.13.1",
   "summary": "A Camera component for React Native. Also reads barcodes.",
   "description": "A Camera component for React Native. Also reads barcodes.",
   "license": "MIT AND Apache-2.0 AND BSD-3-Clause",
@@ -8,7 +8,7 @@
   "homepage": "https://github.com/react-native-community/react-native-camera",
   "source": {
     "git": "https://github.com/react-native-community/react-native-camera",
-    "tag": "v2.0.1"
+    "tag": "v1.13.1"
   },
   "requires_arc": true,
   "platforms": {
@@ -69,13 +69,11 @@
         "react-native-camera/RCT": [
 
         ],
-        "Firebase/MLVision": [
-
-        ],
-        "Firebase/MLVisionTextModel": [
-
+        "GoogleMobileVision/TextDetector": [
+          "~> 1.4"
         ]
-      }
+      },
+      "source_files": "ios/TextDetector/**/*.{h,m}"
     }
   ]
 }

@@ -18,7 +18,7 @@ const viewHeight = 843.4285888671875;
 /**
  * Permits the user to add Non-Fixed events i.e. events that can be moved around in the calendar
  */
-class NonFixedEvent extends React.Component {
+class NonFixedEvent extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',

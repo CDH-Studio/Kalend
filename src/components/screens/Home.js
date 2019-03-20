@@ -15,7 +15,7 @@ import { homeStyles as styles } from '../../styles';
 /** 
  * Home/Login screen of the app.
  * Permits the user to log into the app with their Google account.*/
-class Home extends React.Component {
+class Home extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -86,7 +86,7 @@ class Home extends React.Component {
 					source={require('../../assets/img/loginScreen/backPattern.png')}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
-						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 						backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>

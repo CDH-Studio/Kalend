@@ -112,13 +112,13 @@ PODS:
   - Protobuf (3.7.0)
   - React (0.57.8):
     - React/Core (= 0.57.8)
-  - react-native-camera (2.0.1):
+  - react-native-camera (1.13.1):
     - React
-    - react-native-camera/RCT (= 2.0.1)
-    - react-native-camera/RN (= 2.0.1)
-  - react-native-camera/RCT (2.0.1):
+    - react-native-camera/RCT (= 1.13.1)
+    - react-native-camera/RN (= 1.13.1)
+  - react-native-camera/RCT (1.13.1):
     - React
-  - react-native-camera/RN (2.0.1):
+  - react-native-camera/RN (1.13.1):
     - React
   - React/ART (0.57.8):
     - React/Core
@@ -249,7 +249,7 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   React: adbac0757ce35e92fbd447ab98c810209d27d9b0
-  react-native-camera: 8a7658ffe5ae3bbdc9718b650970eba2628ee13c
+  react-native-camera: b322bc25f47536219473c6d00c666d221f7f2695
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNVectorIcons: 09d03dfe7c9fc158c3dce50d891101637d428bb3
   yoga: 74cdf036c30820443b25ade59916236b1e95ee93
