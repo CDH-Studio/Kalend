@@ -21,7 +21,7 @@ const containerWidth = Dimensions.get('window').width;
 /**
  * Permits the user to add their fixed events such as meetings and appointments.
  */
-class FixedEvent extends React.Component {
+class FixedEvent extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === FixedEventRoute ? 'Add Fixed Events' : 'Edit Fixed Event',

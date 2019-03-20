@@ -16,7 +16,7 @@ const nextIconColor = 'rgba(255, 255, 255, .9)';
  * The slides for the first four screens when a user first opens the application.
  * This screen only shows if the user has not already been in the application.
  */
-class WelcomeScreen extends React.Component {
+class WelcomeScreen extends React.PureComponent {
 	
 	constructor(props) {
 		super(props);

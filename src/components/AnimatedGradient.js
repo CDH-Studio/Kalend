@@ -5,7 +5,7 @@ import GradientHelper from './GradientHelper';
 const AnimatedGradientHelper = Animated.createAnimatedComponent(GradientHelper);
 
 // Inspired from https://github.com/dslounge/rn-animated-gradient-example
-export default class AnimatedGradient extends React.Component {
+export default class AnimatedGradient extends React.PureComponent {
 	constructor(props) {
 		super(props);
 

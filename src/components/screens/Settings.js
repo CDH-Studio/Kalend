@@ -8,7 +8,7 @@ import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 
-class Settings extends React.Component {
+class Settings extends React.PureComponent {
 	static navigationOptions = ({navigation}) => ({
 		headerRight: (__DEV__ ? <IconButton
 			icon="delete"

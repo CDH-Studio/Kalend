@@ -14,7 +14,7 @@ const logoAnimDuration = 3000;
 /**
  * The logo animation screen when the application is opened.
  */
-class LoadingScreen extends React.Component {
+class LoadingScreen extends React.PureComponent {
 
 	constructor(props) {
 		super(props);

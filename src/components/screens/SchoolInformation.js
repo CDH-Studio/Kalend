@@ -10,7 +10,7 @@ import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 
-class SchoolInformation extends React.Component {
+class SchoolInformation extends React.PureComponent {
 	static navigationOptions = {
 		title: 'Set School Information',
 		headerTintColor: dark_blue,
