@@ -117,10 +117,8 @@ class SchoolInformation extends React.Component {
 			let temp = this.props.navigation.state.params;
 
 			if (temp) {
-				if (temp.schoolSchedule) {
+				if (temp.schoolSchedule || temp.reviewEvent) {
 					this.props.navigation.navigate(SchoolScheduleRoute);
-				} else if (temp.reviewEvent) {
-					this.props.navigation.navigate(CourseRoute);
 				} else {
 					this.props.navigation.pop();
 				}
@@ -139,7 +137,7 @@ class SchoolInformation extends React.Component {
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 				
-				<View style={{flex:1}}>
+				<View>
 					<View style={styles.instruction}>
 						<Text style={styles.text}>Please enter the information about your current semester</Text>
 						<MaterialIcons name="info-outline"
@@ -220,7 +218,7 @@ class SchoolInformation extends React.Component {
 
 								<TextInput placeholder="Other"
 									ref="_other"
-									style={styles.smallText}
+									style={[styles.smallText, styles.otherInput]}
 									onFocus={() => this.setState({
 										checked: 'third',
 										schoolValidated: true
@@ -239,7 +237,7 @@ class SchoolInformation extends React.Component {
 					</View>
 
 					<View style={styles.duration}>
-						<Text style={styles.subHeader}>Sequence Duration</Text>
+						<Text style={styles.subHeader}>Semester Duration</Text>
 						
 						<View style={styles.date}>
 							<Text style={styles.smallText}>
@@ -295,12 +293,12 @@ class SchoolInformation extends React.Component {
 							endDateValidated ?
 								null
 								:
-								<Text style={styles.errorTitle}>Please select a start date</Text>
+								<Text style={styles.errorTitle}>Please select a start and end date</Text>
 						}
 					</View>
 				</View>
 
-				<View style={{flex: 1}}>
+				<View>
 					<BottomButtons twoButtons={false} 
 						buttonText={['Done']}
 						buttonMethods={[this.saveInformation]}/>

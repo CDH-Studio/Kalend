@@ -1441,18 +1441,20 @@ export const schoolInformationStyles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 		height: null, 
-		alignContent: 'space-between'
 	},
 
 	smallText: {
 		fontFamily: 'Raleway-Regular'
 	},
 
+	otherInput: {
+		width: '90%',
+	},
+
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		flex:1,
 	},
 
 	text: {
@@ -1468,7 +1470,8 @@ export const schoolInformationStyles = StyleSheet.create({
 		fontFamily: 'Raleway-Medium',
 		color: dark_blue,
 		fontSize: 18,
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: 40
 	},
 
 	radioButton: {
@@ -1484,11 +1487,9 @@ export const schoolInformationStyles = StyleSheet.create({
 
 	school: {
 		justifyContent: 'center',
-		flex:1,
 	},
 
 	duration: {
-		flex:1,
 		justifyContent: 'center',
 	},
 

@@ -85,8 +85,7 @@ class LoadingScreen extends React.Component {
 					backgroundColor={statusBarDark} />
 				
 				<View style={styles.animView}>
-					<LottieView
-						progress={animProgress}
+					<LottieView progress={animProgress}
 						source={logoFile}
 						loop={false}
 						speed={1}

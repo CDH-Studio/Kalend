@@ -39,7 +39,7 @@ class CleanReducers extends React.Component {
 			<ScrollView style={styles.content}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'#2d6986'} />
 
 				{
 					Object.keys(this.reducersDeleteActions).map((data, key) => {
