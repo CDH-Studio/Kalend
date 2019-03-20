@@ -15,7 +15,7 @@ import { homeStyles as styles } from '../../styles';
 /** 
  * Home/Login screen of the app.
  * Permits the user to log into the app with their Google account.*/
-class Home extends React.Component {
+class Home extends React.PureComponent {
 
 	constructor(props) {
 		super(props);

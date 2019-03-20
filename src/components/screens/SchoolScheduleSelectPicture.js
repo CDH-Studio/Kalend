@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, FlatList, View, StatusBar, ActivityIndicator, Text, Platform, NativeModules } from 'react-native';
+import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text, Platform, NativeModules } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
