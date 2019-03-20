@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, Image, View, Platform } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
@@ -45,16 +45,6 @@ class Dashboard extends React.Component {
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#2d6986'} />
-
-					<View style={styles.topProfileContainer}>
-
-						<Image style={styles.profileImage}
-							source={{uri: this.props.profileImage}} />
-
-						<Text style={styles.profileDescription}>
-							Hi {this.props.HomeReducer.profile.profile.user.name}, here are your events for the day
-						</Text>
-					</View>
 
 					<TouchableOpacity style={styles.button}
 						onPress={() => {
@@ -107,17 +97,4 @@ class Dashboard extends React.Component {
 	}
 }
 
-let mapStateToProps = (state) => {
-	const { HomeReducer, SchoolInformationReducer } = state;
-
-	let hasUserInfo = HomeReducer.profile != null;
-
-	return {
-		HomeReducer,
-		hasSchoolInformation: SchoolInformationReducer.info != null,
-		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
-		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
-	};
-};
-
-export default connect(mapStateToProps, null)(Dashboard);
+export default connect()(Dashboard);

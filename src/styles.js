@@ -1359,28 +1359,6 @@ export const dashboardStyles = StyleSheet.create({
 		right: 0
 	},
 
-	profileImage: {
-		width: 100, 
-		height: 100, 
-		borderRadius: 50, 
-		marginVertical: 5
-	},
-
-	topProfileContainer: {
-		flexDirection: 'row', 
-		justifyContent:'center', 
-		alignItems:'center', 
-		margin: 10
-	},
-
-	profileDescription: {
-		width: '50%', 
-		padding: 10, 
-		fontFamily: 'Raleway-Regular', 
-		color: gray, 
-		fontSize: 16
-	},
-
 	tooltipText: {
 		fontFamily: 'Raleway-Regular'
 	},
@@ -1417,13 +1395,73 @@ export const compareScheduleStyles = StyleSheet.create({
 });
 
 export const settingsStyles = StyleSheet.create({
-	content: {
+	container: {
 		width: '100%',
-		height: '100%',
-		padding: 10
+		height: '100%'
 	},
 
-	...DashboardButton
+	content: {
+		flex: 1,
+		justifyContent: 'space-evenly',
+		paddingHorizontal: 20
+	},
+
+	profileImage: {
+		width: 80, 
+		height: 80, 
+		borderRadius: 50,
+		marginTop: 20,
+		marginBottom: 10
+	},
+
+	topProfileContainer: {
+		alignItems: 'center'
+	},
+
+	profileDescription: {
+		fontFamily: 'Raleway-SemiBold', 
+		color: gray, 
+		fontSize: 17,
+		textAlign: 'center'
+	},
+
+	titleRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingBottom: 10,
+		paddingTop: 20
+	},
+
+	title: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+		paddingLeft: 10
+	},
+
+	button: {
+		paddingLeft: 40,
+		paddingVertical: 5
+	},
+
+	buttonText: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		color: blue
+	},
+
+	buttonLogOutText: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		color: '#ff0000'
+	},
+
+	version: {
+		fontFamily: 'OpenSans-SemiBold',
+		textAlign: 'center',
+		paddingVertical: 10,
+		color: gray
+	}
 });
 
 export const cleanReducersStyles = StyleSheet.create({
