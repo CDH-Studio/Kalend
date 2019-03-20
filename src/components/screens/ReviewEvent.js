@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ const priorityLevels = {
 /**
  * Permits users to verify and edit the events they added
  */
-class ReviewEvent extends React.Component {
+class ReviewEvent extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Create a Schedule',
@@ -30,7 +30,6 @@ class ReviewEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		this.state = {
 			showFAB: true,
@@ -40,6 +39,8 @@ class ReviewEvent extends React.Component {
 			schoolScheduleData: [],
 			showTutShadow: true
 		};
+
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -182,8 +183,6 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		
-
 		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 
@@ -191,6 +190,7 @@ class ReviewEvent extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}

@@ -11,7 +11,7 @@ import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, d
 /**
  * Permits the user to input the hours they are not available or don't want to have anything booked
  */
-class UnavailableHours extends React.Component {
+class UnavailableHours extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Set Unavailable Hours',
@@ -173,6 +173,7 @@ class UnavailableHours extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView>

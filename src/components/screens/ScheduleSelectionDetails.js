@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StatusBar, View, ScrollView } from 'react-native';
+import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { calendarEventColors } from '../../../config';
@@ -19,8 +19,6 @@ const days = [
 	'Saturday'
 ];
 
-
-
 /**
  * An event in the list of events
  * 
@@ -30,7 +28,7 @@ const days = [
  * @prop {String} info.location The location of the event
  * @prop {String} info.time The time of the event
  */
-class ScheduleEvent extends React.Component  {
+class ScheduleEvent extends React.PureComponent  {
 
 	constructor(props) {
 		super(props);
@@ -104,7 +102,7 @@ class ScheduleEvent extends React.Component  {
  * @prop {String} data.location The location of the event
  * @prop {String} data.time The time of the event
  */
-class ScheduleDay extends React.Component {
+class ScheduleDay extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -139,7 +137,7 @@ class ScheduleDay extends React.Component {
 /**
  * The screen with more information about the selected generated school schedule
  */
-class ScheduleSelectionDetails extends React.Component {
+class ScheduleSelectionDetails extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
@@ -167,7 +165,6 @@ class ScheduleSelectionDetails extends React.Component {
 			}
 		};
 		
-		
 		// Waits for the animation to finish, then goes to the next screen
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -180,10 +177,19 @@ class ScheduleSelectionDetails extends React.Component {
 	componentWillMount() {
 		this.seperateEventsIntoDays(this.props.navigation.state.params.data);
 		this.setState({data: this.props.navigation.state.params.data});
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	handleBackButton = () => {
+		this.props.navigation.pop();
+		return true;
 	}
 
 	seperateEventsIntoDays = (data) =>{
-
 		const temp_days = {
 			'Sunday': [],
 			'Monday': [],
@@ -261,6 +267,7 @@ class ScheduleSelectionDetails extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView onScroll={this.onScroll}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Animated, Easing} from 'react-native';
+import { StatusBar, View, Animated, Easing, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
@@ -14,7 +14,7 @@ const logoAnimDuration = 3000;
 /**
  * The logo animation screen when the application is opened.
  */
-class LoadingScreen extends React.Component {
+class LoadingScreen extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -81,11 +81,11 @@ class LoadingScreen extends React.Component {
 					end={{ x: 0, y: 1 }}/>
 
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBarDark} />
 				
 				<View style={styles.animView}>
-					<LottieView
-						progress={animProgress}
+					<LottieView progress={animProgress}
 						source={logoFile}
 						loop={false}
 						speed={1}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity } from 'react-native';
+import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity, Platform } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ import { homeStyles as styles } from '../../styles';
 /** 
  * Home/Login screen of the app.
  * Permits the user to log into the app with their Google account.*/
-class Home extends React.Component {
+class Home extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -86,6 +86,7 @@ class Home extends React.Component {
 					source={require('../../assets/img/loginScreen/backPattern.png')}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
+						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 						backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>

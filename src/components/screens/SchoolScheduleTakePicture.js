@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
+import { TouchableOpacity, View, StatusBar, NativeModules, LayoutAnimation, Platform } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,7 +17,7 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
  * The camera screen which allows the user to take a picture of their schedule
  * and upload it to the server to extract the information about their school schedule
  */
-class SchoolScheduleTakePicture extends React.Component {
+class SchoolScheduleTakePicture extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Take a Picture',
@@ -161,6 +161,7 @@ class SchoolScheduleTakePicture extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 
 				<RNCamera captureAudio={false}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, View } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRo
  * Dashboard of the application which shows the user's calendar and
  * the differents options they can access.
  */
-class Dashboard extends React.Component {
+class Dashboard extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -20,7 +20,8 @@ class Dashboard extends React.Component {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
-			items: {}
+			items: {},
+			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -63,6 +64,17 @@ class Dashboard extends React.Component {
 		return date.toISOString().split('T')[0];
 	}
 	
+	componentDidMount() {
+		this.setState({isVisible: true});
+	}
+
+	showPopover = () =>{
+		this.setState({isVisible: true});
+	}
+	
+	closePopover = () => {
+		this.setState({isVisible: false});
+	}
 
 	render() {
 		const {optionsOpen} = this.state;
@@ -71,6 +83,7 @@ class Dashboard extends React.Component {
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
+						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#2d6986'} />
 
 					<Agenda
@@ -89,6 +102,7 @@ class Dashboard extends React.Component {
 					</TouchableOpacity>
 
 					<FAB.Group
+						ref={ref => this.touchable = ref}
 						theme={{colors:{accent:blue}}}
 						open={optionsOpen}
 						icon={optionsOpen ? 'close' : 'add'}
@@ -113,11 +127,22 @@ class Dashboard extends React.Component {
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />
 
+					{/* <View>
+						<Popover popoverStyle={styles.tooltipView}
+							isVisible={this.state.isVisible}
+							fromView={this.touchable}
+							onClose={() => this.closePopover()}>
+							<Feather name="x"
+								style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
+								size={25}
+								color={black} />
+							<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
+						</Popover>
+					</View> */}
 				</View>
 			</Portal.Host>
 		);
 	}
 }
-
 
 export default connect()(Dashboard);

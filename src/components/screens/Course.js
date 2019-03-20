@@ -19,7 +19,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  * Permits the user to input their school schedule manually 
  * or to edit the previously entred courses
  */
-class Course extends React.Component {
+class Course extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
@@ -312,7 +312,8 @@ class Course extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={statusBlueColor}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
 				<KeyboardAvoidingView 
 					behavior={Platform.OS === 'ios' ? 'padding' : null}
@@ -335,6 +336,9 @@ class Course extends React.Component {
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
 											placeholder="Course Code" 
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.locationInput.focus()}
+											blurOnSubmit={false}
 											onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
 											value={this.state.courseCode} />
 									</View>
@@ -349,7 +353,7 @@ class Course extends React.Component {
 								<View style={styles.dayOfWeekBorder}>
 									{
 										Platform.OS === 'ios' ? 
-											<Text onPress={this.dayOfWeekOnClick}>{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
+											<Text onPress={this.dayOfWeekOnClick} >{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
 											:	
 											<Picker style={styles.dayOfWeekValues} 
 												selectedValue={this.state.dayOfWeek} 
@@ -421,6 +425,11 @@ class Course extends React.Component {
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
 										placeholder="Location" 
+										ref={(input) => this.locationInput = input}
+										returnKeyType = {'done'}
+										onSubmitEditing={() => {
+											addEventButtonFunction();
+										}}
 										onChangeText={(location) => this.setState({location})} 
 										value={this.state.location}/>
 								</View>
