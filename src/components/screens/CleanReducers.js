@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, ScrollView, TouchableOpacity, Text } from 'react-native';
 import { cleanReducersStyles as styles, statusBlueColor, blue, dark_blue } from '../../styles';
-import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../../actions';
+import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser, clearGeneratedCalendars } from '../../actions';
 import { LoginNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 
@@ -19,6 +19,7 @@ class CleanReducers extends React.Component {
 		'Fixed Events': clearFixedEvents,
 		'Non-Fixed Events': clearNonFixedEvents,
 		'Generated Non-Fixed Events': clearGeneratedNonFixedEvents,
+		'Generated Calendars': clearGeneratedCalendars,
 		'Navigation': clearNavigation,
 		'Schedule': clearNavigation,
 		'School Information': clearSchoolInformation,
