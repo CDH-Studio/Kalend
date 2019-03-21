@@ -7,7 +7,7 @@ import updateNavigation from '../NavigationHelper';
 import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
-import { selectPictureStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { selectPictureStyles as styles, white, blue } from '../../styles';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;

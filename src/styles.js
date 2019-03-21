@@ -243,6 +243,17 @@ export const schoolScheduleStyles = StyleSheet.create({
 		padding: 20,
 		alignItems: 'center',
 		width: 300,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 4
+			},
+		}),
 		elevation: 4
 	},
 
@@ -259,7 +270,17 @@ export const schoolScheduleStyles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 20,
 		width: 300,
-		elevation: 4
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 4
+			},
+		}),
 	},
 
 	buttonTakeText: {
