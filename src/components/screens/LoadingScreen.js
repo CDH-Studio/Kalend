@@ -86,10 +86,8 @@ class LoadingScreen extends React.PureComponent {
 				
 				<View style={styles.animView}>
 					<LottieView progress={animProgress}
-						source={logoFile}
 						loop={false}
-						speed={1}
-						style={styles.anim} />
+						source={logoFile}/>
 				</View>
 			</View>
 		);

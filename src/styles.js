@@ -1022,9 +1022,6 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowOpacity: 0.6,
 				shadowRadius: 7  
 			},
-			android: {
-				elevation: 4
-			},
 		}),
 	},
 
@@ -1409,7 +1406,7 @@ export const settingsStyles = StyleSheet.create({
 	profileImage: {
 		width: 80, 
 		height: 80, 
-		borderRadius: 50,
+		borderRadius: 40,
 		marginTop: 20,
 		marginBottom: 10
 	},

@@ -187,6 +187,7 @@ class ReviewEvent extends React.PureComponent {
 	}
 
 	render() {
+		console.log('reviewEvent', store.getState());
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}

@@ -40,7 +40,7 @@ class SchoolSchedule extends React.PureComponent {
 				}
 			});
 		} else {
-			this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
+			this.props.navigation.navigate('SchoolScheduleSelectPicture');
 		}
 	}
 

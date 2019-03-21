@@ -2,8 +2,6 @@ import { setNavigationScreen } from '../actions';
 import { store } from '../store';
 
 let updateNavigation = (screen, route) => {
-	console.log(store.getState());
-
 	let nav = store.getState().NavigationReducer;
 
 	if (screen === 'Home') {

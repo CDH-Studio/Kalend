@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/Models/LOTShapeGradientFill.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/Models/LOTShapeGradientFill.h

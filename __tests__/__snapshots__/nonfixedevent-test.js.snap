@@ -162,6 +162,7 @@ exports[`NumericInputs render correctly 1`] = `
       onBlur={[Function]}
       onChangeText={[Function]}
       onFocus={[Function]}
+      rejectResponderTermination={true}
       returnKeyType="done"
       style={
         Array [
@@ -253,8 +254,11 @@ exports[`Slider renders correctly 1`] = `
   maximumValue={1}
   minimumTrackTintColor="#FFBF69"
   minimumValue={0}
+  onChange={null}
   onResponderTerminationRequest={[Function]}
+  onSlidingComplete={null}
   onStartShouldSetResponder={[Function]}
+  onValueChange={null}
   step={0.5}
   style={
     Object {
