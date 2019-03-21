@@ -1351,7 +1351,8 @@ export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 10
+		padding: 10,
+		backgroundColor: '#F6F8FA'
 	},
 
 	fab: {
@@ -1360,12 +1361,39 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	item: {
-		backgroundColor: 'white',
-		flex: 1,
+		backgroundColor: white,
 		borderRadius: 5,
-		padding: 10,
-		marginRight: 10,
-		marginTop: 17
+		width: '95%',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		marginVertical: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	itemText: {
+		fontFamily: 'OpenSans-Regular',
+		fontSize: 16,
+		color: gray
+	},
+
+	noEvents: {
+		justifyContent: 'center'
+	},
+
+	noEventsText: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		color: gray
 	},
 
 	emptyDate: {
@@ -1392,6 +1420,45 @@ export const dashboardStyles = StyleSheet.create({
 			},
 		}),
 	},
+
+	calendarOptions: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		paddingTop: 10,
+		paddingBottom: 20
+	},
+
+	calendarOptionsText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		color: white,
+		paddingHorizontal: 40
+	},
+
+	calendarBack: {
+		backgroundColor: white,
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.9,
+				shadowRadius: 2
+			},
+			android: {
+				elevation: 4
+			},
+		}),
+	},
+
+	eventsDayTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+		marginTop : 140,
+		paddingBottom: 20
+	},
+
 	...DashboardButton,
 });
 

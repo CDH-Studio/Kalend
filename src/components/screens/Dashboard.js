@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { Agenda } from 'react-native-calendars';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
@@ -20,7 +20,18 @@ class Dashboard extends React.PureComponent {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
-			items: {},
+			items: {
+				'2019-03-21': 
+					[{
+						name: 'SEG 2505', 
+						time: '1:00 PM - 2:00 PM'
+					},
+
+					{
+						name: 'Basketball Game Tomorrooooow', 
+						time: '10:00 PM - 11:30 PM'
+					}]
+			},
 			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -47,16 +58,23 @@ class Dashboard extends React.PureComponent {
 	
 	renderItem(item) {
 		return (
-			<View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+			<View style={[styles.item]}>
+				<Text style={styles.itemText}>{item.name}</Text>
+				<Text style={styles.itemText}>{item.time}</Text>
+			</View>
 		);
 	}
 	
 	renderEmptyDate() {
-		return null;
+		return <View style={styles.noEvents}><Text style={styles.noEventsText}>There's no events for the day.</Text></View>;
 	}
 	
 	rowHasChanged(r1, r2) {
 		return r1.name !== r2.name;
+	}
+
+	shouldChangeDay(r1, r2) {
+		return r1 !== r2;
 	}
 	
 	timeToString(time) {
@@ -85,6 +103,10 @@ class Dashboard extends React.PureComponent {
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#2d6986'} />
+					<View style={styles.calendarOptions}>
+						<Text style={styles.calendarOptionsText}>Week</Text>
+						<Text style={styles.calendarOptionsText}>Month</Text>
+					</View>
 
 					<Agenda
 						items={this.state.items}
@@ -92,14 +114,9 @@ class Dashboard extends React.PureComponent {
 						renderItem={this.renderItem.bind(this)}
 						renderEmptyDate={this.renderEmptyDate.bind(this)}
 						rowHasChanged={this.rowHasChanged.bind(this)}
+						showOnlyDaySelected={true}
+						shouldChangeDay={this.shouldChangeDay.bind(this)}
 					/>
-
-					<TouchableOpacity style={styles.button}
-						onPress={() => {
-							this.props.navigation.navigate(ReviewEventRoute);
-						}}>
-						<Text style={styles.buttonText}>Create Schedule</Text>
-					</TouchableOpacity>
 
 					<FAB.Group
 						ref={ref => this.touchable = ref}
