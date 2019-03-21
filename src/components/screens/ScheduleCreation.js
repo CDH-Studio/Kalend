@@ -116,7 +116,7 @@ class ScheduleCreation extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<Surface style={styles.surface}>

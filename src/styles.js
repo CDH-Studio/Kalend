@@ -254,7 +254,6 @@ export const schoolScheduleStyles = StyleSheet.create({
 				elevation: 4
 			},
 		}),
-		elevation: 4
 	},
 
 	buttonSelectText: {
@@ -462,7 +461,17 @@ export const schoolScheduleCreationStyles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		elevation: 3
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	title: {
@@ -1587,7 +1596,17 @@ export const scheduleCreateStyles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		elevation: 3,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	title: {
