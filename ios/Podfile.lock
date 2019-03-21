@@ -100,8 +100,8 @@ PODS:
   - GoogleUtilities/UserDefaults (5.5.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.1)
-  - lottie-ios (3.0.1)
-  - lottie-react-native (2.3.2):
+  - lottie-ios (2.5.0)
+  - lottie-react-native (2.6.0):
     - lottie-ios
     - React
   - nanopb (0.3.901):
@@ -112,13 +112,13 @@ PODS:
   - Protobuf (3.7.0)
   - React (0.59.1):
     - React/Core (= 0.59.1)
-  - react-native-camera (1.13.1):
+  - react-native-camera (2.0.2):
     - React
-    - react-native-camera/RCT (= 1.13.1)
-    - react-native-camera/RN (= 1.13.1)
-  - react-native-camera/RCT (1.13.1):
+    - react-native-camera/RCT (= 2.0.2)
+    - react-native-camera/RN (= 2.0.2)
+  - react-native-camera/RCT (2.0.2):
     - React
-  - react-native-camera/RN (1.13.1):
+  - react-native-camera/RN (2.0.2):
     - React
   - React/ART (0.59.1):
     - React/Core
@@ -164,7 +164,7 @@ PODS:
     - React/RCTBlob
   - RNGestureHandler (1.1.0):
     - React
-  - RNVectorIcons (6.4.1):
+  - RNVectorIcons (6.4.2):
     - React
   - yoga (0.59.1.React)
 
@@ -179,6 +179,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn
+  - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - React/ART (from `../node_modules/react-native`)
@@ -210,7 +211,6 @@ SPEC REPOS:
     - GoogleToolboxForMac
     - GoogleUtilities
     - GTMSessionFetcher
-    - lottie-ios
     - nanopb
     - Protobuf
 
@@ -223,6 +223,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  lottie-ios:
+    :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   React:
@@ -256,16 +258,16 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
-  lottie-ios: 8477cb83466c00cb4d29966f78d85e64cd9132df
-  lottie-react-native: f2e118cc10f478bc9857bbdb5568b6f4a9d30cf7
+  lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
+  lottie-react-native: 05b6e2dd502d7a91ff128036c4f0984363e5eb4a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   React: 34a405ead72252839fdc4afc1f972a7ed984af84
-  react-native-camera: b322bc25f47536219473c6d00c666d221f7f2695
+  react-native-camera: 6c4e4ae3039ec7904bc4cc134dcf7aca50f9134e
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
-  RNVectorIcons: 09d03dfe7c9fc158c3dce50d891101637d428bb3
+  RNVectorIcons: 6607bd3a30291d0edb56f9bbe7ae411ee2b928b0
   yoga: 8fb47f180b19b0dadb285a09e4c74c8a41721d3a
 
-PODFILE CHECKSUM: 66d098319ef6c4293ea15ce65a6d5bb7f3ee4975
+PODFILE CHECKSUM: edf30374697bfd5d5c3b6583d8d93f245ffcd092
 
 COCOAPODS: 1.6.1

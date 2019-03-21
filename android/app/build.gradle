@@ -137,7 +137,6 @@ android {
         versionCode googleVer
         multiDexEnabled true
     missingDimensionStrategy 'react-native-camera', 'general'
-    missingDimensionStrategy 'react-native-camera', 'mlkit'
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -182,7 +181,6 @@ android {
 
 dependencies {
     implementation project(':react-native-firebase')
-    implementation project(':react-native-vector-icons')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-google-signin')
     implementation project(':react-native-gesture-handler')
@@ -194,6 +192,7 @@ dependencies {
 	implementation "com.google.android.gms:play-services-base:16.0.1"
 	implementation "com.google.firebase:firebase-core:16.0.8"
 	implementation "com.google.firebase:firebase-config:16.4.0"
+    implementation "com.google.firebase:firebase-auth:16.1.0"
 	implementation "com.google.firebase:firebase-messaging:17.4.0"
 	implementation "com.google.firebase:firebase-perf:16.2.4"
 	implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
@@ -210,4 +209,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
