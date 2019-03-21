@@ -9,20 +9,20 @@ jobs:
           path: ~/Kalend
 
       - restore_cache:
-          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v3-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
-          key: node-v2-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v3-{{ checksum "package.json" }}-{{ arch }}
 
       - run: yarn install
 
       - save_cache:
-          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v3-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - ~/.cache/yarn
 
       - save_cache:
-          key: node-v2-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v3-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
       
@@ -83,7 +83,7 @@ jobs:
           path: ~/Kalend
 
       - restore_cache:
-          key: jars-v3-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: jars-v4-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
       - run: yarn install
 
@@ -104,7 +104,7 @@ jobs:
           command: cd android && ./gradlew assembleRelease
 
       - save_cache:
-          key: jars-v3-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+          key: jars-v4-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
           paths:
             - ~/.gradle
 
