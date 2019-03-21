@@ -264,14 +264,25 @@ class Course extends React.PureComponent {
 			return false;
 		}
 
+		// gets the next weekday date
+		let date = this.getNextWeekdayDate();
+
+		let endtime = new Date(date.getTime());
+		endtime = this.getDateFromTimeString(this.state.endTime, endtime);
+		endtime = endtime.toJSON();
+
+		let starttime = new Date(date.getTime());
+		starttime = this.getDateFromTimeString(this.state.startTime, starttime);
+		starttime = starttime.toJSON();
+
 		return this.setState({
 			end: {
-				timeZone: 'UTC',
-				dateTime: this.getDateFromTimeString(this.state.endTime).toJSON()
+				timeZone: 'America/Toronto',
+				dateTime: endtime
 			},
 			start: {
-				timeZone: 'UTC',
-				dateTime: this.getDateFromTimeString(this.state.startTime).toJSON()
+				timeZone: 'America/Toronto',
+				dateTime: starttime
 			}
 		}, () => {
 			this.props.dispatch(addCourse(this.state));
@@ -289,14 +300,27 @@ class Course extends React.PureComponent {
 		});
 	}
 
-	getDateFromTimeString = (timeString) => {
+	getNextWeekdayDate = () => {
 		let date = new Date();
-
-		let info = timeString.split(' ').map(i => i.split(':'));
-		date.setHours(info[0][0] + (info[1][0] === 'AM' ? 0 : 12), info[0][1], 0, 0);
 		date.setDate(date.getDate() + ((7-date.getDay())%7+this.days.indexOf(this.state.dayOfWeek)) % 7);
 
 		return date;
+	}
+
+	getDateFromTimeString = (timeString, currentDate) => {
+		if (currentDate === undefined) {
+			currentDate = new Date();
+		}
+
+		// cleans up the time in the state
+		let info = timeString.split(' ').map(i => i.split(':'));
+		currentDate.setHours( 
+			parseInt(info[0][0]) + (info[1][0] === 'AM' ? 0 : 12), 
+			parseInt(info[0][1]), 
+			0,
+			0);
+			
+		return currentDate;
 	}
 
 	/**
@@ -404,7 +428,7 @@ class Course extends React.PureComponent {
 											:	
 											<Picker style={styles.dayOfWeekValues} 
 												selectedValue={this.state.dayOfWeek} 
-												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue})}>
+												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue, dayOfWeekValue})}>
 												<Picker.Item label="Monday" value="Monday" />
 												<Picker.Item label="Tuesday" value="Tuesday" />
 												<Picker.Item label="Wednesday" value="Wednesday" />
