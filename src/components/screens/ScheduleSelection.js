@@ -466,7 +466,7 @@ class ScheduleSelection extends React.PureComponent {
 			fixedEvents={this.state.data.fixedEvents}
 			schoolEvents={this.state.data.schoolEvents}
 			id={index}
-			numOfLines={6} /> 
+			numOfLines={6} />;
 	};
 
 	render() {

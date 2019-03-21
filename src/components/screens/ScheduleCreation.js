@@ -4,7 +4,6 @@ import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
 import { connect } from 'react-redux';
-import { logonUser } from '../../actions';
 import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
 
