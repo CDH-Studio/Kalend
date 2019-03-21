@@ -10,7 +10,9 @@ GoogleSignin.configure({
 let googleSignIn = async () => {
 	try {
 		await GoogleSignin.hasPlayServices();
-		const userInfo = await GoogleSignin.signIn();
+		await GoogleSignin.signIn();
+		const userInfo = await googleGetCurrentUserInfo();
+		
 		return userInfo;
 	} catch (error) {
 		return null;
