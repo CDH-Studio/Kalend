@@ -1,6 +1,6 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.3):
+  - BVLinearGradient (2.5.4):
     - React
   - Crashlytics (3.10.9):
     - Fabric (~> 1.7.13)
@@ -112,13 +112,13 @@ PODS:
   - Protobuf (3.7.0)
   - React (0.57.8):
     - React/Core (= 0.57.8)
-  - react-native-camera (1.12.0):
+  - react-native-camera (1.13.1):
     - React
-    - react-native-camera/RCT (= 1.12.0)
-    - react-native-camera/RN (= 1.12.0)
-  - react-native-camera/RCT (1.12.0):
+    - react-native-camera/RCT (= 1.13.1)
+    - react-native-camera/RN (= 1.13.1)
+  - react-native-camera/RCT (1.13.1):
     - React
-  - react-native-camera/RN (1.12.0):
+  - react-native-camera/RN (1.13.1):
     - React
   - React/ART (0.57.8):
     - React/Core
@@ -154,9 +154,9 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNGestureHandler (1.0.15):
+  - RNGestureHandler (1.1.0):
     - React
-  - RNVectorIcons (6.3.0):
+  - RNVectorIcons (6.4.1):
     - React
   - yoga (0.57.8.React)
 
@@ -226,7 +226,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: 0d985ec461359c82bc254f26d11008bdae50d17a
+  BVLinearGradient: 8cbc5155c978f2e43098818c91d206d07aae6d30
   Crashlytics: 55e24fc23989680285a21cb1146578d9d18e432c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
@@ -249,9 +249,9 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   React: adbac0757ce35e92fbd447ab98c810209d27d9b0
-  react-native-camera: 865a638b7e98a1c3ce3951b2cf21248896e661a6
-  RNGestureHandler: 14c09a7361c272efea8f7f3799142c893a6a4485
-  RNVectorIcons: cb42a5653c046f12ca16c9480c571b52620559e8
+  react-native-camera: b322bc25f47536219473c6d00c666d221f7f2695
+  RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
+  RNVectorIcons: 09d03dfe7c9fc158c3dce50d891101637d428bb3
   yoga: 74cdf036c30820443b25ade59916236b1e95ee93
 
 PODFILE CHECKSUM: 1dadd5a4706dfa47a34d5e04116aeb9aa788afd2

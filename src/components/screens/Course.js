@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,7 +19,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  * Permits the user to input their school schedule manually 
  * or to edit the previously entred courses
  */
-class Course extends React.Component {
+class Course extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
@@ -312,134 +312,147 @@ class Course extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={statusBlueColor}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<ScrollView ref='_scrollView'>
-					<View style={[styles.content, {height: containerHeight}]}>
-						<View style={styles.instruction}>
-							<Text style={styles.text}>Add all your courses from your school schedule</Text>
-							<FontAwesome5 name="university"
-								size={130}
-								color={dark_blue}/>
-						</View>
+				<KeyboardAvoidingView 
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+					<ScrollView ref='_scrollView'>
+						<View style={[styles.content, {height: containerHeight}]}>
+							<View style={styles.instruction}>
+								<Text style={styles.text}>Add all your courses from your school schedule</Text>
+								<FontAwesome5 name="university"
+									size={130}
+									color={dark_blue}/>
+							</View>
 						
-						<View>
-							<View style={styles.textInput}>
-								<MaterialIcons name="class"
-									size={30}
-									color={blue} />
+							<View>
+								<View style={styles.textInput}>
+									<MaterialIcons name="class"
+										size={30}
+										color={blue} />
 
-								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
-									<TextInput style={styles.textInputText} 
-										placeholder="Course Code" 
-										onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
-										value={this.state.courseCode} />
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
+										<TextInput style={styles.textInputText} 
+											placeholder="Course Code" 
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.locationInput.focus()}
+											blurOnSubmit={false}
+											onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
+											value={this.state.courseCode} />
+									</View>
+								</View>
+
+								{errorCourseCode}
+							</View>
+
+							<View style={styles.dayOfWeekSection}>
+								<Text style={styles.dayOfWeekTitle}>Day of Week</Text>
+
+								<View style={styles.dayOfWeekBorder}>
+									{
+										Platform.OS === 'ios' ? 
+											<Text onPress={this.dayOfWeekOnClick} >{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
+											:	
+											<Picker style={styles.dayOfWeekValues} 
+												selectedValue={this.state.dayOfWeek} 
+												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue})}>
+												<Picker.Item label="Monday" value="Monday" />
+												<Picker.Item label="Tuesday" value="Tuesday" />
+												<Picker.Item label="Wednesday" value="Wednesday" />
+												<Picker.Item label="Thursday" value="Thursday" />
+												<Picker.Item label="Friday" value="Friday" />
+												<Picker.Item label="Saturday" value="Saturday" />
+												<Picker.Item label="Sunday" value="Sunday" />
+											</Picker>
+									}
 								</View>
 							</View>
-
-							{errorCourseCode}
-						</View>
-
-						<View style={styles.dayOfWeekSection}>
-							<Text style={styles.dayOfWeekTitle}>Day of Week</Text>
-
-							<View style={styles.dayOfWeekBorder}>
-								{
-									Platform.OS === 'ios' ? 
-										<Text onPress={this.dayOfWeekOnClick}>{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
-										:	
-										<Picker style={styles.dayOfWeekValues} 
-											selectedValue={this.state.dayOfWeek} 
-											onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue})}>
-											<Picker.Item label="Monday" value="Monday" />
-											<Picker.Item label="Tuesday" value="Tuesday" />
-											<Picker.Item label="Wednesday" value="Wednesday" />
-											<Picker.Item label="Thursday" value="Thursday" />
-											<Picker.Item label="Friday" value="Friday" />
-											<Picker.Item label="Saturday" value="Saturday" />
-											<Picker.Item label="Sunday" value="Sunday" />
-										</Picker>
-								}
-							</View>
-						</View>
-						<View style={styles.timeSection}>
-							<View style={styles.time}>
-								<Text style={styles.blueTitle}>Start Time</Text>
-								<DatePicker showIcon={false} 
-									date={this.state.startTime} 
-									mode="time" 
-									customStyles={{
-										dateInput:{borderWidth: 0}, 
-										dateText:{
-											fontFamily: 'OpenSans-Regular',
-											color:!this.state.endTimeValidated ? '#ff0000' : gray
-										}
-									}}
-									format="h:mm A" 
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									is24Hour={false}
-									onDateChange={(startTime) => {
-										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(startTime, undefined)});
-										this.setState({disabledEndTime: this.enableEndTime()});
-									}} />
-							</View>
-
-							<View>
+							<View style={styles.timeSection}>
 								<View style={styles.time}>
-									<Text style={styles.blueTitle}>End Time</Text>
+									<Text style={styles.blueTitle}>Start Time</Text>
 									<DatePicker showIcon={false} 
-										date={this.state.endTime} 
+										date={this.state.startTime} 
 										mode="time" 
-										disabled= {this.state.disabledEndTime}
 										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular',
-												color: !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
+											dateText:{
+												fontFamily: 'OpenSans-Regular',
+												color:!this.state.endTimeValidated ? '#ff0000' : gray
+											}
 										}}
 										format="h:mm A" 
-										minDate={this.state.minEndTime}
 										confirmBtnText="Confirm" 
 										cancelBtnText="Cancel" 
 										is24Hour={false}
-										onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, endTime)})}/>
+										onDateChange={(startTime) => {
+											this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(startTime, undefined)});
+											this.setState({disabledEndTime: this.enableEndTime()});
+										}} />
 								</View>
 
-								{errorEndTime}
+								<View>
+									<View style={styles.time}>
+										<Text style={styles.blueTitle}>End Time</Text>
+										<DatePicker showIcon={false} 
+											date={this.state.endTime} 
+											mode="time" 
+											disabled= {this.state.disabledEndTime}
+											customStyles={{
+												disabled:{backgroundColor: 'transparent'}, 
+												dateInput:{borderWidth: 0}, 
+												dateText:{fontFamily: 'OpenSans-Regular',
+													color: !this.state.endTimeValidated ? '#ff0000' : gray,
+													textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
+											}}
+											format="h:mm A" 
+											minDate={this.state.minEndTime}
+											confirmBtnText="Confirm" 
+											cancelBtnText="Cancel" 
+											is24Hour={false}
+											onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, endTime)})}/>
+									</View>
+
+									{errorEndTime}
+								</View>
 							</View>
-						</View>
 
-						<View style={styles.textInput}>
-							<MaterialIcons name="location-on"
-								size={30}
-								color={blue} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText} 
-									placeholder="Location" 
-									onChangeText={(location) => this.setState({location})} 
-									value={this.state.location}/>
+							<View style={styles.textInput}>
+								<MaterialIcons name="location-on"
+									size={30}
+									color={blue} />
+								<View style={styles.textInputBorder}>
+									<TextInput style={styles.textInputText} 
+										placeholder="Location" 
+										ref={(input) => this.locationInput = input}
+										returnKeyType = {'done'}
+										onSubmitEditing={() => {
+											addEventButtonFunction();
+										}}
+										onChangeText={(location) => this.setState({location})} 
+										value={this.state.location}/>
+								</View>
 							</View>
+
+							<BottomButtons twoButtons={showNextButton}
+								buttonText={[addEventButtonText, 'Done']}
+								buttonMethods={[addEventButtonFunction, () => {
+									let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+									console.log(routes[routes.length - 3].routeName);
+									if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
+										this.props.navigation.navigate(DashboardNavigator);
+									} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {
+										this.props.navigation.navigate(ReviewEventRoute);
+									} else {
+										this.props.navigation.pop();
+									}
+								}]} />
 						</View>
+					</ScrollView>
 
-						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Done']}
-							buttonMethods={[addEventButtonFunction, () => {
-								let routes = this.props.navigation.dangerouslyGetParent().state.routes;
-
-								console.log(routes[routes.length - 3].routeName);
-								if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
-									this.props.navigation.navigate(DashboardNavigator);
-								} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {
-									this.props.navigation.navigate(ReviewEventRoute);
-								} else {
-									this.props.navigation.pop();
-								}
-							}]} />
-					</View>
-				</ScrollView>
-
+				</KeyboardAvoidingView>
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 

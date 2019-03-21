@@ -1,16 +1,17 @@
 import React from 'react';
-import { StatusBar, BackHandler, Alert, Text, View } from 'react-native';
+import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
+import updateNavigation from '../NavigationHelper';
 
 /**
  * The loading screen shown after the user reviewed their events
  */
-class ScheduleCreation extends React.Component {
+class ScheduleCreation extends React.PureComponent {
 
 	// Removes the header
 	static navigationOptions = {
@@ -18,6 +19,12 @@ class ScheduleCreation extends React.Component {
 		headerLeft: null,
 		gesturesEnabled: false,
 	};
+
+	constructor(props) {
+		super(props);
+
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
@@ -35,9 +42,13 @@ class ScheduleCreation extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
-
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+	}
+	
 	handleBackButton = () => {
 		Alert.alert(
+			'',
 			'Are you sure you want to stop the schedule creating process?',
 			[
 				{
@@ -50,15 +61,11 @@ class ScheduleCreation extends React.Component {
 					},
 				},
 			],
-			{cancelable: false},
+			{cancelable: true},
 		);
 		return true;
 	}
 
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-	}
-	
 	generateScheduleService = () => {
 		generateCalendars().then(() => {
 			this.navigateToSelection();
@@ -109,6 +116,7 @@ class ScheduleCreation extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<Surface style={styles.surface}>

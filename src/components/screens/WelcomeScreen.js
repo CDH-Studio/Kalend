@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text, StatusBar, Platform } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,7 +16,7 @@ const nextIconColor = 'rgba(255, 255, 255, .9)';
  * The slides for the first four screens when a user first opens the application.
  * This screen only shows if the user has not already been in the application.
  */
-class WelcomeScreen extends React.Component {
+class WelcomeScreen extends React.PureComponent {
 	
 	constructor(props) {
 		super(props);
@@ -94,6 +94,7 @@ class WelcomeScreen extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBarDark} />
 
 				<AppIntroSlider slides={slides} 

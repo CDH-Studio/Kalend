@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,7 +18,7 @@ const viewHeight = 843.4285888671875;
 /**
  * Permits the user to add Non-Fixed events i.e. events that can be moved around in the calendar
  */
-class NonFixedEvent extends React.Component {
+class NonFixedEvent extends React.PureComponent {
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
@@ -238,250 +238,265 @@ class NonFixedEvent extends React.Component {
 
 		return(
 			<View style={styles.container}>
-				<StatusBar backgroundColor={statusBlueColor} />
+				<StatusBar backgroundColor={statusBlueColor} 
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<ScrollView style={styles.scrollView}
-					ref='_scrollView'
-					scrollEventThrottle={100}>
-					<View style={[styles.content, {height: containerHeight}]}>
-						<View style={styles.instruction}>
-							<MaterialCommunityIcons name="face"
-								size={130}
-								color={dark_blue} />
+				<KeyboardAvoidingView 
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+					<ScrollView ref='_scrollView'
+						scrollEventThrottle={100}>
+						<View style={[styles.content, {height: containerHeight}]}>
+							<View style={styles.instruction}>
+								<MaterialCommunityIcons name="face"
+									size={130}
+									color={dark_blue} />
 
-							<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
-						</View>
-
-						<View>
-							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="format-title"
-									size={30}
-									color={blue} />
-
-								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
-									<TextInput style={styles.textInputText} 
-										placeholder="Title" 
-										onChangeText={(title) => this.setState({title, titleValidated: true})} 
-										value={this.state.title}/>
-								</View>
+								<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
 							</View>
 
-							{errorTitle}
-						</View>
+							<View>
+								<View style={styles.textInput}>
+									<MaterialCommunityIcons name="format-title"
+										size={30}
+										color={blue} />
+
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+										<TextInput style={styles.textInputText} 
+											placeholder="Title" 
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.locationInput.focus()}
+											blurOnSubmit={false}
+											onChangeText={(title) => this.setState({title, titleValidated: true})} 
+											value={this.state.title}/>
+									</View>
+								</View>
+
+								{errorTitle}
+							</View>
 						
-						<View>
-							<Text style={styles.sectionTitle}>Availability</Text>
+							<View>
+								<Text style={styles.sectionTitle}>Availability</Text>
 
-							<View style={styles.timeSection}>
-								<View style={styles.dateRange}>
-									<Text style={styles.blueTitle}>Dates</Text>
-									<View style={styles.dateRangeCol}>
-										<RadioButton.Group
-											onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
-											value={this.state.specificDateRange}>
+								<View style={styles.timeSection}>
+									<View style={styles.dateRange}>
+										<Text style={styles.blueTitle}>Dates</Text>
+										<View style={styles.dateRangeCol}>
+											<RadioButton.Group
+												onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
+												value={this.state.specificDateRange}>
 
-											<View style={styles.date}>
-												<Text style={styles.optionDate}>Week</Text>
+												<View style={styles.date}>
+													<Text style={styles.optionDate}>Week</Text>
 
-												<RadioButton.Android value={false}
-													uncheckedColor={'lightgray'}
-													color={blue} />
-											</View>
+													<RadioButton.Android value={false}
+														uncheckedColor={'lightgray'}
+														color={blue} />
+												</View>
 
-											<View style={styles.date}>
-												<Text style={[styles.optionDate, {width: 200}]}>Specific Date Range</Text>
+												<View style={styles.date}>
+													<Text style={[styles.optionDate, {width: 200}]}>Specific Date Range</Text>
 
-												<RadioButton.Android value={true}
-													uncheckedColor={'lightgray'}
-													color={blue} />
-											</View>
-										</RadioButton.Group>
-									</View>
-								</View>
-								
-								
-								{this.state.specificDateRange ? /*To hide/show the date*/
-									<View>
-										<View style={styles.questionLayout}>
-											<Text style={styles.blueTitle}>Start Date</Text>
-
-											<DatePicker showIcon={false} 
-												date={this.state.startDate} 
-												mode="date" 
-												style={{width:140}}
-												disabled={this.state.disabledStartDate}
-												customStyles={{
-													disabled:{backgroundColor: 'transparent'},
-													dateInput:{borderWidth: 0},
-													dateText:{
-														fontFamily: 'OpenSans-Regular',
-														color: !this.state.endDateValidated ? '#FF0000' : gray}}}
-												format="ddd., MMM DD, YYYY" 
-												minDate={this.state.minStartDate} 
-												maxDate={this.state.maxStartDate}
-												confirmBtnText="Confirm" 
-												cancelBtnText="Cancel" 
-												onDateChange={(startDate) => this.setState({
-													startDate: startDate,
-													endDate: startDate,
-													disabledEndDate: false,
-													minEndDate: startDate, endDateValidated: true})} />
+													<RadioButton.Android value={true}
+														uncheckedColor={'lightgray'}
+														color={blue} />
+												</View>
+											</RadioButton.Group>
 										</View>
+									</View>
+								
+								
+									{this.state.specificDateRange ? /*To hide/show the date*/
+										<View>
+											<View style={styles.questionLayout}>
+												<Text style={styles.blueTitle}>Start Date</Text>
+
+												<DatePicker showIcon={false} 
+													date={this.state.startDate} 
+													mode="date" 
+													style={{width:140}}
+													disabled={this.state.disabledStartDate}
+													customStyles={{
+														disabled:{backgroundColor: 'transparent'},
+														dateInput:{borderWidth: 0},
+														dateText:{
+															fontFamily: 'OpenSans-Regular',
+															color: !this.state.endDateValidated ? '#FF0000' : gray}}}
+													format="ddd., MMM DD, YYYY" 
+													minDate={this.state.minStartDate} 
+													maxDate={this.state.maxStartDate}
+													confirmBtnText="Confirm" 
+													cancelBtnText="Cancel" 
+													onDateChange={(startDate) => this.setState({
+														startDate: startDate,
+														endDate: startDate,
+														disabledEndDate: false,
+														minEndDate: startDate, endDateValidated: true})} />
+											</View>
 										
-										<View style={styles.questionLayout}>
-											<Text style={styles.blueTitle}>End Date</Text>
+											<View style={styles.questionLayout}>
+												<Text style={styles.blueTitle}>End Date</Text>
 
-											<DatePicker showIcon={false} 
-												date={this.state.endDate} 
-												mode="date" 
-												style={{width:140}}
-												disabled={this.state.disabledEndDate}
-												customStyles={{
-													disabled:{backgroundColor: 'transparent'},
-													dateInput:{borderWidth: 0},
-													dateText:{fontFamily: 'OpenSans-Regular',
-														color: !this.state.endDateValidated ? '#ff0000' : gray,
-														textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
-												format="ddd., MMM DD, YYYY" 
-												minDate={this.state.minEndDate}
-												confirmBtnText="Confirm" 
-												cancelBtnText="Cancel" 
-												onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, })} />
+												<DatePicker showIcon={false} 
+													date={this.state.endDate} 
+													mode="date" 
+													style={{width:140}}
+													disabled={this.state.disabledEndDate}
+													customStyles={{
+														disabled:{backgroundColor: 'transparent'},
+														dateInput:{borderWidth: 0},
+														dateText:{fontFamily: 'OpenSans-Regular',
+															color: !this.state.endDateValidated ? '#ff0000' : gray,
+															textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
+													format="ddd., MMM DD, YYYY" 
+													minDate={this.state.minEndDate}
+													confirmBtnText="Confirm" 
+													cancelBtnText="Cancel" 
+													onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, })} />
+											</View>
+
+											{errorEndDate}
+										</View>: null}
+
+									<View>
+										<View style={styles.duration}>
+											<Text style={[styles.blueTitle, {paddingTop: 14}]}>Duration</Text>
+
+											<View style={styles.timePicker}>
+												<NumericInput initValue = {this.state.hours}
+													value={this.state.hours}
+													onChange={(hours) => this.setState({hours, durationValidated: true})}
+													minValue={0} 
+													leftButtonBackgroundColor={blue}
+													rightButtonBackgroundColor={blue}
+													rounded={true}
+													borderColor={'lightgray'}
+													textColor={!this.state.durationValidated ? '#ff0000' : gray}
+													iconStyle={{color: '#ffffff'}} />
+												<Text style={styles.optionsText}>hour(s)</Text>
+											</View>
+
+											<View style={styles.timePicker}>
+												<NumericInput initValue={this.state.minutes}
+													value={this.state.minutes}
+													onChange={(minutes) => this.setState({minutes, durationValidated: true})}
+													minValue={0} 
+													leftButtonBackgroundColor={blue}
+													rightButtonBackgroundColor={blue}
+													rounded={true}
+													borderColor={'lightgray'}
+													textColor={!this.state.durationValidated ? '#ff0000' : gray}
+													iconStyle={{color: '#ffffff'}}  />
+												<Text style={styles.optionsText}>minute(s)</Text>
+											</View>
 										</View>
 
-										{errorEndDate}
-									</View>: null}
-
-								<View>
-									<View style={styles.duration}>
-										<Text style={[styles.blueTitle, {paddingTop: 14}]}>Duration</Text>
-
-										<View style={styles.timePicker}>
-											<NumericInput initValue = {this.state.hours}
-												value={this.state.hours}
-												onChange={(hours) => this.setState({hours, durationValidated: true})}
-												minValue={0} 
-												leftButtonBackgroundColor={blue}
-												rightButtonBackgroundColor={blue}
-												rounded={true}
-												borderColor={'lightgray'}
-												textColor={!this.state.durationValidated ? '#ff0000' : gray}
-												iconStyle={{color: '#ffffff'}} />
-											<Text style={styles.optionsText}>hour(s)</Text>
-										</View>
-
-										<View style={styles.timePicker}>
-											<NumericInput initValue={this.state.minutes}
-												value={this.state.minutes}
-												onChange={(minutes) => this.setState({minutes, durationValidated: true})}
-												minValue={0} 
-												leftButtonBackgroundColor={blue}
-												rightButtonBackgroundColor={blue}
-												rounded={true}
-												borderColor={'lightgray'}
-												textColor={!this.state.durationValidated ? '#ff0000' : gray}
-												iconStyle={{color: '#ffffff'}}  />
-											<Text style={styles.optionsText}>minute(s)</Text>
-										</View>
+										{errorDuration}
 									</View>
 
-									{errorDuration}
-								</View>
-
-								<View style={styles.switch}>
-									<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? 'Divide duration over date range?' : 'Divide duration over week?'}</Text>
-
-									<Switch trackColor={{false: 'lightgray', true: blue}}
-										ios_backgroundColor={'lightgray'}
-										thumbColor={this.state.isDividable ? dark_blue : 'darkgray'}
-										onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
-										value = {this.state.isDividable} />
-								</View>
-
-								<View style={styles.questionLayout}>
-									<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? 'Number of Times It Will Happen in Date Range' : 'Number of Times It Will Happen in Week'}</Text>
-
-									<NumericInput initValue={this.state.occurrence}
-										value={this.state.occurrence}
-										onChange={(occurrence) => this.setState({occurrence})}
-										minValue={1} 
-										leftButtonBackgroundColor={blue}
-										rightButtonBackgroundColor={blue}
-										rounded={true}
-										borderColor={'lightgray'}
-										textColor={gray}
-										iconStyle={{color: white}} />
-								</View>
-								
-								{!this.state.specificDateRange ? 
 									<View style={styles.switch}>
-										<Text style={[styles.blueTitle, {width: 200}]}>Every Week?</Text>
+										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? 'Split duration over date range?' : 'Split duration over week?'}</Text>
 
 										<Switch trackColor={{false: 'lightgray', true: blue}}
 											ios_backgroundColor={'lightgray'}
-											thumbColor={this.state.isRecurrent ? dark_blue : 'darkgray'}
-											onValueChange={(isRecurrent) => this.setState({isRecurrent})}
-											value = {this.state.isRecurrent} />
-									</View> : null}
-							</View>
-						</View>
+											thumbColor={(this.state.isDividable && Platform.OS !== 'ios') ? dark_blue : null}
+											onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
+											value = {this.state.isDividable} />
+									</View>
 
-						<View>
-							<Text style={styles.sectionTitle}>Priority Level</Text>
+									<View style={styles.questionLayout}>
+										<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? 'Number of Times It Will Happen in Date Range' : 'Number of Times It Will Happen in Week'}</Text>
 
-							<Slider value={this.state.priority}
-								minimumValue={0}
-								maximumValue={1} 
-								step={0.5}
-								thumbTintColor={dark_blue}
-								minimumTrackTintColor={blue}
-								onValueChange={(priority) => this.setState({priority: priority})} />
-
-							<View style={styles.questionLayout}>
-								<Text style={styles.optionsText}>Low</Text>
-
-								<Text style={styles.optionsText}>Normal</Text>
-
-								<Text style={styles.optionsText}>High</Text>
-							</View>
-						</View>
-						<View>
-							<Text style={styles.sectionTitle}>Details</Text>
-
-							<View style={styles.textInput}>
-								<MaterialIcons name="location-on"
-									size={30}
-									color={blue} />
-
-								<View style={styles.textInputBorder}>
-									<TextInput style={styles.textInputText} 
-										placeholder="Location"
-										onChangeText={(location) => this.setState({location})}
-										value={this.state.location}/>
-								</View>
-							</View>
-						
-							<View style={styles.textInput}>
-								<MaterialCommunityIcons name="text-short"
-									size={30}
-									color={blue} />
+										<NumericInput initValue={this.state.occurrence}
+											value={this.state.occurrence}
+											onChange={(occurrence) => this.setState({occurrence})}
+											minValue={1} 
+											leftButtonBackgroundColor={blue}
+											rightButtonBackgroundColor={blue}
+											rounded={true}
+											borderColor={'lightgray'}
+											textColor={gray}
+											iconStyle={{color: white}} />
+									</View>
 								
-								<View style={styles.textInputBorder}>
-									<TextInput style={styles.textInputText} 
-										placeholder="Description"
-										onChangeText={(description) => this.setState({description})}
-										value={this.state.description}/>
+									{!this.state.specificDateRange ? 
+										<View style={styles.switch}>
+											<Text style={[styles.blueTitle, {width: 200}]}>Every Week?</Text>
+
+											<Switch trackColor={{false: 'lightgray', true: blue}}
+												ios_backgroundColor={'lightgray'}
+												thumbColor={(this.state.isRecurrent && Platform.OS !== 'ios') ? dark_blue : null}
+												onValueChange={(isRecurrent) => this.setState({isRecurrent})}
+												value = {this.state.isRecurrent} />
+										</View> : null}
 								</View>
 							</View>
+
+							<View>
+								<Text style={styles.sectionTitle}>Priority Level</Text>
+
+								<Slider value={this.state.priority}
+									minimumValue={0}
+									maximumValue={1} 
+									step={0.5}
+									thumbTintColor={dark_blue}
+									minimumTrackTintColor={blue}
+									onValueChange={(priority) => this.setState({priority: priority})} />
+
+								<View style={styles.questionLayout}>
+									<Text style={styles.optionsText}>Low</Text>
+
+									<Text style={styles.optionsText}>Normal</Text>
+
+									<Text style={styles.optionsText}>High</Text>
+								</View>
+							</View>
+							<View>
+								<Text style={styles.sectionTitle}>Details</Text>
+
+								<View style={styles.textInput}>
+									<MaterialIcons name="location-on"
+										size={30}
+										color={blue} />
+
+									<View style={styles.textInputBorder}>
+										<TextInput style={styles.textInputText} 
+											placeholder="Location"
+											ref={(input) => this.locationInput = input}
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.descriptionInput.focus()}
+											blurOnSubmit={false}
+											onChangeText={(location) => this.setState({location})}
+											value={this.state.location}/>
+									</View>
+								</View>
+						
+								<View style={styles.textInput}>
+									<MaterialCommunityIcons name="text-short"
+										size={30}
+										color={blue} />
+								
+									<View style={styles.textInputBorder}>
+										<TextInput style={styles.textInputText} 
+											placeholder="Description"
+											ref={(input) => this.descriptionInput = input}
+											returnKeyType = {'done'}
+											onSubmitEditing={() => {
+												addEventButtonFunction();
+											}}
+											onChangeText={(description) => this.setState({description})}
+											value={this.state.description}/>
+									</View>
+								</View>
+							</View>
+
+
+							<BottomButtons twoButtons={showNextButton}
+								buttonText={[addEventButtonText, 'Done']}
+								buttonMethods={[addEventButtonFunction, this.skip]} />
 						</View>
-
-
-						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Done']}
-							buttonMethods={[addEventButtonFunction, this.skip]} />
-					</View>
-				</ScrollView>
-
+					</ScrollView>
+				</KeyboardAvoidingView>
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({ snackbarVisible: false })} 

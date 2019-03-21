@@ -23,7 +23,7 @@ import { eventOverviewStyles as styles } from '../styles';
  * @prop {String} navigateEditScreen The appropriate edit screen for the event
  * @prop {function} action The function to be executed when delete is triggered
  */
-class EventOverview extends React.Component {
+class EventOverview extends React.PureComponent {
 
 	constructor(props) {
 		super(props);

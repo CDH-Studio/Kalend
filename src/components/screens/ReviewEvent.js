@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -19,10 +19,10 @@ const priorityLevels = {
 /**
  * Permits users to verify and edit the events they added
  */
-class ReviewEvent extends React.Component {
+class ReviewEvent extends React.PureComponent {
 
 	static navigationOptions = {
-		title: 'Review Events',
+		title: 'Create a Schedule',
 		headerStyle: {
 			backgroundColor: white,
 		}
@@ -30,7 +30,6 @@ class ReviewEvent extends React.Component {
 
 	constructor(props) {
 		super(props);
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 
 		this.state = {
 			showFAB: true,
@@ -40,6 +39,8 @@ class ReviewEvent extends React.Component {
 			schoolScheduleData: [],
 			showTutShadow: true
 		};
+
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -182,8 +183,6 @@ class ReviewEvent extends React.Component {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		
-
 		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 
@@ -191,6 +190,7 @@ class ReviewEvent extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
 				<ScrollView style={styles.scrollView}
@@ -217,7 +217,7 @@ class ReviewEvent extends React.Component {
 
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text style={styles.textNoData}>No school schedule added, please go back to add one</Text> : 
+									<Text style={styles.textNoData}>No School Schedule or Courses added</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -244,7 +244,7 @@ class ReviewEvent extends React.Component {
 
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No Fixed events added</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -273,7 +273,7 @@ class ReviewEvent extends React.Component {
 
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No non-fixed events added, please go back to add some</Text> : 
+									<Text style={styles.textNoData}>No Non-Fixed events added</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 

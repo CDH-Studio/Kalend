@@ -414,6 +414,7 @@ class ScheduleSelection extends React.PureComponent {
 
 	handleBackButton = () => {
 		Alert.alert(
+			'',
 			'Are you sure you want to delete the created schedule?',
 			[
 				{
@@ -426,7 +427,7 @@ class ScheduleSelection extends React.PureComponent {
 					},
 				},
 			],
-			{cancelable: false},
+			{cancelable: true},
 		);
 		return true;
 	}
@@ -474,6 +475,7 @@ class ScheduleSelection extends React.PureComponent {
 
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 
 				<ScrollView >

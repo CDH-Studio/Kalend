@@ -4,8 +4,9 @@ import { cleanReducersStyles as styles, statusBlueColor, blue, dark_blue } from 
 import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser, clearGeneratedCalendars } from '../../actions';
 import { LoginNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
+import updateNavigation from '../NavigationHelper';
 
-class CleanReducers extends React.Component {
+class CleanReducers extends React.PureComponent {
 	static navigationOptions = {
 		title: 'Clean Reducers',
 		headerStyle: {
@@ -27,11 +28,19 @@ class CleanReducers extends React.Component {
 		'Unavailable Hours': clearUnavailableHours,
 		'User Profile': logoffUser
 	};
+
+	constructor(props) {
+		super(props);
+
+		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+	}
 	
 	render() {
 		return(
 			<ScrollView style={styles.content}>
-				<StatusBar translucent={true} backgroundColor={statusBlueColor} />
+				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+					backgroundColor={'#2d6986'} />
 
 				{
 					Object.keys(this.reducersDeleteActions).map((data, key) => {
@@ -44,8 +53,6 @@ class CleanReducers extends React.Component {
 						);
 					})
 				}
-
-
 
 				<TouchableOpacity style={[styles.button, {backgroundColor: dark_blue}]}
 					onPress={() => {

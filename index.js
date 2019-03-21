@@ -183,7 +183,11 @@ const DashboardOptionsNavigator = createStackNavigator(
 		ScheduleSelection: {screen: ScheduleSelection, navigationOptions:DashboardOptionsNavigatorOptions},
 		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
 
-		CleanReducers,
+		CleanReducers: { screen: CleanReducers,
+			navigationOptions:  {
+				...dashboardInnerScreenOptions
+			},
+		},
 		SchoolInformation: {screen: SchoolInformation, navigationOptions:DashboardOptionsNavigatorOptions},
 
 		UnavailableHours: {screen: UnavailableHours, navigationOptions:DashboardOptionsNavigatorOptions},
@@ -207,8 +211,6 @@ const MainNavigator = createSwitchNavigator(
 );
 
 const AppContainer = createAppContainer(MainNavigator);
-
-StatusBar.setBarStyle('light-content', true);
 
 export default function Main() {
 	return (
