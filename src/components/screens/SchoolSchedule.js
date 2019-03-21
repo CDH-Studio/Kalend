@@ -34,13 +34,15 @@ class SchoolSchedule extends React.PureComponent {
 	 */
 	selectAPicture() {
 		if (Platform.OS !== 'ios') {
+			console.log('clicked')
 			requestStoragePermission().then((accepted) => {
+				console.log('clicked', accepted)
 				if (accepted) {
 					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
 				}
 			});
 		} else {
-			this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
+			this.props.navigation.navigate('SchoolScheduleSelectPicture');
 		}
 	}
 
