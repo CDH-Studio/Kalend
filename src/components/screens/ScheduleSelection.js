@@ -114,15 +114,15 @@ class Schedule extends React.PureComponent {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			showShadow: true,
-			hours: [],
+			hours: [0, 4, 8, 12, 4, 8, 0],
 			startOffset: 0,
-			timeInterval: 0
+			timeInterval: 4
 		};
 	}
-	componentWillReceiveProps(props) {
-		//console.log('props.data', props.data);
-		this.createTimes(props.data);
-	}
+	// componentWillReceiveProps(props) {
+	//console.log('props.data', props.data);
+	// this.createTimes(props.data);
+	// }
 
 	/**
 	 * Creates the time intervals between two lines according to the events that are present in the calendar
