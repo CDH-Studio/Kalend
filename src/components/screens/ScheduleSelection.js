@@ -128,9 +128,9 @@ class Schedule extends React.PureComponent {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			showShadow: true,
-			hours: [0, 4, 8, 12, 4, 8, 12],
+			hours: [0, 4, 8, 12, 4, 8, 0],
 			startOffset: 0,
-			timeInterval: 24,
+			timeInterval: 4,
 			ai: [],
 			aiEvents: [[]]
 		};
@@ -142,7 +142,14 @@ class Schedule extends React.PureComponent {
 
 	componentWillReceiveProps(props) {
 		this.setState({ai: props.ai, aiEvents: props.aiEvents});
-		// this.createTimes(props.data);
+
+		let { school, fixed, ai } = props;
+
+		if (!Array.isArray(ai)) {
+			ai = [ai];
+		}
+
+		this.createTimes({school, fixed, ai});
 	}
 
 	/**
@@ -153,11 +160,7 @@ class Schedule extends React.PureComponent {
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
 		let latestHour = 12;
-		Object.entries(data).map((i, index) => {
-			if (index === 2) {
-				i[1] = i[1][this.props.id];
-			}
-
+		Object.entries(data).map((i) => {
 			i[1].map((i) => {
 				let start = i.start;
 				let end = i.start + i.chunks;
@@ -207,6 +210,7 @@ class Schedule extends React.PureComponent {
 				count ++;
 			}
 		}		
+		
 		// Saves the information in the state
 		this.setState({
 			hours,
