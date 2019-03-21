@@ -104,7 +104,9 @@ def userVer = getNpmVersion()
 def googleVer = getGitVersion()
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.js",
+    jsBundleDirDebug: "$buildDir/intermediates/merged_assets/debug/mergeDebugAssets/out",
+    jsBundleDirRelease: "$buildDir/intermediates/merged_assets/release/mergeReleaseAssets/out"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
