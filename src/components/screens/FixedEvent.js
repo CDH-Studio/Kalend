@@ -9,7 +9,6 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
-import { store } from '../../store';
 import BottomButtons from '../BottomButtons';
 import { FixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';

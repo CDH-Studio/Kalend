@@ -1022,9 +1022,6 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowOpacity: 0.6,
 				shadowRadius: 7  
 			},
-			android: {
-				elevation: 4
-			},
 		}),
 	},
 
