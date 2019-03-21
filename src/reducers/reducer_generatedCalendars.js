@@ -8,7 +8,6 @@ export default function GeneratedCalendarsReducer(state = [], action) {
 			return  [...state, calendar];
 
 		case DELETE_GENERATED_CALENDAR:
-			console.log('state', state);
 			state.splice(index,1);
 			return state;
 			
