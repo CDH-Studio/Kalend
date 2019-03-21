@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
-import { generateNonFixedEvents, InsertCourseEventToCalendar, InsertFixedEventToCalendar } from '../../services/service';
+import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
@@ -28,10 +28,16 @@ class ScheduleCreation extends React.PureComponent {
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
-		//this.generateScheduleService();
+		setUserInfo();
 		this.InsertFixedEventsToGoogle().then(() => {
-			if (this.props.NonFixedEventsReducer.length != 0) this.generateScheduleService();
-			else this.navigateToSelection();
+			if (this.props.NonFixedEventsReducer.length != 0) {
+				setTimeout(() =>{ 
+					this.generateScheduleService();
+				}, 3000);
+				
+			} else  {
+				this.navigateToSelection();
+			}
 		});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
@@ -61,8 +67,7 @@ class ScheduleCreation extends React.PureComponent {
 	}
 
 	generateScheduleService = () => {
-		generateNonFixedEvents().then(() => {
-			console.log('Finished creating Non Fixed');
+		generateCalendars().then(() => {
 			this.navigateToSelection();
 		});
 	}
@@ -133,12 +138,13 @@ class ScheduleCreation extends React.PureComponent {
 }
 
 let mapStateToProps = (state) => {
-	const {FixedEventsReducer, CoursesReducer, NonFixedEventsReducer} = state;
+	const {FixedEventsReducer, CoursesReducer, NonFixedEventsReducer, GeneratedNonFixedEventsReducer} = state;
 	
 	return {
 		FixedEventsReducer,
 		CoursesReducer,
-		NonFixedEventsReducer
+		NonFixedEventsReducer,
+		GeneratedNonFixedEventsReducer
 	};
 };
 

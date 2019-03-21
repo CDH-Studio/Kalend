@@ -1,13 +1,12 @@
 import React from 'react';
-import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { setSelectedSchedule } from '../../actions';
+import { setSelectedSchedule, deleteGeneratedCalendar } from '../../actions';
 import { calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
-import { store } from '../../store';
 import { scheduleSelectionStyle as styles, black } from '../../styles';
 
 export const containerPadding = 10;
@@ -33,9 +32,32 @@ class ScheduleEvent extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
-		let { startOffset, timeInterval, kind, chunks, start, day } = this.props;
+		this.state = {
+			height: 0,
+			width: 0,
+			left:0,
+			top: 0,
+			color: '' ,
+			colorInside : ''
+		};
+	}
 
-		let width = ((Dimensions.get('window').width - containerPadding * 2 - lineViewHorizontalPadding * 2 - lineViewLeftPadding) / 7);
+	componentWillMount() {
+		this.setEventBlock(this.props);
+	}
+	
+
+	componentWillReceiveProps(props) {
+		this.setEventBlock(props);
+	}
+
+	setEventBlock = (props) => {
+		let windowWidth = ((Dimensions.get('window').width - containerPadding * 2 - lineViewHorizontalPadding * 2 - lineViewLeftPadding) / 7);
+		let { startOffset, timeInterval, kind, chunks, start, day } = props;
+		let height = (chunks * lineSpace + chunks * lineThickness) / timeInterval - lineThickness - 1;
+		let width = windowWidth - 2;
+		let left = day * windowWidth + 1;
+		let top = ((start - startOffset)* lineSpace + chunks * lineThickness) / timeInterval + lineThickness + 1;
 		let color;
 		let colorInside;
 
@@ -55,15 +77,7 @@ class ScheduleEvent extends React.PureComponent {
 				break;
 		}
 
-		// Calculates the size of the event view on the screen
-		this.state = {
-			height: (chunks * lineSpace + chunks * lineThickness) / timeInterval - lineThickness - 1,
-			width: width - 2,
-			left: day * width + 1,
-			top: ((start - startOffset)* lineSpace + chunks * lineThickness) / timeInterval + lineThickness + 1,
-			color,
-			colorInside
-		};
+		this.setState({height,width,left,top,color, colorInside});
 	}
 
 	render() {
@@ -114,14 +128,21 @@ class Schedule extends React.PureComponent {
 			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			showShadow: true,
-			hours: [],
+			hours: [0, 4, 8, 12, 4, 8, 12],
 			startOffset: 0,
-			timeInterval: 0
+			timeInterval: 24,
+			ai: [],
+			aiEvents: [[]]
 		};
 	}
+
+	componentWillMount() {
+		this.setState({ai: this.props.ai, aiEvents: this.props.aiEvents});
+	}
+
 	componentWillReceiveProps(props) {
-		//console.log('props.data', props.data);
-		this.createTimes(props.data);
+		this.setState({ai: props.ai, aiEvents: props.aiEvents});
+		// this.createTimes(props.data);
 	}
 
 	/**
@@ -213,7 +234,8 @@ class Schedule extends React.PureComponent {
 	}
 
 	render() {
-		const { data, numOfLines, id } = this.props;
+		const { numOfLines, id} = this.props;
+		// console.log('data in render', id, data.ai[id]);
 		const { weekLetters, ordinal, hours, showShadow, startOffset, timeInterval } = this.state;
 
 		return (
@@ -225,7 +247,14 @@ class Schedule extends React.PureComponent {
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' Schedule', id, data);
+					this.props.nextScreen(ordinal + ' Schedule', id, {
+						fixed: this.props.fixed,
+						school: this.props.school,
+						ai: this.state.ai,
+						aiEvents: this.state.aiEvents,
+						fixedEvents: this.props.fixedEvents,
+						schoolEvents: this.props.schoolEvents
+					});
 				}} 
 				onPressIn={() =>{
 					this.setState({
@@ -272,7 +301,7 @@ class Schedule extends React.PureComponent {
 							{ this.createLines(numOfLines) }
 
 							{ 
-								data.school.map((info, key) => {
+								this.props.school.map((info, key) => {
 									return  <ScheduleEvent key={key} 
 										showShadow={showShadow} 
 										chunks={info.chunks} 
@@ -285,7 +314,7 @@ class Schedule extends React.PureComponent {
 							}
 
 							{ 
-								data.fixed.map((info, key) => {
+								this.props.fixed.map((info, key) => {
 									return  <ScheduleEvent key={key} 
 										showShadow={showShadow} 
 										chunks={info.chunks} 
@@ -298,8 +327,8 @@ class Schedule extends React.PureComponent {
 							}
 
 							{ 
-								data.ai.length !== 0 ?
-									data.ai[id].map((info, key) => {
+								this.state.ai.length !== 0 ?
+									this.state.ai.map((info, key) => {
 										return  <ScheduleEvent key={key} 
 											showShadow={showShadow} 
 											chunks={info.chunks} 
@@ -332,6 +361,8 @@ class Schedule extends React.PureComponent {
 	}
 }
 
+
+
 /**
  * The component which encloses all of the schedules which has been generated
  */
@@ -351,7 +382,8 @@ class ScheduleSelection extends React.PureComponent {
 			data: {
 				school: [],
 				fixed: [],
-				ai: [[]]
+				ai: [[]],
+				aiCalendars: [[]]
 			}
 		};
 
@@ -364,10 +396,17 @@ class ScheduleSelection extends React.PureComponent {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
+	
+	deleteCalendar = (index) => {
+		let data = this.state.data;
+		data.ai.splice(index,1);
+		this.props.dispatch(deleteGeneratedCalendar(index));
+		this.setState({data});
+		this.forceUpdate();
+	}
+
 	eventsToScheduleSelectionService = () => {
 		eventsToScheduleSelectionData().then((data) => {
-			console.log('data for mini calendar', data);
-			console.log('store', store.getState().GeneratedNonFixedEventsReducer);
 			this.setState({data});
 		});
 	}
@@ -406,7 +445,7 @@ class ScheduleSelection extends React.PureComponent {
 	 */
 	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data});
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data, delete: this.deleteCalendar});
 	}
 	
 	/**
@@ -417,6 +456,19 @@ class ScheduleSelection extends React.PureComponent {
 	setIndex = (index) => {
 		this.props.dispatch(setSelectedSchedule(index));
 	}
+
+	
+	_renderItem = ({item, index}) => {
+		return <Schedule nextScreen={this.nextScreen} 
+			fixed={this.state.data.fixed}
+			school={this.state.data.school}
+			ai={item}
+			aiEvents={this.state.data.aiCalendars[index]}
+			fixedEvents={this.state.data.fixedEvents}
+			schoolEvents={this.state.data.schoolEvents}
+			id={index}
+			numOfLines={6} />;
+	};
 
 	render() {
 		return(
@@ -429,24 +481,11 @@ class ScheduleSelection extends React.PureComponent {
 				<ScrollView >
 					<View style={styles.content}>
 						<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
-
-						{ 
-							this.state.data.ai.map((ai, key) => {
-								return <Schedule nextScreen={this.nextScreen} 
-									data={this.state.data} 
-									key={key} 
-									id={key} 
-									numOfLines={6} />;
-							})
-						}
-
 						{
-							this.state.data.ai.length === 0 ? 
-								<Schedule nextScreen={this.nextScreen} 
-									data={this.state.data} 
-									id={0}
-									numOfLines={6} /> 
-								: null
+							this.state.data.ai.length >= 1 ? 
+								<FlatList data={this.state.data.ai}
+									keyExtractor={(item, index) => index.toString()}
+									renderItem={this._renderItem} /> : null
 						}
 					</View>
 				</ScrollView>
