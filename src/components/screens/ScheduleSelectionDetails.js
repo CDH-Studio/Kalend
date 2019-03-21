@@ -51,9 +51,7 @@ class ScheduleEvent extends React.PureComponent  {
 			color
 		};
 	}
-	componentDidMount() {
-		console.log('data recieved in Schedule Event', this.props.info);
-	}
+	
 	getTime = (time) => {
 		time = new Date(time);
 		let hours = time.getHours();
@@ -170,7 +168,12 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		this.props.navigation.setParams({ goBack: this.goBack });
+		this.props.navigation.setParams({ goBack: this.deleteCalendar });
+	}
+
+	deleteCalendar = async () => {
+		this.props.navigation.state.params.delete(this.props.index);
+		this.goBack();
 	}
 
 	
@@ -209,7 +212,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			let day = new Date(event.startDate).getDay();
 			temp_days[days[day]].push(event);
 		});
-		data.aiEvents[0].forEach(event => {
+		data.aiEvents.forEach(event => {
 			event.type = 'nonFixed';
 			let day = new Date(event.start.dateTime).getDay();
 			temp_days[days[day]].push(event);
@@ -255,7 +258,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
-		this.props.GeneratedNonFixedEventsReducer.forEach(event => {
+		this.state.data.aiEvents.forEach(event => {
 			insertGeneratedEvent(event);
 		});
 		this.props.navigation.navigate(DashboardNavigator);
