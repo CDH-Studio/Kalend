@@ -163,13 +163,24 @@ const DashboardOptionsNavigator = createStackNavigator(
 			screen: SchoolScheduleSelectPicture, 
 			navigationOptions: {
 				...DashboardOptionsNavigatorOptions,
-				headerTintColor: white
+				headerTintColor: white,
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
 			},
-			headerStyle: {
-				backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			}
 		},
-		SchoolScheduleTakePicture: {screen: SchoolScheduleTakePicture, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolScheduleTakePicture: {
+			screen: SchoolScheduleTakePicture,
+			navigationOptions: {
+				...DashboardOptionsNavigatorOptions,
+				headerTintColor: white,
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
+			},
+		},
 		SchoolScheduleCreation: {screen: SchoolScheduleCreation, navigationOptions:DashboardOptionsNavigatorOptions},
 
 		FixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},

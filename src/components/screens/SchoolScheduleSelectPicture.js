@@ -22,7 +22,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTransparent: true
+		headerTransparent: true,
 	};
 
 	constructor(props) {
@@ -193,7 +193,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 					
 				<ScrollView onScroll={this.scrollListener}>
 					<View style={styles.content}>
