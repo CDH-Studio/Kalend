@@ -20,14 +20,17 @@ class Dashboard extends React.PureComponent {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
+			currentMonth: '',
 			items: {
 				'2019-03-21': 
 					[{
+						date: '2019-03-21',
 						name: 'SEG 2505', 
 						time: '1:00 PM - 2:00 PM'
 					},
 
 					{
+						date: '2019-03-21',
 						name: 'Basketball Game Tomorrooooow', 
 						time: '10:00 PM - 11:30 PM'
 					}]
@@ -97,15 +100,17 @@ class Dashboard extends React.PureComponent {
 	render() {
 		const {optionsOpen} = this.state;
 
+		// let currentMonth = this.date.substr(5, 2);
+
 		return(
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-						backgroundColor={'#2d6986'} />
-					<View style={styles.calendarOptions}>
-						<Text style={styles.calendarOptionsText}>Week</Text>
-						<Text style={styles.calendarOptionsText}>Month</Text>
+						backgroundColor={'#2d6986'} />	
+
+					<View style={styles.calendarBack}>
+						<Text style={styles.calendarBackText}></Text>
 					</View>
 
 					<Agenda

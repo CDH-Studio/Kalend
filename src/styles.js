@@ -1352,7 +1352,7 @@ export const dashboardStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		padding: 10,
-		backgroundColor: '#F6F8FA'
+		backgroundColor: dark_blue //'#F6F8FA'
 	},
 
 	fab: {
@@ -1421,34 +1421,15 @@ export const dashboardStyles = StyleSheet.create({
 		}),
 	},
 
-	calendarOptions: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		paddingTop: 10,
-		paddingBottom: 20
+	calendarBack: {
+		backgroundColor: white
 	},
-
-	calendarOptionsText: {
+	
+	calendarBackText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
-		color: white,
-		paddingHorizontal: 40
-	},
-
-	calendarBack: {
-		backgroundColor: white,
-		borderRadius: 5,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.9,
-				shadowRadius: 2
-			},
-			android: {
-				elevation: 4
-			},
-		}),
+		color: dark_blue,
+		textAlign: 'center'
 	},
 
 	eventsDayTitle: {
