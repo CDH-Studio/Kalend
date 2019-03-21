@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
 import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
-import { gradientColors, statusBarDark } from '../../../config';
-import { loadingStyles as styles, blue } from '../../styles';
+import { gradientColors } from '../../../config';
+import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;

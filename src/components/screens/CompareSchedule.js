@@ -16,7 +16,7 @@ class CompareSchedule extends React.PureComponent {
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#2d6986'} />
+					backgroundColor={'#166489'} />
 			</View>
 		);
 	}
