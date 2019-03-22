@@ -6,6 +6,7 @@ import { calendarEventColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
+import { clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
 export const containerPaddingDetails = 10;
 
@@ -261,6 +262,8 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		this.state.data.aiEvents.forEach(event => {
 			insertGeneratedEvent(event);
 		});
+		this.props.dispatch(clearGeneratedCalendars());
+		this.props.dispatch(clearGeneratedNonFixedEvents());
 		this.props.navigation.navigate(DashboardNavigator);
 	}
 
