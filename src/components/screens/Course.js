@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
+import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
 
@@ -511,10 +511,11 @@ class Course extends React.PureComponent {
 								buttonMethods={[addEventButtonFunction, () => {
 									let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
-									if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
-										this.props.navigation.navigate(DashboardNavigator);
-									} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {
+									if (routes && (routes[routes.length - 3].routeName == ReviewEventRoute || 
+										(routes[routes.length - 3].routeName == SchoolInformationRoute && routes[routes.length - 4].routeName == ReviewEventRoute))) {
 										this.props.navigation.navigate(ReviewEventRoute);
+									} else if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
+										this.props.navigation.navigate(DashboardNavigator);
 									} else {
 										this.props.navigation.pop();
 									}
