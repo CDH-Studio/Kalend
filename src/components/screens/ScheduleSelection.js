@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { setSelectedSchedule, deleteGeneratedCalendar } from '../../actions';
+import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
 import { calendarEventColors, calendarEventColorsInside } from '../../../config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
@@ -428,6 +428,8 @@ class ScheduleSelection extends React.PureComponent {
 				{text: 'Yes', 
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
+						this.props.dispatch(clearGeneratedCalendars());
+						this.props.dispatch(clearGeneratedNonFixedEvents());
 					},
 				},
 			],

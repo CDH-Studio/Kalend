@@ -3,7 +3,7 @@ import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform } from 'r
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
@@ -183,6 +183,8 @@ class ReviewEvent extends React.PureComponent {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
+		this.props.dispatch(clearGeneratedCalendars());
+		this.props.dispatch(clearGeneratedNonFixedEvents());
 		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 
