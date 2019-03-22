@@ -406,6 +406,7 @@ class Course extends React.PureComponent {
 
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
+											maxLength={1024}
 											placeholder="Course Code" 
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.locationInput.focus()}
@@ -495,6 +496,7 @@ class Course extends React.PureComponent {
 									color={blue} />
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
+										maxLength={1024}
 										placeholder="Location" 
 										ref={(input) => this.locationInput = input}
 										returnKeyType = {'done'}

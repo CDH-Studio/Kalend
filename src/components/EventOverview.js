@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { setNavigationScreen } from '../actions';
@@ -55,6 +55,7 @@ class EventOverview extends React.PureComponent {
 		let categoryIcon;
 		let details;
 		let editScreen;
+		let detailHeight;
 
 		if (this.props.category === 'SchoolSchedule') {
 			categoryColor = calendarEventColors.red;
@@ -64,7 +65,7 @@ class EventOverview extends React.PureComponent {
 					<Text style={styles.modalDetailsSubtitle}>Location: </Text>
 					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 				</View>;
-
+			detailHeight = 40;
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = calendarEventColors.green;
@@ -86,6 +87,7 @@ class EventOverview extends React.PureComponent {
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
+			detailHeight = 100;
 			editScreen = 'FixedEvent';
 		} else {
 			categoryColor = calendarEventColors.purple;
@@ -109,6 +111,7 @@ class EventOverview extends React.PureComponent {
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 				</View>;
+			detailHeight = 150;
 			editScreen = 'NonFixedEvent';
 		}
 
@@ -175,8 +178,13 @@ class EventOverview extends React.PureComponent {
 										color={grayColor} />
 								</TouchableOpacity>
 
-								<Text style={[styles.modalTitle, {backgroundColor: categoryColor} ]}>{this.props.eventTitle}</Text>
-
+								<View style={{height:70}}>
+									<ScrollView>
+										<Text style={[styles.modalTitle, {backgroundColor: categoryColor}]}>{this.props.eventTitle}</Text>
+									</ScrollView>
+								</View>
+								
+								
 								<View style={styles.modalInfoView}>
 									<View>
 										<View style={styles.modalInfoDate}>
@@ -196,7 +204,10 @@ class EventOverview extends React.PureComponent {
 
 								<View style={styles.modalDetailsView}>
 									<Text style={styles.modalDetailsTitle}>Details</Text>
-									{details}
+
+									<View style={{height:detailHeight}}>
+										<ScrollView>{details}</ScrollView>
+									</View>
 								</View>
 								
 								<View style={styles.actionsModal}>
