@@ -272,6 +272,7 @@ class FixedEvent extends React.PureComponent {
 			{
 				options: ['None', 'Everyday', 'Weekly', 'Monthly', 'Cancel'],
 				cancelButtonIndex: 4,
+				tintColor: blue
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {

@@ -4,7 +4,7 @@ import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent } from '../../actions';
-import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, CourseRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
@@ -205,7 +205,7 @@ class ReviewEvent extends React.PureComponent {
 								<Text style={styles.sectionTitle}>School Schedule</Text>
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
-										this.props.navigation.navigate(CourseRoute);
+										this.props.navigation.navigate(SchoolScheduleRoute);
 									} else {
 										this.props.navigation.navigate(SchoolInformationRoute, {reviewEvent: true});
 									}
