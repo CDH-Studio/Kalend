@@ -276,15 +276,14 @@ class FixedEvent extends React.PureComponent {
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.state.recurrenceValue = 'NONE';
+					this.setState({recurrenceValue: 'NONE'});
 				} else if (buttonIndex === 1) {
-					this.state.recurrenceValue = 'DAILY';
+					this.setState({recurrenceValue: 'DAILY'});
 				} else if (buttonIndex === 2) {
-					this.state.recurrenceValue = 'WEEKLY';
+					this.setState({recurrenceValue: 'WEEKLY'});
 				} else if (buttonIndex === 3) {
-					this.state.recurrenceValue = 'MONTHLY';
+					this.setState({recurrenceValue: 'MONTHLY'});
 				}
-				this.forceUpdate();
 			},
 		);
 	}

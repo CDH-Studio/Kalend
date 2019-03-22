@@ -1210,6 +1210,7 @@ export const scheduleSelectionStyle = StyleSheet.create({
 	content: {
 		paddingHorizontal: containerPadding,
 		marginTop: 10,
+		paddingBottom: 10,
 	},
 
 	description: {
