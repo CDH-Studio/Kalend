@@ -52,11 +52,11 @@ class FixedEvent extends React.PureComponent {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			startTime: new Date().toLocaleTimeString(),
+			startTime: this.setInitialTime(),
 			disabledStartTime : false,
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			endTime: this.setInitialTime(),
+			minEndTime: this.setInitialTime(),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -95,6 +95,16 @@ class FixedEvent extends React.PureComponent {
 			containerHeight,
 			showTutShadow
 		});
+	}
+
+	setInitialTime = () => {
+		let time = new Date().toLocaleTimeString();
+		let timeSplit = time.split(':');
+		let timeSplitSpace = time.split(' ');
+
+		time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
+
+		return time;
 	}
 
 	/**
@@ -276,15 +286,14 @@ class FixedEvent extends React.PureComponent {
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.state.recurrenceValue = 'NONE';
+					this.setState({recurrenceValue: 'NONE'});
 				} else if (buttonIndex === 1) {
-					this.state.recurrenceValue = 'DAILY';
+					this.setState({recurrenceValue: 'DAILY'});
 				} else if (buttonIndex === 2) {
-					this.state.recurrenceValue = 'WEEKLY';
+					this.setState({recurrenceValue: 'WEEKLY'});
 				} else if (buttonIndex === 3) {
-					this.state.recurrenceValue = 'MONTHLY';
+					this.setState({recurrenceValue: 'MONTHLY'});
 				}
-				this.forceUpdate();
 			},
 		);
 	}
@@ -388,11 +397,11 @@ class FixedEvent extends React.PureComponent {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			startTime: new Date().toLocaleTimeString(),
+			startTime: this.setInitialTime(),
 			disabledStartTime : false,
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			endTime: this.setInitialTime(),
+			minEndTime: this.setInitialTime(),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -409,6 +418,7 @@ class FixedEvent extends React.PureComponent {
 	}
 
 	render() {
+		console.log(this.state);
 		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
 		let addEventButtonText;
