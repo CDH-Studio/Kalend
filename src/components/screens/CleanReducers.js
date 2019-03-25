@@ -1,10 +1,11 @@
 import React from 'react';
 import { StatusBar, ScrollView, TouchableOpacity, Text, Platform } from 'react-native';
-import { cleanReducersStyles as styles, blue, dark_blue } from '../../styles';
-import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser, clearGeneratedCalendars } from '../../actions';
+import { cleanReducersStyles as styles, blue, dark_blue, red } from '../../styles';
+import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser, clearGeneratedCalendars, clearSchedule } from '../../actions';
 import { LoginNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
+import { clearEveryReducer } from '../../services/helper';
 
 class CleanReducers extends React.PureComponent {
 	static navigationOptions = {
@@ -22,7 +23,7 @@ class CleanReducers extends React.PureComponent {
 		'Generated Non-Fixed Events': clearGeneratedNonFixedEvents,
 		'Generated Calendars': clearGeneratedCalendars,
 		'Navigation': clearNavigation,
-		'Schedule': clearNavigation,
+		'Schedule': clearSchedule,
 		'School Information': clearSchoolInformation,
 		'State of Application': clearState,
 		'Unavailable Hours': clearUnavailableHours,
@@ -53,6 +54,13 @@ class CleanReducers extends React.PureComponent {
 						);
 					})
 				}
+
+				<TouchableOpacity style={[styles.button, {backgroundColor: red}]}
+					onPress={() => {
+						clearEveryReducer();
+					}}>
+					<Text style={styles.buttonText}>CLEAR EVERYTHING</Text>
+				</TouchableOpacity>
 
 				<TouchableOpacity style={[styles.button, {backgroundColor: dark_blue}]}
 					onPress={() => {
