@@ -5,7 +5,7 @@ import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
 import firebase from 'react-native-firebase';
 
-let serverUrl = 'http://520.60.127.46:8080';
+let serverUrl = 'http://52.60.127.46:8080';
 
 export let getIp = () => {
 	if (__DEV__) {
@@ -50,21 +50,29 @@ export const analyzePicture = (base64Data) => {
 			}
 		})
 			.then(res => {
-				return res.json();
+				if (res) {
+					return res.json();
+				} else {
+					reject('could not recieve response from the server, please try again');
+				}
 			})
+			
 			.then(body => {
-				console.log('body', body);
+				if(body.data.length == 0) reject('No data could be extracted from the picture, please try again');
 				formatData(body.data)
 					.then(data => {
 						storeCoursesEvents(data)
 							.then((success) => {
-								if(success) resolve(true);
-								else reject(false);
-							})
-							.catch(err => {
-								console.log('err', err);
+								if(success) return resolve(true);
+								else return reject(false);
 							});
+					})
+					.catch(err => {
+						reject(err);
 					});
+			})
+			.catch(err => {
+				if(err) reject('Colud not connect to the server, please try again');
 			});
 	});
 };
@@ -200,7 +208,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 	obj.summary = event.title;
 	obj.location = event.location;
 	obj.description = event.description;
-	//console.log('fixed obj', obj);
+
 	return insertEvent(calendarID,obj,{});	
 };
 
@@ -319,10 +327,14 @@ export const generateNonFixedEvents =  () => {
 	if (nonFixedEvents.length == 0) return;
 	
 	nonFixedEvents.forEach( (event) => {
-		promises.push(new Promise(async function (resolve) {
-			await ItterateOccurence(event).then( () => {
-				resolve();
-			});
+		promises.push(new Promise(async function (resolve, reject) {
+			await ItterateOccurence(event)
+				.then( () => {
+					resolve();
+				})
+				.catch(err => {
+					reject(err);
+				});
 		}));
 	});
 	return Promise.all(promises);
@@ -340,12 +352,19 @@ async function ItterateOccurence(event) {
 	let promises = [];
 
 	for (let i = 0; i < event.occurrence; i++) {
-	
-		await findEmptySlots(startDayTime, endDayTime, event, pushedDates).then(availableDate => {
-			pushedDates.push(availableDate);
-			promises.push(storeNonFixedEvent(availableDate, event));
-		});
-	}
+		promises.push(new Promise(async function (resolve, reject) {
+			console.log('itteration ', i);
+			await findEmptySlots(startDayTime, endDayTime, event, pushedDates)
+				.then(availableDate => {
+					pushedDates.push(availableDate);
+					storeNonFixedEvent(availableDate, event);
+					resolve();
+				})
+				.catch(err => {
+					reject(err);
+				});
+		}));
+	}	
 	return Promise.all(promises);	
 }
 
@@ -363,7 +382,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	
 	obj.items = [{'id': calendarID}];
 
-	return new Promise( async function(resolve) {
+	return new Promise( async function(resolve, reject) {
 		let available = false;
 		let eventStartDate = new Date(event.startDate);
 		let eventEndDate = new Date(event.endDate);
@@ -380,8 +399,14 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 			eventHours = dividedDuration.hours;
 			eventMinutes = dividedDuration.minutes;
 		} 
-		
-		while(!available) {
+		let count = 0;
+		while(!available && count <= 50) {
+			if (count > 30) {
+				reject('The AI took a quite while generating your Calendar, please try again');
+				break;
+			}
+			console.log('count', count);
+
 			let randomStartTime = getRndInteger(startDayTime, endDayTime - eventHours);
 			let randomStartTimeMinutes = getRndInteger(0, 60);
 			let randomDay = getRndInteger(eventStartDate.getDate(), eventEndDate.getDate());
@@ -403,6 +428,8 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	
 			// Call to google to check whether time conflicts with the specified generated startDate;
 			await getAvailabilities(obj).then(data => {
+				if(data.error) reject('Something went wrong while checking  for events in google calendar');
+				
 				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
 				if (busySchedule.length > 0) {
 					pushedDates.push({startDate,endDate});
@@ -412,6 +439,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 					resolve({startDate, endDate});
 				}
 			});
+			count += 1;
 		}
 	});
 }
@@ -454,13 +482,19 @@ export const generateCalendars = async () => {
 	let promises = [];
 	
 	for(let i = 0; i < numberOfCalendars; i ++) {
-		await generateNonFixedEvents().then((dataPromises) => {
-			// Store the Generated Non Fixed Events for i-th itteration in GeneratedCalendars
-			store.dispatch(addGeneratedCalendar(store.getState().GeneratedNonFixedEventsReducer));
-			// CLear Generated Non Fixed Events
-			store.dispatch(clearGeneratedNonFixedEvents());
-			promises.push(dataPromises);
-		});
+		promises.push(new Promise(async function (resolve, reject) {
+			await generateNonFixedEvents()
+				.then((dataPromises) => {
+					// Store the Generated Non Fixed Events for i-th itteration in GeneratedCalendars
+					store.dispatch(addGeneratedCalendar(store.getState().GeneratedNonFixedEventsReducer));
+					// CLear Generated Non Fixed Events
+					store.dispatch(clearGeneratedNonFixedEvents());
+					resolve(dataPromises);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		}));
 	}
 
 	return Promise.all(promises);

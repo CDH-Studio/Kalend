@@ -29,16 +29,29 @@ class ScheduleCreation extends React.PureComponent {
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
 		setUserInfo();
-		this.InsertFixedEventsToGoogle().then(() => {
-			if (this.props.NonFixedEventsReducer.length != 0) {
-				setTimeout(() =>{ 
-					this.generateScheduleService();
-				}, 3000);
-				
-			} else  {
-				this.navigateToSelection();
-			}
-		});
+		this.InsertFixedEventsToGoogle()
+			.then(() => {
+				if (this.props.NonFixedEventsReducer.length != 0) {
+					setTimeout(() =>{ 
+						this.generateScheduleService();
+					}, 3000);
+					
+				} else  {
+					this.navigateToSelection();
+				}
+			})
+			.catch(err => {
+				if (err) {
+					Alert.alert(
+						'ERROR',
+						err,
+						[
+							{text: 'OK', onPress: () => this.props.navigation.navigate(DashboardNavigator)},
+						],
+						{cancelable: false}
+					);
+				}
+			});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
@@ -67,21 +80,35 @@ class ScheduleCreation extends React.PureComponent {
 	}
 
 	generateScheduleService = () => {
-		generateCalendars().then(() => {
-			this.navigateToSelection();
-		});
+		generateCalendars()
+			.then(() => {
+				this.navigateToSelection();
+			})
+			.catch(err => {
+				console.log('err', err);
+				if	(err) {
+					Alert.alert(
+						'ERROR',
+						'AI could not generate your calendar at this time, please try again',
+						[
+							{text: 'OK', onPress: () => this.props.navigation.navigate(DashboardNavigator)},
+						],
+						{cancelable: false}
+					);
+				}
+			});
 	}
 
 	InsertFixedEventsToGoogle = () => {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			this.props.CoursesReducer.forEach(async (event) => {
 				await InsertCourseEventToCalendar(event).then(data => {
 					if (data.error) {
-						console.error('ERROR adding event', data);
+						reject(data.error);
 					}
 				});
 			});
-			console.log('Finished Inserting Courses');
+
 			this.props.FixedEventsReducer.map(async (event) => {
 				let info = {
 					title: event.title,
@@ -96,11 +123,10 @@ class ScheduleCreation extends React.PureComponent {
 				}; 
 				await InsertFixedEventToCalendar(info).then(data => {
 					if (data.error) {
-						console.error('ERROR adding event', data);
+						reject(data.error);
 					}
 				});
 			});
-			console.log('Finished Inserting Fixed');
 			resolve();
 		});
 	}
