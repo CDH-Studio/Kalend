@@ -6,7 +6,7 @@ import { HeaderBackButton } from 'react-navigation';
 import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
-import { scheduleCreateStyles as styles, dark_blue, statusBlueColor, white, statusBarDark } from '../../styles';
+import { scheduleCreateStyles as styles, dark_blue, white } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
 /**
@@ -26,7 +26,8 @@ class ScheduleCreation extends React.PureComponent {
 		super(props);
 
 		this.state = {
-			alertDialog: false
+			alertDialog: false,
+			goToNextScreen: false
 		};
 
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -81,7 +82,7 @@ class ScheduleCreation extends React.PureComponent {
 					},
 				},
 			],
-			{cancelable: true},
+			{cancelable: false},
 		);
 		return true;
 	}

@@ -181,7 +181,18 @@ const DashboardOptionsNavigator = createStackNavigator(
 				}
 			},
 		},
-		SchoolScheduleCreation: {screen: SchoolScheduleCreation, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolScheduleCreation: {
+			screen: SchoolScheduleCreation, 
+			navigationOptions:{
+				...DashboardOptionsNavigatorOptions,
+				headerTransparent: true,
+				title: '',
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
+			}
+		},
 
 		FixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
 		NonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
