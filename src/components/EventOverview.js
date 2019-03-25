@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { setNavigationScreen } from '../actions';
-import { calendarEventColors, grayColor } from '../../config';
+import { calendarEventColors } from '../../config';
 import { store } from '../store';
-import { eventOverviewStyles as styles } from '../styles';
+import { eventOverviewStyles as styles, gray } from '../styles';
 
 
 /**
@@ -139,24 +140,36 @@ class EventOverview extends React.PureComponent {
 						</View>
 					</View>
 					<View style={styles.actions}>
-						<TouchableOpacity onPress={() => {
-							this.props.navigateEditScreen(editScreen);
-								
-							store.dispatch(setNavigationScreen({
-								... store.getState().NavigationReducer,
-								reviewEventSelected: this.props.id
-							}));
-						}}>
-							<MaterialCommunityIcons name="square-edit-outline"
-								size={30}
-								color={grayColor} />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: true})}
-							style={{marginLeft: 10}}>
-							<MaterialCommunityIcons name="trash-can-outline"
-								size={30}
-								color={grayColor} />
-						</TouchableOpacity>
+						<IconButton 
+							size={30}
+							style={{marginRight: 0}}
+							onPress={() => {
+								this.props.navigateEditScreen(editScreen);
+									
+								store.dispatch(setNavigationScreen({
+									... store.getState().NavigationReducer,
+									reviewEventSelected: this.props.id
+								}));
+							}}
+							color={gray}
+							icon={({ size, color }) => (
+								<MaterialCommunityIcons
+									name='square-edit-outline'
+									size={size}
+									color={color}
+								/>
+							)} />
+						<IconButton 
+							size={30}
+							onPress={() => this.setState({deleteDialogVisible: true})}
+							color={gray}
+							icon={({ size, color }) => (
+								<MaterialCommunityIcons
+									name='trash-can-outline'
+									size={size}
+									color={color}
+								/>
+							)} />
 					</View>
 				</TouchableOpacity>
 
@@ -175,7 +188,7 @@ class EventOverview extends React.PureComponent {
 									onPress={() => this.setState({modalVisible: false})}>
 									<Feather name="x"
 										size={30}
-										color={grayColor} />
+										color={gray} />
 								</TouchableOpacity>
 
 								<View style={{height:70}}>
@@ -201,7 +214,7 @@ class EventOverview extends React.PureComponent {
 									
 									<MaterialCommunityIcons name={categoryIcon}
 										size={80}
-										color={grayColor} />
+										color={gray} />
 								</View>
 
 								<View style={styles.modalDetailsView}>
@@ -217,19 +230,29 @@ class EventOverview extends React.PureComponent {
 								</View>
 								
 								<View style={styles.actionsModal}>
-									<TouchableOpacity style={styles.actionIconModal}
-										onPress={() => this.navigateAndCloseModal(editScreen)}>
-										<MaterialCommunityIcons name="square-edit-outline"
-											size={40}
-											color={grayColor} />
-									</TouchableOpacity>
-
-									<TouchableOpacity style={styles.actionIconModal}
-										onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}>
-										<MaterialCommunityIcons name="trash-can-outline"
-											size={40}
-											color={grayColor} />
-									</TouchableOpacity>
+									<IconButton style={styles.actionIconModal}
+										size={40}
+										onPress={() => this.navigateAndCloseModal(editScreen)}
+										color={gray}
+										icon={({ size, color }) => (
+											<MaterialCommunityIcons
+												name='square-edit-outline'
+												size={size}
+												color={color}
+											/>
+										)} />
+										
+									<IconButton style={styles.actionIconModal}
+										size={40}
+										onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}
+										color={gray}
+										icon={({ size, color }) => (
+											<MaterialCommunityIcons
+												name='trash-can-outline'
+												size={size}
+												color={color}
+											/>
+										)} />
 								</View>
 							</View>
 						</TouchableWithoutFeedback>
@@ -250,7 +273,7 @@ class EventOverview extends React.PureComponent {
 								<View style={styles.deleteDialogMainRow}>
 									<MaterialCommunityIcons name="trash-can-outline"
 										size={80}
-										color={grayColor} />
+										color={gray} />
 
 									<View style={styles.deleteDialogRightCol}>
 										<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
