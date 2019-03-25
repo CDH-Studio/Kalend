@@ -489,15 +489,15 @@ class ScheduleSelection extends React.PureComponent {
 						<Text style={styles.description}>Below you will find schedules of the current week created by the application. Please select the one you prefer.</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
-								<Text style={[styles.legendColor, {borderColor: calendarEventColors.red, backgroundColor: calendarEventColorsInside.red}]}></Text>
+								<View style={[styles.legendColor, {borderColor: calendarEventColors.red, backgroundColor: calendarEventColorsInside.red}]}></View>
 								<Text style={styles.legendText}>Courses</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<Text style={[styles.legendColor, {borderColor: calendarEventColors.green, backgroundColor: calendarEventColorsInside.green}]}></Text>
+								<View style={[styles.legendColor, {borderColor: calendarEventColors.green, backgroundColor: calendarEventColorsInside.green}]}></View>
 								<Text style={styles.legendText}>Fixed Events</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<Text style={[styles.legendColor, {borderColor: calendarEventColors.purple, backgroundColor: calendarEventColorsInside.purple}]}></Text>
+								<View style={[styles.legendColor, {borderColor: calendarEventColors.purple, backgroundColor: calendarEventColorsInside.purple}]}></View>
 								<Text style={styles.legendText}>Non-Fixed Events</Text>
 							</View>
 						</View>
