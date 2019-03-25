@@ -6,7 +6,7 @@ import { calendarEventColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
-import { clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
+import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
 export const containerPaddingDetails = 10;
 
@@ -272,9 +272,16 @@ class ScheduleSelectionDetails extends React.PureComponent {
 				insertGeneratedEvent(event);
 			});
 		}
+		this.clearEvents();
+		this.props.navigation.navigate(DashboardNavigator);
+	}
+
+	clearEvents = () => {
 		this.props.dispatch(clearGeneratedCalendars());
 		this.props.dispatch(clearGeneratedNonFixedEvents());
-		this.props.navigation.navigate(DashboardNavigator);
+		this.props.dispatch(clearNonFixedEvents());
+		this.props.dispatch(clearFixedEvents());
+		this.props.dispatch(clearCourse());
 	}
 
 	render() {

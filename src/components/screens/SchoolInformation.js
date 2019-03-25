@@ -232,6 +232,7 @@ class SchoolInformation extends React.PureComponent {
 										<TextInput placeholder="Other"
 											ref="_other"
 											style={styles.otherInput}
+											maxLength={1024}
 											onFocus={() => this.setState({
 												checked: 'third',
 												schoolValidated: true

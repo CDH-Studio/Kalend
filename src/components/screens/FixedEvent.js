@@ -418,7 +418,6 @@ class FixedEvent extends React.PureComponent {
 	}
 
 	render() {
-		console.log(this.state);
 		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
 		let addEventButtonText;
@@ -489,6 +488,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText}
+											maxLength={1024}
 											placeholder="Title" 
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.locationInput.focus()}
@@ -607,6 +607,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
+											maxLength={1024}
 											placeholder="Location" 
 											ref={(input) => this.locationInput = input}
 											returnKeyType = {'next'}
@@ -624,6 +625,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
+											maxLength={1024}
 											placeholder="Description" 
 											ref={(input) => this.descriptionInput = input}
 											returnKeyType = {'done'}
