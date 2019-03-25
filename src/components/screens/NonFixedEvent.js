@@ -1,5 +1,6 @@
 import React from 'react';
-import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
+import Slider from '@react-native-community/slider';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
