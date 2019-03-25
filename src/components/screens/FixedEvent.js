@@ -418,7 +418,6 @@ class FixedEvent extends React.PureComponent {
 	}
 
 	render() {
-		console.log(this.state);
 		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
 		let addEventButtonText;

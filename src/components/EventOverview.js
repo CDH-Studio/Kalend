@@ -87,7 +87,7 @@ class EventOverview extends React.PureComponent {
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
-			detailHeight = 100;
+			detailHeight = 80;
 			editScreen = 'FixedEvent';
 		} else {
 			categoryColor = calendarEventColors.purple;
@@ -111,7 +111,7 @@ class EventOverview extends React.PureComponent {
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 				</View>;
-			detailHeight = 150;
+			detailHeight = 100;
 			editScreen = 'NonFixedEvent';
 		}
 
@@ -178,7 +178,7 @@ class EventOverview extends React.PureComponent {
 										color={grayColor} />
 								</TouchableOpacity>
 
-								<View style={{height:70}}>
+								<View style={{height:70}} onStartShouldSetResponder={() => true}>
 									<ScrollView>
 										<Text style={[styles.modalTitle, {backgroundColor: categoryColor}]}>{this.props.eventTitle}</Text>
 									</ScrollView>
@@ -205,7 +205,7 @@ class EventOverview extends React.PureComponent {
 								<View style={styles.modalDetailsView}>
 									<Text style={styles.modalDetailsTitle}>Details</Text>
 
-									<View style={{height:detailHeight}}>
+									<View style={{height:detailHeight}} onStartShouldSetResponder={() => true}>
 										<ScrollView>{details}</ScrollView>
 									</View>
 								</View>
