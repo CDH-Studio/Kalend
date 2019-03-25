@@ -2,9 +2,10 @@ import React from 'react';
 import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
+import { HeaderBackButton } from 'react-navigation';
 import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
 import { connect } from 'react-redux';
-import { DashboardNavigator, ScheduleSelectionRoute } from '../../constants/screenNames';
+import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
@@ -14,14 +15,17 @@ import updateNavigation from '../NavigationHelper';
 class ScheduleCreation extends React.PureComponent {
 
 	// Removes the header
-	static navigationOptions = {
-		header: null,
-		headerLeft: null,
+	static navigationOptions = ({ navigation }) => ({
 		gesturesEnabled: false,
-	};
+		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => { navigation.getParam('onBackPress')() }} />,
+	});
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			alertDialog: false
+		};
 
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -36,10 +40,12 @@ class ScheduleCreation extends React.PureComponent {
 				}, 3000);
 				
 			} else  {
+				this.setState({goToNextScreen: true});
 				this.navigateToSelection();
 			}
 		});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		this.props.navigation.setParams({onBackPress:  this.handleBackButton});
 	}
 
 	componentWillUnmount() {
@@ -47,17 +53,29 @@ class ScheduleCreation extends React.PureComponent {
 	}
 	
 	handleBackButton = () => {
+		this.setState({alertDialog: true});
 		Alert.alert(
-			'',
-			'Are you sure you want to stop the schedule creating process?',
+			'Stopping creation',
+			'The schedules will stop being generated if you proceed, where do you want to go?',
 			[
 				{
-					text: 'No',
+					text: 'Cancel',
 					style: 'cancel',
+					onPress: () => {
+						this.setState({alertDialog: false});
+						this.navigateToSelection();
+					}
 				},
-				{text: 'Yes', 
+				{
+					text: 'Dashboard',
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
+					}
+				},
+				{
+					text: 'Review Events', 
+					onPress: () => {
+						this.props.navigation.navigate(ReviewEventRoute);
 					},
 				},
 			],
@@ -68,6 +86,7 @@ class ScheduleCreation extends React.PureComponent {
 
 	generateScheduleService = () => {
 		generateCalendars().then(() => {
+			this.setState({goToNextScreen: true});
 			this.navigateToSelection();
 		});
 	}
@@ -109,7 +128,9 @@ class ScheduleCreation extends React.PureComponent {
 	 * Goes to the next screen
 	 */
 	navigateToSelection = () => {
-		this.props.navigation.navigate(ScheduleSelectionRoute);
+		if (this.state.goToNextScreen && !this.state.alertDialog) {
+			this.props.navigation.navigate(ScheduleSelectionRoute);
+		}
 	}
 	
 	render() {
