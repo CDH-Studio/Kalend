@@ -204,20 +204,28 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			'Saturday': []
 		};
 
-		data.schoolEvents.forEach(event => {
-			event.type = 'school';
-			temp_days[event.dayOfWeek].push(event);
-		});
-		data.fixedEvents.forEach(event => {
-			event.type = 'fixed';
-			let day = new Date(event.startDate).getDay();
-			temp_days[days[day]].push(event);
-		});
-		data.aiEvents.forEach(event => {
-			event.type = 'nonFixed';
-			let day = new Date(event.start.dateTime).getDay();
-			temp_days[days[day]].push(event);
-		});
+		if (data.schoolEvents != 0) {
+			data.schoolEvents.forEach(event => {
+				event.type = 'school';
+				temp_days[event.dayOfWeek].push(event);
+			});
+		}
+
+		if (data.fixedEvents != 0) {
+			data.fixedEvents.forEach(event => {
+				event.type = 'fixed';
+				let day = new Date(event.startDate).getDay();
+				temp_days[days[day]].push(event);
+			});
+		}
+
+		if (data.aiEvents != 0) {
+			data.aiEvents.forEach(event => {
+				event.type = 'nonFixed';
+				let day = new Date(event.start.dateTime).getDay();
+				temp_days[days[day]].push(event);
+			});
+		}
 		
 		this.setState({daysTemp: temp_days});
 	}

@@ -331,18 +331,18 @@ class Schedule extends React.PureComponent {
 							}
 
 							{ 
-								this.state.ai.length !== 0 ?
-									this.state.ai.map((info, key) => {
-										return  <ScheduleEvent key={key} 
-											showShadow={showShadow} 
-											chunks={info.chunks} 
-											day={info.day} 
-											start={info.start} 
-											kind='ai' 
-											timeInterval={timeInterval} 
-											startOffset={startOffset} />;
-									})
-									: null
+							
+								this.state.ai.map((info, key) => {
+									return  <ScheduleEvent key={key} 
+										showShadow={showShadow} 
+										chunks={info.chunks} 
+										day={info.day} 
+										start={info.start} 
+										kind='ai' 
+										timeInterval={timeInterval} 
+										startOffset={startOffset} />;
+								})
+									
 							}
 
 							<View style={styles.hoursTextContainer}>
@@ -386,7 +386,7 @@ class ScheduleSelection extends React.PureComponent {
 			data: {
 				school: [],
 				fixed: [],
-				ai: [[]],
+				ai: [],
 				aiCalendars: [[]]
 			}
 		};
@@ -487,11 +487,12 @@ class ScheduleSelection extends React.PureComponent {
 				<ScrollView >
 					<View style={styles.content}>
 						<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
-						{
-							this.state.data.ai.length >= 1 ? 
-								<FlatList data={this.state.data.ai}
-									keyExtractor={(item, index) => index.toString()}
-									renderItem={this._renderItem} /> : null
+						{  (this.state.data.ai > 0) ?
+							<FlatList data={this.state.data.ai}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={this._renderItem} /> : <FlatList data={[[]]}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={this._renderItem} />
 						}
 					</View>
 				</ScrollView>
