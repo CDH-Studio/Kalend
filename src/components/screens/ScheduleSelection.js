@@ -486,16 +486,26 @@ class ScheduleSelection extends React.PureComponent {
 
 				<ScrollView >
 					<View style={styles.content}>
-						<Text style={styles.description}>Below you will find the best weekly schedules created by the application. In order for the AI to work well, please remove the calendars which you don't like</Text>
-						{  (this.state.data.ai.length > 0) 
-							?
-							<FlatList data={this.state.data.ai}
-								keyExtractor={(item, index) => index.toString()}
-								renderItem={this._renderItem} /> 
-							: 
-							<FlatList data={[[]]}
-								keyExtractor={(item, index) => index.toString()}
-								renderItem={this._renderItem} />
+						<Text style={styles.description}>Below you will find schedules of the current week created by the application. Please select the one you prefer.</Text>
+						<View style={styles.legendRow}>
+							<View style={styles.singleLegend}>
+								<View style={[styles.legendColor, {borderColor: calendarEventColors.red, backgroundColor: calendarEventColorsInside.red}]}></View>
+								<Text style={styles.legendText}>Courses</Text>
+							</View>
+							<View style={styles.singleLegend}>
+								<View style={[styles.legendColor, {borderColor: calendarEventColors.green, backgroundColor: calendarEventColorsInside.green}]}></View>
+								<Text style={styles.legendText}>Fixed Events</Text>
+							</View>
+							<View style={styles.singleLegend}>
+								<View style={[styles.legendColor, {borderColor: calendarEventColors.purple, backgroundColor: calendarEventColorsInside.purple}]}></View>
+								<Text style={styles.legendText}>Non-Fixed Events</Text>
+							</View>
+						</View>
+						{
+							this.state.data.ai.length >= 1 ? 
+								<FlatList data={this.state.data.ai}
+									keyExtractor={(item, index) => index.toString()}
+									renderItem={this._renderItem} /> : null
 						}
 					</View>
 				</ScrollView>

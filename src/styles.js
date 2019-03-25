@@ -1217,6 +1217,32 @@ export const scheduleSelectionStyle = StyleSheet.create({
 	description: {
 		color: white,
 		fontFamily: 'Raleway-Regular',
+		marginLeft: 5
+	},
+
+	legendRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		marginTop: 10
+	},
+
+	singleLegend: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	legendColor: {
+		borderRadius: 5,
+		borderWidth: 2,
+		width: 20,
+		height: 20,
+		marginRight: 5
+	},
+
+	legendText: {
+		fontFamily: 'Raleway-Regular',
+		color: white,
+		fontSize: 12
 	},
 
 	hoursTextContainer: {
