@@ -15,7 +15,7 @@ export const gray = '#565454';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {
-		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT + 20), 
+		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT + 10), 
 		marginHorizontal: '5%'
 	}
 });
