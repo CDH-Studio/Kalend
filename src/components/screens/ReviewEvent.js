@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform,Alert } from 'react-native';
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -185,6 +185,18 @@ class ReviewEvent extends React.PureComponent {
 	navigateCreationScreen = () => {
 		this.props.dispatch(clearGeneratedCalendars());
 		this.props.dispatch(clearGeneratedNonFixedEvents());
+
+		if (this.state.schoolScheduleData.length == 0 && this.state.nonFixedEventData.length == 0 && this.state.fixedEventData.length == 0 ) {
+			Alert.alert(
+				'Error',
+				'You need to create events in order to generate a Calendar',
+				[
+					{text: 'OK', onPress: () => console.log('Okay pressed')},
+				],
+				{cancelable: false}
+			);
+			return;
+		}
 		this.props.navigation.navigate(ScheduleCreationRoute);
 	}
 

@@ -331,18 +331,18 @@ class Schedule extends React.PureComponent {
 							}
 
 							{ 
-								this.state.ai.length !== 0 ?
-									this.state.ai.map((info, key) => {
-										return  <ScheduleEvent key={key} 
-											showShadow={showShadow} 
-											chunks={info.chunks} 
-											day={info.day} 
-											start={info.start} 
-											kind='ai' 
-											timeInterval={timeInterval} 
-											startOffset={startOffset} />;
-									})
-									: null
+							
+								this.state.ai.map((info, key) => {
+									return  <ScheduleEvent key={key} 
+										showShadow={showShadow} 
+										chunks={info.chunks} 
+										day={info.day} 
+										start={info.start} 
+										kind='ai' 
+										timeInterval={timeInterval} 
+										startOffset={startOffset} />;
+								})
+									
 							}
 
 							<View style={styles.hoursTextContainer}>
@@ -386,7 +386,7 @@ class ScheduleSelection extends React.PureComponent {
 			data: {
 				school: [],
 				fixed: [],
-				ai: [[]],
+				ai: [],
 				aiCalendars: [[]]
 			}
 		};
