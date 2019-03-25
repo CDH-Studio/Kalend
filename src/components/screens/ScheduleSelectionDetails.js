@@ -204,14 +204,14 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			'Saturday': []
 		};
 
-		if (data.schoolEvents != 0) {
+		if (data.schoolEvents.length != 0) {
 			data.schoolEvents.forEach(event => {
 				event.type = 'school';
 				temp_days[event.dayOfWeek].push(event);
 			});
 		}
 
-		if (data.fixedEvents != 0) {
+		if (data.fixedEvents.length != 0) {
 			data.fixedEvents.forEach(event => {
 				event.type = 'fixed';
 				let day = new Date(event.startDate).getDay();
@@ -219,7 +219,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			});
 		}
 
-		if (data.aiEvents != 0) {
+		if (data.aiEvents) {
 			data.aiEvents.forEach(event => {
 				event.type = 'nonFixed';
 				let day = new Date(event.start.dateTime).getDay();
@@ -267,9 +267,11 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
-		this.state.data.aiEvents.forEach(event => {
-			insertGeneratedEvent(event);
-		});
+		if (this.state.data.aiEvents) {
+			this.state.data.aiEvents.forEach(event => {
+				insertGeneratedEvent(event);
+			});
+		}
 		this.props.dispatch(clearGeneratedCalendars());
 		this.props.dispatch(clearGeneratedNonFixedEvents());
 		this.props.navigation.navigate(DashboardNavigator);
