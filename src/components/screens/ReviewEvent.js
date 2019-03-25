@@ -121,23 +121,6 @@ class ReviewEvent extends React.PureComponent {
 		return time;
 	}
 	
-	/**
-	 * Hides the FAB when scrolling down */ 
-	onScroll = (event) => {
-		event = Math.abs(event.nativeEvent.contentOffset.y);
-		if (event > Math.abs(this.state.currentY)) {
-			this.setState({
-				showFAB: false,
-				currentY: event
-			});
-		} else {
-			this.setState({
-				showFAB: true,
-				currentY: event
-			});
-		}
-	}
-	
 	deleteEvent = (id, category) => {
 		let dataToDispatch;
 		let newEvents;
@@ -196,11 +179,7 @@ class ReviewEvent extends React.PureComponent {
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
-				<ScrollView style={styles.scrollView}
-					onScroll={(event) => { 
-						this.onScroll(event);
-					}}
-					scrollEventThrottle={100}>
+				<ScrollView style={styles.scrollView}>
 					<View style={styles.content}>
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
