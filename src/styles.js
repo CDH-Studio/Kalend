@@ -955,7 +955,7 @@ export const reviewEventStyles = StyleSheet.create({
 	content: {
 		flex:1,
 		paddingHorizontal: 20,
-		paddingBottom: 60
+		paddingBottom: 80
 	},
 
 	sectionTitle: {
@@ -1319,7 +1319,8 @@ export const scheduleSelectionDetailsStyle = StyleSheet.create({
 	},
 	
 	content: {
-		padding: containerPaddingDetails
+		padding: containerPaddingDetails,
+		paddingBottom: 80
 	},
 
 	dayContainer: {
