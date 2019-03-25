@@ -617,14 +617,14 @@ export const fixedEventStyles = StyleSheet.create({
 	errorTitle: {
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 45
+		marginLeft: 42
 	},
 
 	errorEnd: {
 		color: 'red',
 		fontSize: 12,
 		alignSelf: 'flex-start',
-		marginLeft: 10
+		marginLeft: 12
 	},
 
 	text: {
@@ -662,11 +662,12 @@ export const fixedEventStyles = StyleSheet.create({
 		width: 70,
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 18
+		fontSize: 16,
+		marginRight: -20
 	},
 
 	switch: {
-		width: 130,
+		width: 150,
 		alignItems: 'flex-start'
 	},
 
@@ -677,23 +678,22 @@ export const fixedEventStyles = StyleSheet.create({
 	
 	timeSection: {
 		alignItems: 'center',
-		marginTop: 10
+		marginTop: 10,
+		marginRight: 20
 	},
 
 	allDay: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		alignItems: 'center',
-		paddingLeft: 30,
-		paddingRight: 5
+		paddingLeft: 30
 	},
 
 	rowTimeSection: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		alignItems: 'center',
-		paddingLeft: 30,
-		paddingRight: 5
+		paddingLeft: 30
 	},
 
 	recurrence:{
