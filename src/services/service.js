@@ -5,7 +5,7 @@ import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
 import firebase from 'react-native-firebase';
 
-let serverUrl = 'http://52.60.127.46:8080';
+let serverUrl = 'http://520.60.127.46:8080';
 
 export let getIp = () => {
 	if (__DEV__) {
@@ -53,6 +53,7 @@ export const analyzePicture = (base64Data) => {
 				return res.json();
 			})
 			.then(body => {
+				console.log('body', body);
 				formatData(body.data)
 					.then(data => {
 						storeCoursesEvents(data)
