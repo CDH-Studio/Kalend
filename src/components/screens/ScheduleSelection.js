@@ -378,7 +378,9 @@ class ScheduleSelection extends React.PureComponent {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
 		},
 		gesturesEnabled: false,
-		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => { navigation.getParam('onBackPress')() }} />,
+		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => {
+			navigation.getParam('onBackPress')(); 
+		}} />,
 	});
 
 	constructor(props) {

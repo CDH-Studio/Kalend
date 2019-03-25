@@ -6,7 +6,7 @@ import { HeaderBackButton } from 'react-navigation';
 import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
-import { scheduleCreateStyles as styles, dark_blue, statusBlueColor } from '../../styles';
+import { scheduleCreateStyles as styles, dark_blue, statusBlueColor, white, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
 /**
@@ -17,7 +17,9 @@ class ScheduleCreation extends React.PureComponent {
 	// Removes the header
 	static navigationOptions = ({ navigation }) => ({
 		gesturesEnabled: false,
-		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => { navigation.getParam('onBackPress')() }} />,
+		headerLeft: <HeaderBackButton title='Back' tintColor={white} onPress={() => {
+			navigation.getParam('onBackPress')(); 
+		}} />,
 	});
 
 	constructor(props) {
@@ -138,7 +140,7 @@ class ScheduleCreation extends React.PureComponent {
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'rgba(0,0,0,0.5)'} />
 
 				<Surface style={styles.surface}>
 					<Text style={styles.title}>Creating your Schedule</Text>
