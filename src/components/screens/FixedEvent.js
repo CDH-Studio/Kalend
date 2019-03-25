@@ -75,7 +75,7 @@ class FixedEvent extends React.PureComponent {
 
 	componentWillMount() {
 		if(this.props.navigation.state.routeName === FixedEventRoute) {
-			this.setState(this.resetField);
+			this.resetField();
 		} else {
 			this.setState({...this.props.FEditState});
 		}
