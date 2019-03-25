@@ -178,9 +178,11 @@ class EventOverview extends React.PureComponent {
 										color={grayColor} />
 								</TouchableOpacity>
 
-								<View style={{height:70}} onStartShouldSetResponder={() => true}>
+								<View style={{height:70}}>
 									<ScrollView>
-										<Text style={[styles.modalTitle, {backgroundColor: categoryColor}]}>{this.props.eventTitle}</Text>
+										<TouchableOpacity activeOpacity={1}>
+											<Text style={[styles.modalTitle, {backgroundColor: categoryColor}]}>{this.props.eventTitle}</Text>
+										</TouchableOpacity>
 									</ScrollView>
 								</View>
 								
@@ -206,7 +208,11 @@ class EventOverview extends React.PureComponent {
 									<Text style={styles.modalDetailsTitle}>Details</Text>
 
 									<View style={{height:detailHeight}} onStartShouldSetResponder={() => true}>
-										<ScrollView>{details}</ScrollView>
+										<ScrollView>
+											<TouchableOpacity activeOpacity={1}>
+												{details}
+											</TouchableOpacity>
+										</ScrollView>
 									</View>
 								</View>
 								
