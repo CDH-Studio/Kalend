@@ -189,7 +189,7 @@ class Schedule extends React.PureComponent {
 						latestHour ++;
 					}
 				} else {
-					if (latestHour < 24) {
+					if (latestHour <= 24) {
 						latestHour ++;
 					} else {
 						earliestHour --;

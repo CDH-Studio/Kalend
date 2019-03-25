@@ -1059,7 +1059,8 @@ export const eventOverviewStyles = StyleSheet.create({
 		justifyContent: 'space-between',
 		backgroundColor: white,
 		borderRadius: 8,
-		marginHorizontal: 20
+		marginHorizontal: 20,
+		width: '90%'
 	},
 
 	closeModal: {
