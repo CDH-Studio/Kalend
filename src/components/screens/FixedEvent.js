@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
+import ReactNative, { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -417,6 +417,17 @@ class FixedEvent extends React.PureComponent {
 		});
 	}
 
+	_scrollToInput = (refInput) => {
+		// const scrollResponder = this.refs._scrollView.getScrollResponder();
+		// const inputHandle = ReactNative.findNodeHandle(refInput);
+	  
+		// scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+		//   inputHandle, // The TextInput node handle
+		//   0, // The scroll view's bottom "contentInset" (default 0)
+		//   true // Prevent negative scrolling
+		// );
+	  }
+
 	render() {
 		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
 		
@@ -607,6 +618,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
+											onFocus={this._scrollToInput(this.locationInput)}
 											maxLength={1024}
 											placeholder="Location" 
 											ref={(input) => this.locationInput = input}
@@ -626,6 +638,7 @@ class FixedEvent extends React.PureComponent {
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
+											onFocus={this._scrollToInput(this.descriptionInput)}
 											placeholder="Description" 
 											ref={(input) => this.descriptionInput = input}
 											returnKeyType = {'done'}
