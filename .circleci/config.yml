@@ -152,13 +152,3 @@ workflows:
       - jest-tests:
           requires:
             - linter
-      - android-build:
-          requires:
-            - linter
-      - publish-github-release:
-          filters:
-            branches:
-              only:
-                - master
-          requires:
-            - android-build

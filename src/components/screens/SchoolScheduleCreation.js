@@ -3,7 +3,7 @@ import { Alert, StatusBar, Text, View, BackHandler, Platform, ImageStore } from 
 import { Surface } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
-import { DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
@@ -41,8 +41,17 @@ class SchoolScheduleCreation extends React.PureComponent {
 		let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 		analyzePicture({data: fakeEscape}).then(success => {
-			if (success) this.props.navigation.navigate(DashboardNavigator);
-			else this.props.navigation.pop();
+			if (success) {
+				let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+				if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
+					this.props.navigation.navigate(ReviewEventRoute);
+				} else {
+					this.props.navigation.navigate(DashboardNavigator);
+				}
+			} else {
+				this.props.navigation.pop();
+			}
 		});
 	}
 

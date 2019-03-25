@@ -7,7 +7,7 @@ import updateNavigation from '../NavigationHelper';
 import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
-import { selectPictureStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { selectPictureStyles as styles, white, blue } from '../../styles';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -22,7 +22,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 
 	static navigationOptions = {
 		title: 'Select Picture',
-		headerTransparent: true
+		headerTransparent: true,
 	};
 
 	constructor(props) {
@@ -193,7 +193,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 					
 				<ScrollView onScroll={this.scrollListener}>
 					<View style={styles.content}>

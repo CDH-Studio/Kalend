@@ -234,6 +234,9 @@ export const createCalendar = () => {
 	});
 };
 
+/**
+ *	Converts All events into SCHEDULESELECTION screen readable 
+ */
 export const eventsToScheduleSelectionData = () => {
 	let data = {
 		fixedEvents: [],
@@ -330,8 +333,6 @@ export const generateNonFixedEvents =  () => {
  * @param {Object} event state object of the event
  */
 async function ItterateOccurence(event) {
-	
-	let testedDates = [];
 	let pushedDates = [];
 	let startDayTime = 8;
 	let endDayTime = 22;
@@ -339,7 +340,7 @@ async function ItterateOccurence(event) {
 
 	for (let i = 0; i < event.occurrence; i++) {
 	
-		await findEmptySlots(startDayTime, endDayTime, event, testedDates, pushedDates).then(availableDate => {
+		await findEmptySlots(startDayTime, endDayTime, event, pushedDates).then(availableDate => {
 			pushedDates.push(availableDate);
 			promises.push(storeNonFixedEvent(availableDate, event));
 		});
