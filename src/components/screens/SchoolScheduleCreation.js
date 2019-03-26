@@ -8,6 +8,9 @@ import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
 
+const RNFS = require('react-native-fs');
+const base64String;
+
 /**
  * The loading screen after the User uploads a picture
  * Displays 'Analyzing picture' with a progress bar.
@@ -30,7 +33,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 	
 	componentWillMount() {	
 		if (this.props.hasImage) {
-			ImageStore.getBase64ForTag(this.props.imgURI, this.success, this.error);
+			base64String = RNFS.readFile(this.props.imgURI, 'base64');
 		}
 
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
