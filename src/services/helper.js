@@ -1,3 +1,6 @@
+import { store } from '../store';
+import { getEventsInstances } from './google_calendar';
+
 export const convertToDictionary  = (data) => {
 	let dict = {};
 	data.forEach(item => {
@@ -8,6 +11,43 @@ export const convertToDictionary  = (data) => {
 		}
 	});
 	return dict; 
+};
+
+
+export const convertEventsToDictionary  = (data) => {
+	let calendarID = store.getState().CalendarReducer.id;
+	let dict = {};
+	data.forEach(event => {
+		let keyDate;
+		let item = {};
+		if(event.recurrence) {
+			// Get all recurring events if it has recurrence
+			getEventsInstances(calendarID, event.id).then(instances => {
+				instances.items.forEach(eventRec => {
+					keyDate = eventRec.start.dateTime.split('T')[0];
+					item.name = event.summary;
+					item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
+				});
+			});
+		} else {
+			keyDate = event.start.dateTime.split('T')[0];
+			item.name = event.summary;
+			item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
+		}
+	});
+	return dict; 
+};
+
+const convertLocalTimeStringToSimple = (tempDate) => {
+	let date = new Date(tempDate);
+	let data = date.toLocaleTimeString().split(' ');
+	let period = data[1];
+	let time = data[0].split(':');
+	time.splice(-1);
+
+	return `${time[0]}:${time[1]} ${period}`;
 };
 
 export const formatData = (data) => {

@@ -6,6 +6,7 @@ import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { getDataforDashboard } from '../../services/service';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -26,6 +27,7 @@ class Dashboard extends React.PureComponent {
 
 	componentDidMount() {
 		this.setState({isVisible: true});
+		getDataforDashboard();
 	}
 
 	showPopover = () =>{

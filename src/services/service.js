@@ -1,5 +1,5 @@
-import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
+import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary } from './helper';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
@@ -463,4 +463,16 @@ export const generateCalendars = async () => {
 	}
 
 	return Promise.all(promises);
+};
+
+
+
+export const getDataforDashboard = (startDate, endDate) => {
+	let calendarID = store.getState().CalendarReducer.id;
+
+	listEvents(calendarID).then(data => {
+		console.log('all events', data);
+		let dict = convertEventsToDictionary(data.items);
+		console.log('dict', dict);
+	});
 };
