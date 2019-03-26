@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactNative, { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView, findNodeHandle } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -417,16 +417,16 @@ class FixedEvent extends React.PureComponent {
 		});
 	}
 
-	_scrollToInput = (refInput) => {
-		// const scrollResponder = this.refs._scrollView.getScrollResponder();
-		// const inputHandle = ReactNative.findNodeHandle(refInput);
-	  
-		// scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-		//   inputHandle, // The TextInput node handle
-		//   0, // The scroll view's bottom "contentInset" (default 0)
-		//   true // Prevent negative scrolling
-		// );
-	  }
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	}
 
 	render() {
 		const { containerHeight, snackbarVisible, snackbarText, snackbarTime } = this.state;
@@ -502,7 +502,7 @@ class FixedEvent extends React.PureComponent {
 											maxLength={1024}
 											placeholder="Title" 
 											returnKeyType = {'next'}
-											onSubmitEditing={() => this.locationInput.focus()}
+											onSubmitEditing={() => this.refs.locationInput.focus()}
 											blurOnSubmit={false}
 											onChangeText={(title) => this.setState({title, titleValidated: true})}
 											value={this.state.title}/>
@@ -618,12 +618,12 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={this._scrollToInput(this.locationInput)}
+											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
 											placeholder="Location" 
-											ref={(input) => this.locationInput = input}
+											ref='locationInput'
 											returnKeyType = {'next'}
-											onSubmitEditing={() => this.descriptionInput.focus()}
+											onSubmitEditing={() =>  this.refs.descriptionInput.focus()}
 											blurOnSubmit={false}
 											onChangeText={(location) => this.setState({location})} 
 											value={this.state.location}/>
@@ -638,9 +638,9 @@ class FixedEvent extends React.PureComponent {
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
-											onFocus={this._scrollToInput(this.descriptionInput)}
+											onFocus={() => this.scrollToInput(this.refs.descriptionInput, 300)}
 											placeholder="Description" 
-											ref={(input) => this.descriptionInput = input}
+											ref='descriptionInput'
 											returnKeyType = {'done'}
 											onSubmitEditing={() => {
 												addEventButtonFunction();
