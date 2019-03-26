@@ -228,7 +228,6 @@ class SchoolInformation extends React.PureComponent {
 												});
 												this.refs._other.focus();
 											}} />
-
 										<TextInput placeholder="Other"
 											ref="_other"
 											style={styles.otherInput}

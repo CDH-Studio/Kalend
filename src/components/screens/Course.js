@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView, findNodeHandle } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -350,6 +350,17 @@ class Course extends React.PureComponent {
 		});
 	}
 
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	}
+
 	render() {
 		const { dayOfWeekValue, snackbarVisible, snackbarText, snackbarTime } = this.state;
 
@@ -409,7 +420,7 @@ class Course extends React.PureComponent {
 											maxLength={1024}
 											placeholder="Course Code" 
 											returnKeyType = {'next'}
-											onSubmitEditing={() => this.locationInput.focus()}
+											onSubmitEditing={() => this.refs.locationInput.focus()}
 											blurOnSubmit={false}
 											onChangeText={(courseCode) => this.setState({summary: courseCode, courseCodeValidated: true})} 
 											value={this.state.summary} />
@@ -496,9 +507,10 @@ class Course extends React.PureComponent {
 									color={blue} />
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
+										onFocus={() => this.scrollToInput(this.refs.locationInput, 230)}
 										maxLength={1024}
 										placeholder="Location" 
-										ref={(input) => this.locationInput = input}
+										ref='locationInput'
 										returnKeyType = {'done'}
 										onSubmitEditing={() => {
 											addEventButtonFunction();
