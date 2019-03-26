@@ -9,7 +9,6 @@ import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
-import { store } from '../../store';
 import BottomButtons from '../BottomButtons';
 import { FixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
@@ -53,11 +52,11 @@ class FixedEvent extends React.PureComponent {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			startTime: new Date().toLocaleTimeString(),
+			startTime: this.setInitialTime(),
 			disabledStartTime : false,
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			endTime: this.setInitialTime(),
+			minEndTime: this.setInitialTime(),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -80,7 +79,6 @@ class FixedEvent extends React.PureComponent {
 		} else {
 			this.setState({...this.props.FEditState});
 		}
-		console.log('store', store.getState());
 		this.setContainerHeight();
 	}
 
@@ -97,6 +95,16 @@ class FixedEvent extends React.PureComponent {
 			containerHeight,
 			showTutShadow
 		});
+	}
+
+	setInitialTime = () => {
+		let time = new Date().toLocaleTimeString();
+		let timeSplit = time.split(':');
+		let timeSplitSpace = time.split(' ');
+
+		time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
+
+		return time;
 	}
 
 	/**
@@ -274,18 +282,18 @@ class FixedEvent extends React.PureComponent {
 			{
 				options: ['None', 'Everyday', 'Weekly', 'Monthly', 'Cancel'],
 				cancelButtonIndex: 4,
+				tintColor: blue
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.state.recurrenceValue = 'NONE';
+					this.setState({recurrenceValue: 'NONE'});
 				} else if (buttonIndex === 1) {
-					this.state.recurrenceValue = 'DAILY';
+					this.setState({recurrenceValue: 'DAILY'});
 				} else if (buttonIndex === 2) {
-					this.state.recurrenceValue = 'WEEKLY';
+					this.setState({recurrenceValue: 'WEEKLY'});
 				} else if (buttonIndex === 3) {
-					this.state.recurrenceValue = 'MONTHLY';
+					this.setState({recurrenceValue: 'MONTHLY'});
 				}
-				this.forceUpdate();
 			},
 		);
 	}
@@ -389,11 +397,11 @@ class FixedEvent extends React.PureComponent {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			startTime: new Date().toLocaleTimeString(),
+			startTime: this.setInitialTime(),
 			disabledStartTime : false,
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			endTime: this.setInitialTime(),
+			minEndTime: this.setInitialTime(),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -480,6 +488,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText}
+											maxLength={1024}
 											placeholder="Title" 
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.locationInput.focus()}
@@ -598,6 +607,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
+											maxLength={1024}
 											placeholder="Location" 
 											ref={(input) => this.locationInput = input}
 											returnKeyType = {'next'}
@@ -615,6 +625,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
+											maxLength={1024}
 											placeholder="Description" 
 											ref={(input) => this.descriptionInput = input}
 											returnKeyType = {'done'}

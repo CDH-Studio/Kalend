@@ -243,7 +243,17 @@ export const schoolScheduleStyles = StyleSheet.create({
 		padding: 20,
 		alignItems: 'center',
 		width: 300,
-		elevation: 4
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 4
+			},
+		}),
 	},
 
 	buttonSelectText: {
@@ -259,7 +269,17 @@ export const schoolScheduleStyles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 20,
 		width: 300,
-		elevation: 4
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 4
+			},
+		}),
 	},
 
 	buttonTakeText: {
@@ -441,7 +461,17 @@ export const schoolScheduleCreationStyles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		elevation: 3
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	title: {
@@ -1022,9 +1052,6 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowOpacity: 0.6,
 				shadowRadius: 7  
 			},
-			android: {
-				elevation: 4
-			},
 		}),
 	},
 
@@ -1032,7 +1059,8 @@ export const eventOverviewStyles = StyleSheet.create({
 		justifyContent: 'space-between',
 		backgroundColor: white,
 		borderRadius: 8,
-		marginHorizontal: 20
+		marginHorizontal: 20,
+		width: '90%'
 	},
 
 	closeModal: {
@@ -1183,6 +1211,7 @@ export const scheduleSelectionStyle = StyleSheet.create({
 	content: {
 		paddingHorizontal: containerPadding,
 		marginTop: 10,
+		paddingBottom: 10,
 	},
 
 	description: {
@@ -1472,9 +1501,25 @@ export const settingsStyles = StyleSheet.create({
 	profileImage: {
 		width: 80, 
 		height: 80, 
-		borderRadius: 50,
+		borderRadius: 40,
 		marginTop: 20,
-		marginBottom: 10
+		marginBottom: 10,
+	},
+
+	profileIconContainer: {
+		elevation: 3,
+		zIndex:999, 
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	topProfileContainer: {
@@ -1632,7 +1677,17 @@ export const scheduleCreateStyles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		elevation: 3,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	title: {

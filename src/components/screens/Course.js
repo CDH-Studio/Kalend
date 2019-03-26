@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
+import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
 
@@ -20,6 +20,10 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  * or to edit the previously entred courses
  */
 class Course extends React.PureComponent {
+
+	days = [
+		'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+	]
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
@@ -37,7 +41,7 @@ class Course extends React.PureComponent {
 		this.state = { 
 			containerHeight,
 
-			courseCode: '',
+			summary: '',
 
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
@@ -55,10 +59,25 @@ class Course extends React.PureComponent {
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName === CourseRoute) {
-			this.resetField();
-		} else {
+		this.resetField();
+		if (this.props.navigation.state.routeName !== CourseRoute) {
 			this.setState({...this.props.CourseState});
+
+			const { dayOfWeekValue } = this.state;
+			const { dayOfWeek } = this.props.CourseState;
+			if (dayOfWeek !== dayOfWeekValue) {
+				this.setState({dayOfWeekValue: dayOfWeek});
+			}
+
+			if ('end' in this.props.CourseState && !('endTime' in this.props.CourseState)) {
+				this.setState({endTime: this.convertTimeWithSeconds(new Date(this.props.CourseState.end.dateTime).toLocaleTimeString())});
+			}
+
+			if ('start' in this.props.CourseState && !('startTime' in this.props.CourseState)) {
+				this.setState({startTime: this.convertTimeWithSeconds(new Date(this.props.CourseState.start.dateTime).toLocaleTimeString())});
+			}
+
+			this.setState({disabledEndTime: false});
 		}	
 	}
 
@@ -97,10 +116,7 @@ class Course extends React.PureComponent {
 
 		// Fix the undefined bug if you haven't set the end time (since the seconds are included in the time)
 		if (endTime.split(':').length === 3) {
-			let endTimeSplit = endTime.split(':');
-			let endTimeSplitSpace = endTime.split(' ');
-
-			endTime = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
+			endTime = this.convertTimeWithSeconds(endTime);
 		}
 
 		// Analyzes the start time, and converts it to a date
@@ -123,6 +139,14 @@ class Course extends React.PureComponent {
 				return startTime;
 			}
 		}
+	}
+
+	convertTimeWithSeconds = (time) => {
+		let endTimeSplit = time.split(':');
+		let endTimeSplitSpace = time.split(' ');
+
+		time = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
+		return time;
 	}
 
 	/**
@@ -190,7 +214,7 @@ class Course extends React.PureComponent {
 	fieldValidation = () => {
 		let validated = true;
 
-		if (this.state.courseCode === '') {
+		if (this.state.summary === '') {
 			this.setState({courseCodeValidated: false});
 			validated = false;
 		} else {
@@ -240,18 +264,63 @@ class Course extends React.PureComponent {
 			return false;
 		}
 
-		this.props.dispatch(addCourse(this.state));
+		// gets the next weekday date
+		let date = this.getNextWeekdayDate();
 
-		if (validated) {
-			this.resetField();
-			this.refs._scrollView.scrollTo({x: 0});
-			this.setState({
-				snackbarText: 'Course successfully added',
-				snackbarVisible: true,
-				snackbarTime: 3000
-			});
+		let endtime = new Date(date.getTime());
+		endtime = this.getDateFromTimeString(this.state.endTime, endtime);
+		endtime = endtime.toJSON();
+
+		let starttime = new Date(date.getTime());
+		starttime = this.getDateFromTimeString(this.state.startTime, starttime);
+		starttime = starttime.toJSON();
+
+		return this.setState({
+			end: {
+				timeZone: 'America/Toronto',
+				dateTime: endtime
+			},
+			start: {
+				timeZone: 'America/Toronto',
+				dateTime: starttime
+			}
+		}, () => {
+			this.props.dispatch(addCourse(this.state));
+
+			if (validated) {
+				this.resetField();
+				this.refs._scrollView.scrollTo({x: 0});
+				this.setState({
+					snackbarText: 'Course successfully added',
+					snackbarVisible: true,
+					snackbarTime: 3000
+				});
+			}
+			return validated;
+		});
+	}
+
+	getNextWeekdayDate = () => {
+		let date = new Date();
+		date.setDate(date.getDate() + ((7-date.getDay())%7+this.days.indexOf(this.state.dayOfWeek)) % 7);
+
+		return date;
+	}
+
+	getDateFromTimeString = (timeString, currentDate) => {
+		if (currentDate === undefined) {
+			currentDate = new Date();
 		}
-		return validated;
+
+		// cleans up the time in the state
+		let info = timeString.split(' ').map(i => i.split(':'));
+		currentDate.setHours( 
+			parseInt(info[0][0]) + (info[1][0] === 'AM' ? 0 : 12), 
+			parseInt(info[0][1]), 
+			0,
+			0);
+			
+		return currentDate;
 	}
 
 	/**
@@ -259,7 +328,7 @@ class Course extends React.PureComponent {
 	 */
 	resetField = () => {
 		this.setState({
-			courseCode: '',
+			summary: '',
 			courseCodeValidated: true,
 			
 			dayOfWeek: 'Monday',
@@ -275,7 +344,9 @@ class Course extends React.PureComponent {
 			location: '',
 			snackbarVisible: false,
 			snackbarText: '',
-			snackbarTime: 3000
+			snackbarTime: 3000,
+
+			recurrence: 'RRULE:FREQ=WEEKLY;UNTIL=20190327'
 		});
 	}
 
@@ -335,12 +406,13 @@ class Course extends React.PureComponent {
 
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
+											maxLength={1024}
 											placeholder="Course Code" 
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.locationInput.focus()}
 											blurOnSubmit={false}
-											onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
-											value={this.state.courseCode} />
+											onChangeText={(courseCode) => this.setState({summary: courseCode, courseCodeValidated: true})} 
+											value={this.state.summary} />
 									</View>
 								</View>
 
@@ -357,7 +429,7 @@ class Course extends React.PureComponent {
 											:	
 											<Picker style={styles.dayOfWeekValues} 
 												selectedValue={this.state.dayOfWeek} 
-												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue})}>
+												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue, dayOfWeekValue})}>
 												<Picker.Item label="Monday" value="Monday" />
 												<Picker.Item label="Tuesday" value="Tuesday" />
 												<Picker.Item label="Wednesday" value="Wednesday" />
@@ -424,6 +496,7 @@ class Course extends React.PureComponent {
 									color={blue} />
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
+										maxLength={1024}
 										placeholder="Location" 
 										ref={(input) => this.locationInput = input}
 										returnKeyType = {'done'}
@@ -440,11 +513,11 @@ class Course extends React.PureComponent {
 								buttonMethods={[addEventButtonFunction, () => {
 									let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
-									console.log(routes[routes.length - 3].routeName);
-									if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
-										this.props.navigation.navigate(DashboardNavigator);
-									} else if (routes && routes[routes.length - 3].routeName == ReviewEventRoute) {
+									if (routes && (routes[routes.length - 3].routeName == ReviewEventRoute || 
+										(routes[routes.length - 3].routeName == SchoolInformationRoute && routes[routes.length - 4].routeName == ReviewEventRoute))) {
 										this.props.navigation.navigate(ReviewEventRoute);
+									} else if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
+										this.props.navigation.navigate(DashboardNavigator);
 									} else {
 										this.props.navigation.pop();
 									}

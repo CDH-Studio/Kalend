@@ -77,3 +77,63 @@ export const getStartDate = (date, tempDay) => {
 	let newDate =  new Date(semesterStart.getTime());
 	return newDate;
 };
+
+
+/**
+ * Check if a date is within the array of Dates
+ * 
+ * @param {array} dates array of dates
+ * @param {Date} checkDate date to be checked
+ */
+export function containsDateTime(dates, checkDate) {
+	let checkStartDate = checkDate.startDate;
+	let checkEndDate = checkDate.endDate;
+	let contains = false;
+	dates.forEach(date => {
+		let startDate = new Date(date.startDate);
+		let endDate = new Date(date.endDate);
+
+		if((checkStartDate >= startDate && checkStartDate <= endDate ) || (checkEndDate >= startDate && checkEndDate <= endDate)) {
+			contains = true;
+			return contains;
+		}  
+	});
+	return contains;
+}
+
+/**
+ *	Generates a random number between an interval of max and min
+ * 
+ * @param {integer} __min minimum bound of the interval
+ * @param {integer} __max maximum bound of the interval
+ */
+export function getRndInteger(__min, __max) {
+	return Math.round(Math.random() * (__max - __min) ) + __min;
+}
+
+/**
+ *	Divides the duration by the number of occurences
+ * 
+ * @param {integer} __hours hours of duration
+ * @param {integer} __minutes minutes of duration
+ * @param {integer} __occurence number of occurences
+ */
+export function divideDuration(__hours, __minutes, __occurence) {
+	let totalDuration = (__hours * 60) + __minutes;
+	let dividedDuration = totalDuration / __occurence;
+	let { hours, minutes } = convertMintuesToHours(dividedDuration);
+	
+	return {hours, minutes};
+}
+
+/**
+ * Helper method to convert total minutes into hours and minutes
+ * 
+ * @param {integer} __duratrion total duration in minutes
+ */
+function convertMintuesToHours(__duration) { 
+	const hours = Math.floor(__duration / 60);  
+	const minutes = __duration % 60;
+
+	return {hours, minutes};         
+}

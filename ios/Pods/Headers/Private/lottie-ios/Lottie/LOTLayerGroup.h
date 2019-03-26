@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/Models/LOTLayerGroup.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/Models/LOTLayerGroup.h

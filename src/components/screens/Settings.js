@@ -44,13 +44,15 @@ class Settings extends React.PureComponent {
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#2d6986'} />
+					backgroundColor={'#166489'} />
 
 				<ScrollView>
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.topProfileContainer}>
-							<Image style={styles.profileImage}
-								source={{uri: this.props.profileImage}} />
+							<View style={styles.profileIconContainer}>
+								<Image style={styles.profileImage}
+									source={{uri: this.props.profileImage}} />
+							</View>
 
 							<Text style={styles.profileDescription}>
 								{this.props.userName}

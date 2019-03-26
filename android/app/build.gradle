@@ -85,7 +85,6 @@ def getNpmVersion() {
 /* calculated from git commits to give sequential integers */
 def getGitVersion() {
     def st = "git rev-list " + gitBranch() + " --first-parent --count"
-    print(st)
     def process = st.execute()
 
     return process.text.toInteger()
@@ -98,8 +97,6 @@ def gitBranch() {
     proc.err.eachLine { line -> println line }
     proc.waitFor()
 
-    print("NAME " + branch)
-
     return branch
 }
 
@@ -107,7 +104,9 @@ def userVer = getNpmVersion()
 def googleVer = getGitVersion()
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.js",
+    jsBundleDirDebug: "$buildDir/intermediates/merged_assets/debug/mergeDebugAssets/out",
+    jsBundleDirRelease: "$buildDir/intermediates/merged_assets/release/mergeReleaseAssets/out"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -138,6 +137,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionName userVer
         versionCode googleVer
+        multiDexEnabled true
+    missingDimensionStrategy 'react-native-camera', 'general'
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -182,23 +183,22 @@ android {
 
 dependencies {
     implementation project(':react-native-firebase')
-    implementation project(':react-native-vector-icons')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-google-signin')
     implementation project(':react-native-gesture-handler')
     implementation project(':lottie-react-native')
     implementation project(':react-native-camera')
-    implementation project(':react-native-image-base64')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 	implementation "com.google.android.gms:play-services-base:16.0.1"
-	implementation "com.google.firebase:firebase-core:16.0.6"
-	implementation "com.google.firebase:firebase-config:16.1.2"
-	implementation "com.google.firebase:firebase-messaging:17.3.4"
-	implementation "com.google.firebase:firebase-perf:16.2.3"
+	implementation "com.google.firebase:firebase-core:16.0.8"
+	implementation "com.google.firebase:firebase-config:16.4.0"
+    implementation "com.google.firebase:firebase-auth:16.1.0"
+	implementation "com.google.firebase:firebase-messaging:17.4.0"
+	implementation "com.google.firebase:firebase-perf:16.2.4"
 	implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
-	implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
+	implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
 		transitive = true
 	}
 }
@@ -211,4 +211,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

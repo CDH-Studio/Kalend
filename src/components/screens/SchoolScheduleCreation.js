@@ -1,10 +1,9 @@
 import React from 'react';
-import { Alert, StatusBar, Text, View, BackHandler, Platform } from 'react-native';
-import ImgToBase64 from 'react-native-image-base64';
+import { Alert, StatusBar, Text, View, BackHandler, Platform, ImageStore } from 'react-native';
 import { Surface } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
-import { DashboardNavigator } from '../../constants/screenNames';
+import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
@@ -31,22 +30,34 @@ class SchoolScheduleCreation extends React.PureComponent {
 	
 	componentWillMount() {	
 		if (this.props.hasImage) {
-			ImgToBase64.getBase64String(this.props.imgURI)
-				.then(base64String => {
-					base64String = base64String.toString();
-					let fakeEscape = base64String.replace(/[+]/g,'PLUS');
-					fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
-					analyzePicture({data: fakeEscape}).then(success => {
-						if (success) this.props.navigation.navigate(DashboardNavigator);
-						else this.props.navigation.pop();
-					});
-				})
-				.catch(err => console.log('error', err));
+			ImageStore.getBase64ForTag(this.props.imgURI, this.success, this.error);
 		}
 
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
+	success = (base64String) => {
+		base64String = base64String.toString();
+		let fakeEscape = base64String.replace(/[+]/g,'PLUS');
+		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
+		analyzePicture({data: fakeEscape}).then(success => {
+			if (success) {
+				let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+				if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
+					this.props.navigation.navigate(ReviewEventRoute);
+				} else {
+					this.props.navigation.navigate(DashboardNavigator);
+				}
+			} else {
+				this.props.navigation.pop();
+			}
+		});
+	}
+
+	error = (err) => {
+		console.log('error', err);
+	}
 
 	handleBackButton = () => {
 		Alert.alert(

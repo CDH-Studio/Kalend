@@ -6,6 +6,7 @@ import { calendarEventColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
+import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
 export const containerPaddingDetails = 10;
 
@@ -51,9 +52,7 @@ class ScheduleEvent extends React.PureComponent  {
 			color
 		};
 	}
-	componentDidMount() {
-		console.log('data recieved in Schedule Event', this.props.info);
-	}
+	
 	getTime = (time) => {
 		time = new Date(time);
 		let hours = time.getHours();
@@ -170,7 +169,12 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		this.props.navigation.setParams({ goBack: this.goBack });
+		this.props.navigation.setParams({ goBack: this.deleteCalendar });
+	}
+
+	deleteCalendar = async () => {
+		this.props.navigation.state.params.delete(this.props.index);
+		this.goBack();
 	}
 
 	
@@ -200,20 +204,28 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			'Saturday': []
 		};
 
-		data.schoolEvents.forEach(event => {
-			event.type = 'school';
-			temp_days[event.dayOfWeek].push(event);
-		});
-		data.fixedEvents.forEach(event => {
-			event.type = 'fixed';
-			let day = new Date(event.startDate).getDay();
-			temp_days[days[day]].push(event);
-		});
-		data.aiEvents[0].forEach(event => {
-			event.type = 'nonFixed';
-			let day = new Date(event.start.dateTime).getDay();
-			temp_days[days[day]].push(event);
-		});
+		if (data.schoolEvents.length != 0) {
+			data.schoolEvents.forEach(event => {
+				event.type = 'school';
+				temp_days[event.dayOfWeek].push(event);
+			});
+		}
+
+		if (data.fixedEvents.length != 0) {
+			data.fixedEvents.forEach(event => {
+				event.type = 'fixed';
+				let day = new Date(event.startDate).getDay();
+				temp_days[days[day]].push(event);
+			});
+		}
+
+		if (data.aiEvents) {
+			data.aiEvents.forEach(event => {
+				event.type = 'nonFixed';
+				let day = new Date(event.start.dateTime).getDay();
+				temp_days[days[day]].push(event);
+			});
+		}
 		
 		this.setState({daysTemp: temp_days});
 	}
@@ -255,10 +267,21 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
-		this.props.GeneratedNonFixedEventsReducer.forEach(event => {
-			insertGeneratedEvent(event);
-		});
+		if (this.state.data.aiEvents) {
+			this.state.data.aiEvents.forEach(event => {
+				insertGeneratedEvent(event);
+			});
+		}
+		this.clearEvents();
 		this.props.navigation.navigate(DashboardNavigator);
+	}
+
+	clearEvents = () => {
+		this.props.dispatch(clearGeneratedCalendars());
+		this.props.dispatch(clearGeneratedNonFixedEvents());
+		this.props.dispatch(clearNonFixedEvents());
+		this.props.dispatch(clearFixedEvents());
+		this.props.dispatch(clearCourse());
 	}
 
 	render() {

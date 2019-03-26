@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/MacCompatibility/LOTPlatformCompat.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/MacCompatability/LOTPlatformCompat.h

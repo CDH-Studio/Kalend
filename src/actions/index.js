@@ -12,11 +12,14 @@ import {
 	ADD_COURSE, 
 	DELETE_NFE, 
 	DELETE_FE, 
-	DELETE_COURSE, 
+	DELETE_COURSE,
+	DELETE_GENERATED_CALENDAR, 
 	UPDATE_FE, 
 	UPDATE_COURSE, 
 	CREATE_CALENDAR,
 	ADD_GENERATED_NFE,
+	ADD_GENERATED_CALENDAR,
+	CLEAR_GENERATED_CALENDAR,
 	CLEAR_CALENDAR,
 	CLEAR_COURSE,
 	CLEAR_GENERATED_NFE,
@@ -26,8 +29,9 @@ import {
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
-	CLEAR_OPENED,
+	CLEAR_OPENED
 } from '../constants';
+
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -108,6 +112,15 @@ export function addGeneratedNonFixedEvent (event) {
 	return action;
 }
 
+export function addGeneratedCalendar (calendar) {
+	const action = {
+		type: ADD_GENERATED_CALENDAR,
+		calendar
+	}; 
+
+	return action;
+}
+
 export function addCourse (event) {
 	const action = {
 		type: ADD_COURSE,
@@ -136,6 +149,8 @@ export function deleteNonFixedEvent (index) {
 	return action;
 }
 
+
+
 export function deleteFixedEvent (index) {
 	const action = {
 		type: DELETE_FE,
@@ -150,6 +165,15 @@ export function deleteCourse (index) {
 		type: DELETE_COURSE,
 		index
 	}; 
+
+	return action;
+}
+
+export function deleteGeneratedCalendar(index) {
+	const action = {
+		type: DELETE_GENERATED_CALENDAR,
+		index
+	};
 
 	return action;
 }
@@ -241,6 +265,14 @@ export function clearGeneratedNonFixedEvents () {
 	const action = {
 		type: CLEAR_GENERATED_NFE
 	};
+
+	return action;
+}
+
+export function clearGeneratedCalendars () {
+	const action = {
+		type: CLEAR_GENERATED_CALENDAR
+	}; 
 
 	return action;
 }

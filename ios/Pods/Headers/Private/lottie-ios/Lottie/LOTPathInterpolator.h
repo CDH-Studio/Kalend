@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/RenderSystem/InterpolatorNodes/LOTPathInterpolator.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/RenderSystem/InterpolatorNodes/LOTPathInterpolator.h

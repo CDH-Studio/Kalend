@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/Models/LOTAssetGroup.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/Models/LOTAssetGroup.h

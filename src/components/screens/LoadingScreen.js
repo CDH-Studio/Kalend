@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
 import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
-import { gradientColors, statusBarDark } from '../../../config';
-import { loadingStyles as styles, blue } from '../../styles';
+import { gradientColors } from '../../../config';
+import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
@@ -86,10 +86,8 @@ class LoadingScreen extends React.PureComponent {
 				
 				<View style={styles.animView}>
 					<LottieView progress={animProgress}
-						source={logoFile}
 						loop={false}
-						speed={1}
-						style={styles.anim} />
+						source={logoFile}/>
 				</View>
 			</View>
 		);
