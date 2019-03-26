@@ -45,14 +45,31 @@ class SchoolScheduleCreation extends React.PureComponent {
 		base64String = base64String.toString();
 		let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
-		analyzePicture({data: fakeEscape}).then(success => {
-			if (success) {
-				this.setState({goToNextScreen: true});
-				this.nextScreen();
-			} else {
-				this.props.navigation.pop();
-			}
-		});
+		analyzePicture({data: fakeEscape})
+			.then(success => {
+
+				if (success) {
+					let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+					if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
+						this.props.navigation.navigate(ReviewEventRoute);
+					} else {
+						this.props.navigation.navigate(DashboardNavigator);
+					}
+				}
+			})
+			.catch(err => {
+				if (err) {
+					Alert.alert(
+						'Error',
+						err,
+						[
+							{text: 'OK', onPress: () => this.props.navigation.pop()},
+						],
+						{cancelable: false}
+					);
+				} 
+			});
 	}
 
 	nextScreen = () => {
