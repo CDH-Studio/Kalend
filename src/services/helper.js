@@ -14,17 +14,18 @@ export const convertToDictionary  = (data) => {
 };
 
 
-export const convertEventsToDictionary  = (data) => {
+export const convertEventsToDictionary  = async (data) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let dict = {};
-	data.forEach(event => {
+	data.forEach(async (event) => {
 		let keyDate;
 		let item = {};
-		if(event.recurrence) {
+		if (event.recurrence) {
 			// Get all recurring events if it has recurrence
-			getEventsInstances(calendarID, event.id).then(instances => {
+			await getEventsInstances(calendarID, event.id).then(instances => {
 				instances.items.forEach(eventRec => {
 					keyDate = eventRec.start.dateTime.split('T')[0];
+					item.date = keyDate;
 					item.name = event.summary;
 					item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
 					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
@@ -33,6 +34,7 @@ export const convertEventsToDictionary  = (data) => {
 		} else {
 			keyDate = event.start.dateTime.split('T')[0];
 			item.name = event.summary;
+			item.date = keyDate;
 			item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
 			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
 		}

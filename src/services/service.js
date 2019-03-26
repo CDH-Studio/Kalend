@@ -467,12 +467,13 @@ export const generateCalendars = async () => {
 
 
 
-export const getDataforDashboard = (startDate, endDate) => {
+export const getDataforDashboard = async () => {
 	let calendarID = store.getState().CalendarReducer.id;
-
-	listEvents(calendarID).then(data => {
-		console.log('all events', data);
-		let dict = convertEventsToDictionary(data.items);
-		console.log('dict', dict);
+	return new Promise(async (resolve) => {
+		await listEvents(calendarID).then(data => {
+			convertEventsToDictionary(data.items).then(dict => {
+				resolve(dict);
+			});
+		});
 	});
 };
