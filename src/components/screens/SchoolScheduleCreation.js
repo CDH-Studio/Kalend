@@ -75,7 +75,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 		this.setState({alertDialog: true});
 		Alert.alert(
 			'Stopping extraction',
-			'The schedule analyzing process will be stop if you proceed, where do you want to go?',
+			'The schedule analyzing process will be stopped if you proceed, where do you want to go?',
 			[
 				{
 					text: 'Cancel',

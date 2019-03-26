@@ -32,6 +32,7 @@ class EventOverview extends React.PureComponent {
 		this.state = {
 			modalVisible: false,
 			deleteDialogVisible: false,
+			edited: false
 		};
 	}
 	
@@ -230,29 +231,34 @@ class EventOverview extends React.PureComponent {
 								</View>
 								
 								<View style={styles.actionsModal}>
-									<IconButton style={styles.actionIconModal}
-										size={40}
-										onPress={() => this.navigateAndCloseModal(editScreen)}
-										color={gray}
-										icon={({ size, color }) => (
-											<MaterialCommunityIcons
-												name='square-edit-outline'
-												size={size}
-												color={color}
-											/>
-										)} />
-										
-									<IconButton style={styles.actionIconModal}
-										size={40}
-										onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}
-										color={gray}
-										icon={({ size, color }) => (
-											<MaterialCommunityIcons
-												name='trash-can-outline'
-												size={size}
-												color={color}
-											/>
-										)} />
+									<View style={styles.actionIconModal}>
+										<IconButton
+											size={40}
+											onPress={() => this.navigateAndCloseModal(editScreen)}
+											color={gray}
+											icon={({ size, color }) => (
+												<MaterialCommunityIcons
+													name='square-edit-outline'
+													size={size}
+													color={color}
+													style={{height: size, width: size}}
+												/>
+											)} />
+									</View>
+									<View style={styles.actionIconModal}>
+										<IconButton
+											size={40}
+											onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}
+											color={gray}
+											icon={({ size, color }) => (
+												<MaterialCommunityIcons
+													name='trash-can-outline'
+													size={size}
+													color={color}
+													style={{height: size, width: size}}
+												/>
+											)} />
+									</View>
 								</View>
 							</View>
 						</TouchableWithoutFeedback>

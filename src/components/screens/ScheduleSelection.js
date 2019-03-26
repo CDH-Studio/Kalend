@@ -423,7 +423,7 @@ class ScheduleSelection extends React.PureComponent {
 	handleBackButton = () => {
 		Alert.alert(
 			'Discarding changes',
-			'The created schedule will be deleted if you proceed, where do you want to go?',
+			'The created schedules will be deleted if you proceed, where do you want to go?',
 			[
 				{
 					text: 'Cancel',

@@ -1155,7 +1155,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	actionIconModal: {
-		marginHorizontal: 10
+		margin: 5
 	},
 
 	deleteDialogContent: {
