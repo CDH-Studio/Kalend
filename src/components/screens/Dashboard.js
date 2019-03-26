@@ -1,10 +1,12 @@
 import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
+import { Agenda } from 'react-native-calendars';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue } from '../../styles';
+import { dashboardStyles as styles, blue, white, dark_blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import { getDataforDashboard } from '../../services/service';
 
@@ -14,17 +16,101 @@ import { getDataforDashboard } from '../../services/service';
  */
 class Dashboard extends React.PureComponent {
 
+
+	static navigationOptions = ({navigation}) => ({
+		headerRight: (
+			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute)}
+				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
+				...Platform.select({
+					ios: {
+						shadowColor: '#000000',
+						shadowOffset: { width: 0, height: 2 },
+						shadowOpacity: 0.3,
+						shadowRadius: 3,    
+					},
+					android: {
+						elevation: 4,
+					},
+				}),}}>
+				<Text style={{color: white, fontFamily: 'Raleway-Bold'}}>Create </Text>
+				<MaterialCommunityIcons size={25}
+					name="calendar-multiple-check"
+					color={white}/>
+			</TouchableOpacity>
+		),
+	});
+
 	constructor(props) {
 		super(props);
 		this.state = { 
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
+			currentMonth: '',
+			items: {
+				'2019-03-21': 
+					[{
+						date: '2019-03-21',
+						name: 'SEG 2505', 
+						time: '1:00 PM - 2:00 PM'
+					},
+
+					{
+						date: '2019-03-21',
+						name: 'Basketball Game Tomorrooooow', 
+						time: '10:00 PM - 11:30 PM'
+					}]
+			},
 			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
+	loadItems(day) {
+		setTimeout(() => {
+			for (let i = -15; i < 85; i++) {
+				const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+				const strTime = this.timeToString(time);
+				if (!this.state.items[strTime]) {
+					this.state.items[strTime] = [];
+				}
+			}
+			const newItems = {};
+			Object.keys(this.state.items).forEach(key => {
+				newItems[key] = this.state.items[key];
+			});
+			this.setState({
+				items: newItems
+			});
+		}, 1000);
+	}
+	
+	renderItem(item) {
+		return (
+			<View style={[styles.item]}>
+				<Text style={styles.itemText}>{item.name}</Text>
+				<Text style={styles.itemText}>{item.time}</Text>
+			</View>
+		);
+	}
+	
+	renderEmptyDate() {
+		return <View style={styles.noEvents}><Text style={styles.noEventsText}>There's no events for the day.</Text></View>;
+	}
+	
+	rowHasChanged(r1, r2) {
+		return r1.name !== r2.name;
+	}
+
+	shouldChangeDay(r1, r2) {
+		return r1 !== r2;
+	}
+	
+	timeToString(time) {
+		const date = new Date(time);
+		return date.toISOString().split('T')[0];
+	}
+	
 	componentDidMount() {
 		this.setState({isVisible: true});
 		getDataforDashboard();
@@ -41,19 +127,28 @@ class Dashboard extends React.PureComponent {
 	render() {
 		const {optionsOpen} = this.state;
 
+		// let currentMonth = this.date.substr(5, 2);
+
 		return(
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-						backgroundColor={'#166489'} />
+						backgroundColor={'#166489'} />	
 
-					<TouchableOpacity style={styles.button}
-						onPress={() => {
-							this.props.navigation.navigate(ReviewEventRoute);
-						}}>
-						<Text style={styles.buttonText}>Create Schedule</Text>
-					</TouchableOpacity>
+					<View style={styles.calendarBack}>
+						<Text style={styles.calendarBackText}></Text>
+					</View>
+
+					<Agenda
+						items={this.state.items}
+						loadItemsForMonth={this.loadItems.bind(this)}
+						renderItem={this.renderItem.bind(this)}
+						renderEmptyDate={this.renderEmptyDate.bind(this)}
+						rowHasChanged={this.rowHasChanged.bind(this)}
+						showOnlyDaySelected={true}
+						shouldChangeDay={this.shouldChangeDay.bind(this)}
+					/>
 
 					<FAB.Group
 						ref={ref => this.touchable = ref}

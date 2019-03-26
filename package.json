@@ -20,6 +20,7 @@
     "react-dom": "^16.8.4",
     "react-native": "^0.59.1",
     "react-native-app-intro-slider": "^1.0.1",
+    "react-native-calendars": "wix/react-native-calendars#refs/pull/484/head",
     "react-native-camera": "^2.0.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-firebase": "^5.2.2",

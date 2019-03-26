@@ -1380,12 +1380,55 @@ export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 10
+		padding: 10,
+		backgroundColor: dark_blue //'#F6F8FA'
 	},
 
 	fab: {
 		position: 'absolute',
 		right: 0
+	},
+
+	item: {
+		backgroundColor: white,
+		borderRadius: 5,
+		width: '95%',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		marginVertical: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	itemText: {
+		fontFamily: 'OpenSans-Regular',
+		fontSize: 16,
+		color: gray
+	},
+
+	noEvents: {
+		justifyContent: 'center'
+	},
+
+	noEventsText: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		color: gray
+	},
+
+	emptyDate: {
+		height: 15,
+		flex:1,
+		paddingTop: 30
 	},
 
 	tooltipText: {
@@ -1406,6 +1449,26 @@ export const dashboardStyles = StyleSheet.create({
 			},
 		}),
 	},
+
+	calendarBack: {
+		backgroundColor: white
+	},
+	
+	calendarBackText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		color: dark_blue,
+		textAlign: 'center'
+	},
+
+	eventsDayTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+		marginTop : 140,
+		paddingBottom: 20
+	},
+
 	...DashboardButton,
 });
 
