@@ -5,7 +5,7 @@ import rootReducer from '../reducers';
 
 const persistConfig = {
 	key: 'root',
-	AsyncStorage,
+	storage: AsyncStorage,
 	keyPrefix: '',
 	blacklist: ['StateReducer']
 };

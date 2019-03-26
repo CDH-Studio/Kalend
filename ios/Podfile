@@ -37,6 +37,8 @@ target 'Kalend' do
     # Pods for testing
     pod 'lottie-ios', :path => '../node_modules/lottie-ios'
 
+    pod 'react-native-async-storage', :path => '../node_modules/@react-native-community/async-storage'
+
   end
 
   target 'KalendTests' do
