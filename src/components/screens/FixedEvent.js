@@ -540,7 +540,7 @@ class FixedEvent extends React.PureComponent {
 										date={this.state.startTime} 
 										mode="time"
 										disabled={this.state.disabledStartTime}
-										style={{width:80}}
+										style={{width:70}}
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
@@ -579,7 +579,7 @@ class FixedEvent extends React.PureComponent {
 										date={this.state.endTime} 
 										mode="time" 
 										disabled = {this.state.disabledEndTime}
-										style={{width:80}}
+										style={{width:70}}
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
