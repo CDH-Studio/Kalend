@@ -43,7 +43,7 @@ class ScheduleCreation extends React.PureComponent {
 						this.generateScheduleService();
 					}, 3000);
 				} else  {
-          this.setState({goToNextScreen: true});
+					this.setState({goToNextScreen: true});
 					this.navigateToSelection();
 				}
 			})
