@@ -83,19 +83,6 @@ class ScheduleCreation extends React.PureComponent {
 		generateCalendars()
 			.then(() => {
 				this.navigateToSelection();
-			})
-			.catch(err => {
-				console.log('err', err);
-				if	(err) {
-					Alert.alert(
-						'ERROR',
-						'AI could not generate your calendar at this time, please try again',
-						[
-							{text: 'OK', onPress: () => this.props.navigation.navigate(DashboardNavigator)},
-						],
-						{cancelable: false}
-					);
-				}
 			});
 	}
 
