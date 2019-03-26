@@ -53,12 +53,12 @@ export const analyzePicture = (base64Data) => {
 				if (res) {
 					return res.json();
 				} else {
-					reject('could not recieve response from the server, please try again');
+					reject('Could not recieve response from the server, please try again');
 				}
 			})
 			
 			.then(body => {
-				if(body.data.length == 0) reject('No data could be extracted from the picture, please try again');
+				if(body.data.length == 0) reject('The data from your schedule could not be extracted, please try again');
 				formatData(body.data)
 					.then(data => {
 						storeCoursesEvents(data)
@@ -72,7 +72,7 @@ export const analyzePicture = (base64Data) => {
 					});
 			})
 			.catch(err => {
-				if(err) reject('Colud not connect to the server, please try again');
+				if(err) reject('Colud not connect to the server, please try again later');
 			});
 	});
 };
@@ -410,7 +410,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	
 			// Call to google to check whether time conflicts with the specified generated startDate;
 			await getAvailabilities(obj).then(data => {
-				if(data.error) reject('Something went wrong while checking  for events in google calendar');
+				if(data.error) reject('Something went wrong while checking for events in google calendar');
 				
 				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
 				if (busySchedule.length > 0) {
