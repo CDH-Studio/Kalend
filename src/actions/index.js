@@ -3,22 +3,23 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
-	UPDATE_NFE, 
+	SET_IMG, 
+	CREATE_CALENDAR,
 	SIGNED_IN, 
 	SIGNED_OUT, 
-	SET_IMG, 
 	ADD_FE, 
 	ADD_NFE, 
 	ADD_COURSE, 
+	ADD_GENERATED_NFE,
+	ADD_GENERATED_CALENDAR,
+	ADD_COLORS,
 	DELETE_NFE, 
 	DELETE_FE, 
 	DELETE_COURSE,
 	DELETE_GENERATED_CALENDAR, 
 	UPDATE_FE, 
+	UPDATE_NFE, 
 	UPDATE_COURSE, 
-	CREATE_CALENDAR,
-	ADD_GENERATED_NFE,
-	ADD_GENERATED_CALENDAR,
 	CLEAR_GENERATED_CALENDAR,
 	CLEAR_CALENDAR,
 	CLEAR_COURSE,
@@ -94,6 +95,15 @@ export function setImageURI (data, hasImage) {
 }
 
 /*** ADD ***/
+export function addColors (colors) {
+	const action = {
+		type: ADD_COLORS, 
+		colors
+	};
+
+	return action;
+}
+
 export function addFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
