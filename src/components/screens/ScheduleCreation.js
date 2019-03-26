@@ -50,7 +50,7 @@ class ScheduleCreation extends React.PureComponent {
 			.catch(err => {
 				if (err) {
 					Alert.alert(
-						'ERROR',
+						'Error',
 						err,
 						[
 							{text: 'OK', onPress: () => this.props.navigation.navigate(DashboardNavigator)},
