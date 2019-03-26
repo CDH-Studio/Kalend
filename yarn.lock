@@ -810,6 +810,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-1.0.4.tgz#3ef928c87c686d673ae829e492c7aad4d061d666"
   integrity sha512-L02BSwDTHGc5BPrtllMTOKSKg9QyJbz001pIkD2FGmUFA9Nfvs0cne36N4nnrR5jQhSzwnmnQpzXkQ/yzQxwMg==
 
+"@react-native-community/viewpager@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-1.1.5.tgz#98f1a3adabfc33dafe5baaf653ce300c2475e62e"
+  integrity sha512-JJf6no31hH+Zuhex6F3VdmQ3TLdtdCtcVY4Ej53wp7qFvnmzCGs595czFKULPTpp821ioqXppX40ZZ6jMVQefQ==
+
 "@react-navigation/core@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.2.0.tgz#329dfe54f305ee22ed750d51cb09c5d18562d56f"

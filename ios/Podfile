@@ -39,6 +39,8 @@ target 'Kalend' do
 
     pod 'react-native-async-storage', :path => '../node_modules/@react-native-community/async-storage'
 
+    pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
   end
 
   target 'KalendTests' do
