@@ -22,17 +22,18 @@ class Dashboard extends React.PureComponent {
 		headerRight: (
 			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute)}
 				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
-				...Platform.select({
-					ios: {
-						shadowColor: '#000000',
-						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: 0.3,
-						shadowRadius: 3,    
-					},
-					android: {
-						elevation: 4,
-					},
-				}),}}>
+					...Platform.select({
+						ios: {
+							shadowColor: '#000000',
+							shadowOffset: { width: 0, height: 2 },
+							shadowOpacity: 0.3,
+							shadowRadius: 3,    
+						},
+						android: {
+							elevation: 4,
+						},
+					})
+				}}>
 				<Text style={{color: white, fontFamily: 'Raleway-Bold'}}>Create </Text>
 				<MaterialCommunityIcons size={25}
 					name="calendar-multiple-check"
@@ -142,7 +143,7 @@ class Dashboard extends React.PureComponent {
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#166489'} />	
-{/* 
+					{/* 
 					<View style={styles.calendarBack}>
 						<Text style={styles.calendarBackText}>{currentMonth}</Text>
 					</View> */}
