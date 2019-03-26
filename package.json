@@ -10,6 +10,7 @@
     "version-ios": "./version-ios.sh"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.2.1",
     "@react-native-community/slider": "^1.0.4",
     "lottie-react-native": "^2.6.0",
     "moment": "^2.24.0",
