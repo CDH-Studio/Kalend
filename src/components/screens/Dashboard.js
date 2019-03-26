@@ -1,11 +1,12 @@
 import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { Agenda } from 'react-native-calendars';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue } from '../../styles';
+import { dashboardStyles as styles, blue, white, dark_blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 
 /**
@@ -13,6 +14,30 @@ import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRo
  * the differents options they can access.
  */
 class Dashboard extends React.PureComponent {
+
+
+	static navigationOptions = ({navigation}) => ({
+		headerRight: (
+			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute)}
+				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
+				...Platform.select({
+					ios: {
+						shadowColor: '#000000',
+						shadowOffset: { width: 0, height: 2 },
+						shadowOpacity: 0.3,
+						shadowRadius: 3,    
+					},
+					android: {
+						elevation: 4,
+					},
+				}),}}>
+				<Text style={{color: white, fontFamily: 'Raleway-Bold'}}>Create </Text>
+				<MaterialCommunityIcons size={25}
+					name="calendar-multiple-check"
+					color={white}/>
+			</TouchableOpacity>
+		),
+	});
 
 	constructor(props) {
 		super(props);
