@@ -1568,6 +1568,9 @@ export const schoolInformationStyles = StyleSheet.create({
 	},
 
 	otherInput: {
+		borderBottomColor: '#D4D4D4',
+		borderBottomWidth: 1,
+		paddingBottom: -5,
 		width: '90%',
 		fontFamily: 'Raleway-Regular',
 		height: 40
