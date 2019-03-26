@@ -1151,11 +1151,11 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: white
+		backgroundColor: white,
 	},
 
 	actionIconModal: {
-		paddingHorizontal: 20
+		margin: 5
 	},
 
 	deleteDialogContent: {

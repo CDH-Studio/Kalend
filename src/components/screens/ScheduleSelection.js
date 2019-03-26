@@ -1,13 +1,14 @@
 import React from 'react';
 import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import { HeaderBackButton } from 'react-navigation';
 import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
 import { calendarEventColors, calendarEventColorsInside } from '../../../config';
-import { DashboardNavigator, ScheduleSelectionDetailsRoute } from '../../constants/screenNames';
+import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
-import { scheduleSelectionStyle as styles, black } from '../../styles';
+import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
 
 export const containerPadding = 10;
 export const lineThickness = 1;
@@ -371,14 +372,16 @@ class Schedule extends React.PureComponent {
  * The component which encloses all of the schedules which has been generated
  */
 class ScheduleSelection extends React.PureComponent {
-	static navigationOptions = {
+	static navigationOptions = ({ navigation }) => ({
 		title: 'Schedule Selection',
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
 		},
-		headerLeft: null,
 		gesturesEnabled: false,
-	};
+		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => {
+			navigation.getParam('onBackPress')(); 
+		}} />,
+	});
 
 	constructor(props) {
 		super(props);
@@ -398,6 +401,7 @@ class ScheduleSelection extends React.PureComponent {
 	componentWillMount() {
 		this.eventsToScheduleSelectionService();
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		this.props.navigation.setParams({onBackPress: this.handleBackButton});
 	}
 
 	
@@ -418,16 +422,25 @@ class ScheduleSelection extends React.PureComponent {
 
 	handleBackButton = () => {
 		Alert.alert(
-			'',
-			'Are you sure you want to delete the created schedule?',
+			'Discarding changes',
+			'The created schedules will be deleted if you proceed, where do you want to go?',
 			[
 				{
-					text: 'No',
+					text: 'Cancel',
 					style: 'cancel',
 				},
-				{text: 'Yes', 
+				{
+					text: 'Dashboard',
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
+						this.props.dispatch(clearGeneratedCalendars());
+						this.props.dispatch(clearGeneratedNonFixedEvents());
+					}
+				},
+				{
+					text: 'Review Events', 
+					onPress: () => {
+						this.props.navigation.navigate(ReviewEventRoute);
 						this.props.dispatch(clearGeneratedCalendars());
 						this.props.dispatch(clearGeneratedNonFixedEvents());
 					},
