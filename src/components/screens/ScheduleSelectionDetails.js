@@ -238,24 +238,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	}
 
 	/**
-	 * Hides the FAB when scrolling down
-	 */
-	onScroll = (event) => {
-		event = Math.abs(event.nativeEvent.contentOffset.y);
-		if (event > Math.abs(this.state.currentY)) {
-			this.setState({
-				showFAB: false,
-				currentY: event
-			});
-		} else {
-			this.setState({
-				showFAB: true,
-				currentY: event
-			});
-		}
-	}
-
-	/**
 	 * TODO: Returns the data for the specified weekday
 	 */
 	getEventForWeekday = (day) => {
@@ -293,7 +275,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
-				<ScrollView onScroll={this.onScroll}>
+				<ScrollView>
 					<View style={styles.content}>
 						{
 							objectArray.map((day, key) => {

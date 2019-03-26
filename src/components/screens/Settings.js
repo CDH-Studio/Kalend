@@ -5,11 +5,11 @@ import { IconButton } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
-import { logoffUser } from '../../actions';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
+import { clearEveryReducer } from '../../services/helper';
 
 const viewHeight = 669.1428833007812;
 
@@ -134,7 +134,7 @@ class Settings extends React.PureComponent {
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
 								googleSignOut();
-								this.props.dispatch(logoffUser());
+								clearEveryReducer();
 								this.props.navigation.navigate(LoginNavigator);
 							}}>
 							<Text style={styles.buttonLogOutText}>Log out</Text>

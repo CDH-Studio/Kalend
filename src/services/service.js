@@ -50,20 +50,29 @@ export const analyzePicture = (base64Data) => {
 			}
 		})
 			.then(res => {
-				return res.json();
+				if (res) {
+					return res.json();
+				} else {
+					reject('Could not recieve response from the server, please try again');
+				}
 			})
+			
 			.then(body => {
+				if(body.data.length == 0) reject('The data from your schedule could not be extracted, please try again');
 				formatData(body.data)
 					.then(data => {
 						storeCoursesEvents(data)
 							.then((success) => {
-								if(success) resolve(true);
-								else reject(false);
-							})
-							.catch(err => {
-								console.log('err', err);
+								if(success) return resolve(true);
+								else return reject(false);
 							});
+					})
+					.catch(err => {
+						reject(err);
 					});
+			})
+			.catch(err => {
+				if(err) reject('Colud not connect to the server, please try again later');
 			});
 	});
 };
@@ -199,7 +208,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 	obj.summary = event.title;
 	obj.location = event.location;
 	obj.description = event.description;
-	//console.log('fixed obj', obj);
+
 	return insertEvent(calendarID,obj,{});	
 };
 
@@ -361,8 +370,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	let obj = {};
 	
 	obj.items = [{'id': calendarID}];
-
-	return new Promise( async function(resolve) {
+	return new Promise( async function(resolve, reject) {
 		let available = false;
 		let eventStartDate = new Date(event.startDate);
 		let eventEndDate = new Date(event.endDate);
@@ -393,7 +401,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 
 			// If the random generated Date is has already been tested, skip the itteration
 			if(containsDateTime(pushedDates, {startDate, endDate})) continue;
-	
+			
 			let startDateISO = startDate.toISOString();
 			let endDateISO = endDate.toISOString();
 
@@ -402,12 +410,14 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	
 			// Call to google to check whether time conflicts with the specified generated startDate;
 			await getAvailabilities(obj).then(data => {
+				if(data.error) reject('Something went wrong while checking for events in google calendar');
+				
 				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
 				if (busySchedule.length > 0) {
 					pushedDates.push({startDate,endDate});
-					
 				} else {
 					available = true;
+					pushedDates.push({startDate,endDate});
 					resolve({startDate, endDate});
 				}
 			});
