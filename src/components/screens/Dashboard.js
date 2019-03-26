@@ -8,6 +8,8 @@ import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 
+// let currentMonth = '';
+
 /**
  * Dashboard of the application which shows the user's calendar and
  * the differents options they can access.
@@ -20,7 +22,6 @@ class Dashboard extends React.PureComponent {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
-			currentMonth: '',
 			items: {
 				'2019-03-21': 
 					[{
@@ -58,8 +59,18 @@ class Dashboard extends React.PureComponent {
 			});
 		}, 1000);
 	}
+
+	// changeMonth(item) {
+	// 	if (item.date.substr(5, 2) === currentMonth) {
+	// 		//do nothing
+	// 	} else {
+	// 		currentMonth = item.date.substr(5, 2);
+	// 	}
+	// }
 	
 	renderItem(item) {
+		// this.changeMonth(item);
+
 		return (
 			<View style={[styles.item]}>
 				<Text style={styles.itemText}>{item.name}</Text>
@@ -100,18 +111,16 @@ class Dashboard extends React.PureComponent {
 	render() {
 		const {optionsOpen} = this.state;
 
-		// let currentMonth = this.date.substr(5, 2);
-
 		return(
 			<Portal.Host style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#166489'} />	
-
+{/* 
 					<View style={styles.calendarBack}>
-						<Text style={styles.calendarBackText}></Text>
-					</View>
+						<Text style={styles.calendarBackText}>{currentMonth}</Text>
+					</View> */}
 
 					<Agenda
 						items={this.state.items}

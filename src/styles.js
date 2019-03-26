@@ -1381,7 +1381,7 @@ export const dashboardStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		padding: 10,
-		backgroundColor: dark_blue //'#F6F8FA'
+		backgroundColor: '#F6F8FA'
 	},
 
 	fab: {
@@ -1422,7 +1422,8 @@ export const dashboardStyles = StyleSheet.create({
 	noEventsText: {
 		fontFamily: 'Raleway-Regular',
 		fontSize: 16,
-		color: gray
+		color: gray,
+		paddingTop: 15
 	},
 
 	emptyDate: {
@@ -1465,8 +1466,8 @@ export const dashboardStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18,
 		color: dark_blue,
-		marginTop : 140,
-		paddingBottom: 20
+		marginTop : 20,
+		paddingBottom: 10
 	},
 
 	...DashboardButton,
