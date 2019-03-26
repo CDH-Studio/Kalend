@@ -75,7 +75,7 @@ class FixedEvent extends React.PureComponent {
 
 	componentWillMount() {
 		if(this.props.navigation.state.routeName === FixedEventRoute) {
-			this.setState(this.resetField);
+			this.resetField();
 		} else {
 			this.setState({...this.props.FEditState});
 		}
@@ -540,7 +540,7 @@ class FixedEvent extends React.PureComponent {
 										date={this.state.startTime} 
 										mode="time"
 										disabled={this.state.disabledStartTime}
-										style={{width:80}}
+										style={{width:70}}
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
@@ -579,7 +579,7 @@ class FixedEvent extends React.PureComponent {
 										date={this.state.endTime} 
 										mode="time" 
 										disabled = {this.state.disabledEndTime}
-										style={{width:80}}
+										style={{width:70}}
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 

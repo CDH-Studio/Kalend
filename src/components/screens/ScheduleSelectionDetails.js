@@ -204,20 +204,28 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			'Saturday': []
 		};
 
-		data.schoolEvents.forEach(event => {
-			event.type = 'school';
-			temp_days[event.dayOfWeek].push(event);
-		});
-		data.fixedEvents.forEach(event => {
-			event.type = 'fixed';
-			let day = new Date(event.startDate).getDay();
-			temp_days[days[day]].push(event);
-		});
-		data.aiEvents.forEach(event => {
-			event.type = 'nonFixed';
-			let day = new Date(event.start.dateTime).getDay();
-			temp_days[days[day]].push(event);
-		});
+		if (data.schoolEvents.length != 0) {
+			data.schoolEvents.forEach(event => {
+				event.type = 'school';
+				temp_days[event.dayOfWeek].push(event);
+			});
+		}
+
+		if (data.fixedEvents.length != 0) {
+			data.fixedEvents.forEach(event => {
+				event.type = 'fixed';
+				let day = new Date(event.startDate).getDay();
+				temp_days[days[day]].push(event);
+			});
+		}
+
+		if (data.aiEvents) {
+			data.aiEvents.forEach(event => {
+				event.type = 'nonFixed';
+				let day = new Date(event.start.dateTime).getDay();
+				temp_days[days[day]].push(event);
+			});
+		}
 		
 		this.setState({daysTemp: temp_days});
 	}
@@ -227,24 +235,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	 */
 	goBack = () => {
 		this.props.navigation.pop();
-	}
-
-	/**
-	 * Hides the FAB when scrolling down
-	 */
-	onScroll = (event) => {
-		event = Math.abs(event.nativeEvent.contentOffset.y);
-		if (event > Math.abs(this.state.currentY)) {
-			this.setState({
-				showFAB: false,
-				currentY: event
-			});
-		} else {
-			this.setState({
-				showFAB: true,
-				currentY: event
-			});
-		}
 	}
 
 	/**
@@ -259,9 +249,11 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
-		this.state.data.aiEvents.forEach(event => {
-			insertGeneratedEvent(event);
-		});
+		if (this.state.data.aiEvents) {
+			this.state.data.aiEvents.forEach(event => {
+				insertGeneratedEvent(event);
+			});
+		}
 		this.clearEvents();
 		this.props.navigation.navigate(DashboardNavigator);
 	}
@@ -283,7 +275,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
-				<ScrollView onScroll={this.onScroll}>
+				<ScrollView>
 					<View style={styles.content}>
 						{
 							objectArray.map((day, key) => {
