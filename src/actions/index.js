@@ -3,6 +3,7 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
+	SET_DASHBOARD_DATA,
 	UPDATE_NFE, 
 	SIGNED_IN, 
 	SIGNED_OUT, 
@@ -29,6 +30,7 @@ import {
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
+	CLEAR_DASHBOARD_DATA,
 	CLEAR_OPENED
 } from '../constants';
 
@@ -228,6 +230,15 @@ export function setSchoolInformation (info) {
 	return action;
 }
 
+export function setDashboardData (data) {
+	const action = {
+		type: SET_DASHBOARD_DATA,
+		data
+	};
+
+	return action;
+}
+
 /*** CLEAR ***/
 export function clearCalendarID () {
 	const action = {
@@ -288,6 +299,14 @@ export function clearNavigation () {
 export function clearSchedule () {
 	const action = {
 		type: CLEAR_SCHEDULE
+	};
+
+	return action;
+}
+
+export function clearDashboardData () {
+	const action = {
+		type: CLEAR_DASHBOARD_DATA
 	};
 
 	return action;
