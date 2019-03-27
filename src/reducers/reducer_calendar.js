@@ -1,8 +1,8 @@
 import { CREATE_CALENDAR, CLEAR_CALENDAR, ADD_COLORS, SET_FIXED_COLOR, SET_NONFIXED_COLOR, SET_COURSE_COLOR } from '../constants';
 
 let calendar = {
-	fixedEventsColor: '0', 
-	nonFixedEventsColor: '3',
+	fixedEventsColor: '3', 
+	nonFixedEventsColor: '0',
 	courseColor: '1'
 };
 

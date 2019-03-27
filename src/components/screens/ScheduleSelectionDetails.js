@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { calendarEventColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
@@ -38,13 +37,13 @@ class ScheduleEvent extends React.PureComponent  {
 		let color;
 		switch (props.info.type) {
 			case 'fixed':
-				color = 'red';
+				color = this.props.colors.fixedEventsColor;
 				break;
 			case 'school':
-				color = 'green';
+				color = this.props.colors.courseColor;
 				break;
 			case 'nonFixed':
-				color = 'purple';
+				color = this.props.colors.nonFixedEventsColor;
 				break;
 		}
 
@@ -80,7 +79,7 @@ class ScheduleEvent extends React.PureComponent  {
 
 		return (
 			<View style={styles.eventContainer}>
-				<View style={[styles.scheduleEventColor, {backgroundColor: calendarEventColors[color]}]} />	
+				<View style={[styles.scheduleEventColor, {backgroundColor: color}]} />	
 
 				<View style={styles.eventData}>
 					<Text style={styles.eventTitle}>{actualTitle}</Text>
@@ -125,7 +124,7 @@ class ScheduleDay extends React.PureComponent {
 
 				{
 					data.map((info, key) => {
-						return <ScheduleEvent key={key} info={info} />;
+						return <ScheduleEvent key={key} info={info} colors={this.props.colors} />;
 					})
 				}
 			</View>
@@ -281,6 +280,11 @@ class ScheduleSelectionDetails extends React.PureComponent {
 							objectArray.map((day, key) => {
 							
 								return (<ScheduleDay key={key} 
+									colors={{
+										courseColor: this.props.courseColor,
+										fixedEventsColor: this.props.fixedEventsColor,
+										nonFixedEventsColor: this.props.nonFixedEventsColor,
+									}}
 									day={day} 
 									data={this.getEventForWeekday(day)} />);
 							})
@@ -302,10 +306,14 @@ class ScheduleSelectionDetails extends React.PureComponent {
 let mapStateToProps = (state) => {
 	const { index } = state.ScheduleSelectionReducer;
 	const { GeneratedNonFixedEventsReducer } = state;
+	const { colors, fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
 
 	return {
 		index,
-		GeneratedNonFixedEventsReducer
+		GeneratedNonFixedEventsReducer,
+		fixedEventsColor: colors.event[Number(fixedEventsColor)+1].background,
+		nonFixedEventsColor: colors.event[Number(nonFixedEventsColor)+1].background,
+		courseColor: colors.event[Number(courseColor)+1].background
 	};
 };
 
