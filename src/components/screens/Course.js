@@ -512,9 +512,9 @@ class Course extends React.PureComponent {
 										placeholder="Location" 
 										ref='locationInput'
 										returnKeyType = {'done'}
-										onSubmitEditing={() => {
-											addEventButtonFunction();
-										}}
+										// onSubmitEditing={() => {
+										// 	addEventButtonFunction();
+										// }}
 										onChangeText={(location) => this.setState({location})} 
 										value={this.state.location}/>
 								</View>

@@ -497,9 +497,9 @@ class NonFixedEvent extends React.PureComponent {
 											placeholder="Description"
 											ref="descriptionInput"
 											returnKeyType = {'done'}
-											onSubmitEditing={() => {
-												addEventButtonFunction();
-											}}
+											// onSubmitEditing={() => {
+											// 	addEventButtonFunction();
+											// }}
 											onChangeText={(description) => this.setState({description})}
 											value={this.state.description}/>
 									</View>
