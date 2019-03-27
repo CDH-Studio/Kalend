@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
-import { SchoolScheduleRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -127,7 +127,11 @@ class SchoolInformation extends React.PureComponent {
 
 			if (temp) {
 				if (temp.schoolSchedule || temp.reviewEvent) {
-					this.props.navigation.navigate(SchoolScheduleRoute);
+					if (this.state.other === 'third') {
+						this.props.navigation.navigate(CourseRoute);
+					} else {
+						this.props.navigation.navigate(SchoolScheduleRoute);
+					}
 				} else {
 					this.props.navigation.pop();
 				}
