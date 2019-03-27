@@ -127,7 +127,7 @@ class SchoolInformation extends React.PureComponent {
 
 			if (temp) {
 				if (temp.schoolSchedule || temp.reviewEvent) {
-					if (this.state.other === 'third') {
+					if (this.state.checked === 'third') {
 						this.props.navigation.navigate(CourseRoute);
 					} else {
 						this.props.navigation.navigate(SchoolScheduleRoute);
