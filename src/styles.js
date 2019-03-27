@@ -1677,7 +1677,6 @@ export const scheduleCreateStyles = StyleSheet.create({
 
 export const eventsColorPickerStyles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -1697,13 +1696,11 @@ export const eventsColorPickerStyles = StyleSheet.create({
 	},
 
 	modalContent: {
-		flex: 1, 
 		flexDirection: 'column', 
 		justifyContent: 'center', 
 		alignContent: 'center', 
 		borderRadius: 5, 
 		backgroundColor: white, 
-		height: '50%'
 	},
 
 	modalTitle: {
@@ -1715,7 +1712,7 @@ export const eventsColorPickerStyles = StyleSheet.create({
 	}, 
 
 	viewPager: {
-		flex: 1, 
+		height: 200,
 		flexDirection: 'column-reverse'
 	}, 
 
@@ -1730,7 +1727,8 @@ export const eventsColorPickerStyles = StyleSheet.create({
 		color: dark_blue, 
 		fontSize: 16, 
 		padding: 15, 
-		paddingRight: 20
+		paddingRight: 20,
+		paddingTop: 0
 	}, 
 
 	circleColor: {

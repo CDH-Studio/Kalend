@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
 import { setCourseColor, setFixedColor, setNonFixedColor } from '../actions';
 import { eventsColorPickerStyles as styles } from '../styles';
@@ -84,7 +84,7 @@ class EventsColorPicker extends React.Component {
 								{
 									this.state.selectedColors[num] === key ?
 										<View style={styles.dimmedCircle}>
-											<MaterialCommunityIcons name={'check'}
+											<FontAwesome5 name={'check'}
 												size={30}
 												color={color} />
 										</View>
