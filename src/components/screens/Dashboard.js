@@ -48,20 +48,7 @@ class Dashboard extends React.PureComponent {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
-			items: {
-				'2019-03-21': 
-					[{
-						date: '2019-03-21',
-						name: 'SEG 2505', 
-						time: '1:00 PM - 2:00 PM'
-					},
-
-					{
-						date: '2019-03-21',
-						name: 'Basketball Game Tomorrooooow', 
-						time: '10:00 PM - 11:30 PM'
-					}]
-			},
+			items: {},
 			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -83,6 +70,7 @@ class Dashboard extends React.PureComponent {
 			this.setState({
 				items: newItems
 			});
+
 		}, 1000);
 	}
 
