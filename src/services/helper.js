@@ -17,29 +17,56 @@ export const convertToDictionary  = (data) => {
 export const convertEventsToDictionary  = async (data) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let dict = {};
+
+	if (data == undefined) return;
+
 	data.forEach(async (event) => {
-		let keyDate;
-		let item = {};
 		if (event.recurrence) {
 			// Get all recurring events if it has recurrence
 			await getEventsInstances(calendarID, event.id).then(instances => {
 				instances.items.forEach(eventRec => {
-					keyDate = eventRec.start.dateTime.split('T')[0];
+					let item = {};
+					item.name = eventRec.summary;
+					let keyDate = eventRec.start.dateTime.split('T')[0];
 					item.date = keyDate;
-					item.name = event.summary;
-					item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+					item.actualTime = eventRec.start.dateTime;
+	
+					item.time = `${convertLocalTimeStringToSimple(eventRec.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
 					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
 				});
 			});
 		} else {
-			keyDate = event.start.dateTime.split('T')[0];
+			let item = {};
+			let keyDate = event.start.dateTime.split('T')[0];
 			item.name = event.summary;
 			item.date = keyDate;
+			item.actualTime = event.start.dateTime;
 			item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
 			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
 		}
 	});
 	return dict; 
+};
+
+
+export const selectionSort = (arr) => {
+	let minIdx, temp, len = arr.length;
+
+	for (let i = 0; i < len; i++) {
+		minIdx = i;
+		for(let  j = i+1; j<len; j++) {
+			let firstDate = new Date(arr[j].actualTime);
+			let secondDate = new Date(arr[minIdx].actualTime);
+
+			if(firstDate.getTime() < secondDate.getTime()) {
+				minIdx = j;
+			}
+		}
+		temp = arr[i];
+		arr[i] = arr[minIdx];
+		arr[minIdx] = temp;
+	}
+	return arr;
 };
 
 const convertLocalTimeStringToSimple = (tempDate) => {

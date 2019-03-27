@@ -1,4 +1,4 @@
-import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary } from './helper';
+import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort } from './helper';
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
@@ -469,11 +469,21 @@ export const generateCalendars = async () => {
 
 export const getDataforDashboard = async () => {
 	let calendarID = store.getState().CalendarReducer.id;
-	return new Promise(async (resolve) => {
+	return new Promise(async (resolve, reject) => {
 		await listEvents(calendarID).then(data => {
+			if (data.error) reject('There was a problem featching your data');
 			convertEventsToDictionary(data.items).then(dict => {
+				if(dict == undefined) reject('There was an error in converting data to dict');
 				resolve(dict);
 			});
 		});
 	});
+};
+
+export const sortEventsInDictonary = (dict) => {
+	for (let [key,value] of Object.entries(dict)) {
+		let sortedValue = selectionSort(value);
+		dict[key] = sortedValue;
+	}
+	return dict;
 };

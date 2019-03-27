@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue, white, dark_blue } from '../../styles';
+import { setDashboardData } from '../../actions';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
-import { getDataforDashboard } from '../../services/service';
+import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -47,20 +48,7 @@ class Dashboard extends React.PureComponent {
 			opened: false,
 			optionsOpen: false,
 			currentMonth: '',
-			items: {
-				'2019-03-21': 
-					[{
-						date: '2019-03-21',
-						name: 'SEG 2505', 
-						time: '1:00 PM - 2:00 PM'
-					},
-
-					{
-						date: '2019-03-21',
-						name: 'Basketball Game Tomorrooooow', 
-						time: '10:00 PM - 11:30 PM'
-					}]
-			},
+			items: {},
 			isVisible: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
@@ -85,7 +73,7 @@ class Dashboard extends React.PureComponent {
 		}, 1000);
 	}
 	
-	renderItem(item) {
+	renderItem = (item) => {
 		return (
 			<View style={[styles.item]}>
 				<Text style={styles.itemText}>{item.name}</Text>
@@ -94,31 +82,46 @@ class Dashboard extends React.PureComponent {
 		);
 	}
 	
-	renderEmptyDate() {
+	renderEmptyDate = () => {
 		return <View style={styles.noEvents}><Text style={styles.noEventsText}>There's no events for the day.</Text></View>;
 	}
 	
-	rowHasChanged(r1, r2) {
+	rowHasChanged = (r1, r2) => {
 		return r1.name !== r2.name;
 	}
 
-	shouldChangeDay(r1, r2) {
+	shouldChangeDay = (r1, r2) => {
 		return r1 !== r2;
 	}
 	
-	timeToString(time) {
+	timeToString = (time) => {
 		const date = new Date(time);
 		return date.toISOString().split('T')[0];
 	}
 	
 	componentDidMount() {
 		this.setState({isVisible: true});
-		getDataforDashboard().then(items => {
-			this.setState({items});
-		});
+		
+	}
+	componentWillMount() {
+		this.setDashboardDataService();
 	}
 
-	showPopover = () =>{
+	setDashboardDataService = () => {
+		getDataforDashboard()
+			.then(items => {
+				setTimeout(() => {
+					let dict = sortEventsInDictonary(items);
+					this.props.dispatch(setDashboardData(dict));
+					this.setState({items: dict});
+				},2000);
+			})
+			.catch(err => {
+				console.log('err', err);
+			});
+	}
+
+	showPopover = () => {
 		this.setState({isVisible: true});
 	}
 	
@@ -144,12 +147,11 @@ class Dashboard extends React.PureComponent {
 
 					<Agenda
 						items={this.state.items}
-						loadItemsForMonth={this.loadItems.bind(this)}
-						renderItem={this.renderItem.bind(this)}
-						renderEmptyDate={this.renderEmptyDate.bind(this)}
-						rowHasChanged={this.rowHasChanged.bind(this)}
+						renderItem={this.renderItem}
+						renderEmptyDate={this.renderEmptyDate}
+						rowHasChanged={this.rowHasChanged}
 						showOnlyDaySelected={true}
-						shouldChangeDay={this.shouldChangeDay.bind(this)}
+						shouldChangeDay={this.shouldChangeDay}
 					/>
 
 					<FAB.Group

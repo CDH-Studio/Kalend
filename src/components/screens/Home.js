@@ -40,9 +40,11 @@ class Home extends React.PureComponent {
 			if (data === undefined) {
 				createCalendar().then(id => {
 					this.props.setCalendarID(id);
+					this.props.navigation.navigate(DashboardNavigator);
 				});
 			} else {
 				this.props.setCalendarID(data);
+				this.props.navigation.navigate(DashboardNavigator);
 			}
 		});
 	}
@@ -59,20 +61,17 @@ class Home extends React.PureComponent {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.setCalendar();
-							this.props.navigation.navigate(DashboardNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								this.setCalendar();
-								this.props.navigation.navigate(DashboardNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					this.setCalendar();
-					this.props.navigation.navigate(DashboardNavigator);
 				}
 			});
 		}
