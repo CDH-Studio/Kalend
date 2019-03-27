@@ -6,12 +6,10 @@ import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, white, dark_blue } from '../../styles';
+import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
 import { setDashboardData } from '../../actions';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
-
-// let currentMonth = '';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -26,7 +24,7 @@ class Dashboard extends React.PureComponent {
 				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
 					...Platform.select({
 						ios: {
-							shadowColor: '#000000',
+							shadowColor: black,
 							shadowOffset: { width: 0, height: 2 },
 							shadowOpacity: 0.3,
 							shadowRadius: 3,    
@@ -56,34 +54,6 @@ class Dashboard extends React.PureComponent {
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
-
-	loadItems(day) {
-		setTimeout(() => {
-			for (let i = -15; i < 85; i++) {
-				const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-				const strTime = this.timeToString(time);
-				if (!this.state.items[strTime]) {
-					this.state.items[strTime] = [];
-				}
-			}
-			const newItems = {};
-			Object.keys(this.state.items).forEach(key => {
-				newItems[key] = this.state.items[key];
-			});
-			this.setState({
-				items: newItems
-			});
-
-		}, 1000);
-	}
-
-	// changeMonth(item) {
-	// 	if (item.date.substr(5, 2) === currentMonth) {
-	// 		//do nothing
-	// 	} else {
-	// 		currentMonth = item.date.substr(5, 2);
-	// 	}
-	// }
 	
 	renderItem(item) {
 		return (
@@ -150,11 +120,6 @@ class Dashboard extends React.PureComponent {
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#166489'} />	
-					{/* 
-					<View style={styles.calendarBack}>
-						<Text style={styles.calendarBackText}>{currentMonth}</Text>
-					</View> */}
-
 					<Agenda
 						items={this.state.items}
 						renderItem={this.renderItem}
@@ -189,19 +154,6 @@ class Dashboard extends React.PureComponent {
 						]}
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />
-
-					{/* <View>
-						<Popover popoverStyle={styles.tooltipView}
-							isVisible={this.state.isVisible}
-							fromView={this.touchable}
-							onClose={() => this.closePopover()}>
-							<Feather name="x"
-								style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
-								size={25}
-								color={black} />
-							<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
-						</Popover>
-					</View> */}
 				</View>
 			</Portal.Host>
 		);
