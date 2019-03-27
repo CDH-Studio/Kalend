@@ -15,7 +15,7 @@ export const gray = '#565454';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {
-		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT + 20), 
+		bottom: Dimensions.get('screen').height - getStatusBarHeight() - Header.HEIGHT - (Platform.OS === 'ios' ? 90 : Header.HEIGHT + 10), 
 		marginHorizontal: '5%'
 	}
 });
@@ -617,14 +617,14 @@ export const fixedEventStyles = StyleSheet.create({
 	errorTitle: {
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 45
+		marginLeft: 42
 	},
 
 	errorEnd: {
 		color: 'red',
 		fontSize: 12,
 		alignSelf: 'flex-start',
-		marginLeft: 10
+		marginLeft: 12
 	},
 
 	text: {
@@ -662,11 +662,12 @@ export const fixedEventStyles = StyleSheet.create({
 		width: 70,
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 18
+		fontSize: 16,
+		marginRight: -20
 	},
 
 	switch: {
-		width: 130,
+		width: 150,
 		alignItems: 'flex-start'
 	},
 
@@ -677,23 +678,22 @@ export const fixedEventStyles = StyleSheet.create({
 	
 	timeSection: {
 		alignItems: 'center',
-		marginTop: 10
+		marginTop: 10,
+		marginRight: 20
 	},
 
 	allDay: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		alignItems: 'center',
-		paddingLeft: 30,
-		paddingRight: 5
+		paddingLeft: 30
 	},
 
 	rowTimeSection: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		alignItems: 'center',
-		paddingLeft: 30,
-		paddingRight: 5
+		paddingLeft: 30
 	},
 
 	recurrence:{
@@ -955,7 +955,7 @@ export const reviewEventStyles = StyleSheet.create({
 	content: {
 		flex:1,
 		paddingHorizontal: 20,
-		paddingBottom: 60
+		paddingBottom: 80
 	},
 
 	sectionTitle: {
@@ -1151,11 +1151,11 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: white
+		backgroundColor: white,
 	},
 
 	actionIconModal: {
-		paddingHorizontal: 20
+		margin: 5
 	},
 
 	deleteDialogContent: {
@@ -1217,6 +1217,32 @@ export const scheduleSelectionStyle = StyleSheet.create({
 	description: {
 		color: white,
 		fontFamily: 'Raleway-Regular',
+		marginLeft: 5
+	},
+
+	legendRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		marginTop: 10
+	},
+
+	singleLegend: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	legendColor: {
+		borderRadius: 5,
+		borderWidth: 2,
+		width: 20,
+		height: 20,
+		marginRight: 5
+	},
+
+	legendText: {
+		fontFamily: 'Raleway-Regular',
+		color: white,
+		fontSize: 12
 	},
 
 	hoursTextContainer: {
@@ -1293,7 +1319,8 @@ export const scheduleSelectionDetailsStyle = StyleSheet.create({
 	},
 	
 	content: {
-		padding: containerPaddingDetails
+		padding: containerPaddingDetails,
+		paddingBottom: 80
 	},
 
 	dayContainer: {
@@ -1381,7 +1408,7 @@ export const dashboardStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		padding: 10,
-		backgroundColor: dark_blue //'#F6F8FA'
+		backgroundColor: '#F6F8FA'
 	},
 
 	fab: {
@@ -1422,7 +1449,8 @@ export const dashboardStyles = StyleSheet.create({
 	noEventsText: {
 		fontFamily: 'Raleway-Regular',
 		fontSize: 16,
-		color: gray
+		color: gray,
+		paddingTop: 15
 	},
 
 	emptyDate: {
@@ -1465,8 +1493,8 @@ export const dashboardStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 18,
 		color: dark_blue,
-		marginTop : 140,
-		paddingBottom: 20
+		marginTop : 20,
+		paddingBottom: 10
 	},
 
 	...DashboardButton,

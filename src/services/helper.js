@@ -1,5 +1,7 @@
-import { store } from '../store';
 import { getEventsInstances } from './google_calendar';
+import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
+import { store } from '../store';
+
 
 export const convertToDictionary  = (data) => {
 	let dict = {};
@@ -206,3 +208,24 @@ function convertMintuesToHours(__duration) {
 
 	return {hours, minutes};         
 }
+
+export const clearEveryReducer = () => {
+	const reducersDeleteActions = [
+		clearCourse,
+		clearCalendarID,
+		clearFixedEvents,
+		clearNonFixedEvents,
+		clearGeneratedNonFixedEvents,
+		clearGeneratedCalendars,
+		clearNavigation,
+		clearSchedule,
+		clearSchoolInformation,
+		clearState,
+		clearUnavailableHours,
+		logoffUser
+	];
+
+	reducersDeleteActions.map(action => store.dispatch(action()));
+
+	console.log(store.getState());
+};

@@ -70,12 +70,15 @@ class FixedEvent extends React.PureComponent {
 			snackbarText: '',
 			snackbarTime: 3000
 		};
+
+		console.log('state', this.state);
+
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
 		if(this.props.navigation.state.routeName === FixedEventRoute) {
-			this.setState(this.resetField);
+			this.resetField();
 		} else {
 			this.setState({...this.props.FEditState});
 		}
@@ -103,6 +106,8 @@ class FixedEvent extends React.PureComponent {
 		let timeSplitSpace = time.split(' ');
 
 		time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
+
+		console.log('time', time);
 
 		return time;
 	}
@@ -551,7 +556,7 @@ class FixedEvent extends React.PureComponent {
 										date={this.state.startTime} 
 										mode="time"
 										disabled={this.state.disabledStartTime}
-										style={{width:80}}
+										style={{width:70}}
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
@@ -590,7 +595,7 @@ class FixedEvent extends React.PureComponent {
 										date={this.state.endTime} 
 										mode="time" 
 										disabled = {this.state.disabledEndTime}
-										style={{width:80}}
+										style={{width:70}}
 										customStyles={{
 											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
