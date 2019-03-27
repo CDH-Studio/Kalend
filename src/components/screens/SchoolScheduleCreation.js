@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StatusBar, Text, View, BackHandler, Platform, ImageStore } from 'react-native';
+import { Alert, StatusBar, Text, View, BackHandler, Platform } from 'react-native';
 import { Surface } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
@@ -7,9 +7,9 @@ import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenName
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
-
-const RNFS = require('react-native-fs');
-const base64String;
+import RNFS from 'react-native-fs';
+// const RNFS = require('react-native-fs');
+// const base64String;
 
 /**
  * The loading screen after the User uploads a picture
@@ -33,7 +33,16 @@ class SchoolScheduleCreation extends React.PureComponent {
 	
 	componentWillMount() {	
 		if (this.props.hasImage) {
-			base64String = RNFS.readFile(this.props.imgURI, 'base64');
+			RNFS.readFile(this.props.imgURI, 'base64')
+				.then(data => {
+					console.log(data);
+					if (data != undefined) {
+						this.success(data);
+					} else {
+						this.error('No data');
+					}
+				})
+				.catch(this.error);
 		}
 
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);

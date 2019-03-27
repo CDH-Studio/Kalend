@@ -11,7 +11,9 @@ export const convertToDictionary  = (data) => {
 };
 
 export const formatData = (data) => {
+	console.log('data', data);
 	let dict = convertToDictionary(data);
+	console.log('dict', dict);
 	let events = [];
 	for (const [key,value] of Object.entries(dict)) {
 		console.log(key,'key');
