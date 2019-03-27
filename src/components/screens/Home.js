@@ -12,7 +12,6 @@ import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
 import { getColors } from '../../services/google_calendar';
-import { store } from '../../store';
 
 /** 
  * Home/Login screen of the app.
@@ -43,12 +42,10 @@ class Home extends React.PureComponent {
 				createCalendar().then(id => {
 					this.props.setCalendarID(id);
 					getColors().then(colors => this.props.addColors(colors));
-					console.log(store.getState());
 				});
 			} else {
 				this.props.setCalendarID(data);
 				getColors().then(colors => this.props.addColors(colors));
-				console.log(store.getState());
 			}
 		});
 	}

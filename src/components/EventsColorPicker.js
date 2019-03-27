@@ -1,165 +1,165 @@
 import React from 'react';
-import { View, Text, Platform, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
-import Modal from "react-native-modal";
+import { View, Text, TouchableOpacity } from 'react-native';
+import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
-import { dark_blue, gray, white } from '../styles';
+import { setCourseColor, setFixedColor, setNonFixedColor } from '../actions';
+import { eventsColorPickerStyles as styles } from '../styles';
 
 class EventsColorPicker extends React.Component {
 
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            visible: props.visible,
-            selectedColors: [2, 3, 5]
-        }
-    }
+		this.state = {
+			visible: props.visible,
+		};
+	}
 
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            visible: newProps.visible,
-        });
-    }
+	componentWillMount() {
+		this.setState({
+			selectedColors: [Number(this.props.courseColor), Number(this.props.fixedEventsColor), Number(this.props.nonFixedEventsColor)],
+		});
+	}
 
-    page = (num) => {
-        let width = Dimensions.get('window').width;
+	/**
+	 * Gets the new value of visible and updates it in the props
+	 */
+	componentWillReceiveProps(newProps) {
+		this.setState({
+			visible: newProps.visible,
+		});
+	}
 
-        return (<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', margin: 5, width: width > 240 ? 240 : width }}>
-                {
-                    this.props.colors.map((color, key) =>
-                        <View key={key}>
+	/**
+	 * Renders the tabs in the modal
+	 */
+	renderTitleIndicator() {
+		return <PagerTitleIndicator titles={['Courses', 'Fixed Events', 'Non-Fixed Events']}
+			trackScroll={true}
+			style={styles.pager}
+			itemTextStyle={styles.pagerText}
+			selectedBorderStyle={styles.pagerSelectedBorder}
+			selectedItemTextStyle={styles.pagerSelectedText} />;
+	}
 
-                            <TouchableOpacity
-                                style={{
-                                    justifyContent: 'center',
-                                    backgroundColor: color,
-                                    alignItems: 'center',
-                                    borderRadius: 25,
-                                    width: 50,
-                                    margin: 5,
-                                    height: 50,
-                                    ...Platform.select({
-                                        ios: {
-                                            shadowColor: '#000000',
-                                            shadowOffset: { width: 0, height: 2 },
-                                            shadowOpacity: 0.3,
-                                            shadowRadius: 3,
-                                        },
-                                        android: {
-                                            elevation: 4,
-                                        },
-                                    }),
-                                }}
-                                onPress={() => {
-                                    let selectedColors = this.state.selectedColors;
-                                    selectedColors[num] = key;
-                                    this.setState({ selectedColors });
-                                }}>
+	/**
+	 * Dismisses the modal
+	 */
+	removeModal = () => {
+		this.saveColors();
+		this.setState({ visible: false });
+		this.props.dismiss();
+	}
 
-                                {
-                                    this.state.selectedColors[num] === key ?
-                                        <View
-                                            style={{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                backgroundColor: '#00000040',
-                                                borderRadius: 25,
-                                                width: 50,
-                                                height: 50,
-                                            }} >
-                                            <MaterialCommunityIcons style={{}} name={'check'} size={30} color={color} />
-                                        </View>
-                                        : null
-                                }
-                            </TouchableOpacity>
-                        </View>)
-                }
-            </View>
-        </View>);
-    }
+	/**
+	 * Saves the selected colors in redux
+	 */
+	saveColors = () => {
+		this.props.setCourseColor(this.state.selectedColors[0].toString());
+		this.props.setFixedColor(this.state.selectedColors[1].toString());
+		this.props.setNonFixedColor(this.state.selectedColors[2].toString());
+	}
 
-    _renderTitleIndicator() {
-        return <PagerTitleIndicator titles={['Courses', 'Fixed Events', 'Non-Fixed Events']}
-            trackScroll={true}
-            style={{
-                backgroundColor: 'white',
-                height: 48
-            }}
-            itemTextStyle={{ color: gray, fontFamily: 'Raleway-Medium' }}
-            selectedBorderStyle={{
-                height: 3,
-                backgroundColor: dark_blue
-            }}
-            selectedItemTextStyle={{ color: dark_blue, fontFamily: 'Raleway-Bold' }} />;
-    }
+	/**
+	 * Renders each slide in the viewPager in the modal
+	 * 
+	 * @param {Integer} num The index of the slide
+	 */
+	slide = (num) => {
+		return <View style={styles.colorsSliderContainer}>
+			<View style={styles.circleContainer}>
+				{
+					this.props.colors.map((color, key) =>
+						<View key={key}>
+							<TouchableOpacity style={[styles.circleColor, { backgroundColor: color }]}
+								onPress={() => {
+									let selectedColors = this.state.selectedColors;
+									selectedColors[num] = key;
+									this.setState({ selectedColors });
+								}}>
 
-    removeModal = () => {
-        this.setState({ visible: false });
-        this.props.dismiss();
-    }
+								{
+									this.state.selectedColors[num] === key ?
+										<View style={styles.dimmedCircle}>
+											<MaterialCommunityIcons name={'check'}
+												size={30}
+												color={color} />
+										</View>
+										: null
+								}
+							</TouchableOpacity>
+						</View>
+					)
+				}
+			</View>
+		</View>;
+	}
 
-    render() {
-        const { visible } = this.state;
+	render() {
+		const { visible } = this.state;
+		console.log(this.state.selectedColors);
 
-        return (
-            <View style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}>
-                <Modal isVisible={visible}transparent={false}
-                    deviceHeight={Dimensions.get('window').height + (Platform.OS === 'ios' ? 0 : StatusBar.currentHeight)}
-                    style={{
-                        ...Platform.select({
-                            ios: {
-                                shadowColor: '#000000',
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                shadowRadius: 3,
-                            },
-                            android: {
-                                elevation: 4,
-                            },
-                        }),}}
-                    onBackdropPress={this.removeModal}
-                    useNativeDriver>
-                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignContent: 'center', borderRadius: 5, backgroundColor: white, height: '50%' }}>
+		return (
+			<View style={styles.container}>
+				<Modal isVisible={visible}
+					onBackdropPress={this.removeModal}
+					useNativeDriver>
+					<View style={styles.modalContent}>
+						<Text style={styles.modalTitle}>Select Color for Events</Text>
 
-                        <Text style={{ fontFamily: 'Raleway-Medium', color: dark_blue, padding: 15, fontSize: 20, paddingLeft: 20 }}>Select Color for Events</Text>
+						<IndicatorViewPager style={styles.viewPager}
+							indicator={this.renderTitleIndicator()} >
+							{this.slide(0)}
+							{this.slide(1)}
+							{this.slide(2)}
+						</IndicatorViewPager>
 
-                        <IndicatorViewPager style={{ flex: 1, flexDirection: 'column-reverse' }}
-                            indicator={this._renderTitleIndicator()} >
-                            {this.page(0)}
-                            {this.page(1)}
-                            {this.page(2)}
-                        </IndicatorViewPager>
-                        <View style={{ justifyContent: 'flex-end', width: '100%', flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={this.removeModal}>
-                                <Text style={{ fontFamily: 'Raleway-Bold', color: dark_blue, fontSize: 16, padding: 15, paddingRight: 20 }}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
-            </View>
-        );
-    }
+						<View style={styles.button}>
+							<TouchableOpacity onPress={this.removeModal}>
+								<Text style={styles.buttonText}>Save</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</Modal>
+			</View>
+		);
+	}
 }
 
 let mapStateToProps = (state) => {
-    const { CalendarReducer } = state;
-    let { event } = CalendarReducer.colors;
+	const { CalendarReducer } = state;
+	console.log(CalendarReducer);
+	let { courseColor, nonFixedEventsColor, fixedEventsColor } = CalendarReducer;
 
-    let keys = Object.keys(event);
-    let colors = keys.map((key) => {
-        return event[key].background;
-    })
+	let colors = [];
+	if ('colors' in CalendarReducer) {
+		if ('event' in CalendarReducer.colors) {
+			let { event } = CalendarReducer.colors;
 
-    colors.splice(-3, 3)
+			// Formats the colors to only be in an array
+			let keys = Object.keys(event);
+			colors = keys.map((key) => {
+				return event[key].background;
+			});
 
-    return { colors };
+			// Removes the three last colors (too vibrant)
+			colors.splice(-3, 3);
+		}
+	}
+
+	return {
+		colors,
+		courseColor,
+		nonFixedEventsColor,
+		fixedEventsColor
+	};
 };
 
-export default connect(mapStateToProps, null)(EventsColorPicker);
+let mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ setFixedColor, setNonFixedColor, setCourseColor }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventsColorPicker);

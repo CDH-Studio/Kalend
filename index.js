@@ -239,7 +239,7 @@ const MainNavigator = createSwitchNavigator(
 		LoginNavigator
 	},
 	{
-		initialRouteName: 'DashboardOptionsNavigator'
+		initialRouteName: 'LoadingScreen'
 	}
 );
 

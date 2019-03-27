@@ -3,7 +3,10 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
-	SET_IMG, 
+	SET_IMG,
+	SET_NONFIXED_COLOR,
+	SET_COURSE_COLOR,
+	SET_FIXED_COLOR,
 	CREATE_CALENDAR,
 	SIGNED_IN, 
 	SIGNED_OUT, 
@@ -233,6 +236,33 @@ export function setSchoolInformation (info) {
 	const action = {
 		type: SET_SCHOOL_INFORMATION,
 		info
+	};
+
+	return action;
+}
+
+export function setFixedColor (fixedEventsColor) {
+	const action = {
+		type: SET_FIXED_COLOR,
+		fixedEventsColor
+	};
+
+	return action;
+}
+
+export function setNonFixedColor (nonFixedEventsColor) {
+	const action = {
+		type: SET_NONFIXED_COLOR,
+		nonFixedEventsColor
+	};
+
+	return action;
+}
+
+export function setCourseColor (courseColor) {
+	const action = {
+		type: SET_COURSE_COLOR,
+		courseColor
 	};
 
 	return action;
