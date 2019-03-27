@@ -31,6 +31,7 @@ import Settings from './src/components/screens/Settings';
 import SchoolInformation from './src/components/screens/SchoolInformation';
 import CleanReducers from './src/components/screens/CleanReducers';
 import { blue, dark_blue, white } from './src/styles.js';
+import { ScheduleCreationRoute, ReviewEventRoute, SchoolScheduleCreationRoute } from './src/constants/screenNames.js';
 
 const theme = {
 	...DefaultTheme,
@@ -53,7 +54,7 @@ const LoginNavigator = createStackNavigator(
 
 const dashboardInnerScreenOptions = {
 	headerTintColor: '#fff',
-	headerTitleStyle: {fontFamily: 'Raleway-Regular'},
+	headerTitleStyle: { fontFamily: 'Raleway-Regular' },
 	headerStyle: {
 		backgroundColor: blue,
 		marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
@@ -66,7 +67,7 @@ const DashboardNavigator = createBottomTabNavigator(
 			screen: createStackNavigator({
 				Dashboard: {
 					screen: Dashboard,
-					navigationOptions:  {
+					navigationOptions: {
 						...dashboardInnerScreenOptions,
 						title: 'Home'
 					}
@@ -83,7 +84,7 @@ const DashboardNavigator = createBottomTabNavigator(
 			screen: createStackNavigator({
 				Chatbot: {
 					screen: Chatbot,
-					navigationOptions:  {
+					navigationOptions: {
 						...dashboardInnerScreenOptions,
 						title: 'Chatbot'
 					}
@@ -100,7 +101,7 @@ const DashboardNavigator = createBottomTabNavigator(
 			screen: createStackNavigator({
 				CompareSchedule: {
 					screen: CompareSchedule,
-					navigationOptions:  {
+					navigationOptions: {
 						...dashboardInnerScreenOptions,
 						title: 'Compare Schedules'
 					}
@@ -131,7 +132,7 @@ const DashboardNavigator = createBottomTabNavigator(
 				},
 			}
 		}
-	}, 
+	},
 	{
 		initialRouteName: 'Dashboard',
 		tabBarOptions: {
@@ -157,10 +158,10 @@ const DashboardOptionsNavigatorOptions = {
 const DashboardOptionsNavigator = createStackNavigator(
 	{
 		DashboardNavigator,
-		SchoolSchedule: {screen: SchoolSchedule, navigationOptions:DashboardOptionsNavigatorOptions},
-		AddCourse: {screen: Course, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolSchedule: { screen: SchoolSchedule, navigationOptions: DashboardOptionsNavigatorOptions },
+		AddCourse: { screen: Course, navigationOptions: DashboardOptionsNavigatorOptions },
 		SchoolScheduleSelectPicture: {
-			screen: SchoolScheduleSelectPicture, 
+			screen: SchoolScheduleSelectPicture,
 			navigationOptions: {
 				...DashboardOptionsNavigatorOptions,
 				headerTintColor: white,
@@ -182,8 +183,8 @@ const DashboardOptionsNavigator = createStackNavigator(
 			},
 		},
 		SchoolScheduleCreation: {
-			screen: SchoolScheduleCreation, 
-			navigationOptions:{
+			screen: SchoolScheduleCreation,
+			navigationOptions: {
 				...DashboardOptionsNavigatorOptions,
 				headerTransparent: true,
 				title: '',
@@ -194,16 +195,16 @@ const DashboardOptionsNavigator = createStackNavigator(
 			}
 		},
 
-		FixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
-		NonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		FixedEvent: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
+		NonFixedEvent: { screen: NonFixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
 
-		ReviewEvent: {screen: ReviewEvent, navigationOptions:DashboardOptionsNavigatorOptions},
-		EditCourse: {screen: Course, navigationOptions:DashboardOptionsNavigatorOptions},
-		EditFixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
-		EditNonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
+		ReviewEvent: { screen: ReviewEvent, navigationOptions: DashboardOptionsNavigatorOptions },
+		EditCourse: { screen: Course, navigationOptions: DashboardOptionsNavigatorOptions },
+		EditFixedEvent: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
+		EditNonFixedEvent: { screen: NonFixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
 		ScheduleCreation: {
-			screen: ScheduleCreation, 
-			navigationOptions:{
+			screen: ScheduleCreation,
+			navigationOptions: {
 				...DashboardOptionsNavigatorOptions,
 				headerTransparent: true,
 				title: '',
@@ -213,19 +214,20 @@ const DashboardOptionsNavigator = createStackNavigator(
 				}
 			}
 		},
-		ScheduleSelection: {screen: ScheduleSelection, navigationOptions:DashboardOptionsNavigatorOptions},
-		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
+		ScheduleSelection: { screen: ScheduleSelection, navigationOptions: DashboardOptionsNavigatorOptions },
+		ScheduleSelectionDetails: { screen: ScheduleSelectionDetails, navigationOptions: DashboardOptionsNavigatorOptions },
 
-		CleanReducers: { screen: CleanReducers,
-			navigationOptions:  {
+		CleanReducers: {
+			screen: CleanReducers,
+			navigationOptions: {
 				...dashboardInnerScreenOptions
 			},
 		},
-		SchoolInformation: {screen: SchoolInformation, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolInformation: { screen: SchoolInformation, navigationOptions: DashboardOptionsNavigatorOptions },
 
-		UnavailableHours: {screen: UnavailableHours, navigationOptions:DashboardOptionsNavigatorOptions},
-		UnavailableFixed: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions}
-	}, 
+		UnavailableHours: { screen: UnavailableHours, navigationOptions: DashboardOptionsNavigatorOptions },
+		UnavailableFixed: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions }
+	},
 	{
 		initialRouteName: 'DashboardNavigator',
 	}
@@ -242,6 +244,26 @@ const MainNavigator = createSwitchNavigator(
 		initialRouteName: 'LoadingScreen'
 	}
 );
+
+const defaultGetStateForAction = DashboardOptionsNavigator.router.getStateForAction;
+DashboardOptionsNavigator.router.getStateForAction = (action, state) => {
+
+	if (action && action.action == 'FinishSchoolCreation') {
+		let routes = [
+			state.routes[0],
+			{key: '2',
+				routeName: 'ReviewEvent',
+				params:{}}];
+
+		return {
+			...state,
+			routes,
+			index: 1,
+		};
+	}
+
+	return defaultGetStateForAction(action, state);
+};
 
 const AppContainer = createAppContainer(MainNavigator);
 
