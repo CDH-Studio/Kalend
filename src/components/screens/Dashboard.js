@@ -8,6 +8,7 @@ import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue, white, dark_blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { getDataforDashboard } from '../../services/service';
 
 // let currentMonth = '';
 
@@ -112,6 +113,9 @@ class Dashboard extends React.PureComponent {
 	
 	componentDidMount() {
 		this.setState({isVisible: true});
+		getDataforDashboard().then(items => {
+			this.setState({items});
+		});
 	}
 
 	showPopover = () =>{

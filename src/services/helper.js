@@ -1,3 +1,8 @@
+import { getEventsInstances } from './google_calendar';
+import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
+import { store } from '../store';
+
+
 export const convertToDictionary  = (data) => {
 	let dict = {};
 	data.forEach(item => {
@@ -8,6 +13,49 @@ export const convertToDictionary  = (data) => {
 		}
 	});
 	return dict; 
+};
+
+
+export const convertEventsToDictionary  = async (data) => {
+	let calendarID = store.getState().CalendarReducer.id;
+	let dict = {};
+	if (data == undefined) {
+		return;
+	}
+	
+	data.forEach(async (event) => {
+		let keyDate;
+		let item = {};
+		if (event.recurrence) {
+			// Get all recurring events if it has recurrence
+			await getEventsInstances(calendarID, event.id).then(instances => {
+				instances.items.forEach(eventRec => {
+					keyDate = eventRec.start.dateTime.split('T')[0];
+					item.date = keyDate;
+					item.name = event.summary;
+					item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
+				});
+			});
+		} else {
+			keyDate = event.start.dateTime.split('T')[0];
+			item.name = event.summary;
+			item.date = keyDate;
+			item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
+		}
+	});
+	return dict; 
+};
+
+const convertLocalTimeStringToSimple = (tempDate) => {
+	let date = new Date(tempDate);
+	let data = date.toLocaleTimeString().split(' ');
+	let period = data[1];
+	let time = data[0].split(':');
+	time.splice(-1);
+
+	return `${time[0]}:${time[1]} ${period}`;
 };
 
 export const formatData = (data) => {
@@ -137,3 +185,24 @@ function convertMintuesToHours(__duration) {
 
 	return {hours, minutes};         
 }
+
+export const clearEveryReducer = () => {
+	const reducersDeleteActions = [
+		clearCourse,
+		clearCalendarID,
+		clearFixedEvents,
+		clearNonFixedEvents,
+		clearGeneratedNonFixedEvents,
+		clearGeneratedCalendars,
+		clearNavigation,
+		clearSchedule,
+		clearSchoolInformation,
+		clearState,
+		clearUnavailableHours,
+		logoffUser
+	];
+
+	reducersDeleteActions.map(action => store.dispatch(action()));
+
+	console.log(store.getState());
+};
