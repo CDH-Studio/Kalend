@@ -311,7 +311,7 @@ function mapStateToProps(state) {
 		CoursesReducer, 
 		selectedIndex: NavigationReducer.reviewEventSelected,
 		hasSchoolInformation: SchoolInformationReducer.info,
-		checked: SchoolInformationReducer.info.info.checked === 'third'
+		checked: SchoolInformationReducer.info && SchoolInformationReducer.info.info.checked === 'third'
 	};
 } 
 

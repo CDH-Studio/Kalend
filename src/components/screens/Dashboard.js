@@ -63,7 +63,7 @@ class Dashboard extends React.PureComponent {
 								label: 'Add School Schedule',
 								onPress: () => {
 									if (store.getState().SchoolInformationReducer.info) {
-										if (this.props.checked) {
+										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
 											this.props.navigation.navigate(CourseRoute);
 										} else {
 											this.props.navigation.navigate(SchoolScheduleRoute);
@@ -101,10 +101,4 @@ class Dashboard extends React.PureComponent {
 	}
 }
 
-let mapStateToProps = (state) => {
-	return {
-		checked: state.SchoolInformationReducer.info.info.checked === 'third'
-	};
-};
-
-export default connect(mapStateToProps, null)(Dashboard);
+export default connect()(Dashboard);
