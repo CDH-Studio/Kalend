@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
-import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -63,7 +63,11 @@ class Dashboard extends React.PureComponent {
 								label: 'Add School Schedule',
 								onPress: () => {
 									if (store.getState().SchoolInformationReducer.info) {
-										this.props.navigation.navigate(SchoolScheduleRoute);
+										if (this.props.checked) {
+											this.props.navigation.navigate(CourseRoute);
+										} else {
+											this.props.navigation.navigate(SchoolScheduleRoute);
+										}
 									} else {
 										this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
 									}
@@ -97,4 +101,10 @@ class Dashboard extends React.PureComponent {
 	}
 }
 
-export default connect()(Dashboard);
+let mapStateToProps = (state) => {
+	return {
+		checked: state.SchoolInformationReducer.info.info.checked === 'third'
+	};
+};
+
+export default connect(mapStateToProps, null)(Dashboard);

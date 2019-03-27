@@ -4,7 +4,7 @@ import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
@@ -198,7 +198,11 @@ class ReviewEvent extends React.PureComponent {
 								<Text style={styles.sectionTitle}>School Schedule</Text>
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
-										this.props.navigation.navigate(SchoolScheduleRoute);
+										if (this.props.checked) {
+											this.props.navigation.navigate(CourseRoute);
+										} else {
+											this.props.navigation.navigate(SchoolScheduleRoute);
+										}
 									} else {
 										this.props.navigation.navigate(SchoolInformationRoute, {reviewEvent: true});
 									}
@@ -306,7 +310,8 @@ function mapStateToProps(state) {
 		NonFixedEventsReducer,
 		CoursesReducer, 
 		selectedIndex: NavigationReducer.reviewEventSelected,
-		hasSchoolInformation: SchoolInformationReducer.info
+		hasSchoolInformation: SchoolInformationReducer.info,
+		checked: SchoolInformationReducer.info.info.checked === 'third'
 	};
 } 
 
