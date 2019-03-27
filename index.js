@@ -181,7 +181,18 @@ const DashboardOptionsNavigator = createStackNavigator(
 				}
 			},
 		},
-		SchoolScheduleCreation: {screen: SchoolScheduleCreation, navigationOptions:DashboardOptionsNavigatorOptions},
+		SchoolScheduleCreation: {
+			screen: SchoolScheduleCreation, 
+			navigationOptions:{
+				...DashboardOptionsNavigatorOptions,
+				headerTransparent: true,
+				title: '',
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
+			}
+		},
 
 		FixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
 		NonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
@@ -190,7 +201,18 @@ const DashboardOptionsNavigator = createStackNavigator(
 		EditCourse: {screen: Course, navigationOptions:DashboardOptionsNavigatorOptions},
 		EditFixedEvent: {screen: FixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
 		EditNonFixedEvent: {screen: NonFixedEvent, navigationOptions:DashboardOptionsNavigatorOptions},
-		ScheduleCreation: {screen: ScheduleCreation, navigationOptions:DashboardOptionsNavigatorOptions},
+		ScheduleCreation: {
+			screen: ScheduleCreation, 
+			navigationOptions:{
+				...DashboardOptionsNavigatorOptions,
+				headerTransparent: true,
+				title: '',
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
+			}
+		},
 		ScheduleSelection: {screen: ScheduleSelection, navigationOptions:DashboardOptionsNavigatorOptions},
 		ScheduleSelectionDetails: {screen: ScheduleSelectionDetails, navigationOptions:DashboardOptionsNavigatorOptions},
 

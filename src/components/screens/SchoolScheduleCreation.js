@@ -1,15 +1,14 @@
 import React from 'react';
 import { Alert, StatusBar, Text, View, BackHandler, Platform } from 'react-native';
 import { Surface } from 'react-native-paper';
+import { HeaderBackButton } from 'react-navigation';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { schoolScheduleCreationStyles as styles, dark_blue } from '../../styles';
+import { schoolScheduleCreationStyles as styles, dark_blue, white } from '../../styles';
 import RNFS from 'react-native-fs';
-// const RNFS = require('react-native-fs');
-// const base64String;
 
 /**
  * The loading screen after the User uploads a picture
@@ -19,17 +18,20 @@ class SchoolScheduleCreation extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			width: 0
+			width: 0,
+			alertDialog: false,
+			goToNextScreen: false
 		};
 		
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
-	static navigationOptions = {
-		header: null,
-		headerLeft: null,
+	static navigationOptions = ({ navigation }) => ({
 		gesturesEnabled: false,
-	};
+		headerLeft: <HeaderBackButton title='Back' tintColor={white} onPress={() => {
+			navigation.getParam('onBackPress')(); 
+		}} />,
+	});
 	
 	componentWillMount() {	
 		if (this.props.hasImage) {
@@ -46,25 +48,50 @@ class SchoolScheduleCreation extends React.PureComponent {
 		}
 
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		this.props.navigation.setParams({onBackPress:  this.handleBackButton});
 	}
 
 	success = (base64String) => {
 		base64String = base64String.toString();
 		let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
-		analyzePicture({data: fakeEscape}).then(success => {
-			if (success) {
-				let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+		analyzePicture({data: fakeEscape})
+			.then(success => {
 
-				if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
-					this.props.navigation.navigate(ReviewEventRoute);
-				} else {
-					this.props.navigation.navigate(DashboardNavigator);
+				if (success) {
+					let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+					if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
+						this.props.navigation.navigate(ReviewEventRoute);
+					} else {
+						this.props.navigation.navigate(DashboardNavigator);
+					}
 				}
+			})
+			.catch(err => {
+				if (err) {
+					Alert.alert(
+						'Error',
+						err,
+						[
+							{text: 'OK', onPress: () => this.props.navigation.pop()},
+						],
+						{cancelable: false}
+					);
+				} 
+			});
+	}
+
+	nextScreen = () => {
+		if (this.state.goToNextScreen && !this.state.alertDialog) {
+			let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+			if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
+				this.props.navigation.navigate(ReviewEventRoute);
 			} else {
-				this.props.navigation.pop();
+				this.props.navigation.navigate(DashboardNavigator);
 			}
-		});
+		}
 	}
 
 	error = (err) => {
@@ -72,21 +99,33 @@ class SchoolScheduleCreation extends React.PureComponent {
 	}
 
 	handleBackButton = () => {
+		this.setState({alertDialog: true});
 		Alert.alert(
-			'',
-			'Are you sure you want to stop the schedule analyzing process?',
+			'Stopping extraction',
+			'The schedule analyzing process will be stopped if you proceed, where do you want to go?',
 			[
 				{
-					text: 'No',
+					text: 'Cancel',
 					style: 'cancel',
+					onPress: () => {
+						this.setState({alertDialog: false});
+						this.nextScreen();
+					}
 				},
-				{text: 'Yes', 
+				{
+					text: 'Dashboard',
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
+					}
+				},
+				{
+					text: 'Review Events', 
+					onPress: () => {
+						this.props.navigation.navigate(ReviewEventRoute);
 					},
 				},
 			],
-			{cancelable: true},
+			{cancelable: false},
 		);
 		return true;
 	}
