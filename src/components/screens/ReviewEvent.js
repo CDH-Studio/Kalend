@@ -64,7 +64,7 @@ class ReviewEvent extends React.PureComponent {
 				if (data.startTime === undefined) {
 					hours = `${data.hours[0][0]}:${data.hours[0][1]} ${data.hours[0][2]} - ${data.hours[1][0]}:${data.hours[1][1]} ${data.hours[1][2]}`;
 				} else {
-					hours = this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime);
+					hours = data.startTime + ' - ' + data.endTime;
 				}
 
 				schoolScheduleData.push({
@@ -82,7 +82,7 @@ class ReviewEvent extends React.PureComponent {
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
 					recurrence: data.recurrenceValue,
-					hours: data.allDay ? 'All-Day' : (this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime)),
+					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
 					location: data.location,
 					description: data.description
 				});
@@ -108,17 +108,6 @@ class ReviewEvent extends React.PureComponent {
 			nonFixedEventData,
 			schoolScheduleData
 		});
-	}
-
-	formatTime = (time) => {
-		if (time.split(':').length === 3) {
-			let timeSplit = time.split(':');
-			let timeSplitSpace = time.split(' ');
-
-			time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
-		}
-
-		return time;
 	}
 	
 	deleteEvent = (id, category) => {
@@ -174,7 +163,7 @@ class ReviewEvent extends React.PureComponent {
 				'Error',
 				'You need to create events in order to generate a Calendar',
 				[
-					{text: 'OK', onPress: () => console.log('Okay pressed')},
+					{text: 'OK'},
 				],
 				{cancelable: false}
 			);
@@ -184,7 +173,6 @@ class ReviewEvent extends React.PureComponent {
 	}
 
 	render() {
-		console.log('reviewEvent', store.getState());
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}

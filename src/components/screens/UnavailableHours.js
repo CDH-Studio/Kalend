@@ -8,6 +8,8 @@ import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
 
+const moment = require('moment');
+
 /**
  * Permits the user to input the hours they are not available or don't want to have anything booked
  */
@@ -25,46 +27,46 @@ class UnavailableHours extends React.PureComponent {
 
 		this.state = { 
 			sleepWeek: false,
-			startSleepWeek: new Date().toLocaleTimeString(),
-			endSleepWeek: new Date().toLocaleTimeString(),
+			startSleepWeek: moment().format('h:mm A'),
+			endSleepWeek: moment().format('h:mm A'),
 			disabledEndSleepWeek: true,
 			endSleepWeekValidated: true,
 			sleepWeekEnd: false,
-			startSleepWeekEnd: new Date().toLocaleTimeString(),
-			endSleepWeekEnd: new Date().toLocaleTimeString(),
+			startSleepWeekEnd: moment().format('h:mm A'),
+			endSleepWeekEnd: moment().format('h:mm A'),
 			disabledEndSleepWeekEnd: true,
 			endSleepWeekEndValidated: true,
 
 			commutingWeek: false,
-			startCommutingWeek: new Date().toLocaleTimeString(),
-			endCommutingWeek: new Date().toLocaleTimeString(),
+			startCommutingWeek: moment().format('h:mm A'),
+			endCommutingWeek: moment().format('h:mm A'),
 			disabledEndCommutingWeek: true,
 			endCommutingWeekValidated: true,
 			commutingWeekEnd: false,
-			startCommutingWeekEnd: new Date().toLocaleTimeString(),
-			endCommutingWeekEnd: new Date().toLocaleTimeString(),
+			startCommutingWeekEnd: moment().format('h:mm A'),
+			endCommutingWeekEnd: moment().format('h:mm A'),
 			disabledEndCommutingWeekEnd: true,
 			endCommutingWeekEndValidated: true,
 
 			eatingWeek: false,
-			startEatingWeek: new Date().toLocaleTimeString(),
-			endEatingWeek: new Date().toLocaleTimeString(),
+			startEatingWeek: moment().format('h:mm A'),
+			endEatingWeek: moment().format('h:mm A'),
 			disabledEndEatingWeek: true,
 			endEatingWeekValidated: true,
 			eatingWeekEnd: false,
-			startEatingWeekEnd: new Date().toLocaleTimeString(),
-			endEatingWeekEnd: new Date().toLocaleTimeString(),
+			startEatingWeekEnd: moment().format('h:mm A'),
+			endEatingWeekEnd:moment().format('h:mm A'),
 			disabledEndEatingWeekEnd: true,
 			endEatingWeekEndValidated: true,
 
 			otherWeek: false,
-			startOtherWeek: new Date().toLocaleTimeString(),
-			endOtherWeek: new Date().toLocaleTimeString(),
+			startOtherWeek: moment().format('h:mm A'),
+			endOtherWeek: moment().format('h:mm A'),
 			disabledEndOtherWeek: true,
 			endOtherWeekValidated: true,
 			otherWeekEnd: false,
-			startOtherWeekEnd: new Date().toLocaleTimeString(),
-			endOtherWeekEnd: new Date().toLocaleTimeString(),
+			startOtherWeekEnd: moment().format('h:mm A'),
+			endOtherWeekEnd: moment().format('h:mm A'),
 			disabledEndOtherWeekEnd: true,
 			endOtherWeekEndValidated: true,
 		};
