@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, StatusBar, Text, View, BackHandler, Platform, ImageStore } from 'react-native';
 import { Surface } from 'react-native-paper';
-import { HeaderBackButton } from 'react-navigation';
+import { HeaderBackButton, NavigationActions } from 'react-navigation';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
@@ -25,6 +25,10 @@ class SchoolScheduleCreation extends React.PureComponent {
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
+	navigateAction = NavigationActions.navigate({
+		action: 'FinishSchoolCreation'
+	})
+
 	static navigationOptions = ({ navigation }) => ({
 		gesturesEnabled: false,
 		headerLeft: <HeaderBackButton title='Back' tintColor={white} onPress={() => {
@@ -47,15 +51,8 @@ class SchoolScheduleCreation extends React.PureComponent {
 		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 		analyzePicture({data: fakeEscape})
 			.then(success => {
-
 				if (success) {
-					let routes = this.props.navigation.dangerouslyGetParent().state.routes;
-
-					if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
-						this.props.navigation.navigate(ReviewEventRoute);
-					} else {
-						this.props.navigation.navigate(DashboardNavigator);
-					}
+					this.props.navigation.dispatch(this.navigateAction);
 				}
 			})
 			.catch(err => {
