@@ -3,7 +3,7 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { setCalendarID, logonUser } from '../../actions';
+import { setCalendarID, logonUser, addColors } from '../../actions';
 import { gradientColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
@@ -11,6 +11,8 @@ import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
+import { getColors } from '../../services/google_calendar';
+import { store } from '../../store';
 
 /** 
  * Home/Login screen of the app.
@@ -40,9 +42,13 @@ class Home extends React.PureComponent {
 			if (data === undefined) {
 				createCalendar().then(id => {
 					this.props.setCalendarID(id);
+					getColors().then(colors => this.props.addColors(colors));
+					console.log(store.getState());
 				});
 			} else {
 				this.props.setCalendarID(data);
+				getColors().then(colors => this.props.addColors(colors));
+				console.log(store.getState());
 			}
 		});
 	}
@@ -134,7 +140,7 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, addColors}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

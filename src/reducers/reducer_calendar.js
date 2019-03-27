@@ -12,7 +12,8 @@ export default function CalendarReducer(state = [], action) {
 
 		case ADD_COLORS:
 			return {
-				...colors
+				...state,
+				colors
 			};
 
 		case CLEAR_CALENDAR:

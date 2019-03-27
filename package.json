@@ -21,12 +21,14 @@
     "react-native": "^0.59.1",
     "react-native-app-intro-slider": "^1.0.1",
     "react-native-camera": "^2.0.2",
+    "react-native-color-palette": "^2.0.3",
     "react-native-datepicker": "^1.7.2",
     "react-native-firebase": "^5.2.2",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.1",
     "react-native-iphone-x-helper": "^1.2.0",
     "react-native-linear-gradient": "^2.5.3",
+    "react-native-modal": "^9.0.0",
     "react-native-numeric-input": "^1.6.5",
     "react-native-paper": "^2.12.0",
     "react-native-popover-view": "^1.0.18",
@@ -40,6 +42,7 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
+    "rn-viewpager": "^1.2.9",
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
