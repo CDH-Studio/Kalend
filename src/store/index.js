@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware  } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import {createLogger} from 'redux-logger';
+import AsyncStorage from '@react-native-community/async-storage';
 import rootReducer from '../reducers';
 
 const loggerMiddleware = createLogger({
@@ -14,7 +14,7 @@ const createStoreWithMiddleware = applyMiddleware(
 
 const persistConfig = {
 	key: 'root',
-	storage,
+	storage: AsyncStorage,
 	keyPrefix: '',
 	blacklist: ['StateReducer']
 };
