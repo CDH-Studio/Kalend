@@ -4,11 +4,12 @@ import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute, DashboardNavigator } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { insertFixedEventsToGoogle } from '../../services/service';
 
 const priorityLevels = {
 	0: 'Low',
@@ -180,7 +181,26 @@ class ReviewEvent extends React.PureComponent {
 			);
 			return;
 		}
-		this.props.navigation.navigate(ScheduleCreationRoute);
+
+		if (this.state.nonFixedEventData.length == 0) {
+			insertFixedEventsToGoogle()
+				.catch(err => {
+					if (err) {
+						Alert.alert(
+							'Error',
+							err,
+							[
+								{text: 'OK', onPress: () => this.props.navigation.pop()},
+							],
+							{cancelable: false}
+						);
+					}
+				});
+
+			this.props.navigation.pop();
+		} else {
+			this.props.navigation.navigate(ScheduleCreationRoute);
+		}
 	}
 
 	render() {

@@ -474,3 +474,35 @@ export const generateCalendars = async () => {
 
 	return Promise.all(promises);
 };
+
+export const insertFixedEventsToGoogle = () => {
+	return new Promise((resolve, reject) => {
+		store.getState().CoursesReducer.forEach(async (event) => {
+			await InsertCourseEventToCalendar(event).then(data => {
+				if (data.error) {
+					reject(data.error);
+				}
+			});
+		});
+
+		store.getState().FixedEventsReducer.map(async (event) => {
+			let info = {
+				title: event.title,
+				location: event.location,
+				description: event.description,
+				recurrence: event.recurrence,
+				allDay: event.allDay,
+				startDate: event.startDate,
+				startTime: event.startTime,
+				endDate: event.endDate,
+				endTime: event.endTime
+			}; 
+			await InsertFixedEventToCalendar(info).then(data => {
+				if (data.error) {
+					reject(data.error);
+				}
+			});
+		});
+		resolve();
+	});
+}
