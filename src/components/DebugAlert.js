@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, Text, ScrollView } from 'react-native';
 
+// Class for popping Debug Alerts for testing on Release version
 class DebugAlert extends React.Component {
 	state = {
 		modalVisible: true
