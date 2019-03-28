@@ -170,7 +170,7 @@ export const InsertCourseEventToCalendar = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 	obj.summary = event.summary;
-	obj.colorId = '2';
+	obj.colorId = store.getState().CalendarReducer.courseColor;
 	//console.log('course obj', obj);
 	return insertEvent(calendarID,event,{});	
 };
@@ -209,7 +209,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 	obj.summary = event.title;
 	obj.location = event.location;
 	obj.description = event.description;
-	obj.colorId = '4';
+	obj.colorId = store.getState().CalendarReducer.fixedEventsColor;
 
 	return insertEvent(calendarID,obj,{});	
 };
@@ -446,7 +446,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 		obj.description = event.description;
 		obj.end.dateTime = availableDate.endDate;
 		obj.start.dateTime = availableDate.startDate;
-		obj.colorId = '1';
+		obj.colorId = store.getState().CalendarReducer.nonFixedEventsColor;
 	
 		store.dispatch(addGeneratedNonFixedEvent(obj));
 		resolve();
