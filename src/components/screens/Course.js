@@ -55,7 +55,7 @@ class Course extends React.PureComponent {
 			location: ''
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Course', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {

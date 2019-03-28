@@ -40,7 +40,7 @@ class ReviewEvent extends React.PureComponent {
 			showTutShadow: true
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ReviewEvent', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {

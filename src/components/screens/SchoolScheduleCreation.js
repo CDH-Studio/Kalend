@@ -22,7 +22,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 			goToNextScreen: false
 		};
 		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('SchoolScheduleCreation', props.navigation.state.routeName);
 	}
 
 	navigateAction = NavigationActions.navigate({

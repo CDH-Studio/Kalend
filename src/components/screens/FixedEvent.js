@@ -70,7 +70,7 @@ class FixedEvent extends React.PureComponent {
 			snackbarText: '',
 			snackbarTime: 3000
 		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('FixedEvent', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {

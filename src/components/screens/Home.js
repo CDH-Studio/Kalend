@@ -22,7 +22,7 @@ class Home extends React.PureComponent {
 		this.state = {
 			clicked: false
 		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Home', props.navigation.state.routeName);
 	}
 
 	/**
