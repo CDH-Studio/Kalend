@@ -2,7 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 // import NonFixedEvent from '../src/components/screens/NonFixedEvent';
 // import {Header} from 'react-navigation';
-import {StatusBar, TouchableOpacity, StyleSheet, Text, Switch, Slider} from 'react-native';
+import {StatusBar, TouchableOpacity, StyleSheet, Text, Switch} from 'react-native';
+// import Slider from '@react-native-community/slider';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
@@ -57,15 +58,15 @@ test('NumericInputs render correctly', () => {
 	expect(numInput).toMatchSnapshot();
 });
 
-test('Slider renders correctly', () => {
-	const slider = renderer.create(<Slider 
-		minimumValue={0}
-		maximumValue={1} 
-		step={0.5}
-		thumbTintColor={'#FF9F1C'}
-		minimumTrackTintColor={'#FFBF69'}/>).toJSON();
-	expect(slider).toMatchSnapshot();
-});
+// test('Slider renders correctly', () => {
+// 	const slider = renderer.create(<Slider 
+// 		minimumValue={0}
+// 		maximumValue={1} 
+// 		step={0.5}
+// 		thumbTintColor={'#FF9F1C'}
+// 		minimumTrackTintColor={'#FFBF69'}/>).toJSON();
+// 	expect(slider).toMatchSnapshot();
+// });
 
 test("Buttons render correctly", () => {
 	const button = renderer.create(<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
