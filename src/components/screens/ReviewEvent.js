@@ -189,7 +189,7 @@ class ReviewEvent extends React.PureComponent {
 					this.props.navigation.pop();
 				})
 				.catch(err => {
-					console.log("err", err);
+					console.log('err', err);
 					if (err) {
 						Alert.alert(
 							'Error',
