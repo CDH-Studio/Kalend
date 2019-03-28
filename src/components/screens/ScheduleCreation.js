@@ -3,7 +3,7 @@ import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-nativ
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { HeaderBackButton } from 'react-navigation';
-import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo, insertFixedEventsToGoogle } from '../../services/service';
+import { generateCalendars, setUserInfo, insertFixedEventsToGoogle } from '../../services/service';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, white } from '../../styles';
