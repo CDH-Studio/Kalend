@@ -57,16 +57,6 @@ test('NumericInputs render correctly', () => {
 	expect(numInput).toMatchSnapshot();
 });
 
-// test('Slider renders correctly', () => {
-// 	const slider = renderer.create(<Slider 
-// 		minimumValue={0}
-// 		maximumValue={1} 
-// 		step={0.5}
-// 		thumbTintColor={'#FF9F1C'}
-// 		minimumTrackTintColor={'#FFBF69'}/>).toJSON();
-// 	expect(slider).toMatchSnapshot();
-// });
-
 test("Buttons render correctly", () => {
 	const button = renderer.create(<TouchableOpacity style={styles.buttonNext} onPress={() => this.props.navigation.navigate('NonFixedEvent')}>
 	<Text style={styles.buttonNextText}>NEXT</Text>

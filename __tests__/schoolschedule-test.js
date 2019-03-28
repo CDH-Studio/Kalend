@@ -33,11 +33,6 @@ test("Buttons render correctly", () => {
 	expect(button).toMatchSnapshot();
 });
 
-// test('Icons render correctly', () => {
-// 	const icon = renderer.create(<FontAwesome5 name="university" size={130} color='#ffffff'/>).toJSON();
-// 	expect(icon).toMatchSnapshot();
-// });
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

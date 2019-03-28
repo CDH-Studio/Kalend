@@ -1,18 +1,6 @@
 export const webClientId = '359972006564-9tngmtaigit300v7kqjr48sph3apvq38.apps.googleusercontent.com';
 export const googleIdentityScope = ['profile', 'https://www.googleapis.com/auth/calendar'];
 
-// export const calendarEventColors = {
-// 	red: '#E57B73',
-// 	green: '#36B478',
-// 	purple: '#7885CA'
-// };
-
-// export const calendarEventColorsInside = {
-// 	red: '#EDA49E',
-// 	green: '#52CB91',
-// 	purple: '#9DA6D8'
-// };
-
 export const gradientColors = ['#32D2DC', '#153d73'];
 
 export const slides = [
