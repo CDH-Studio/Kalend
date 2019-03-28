@@ -9,6 +9,7 @@ import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { insertFixedEventsToGoogle } from '../../services/service';
 
 const priorityLevels = {
 	0: 'Low',
@@ -169,7 +170,29 @@ class ReviewEvent extends React.PureComponent {
 			);
 			return;
 		}
-		this.props.navigation.navigate(ScheduleCreationRoute);
+
+		if (this.state.nonFixedEventData.length == 0) {
+			insertFixedEventsToGoogle()
+				.then((promises) => {
+					console.log('made it here', promises);
+					this.props.navigation.pop();
+				})
+				.catch(err => {
+					console.log('err', err);
+					if (err) {
+						Alert.alert(
+							'Error',
+							err,
+							[
+								{text: 'OK'},
+							],
+							{cancelable: false}
+						);
+					}
+				});
+		} else {
+			this.props.navigation.navigate(ScheduleCreationRoute);
+		}
 	}
 
 	render() {
