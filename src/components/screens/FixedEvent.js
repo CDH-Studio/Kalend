@@ -71,8 +71,6 @@ class FixedEvent extends React.PureComponent {
 			snackbarTime: 3000
 		};
 
-		console.log('state', this.state);
-
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
 
@@ -106,8 +104,6 @@ class FixedEvent extends React.PureComponent {
 		let timeSplitSpace = time.split(' ');
 
 		time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
-
-		console.log('time', time);
 
 		return time;
 	}
