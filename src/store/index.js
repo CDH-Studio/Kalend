@@ -4,7 +4,9 @@ import storage from 'redux-persist/lib/storage';
 import {createLogger} from 'redux-logger';
 import rootReducer from '../reducers';
 
-const loggerMiddleware = createLogger();
+const loggerMiddleware = createLogger({
+	collapsed: true
+});
 
 const createStoreWithMiddleware = applyMiddleware(
 	loggerMiddleware,  // redux-logger
