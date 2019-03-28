@@ -48,7 +48,6 @@ class Dashboard extends React.PureComponent {
 			containerHeight: null,
 			opened: false,
 			optionsOpen: false,
-			currentMonth: '',
 			items: {},
 			isVisible: false,
 			calendarOpened: false
@@ -64,10 +63,6 @@ class Dashboard extends React.PureComponent {
 			</View>
 		);
 	}
-	
-	// renderEmptyDate = () => {
-	// 	return <View style={styles.noEvents}><Text style={styles.noEventsText}>There's no events for the day.</Text></View>;
-	// }
 
 	renderEmptyData = () => {
 		return <View>
@@ -125,16 +120,23 @@ class Dashboard extends React.PureComponent {
 	render() {
 		const {optionsOpen, calendarOpened} = this.state;
 		let showCloseFab;
+		// let currentMonthText = 'jninm';
 
 		if (calendarOpened) {
 			showCloseFab = 
+			<View style={styles.closeCalendarView}>
 				<FAB
 					style={styles.closeCalendarFab}
 					small
+					theme={{colors:{accent:dark_blue}}}
 					icon="close"
-					onPress={() => this.agenda.chooseDay(this.agenda.state.selectedDay)} />;
+					onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
+			</View>;
+
+			// currentMonthText = null;
 		} else {
 			showCloseFab = null;
+			// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
 		}
 
 		return(
@@ -143,10 +145,14 @@ class Dashboard extends React.PureComponent {
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 						backgroundColor={'#166489'} />	
-					<Agenda
+
+					{/* <View style={styles.calendarBack}>
+						<Text style={styles.calendarBackText}>{currentMonthText}</Text>
+					</View> */}
+
+					<Agenda ref='agenda'
 						items={this.state.items}
 						renderItem={this.renderItem}
-						// renderEmptyDate={this.renderEmptyDate}
 						renderEmptyData={this.renderEmptyData}
 						rowHasChanged={this.rowHasChanged}
 						showOnlyDaySelected={true}
