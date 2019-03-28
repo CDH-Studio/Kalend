@@ -50,7 +50,8 @@ class Dashboard extends React.PureComponent {
 			optionsOpen: false,
 			currentMonth: '',
 			items: {},
-			isVisible: false
+			isVisible: false,
+			calendarOpened: false
 		};
 		updateNavigation(this.constructor.name, props.navigation.state.routeName);
 	}
@@ -122,7 +123,19 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen} = this.state;
+		const {optionsOpen, calendarOpened} = this.state;
+		let showCloseFab;
+
+		if (calendarOpened) {
+			showCloseFab = 
+				<FAB
+					style={styles.closeCalendarFab}
+					small
+					icon="close"
+					onPress={() => this.agenda.chooseDay(this.agenda.state.selectedDay)} />;
+		} else {
+			showCloseFab = null;
+		}
 
 		return(
 			<Portal.Host style={{flex:1}}>
@@ -138,7 +151,10 @@ class Dashboard extends React.PureComponent {
 						rowHasChanged={this.rowHasChanged}
 						showOnlyDaySelected={true}
 						shouldChangeDay={this.shouldChangeDay}
+						onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
 					/>
+
+					{showCloseFab}
 
 					<FAB.Group
 						ref={ref => this.touchable = ref}
