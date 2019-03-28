@@ -53,7 +53,7 @@ class ScheduleCreation extends React.PureComponent {
 						'Error',
 						err,
 						[
-							{text: 'OK', onPress: () => this.props.navigation.navigate(DashboardNavigator)},
+							{text: 'OK', onPress: () => this.props.navigation.pop()},
 						],
 						{cancelable: false}
 					);

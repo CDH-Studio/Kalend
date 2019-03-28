@@ -475,34 +475,38 @@ export const generateCalendars = async () => {
 	return Promise.all(promises);
 };
 
-export const insertFixedEventsToGoogle = () => {
-	return new Promise((resolve, reject) => {
-		store.getState().CoursesReducer.forEach(async (event) => {
-			await InsertCourseEventToCalendar(event).then(data => {
-				if (data.error) {
-					reject(data.error);
-				}
-			});
-		});
+export const insertFixedEventsToGoogle = async () => {
+	let promises = [];
 
-		store.getState().FixedEventsReducer.map(async (event) => {
-			let info = {
-				title: event.title,
-				location: event.location,
-				description: event.description,
-				recurrence: event.recurrence,
-				allDay: event.allDay,
-				startDate: event.startDate,
-				startTime: event.startTime,
-				endDate: event.endDate,
-				endTime: event.endTime
-			}; 
-			await InsertFixedEventToCalendar(info).then(data => {
-				if (data.error) {
-					reject(data.error);
-				}
+	await store.getState().CoursesReducer.forEach(async (event) => {
+		promises.push(new Promise(function(resolve,reject) {
+			InsertCourseEventToCalendar(event).then(data => {
+				if(data.error) reject('There was a problem inserting Course');
+				resolve(data);
 			});
-		});
-		resolve();
+		}));
 	});
-}
+
+	await store.getState().FixedEventsReducer.map(async (event) => {
+		let info = {
+			title: event.title,
+			location: event.location,
+			description: event.description,
+			recurrence: event.recurrence,
+			allDay: event.allDay,
+			startDate: event.startDate,
+			startTime: event.startTime,
+			endDate: event.endDate,
+			endTime: event.endTime
+		}; 
+		
+		promises.push(new Promise(function(resolve,reject) {
+			InsertFixedEventToCalendar(info).then(data => {
+				if (data.error)  reject('There was a problem inserting Fixed Event');
+				resolve(data);
+			});
+		}));
+	});
+
+	return Promise.all(promises);
+};

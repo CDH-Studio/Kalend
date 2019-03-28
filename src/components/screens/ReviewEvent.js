@@ -184,20 +184,23 @@ class ReviewEvent extends React.PureComponent {
 
 		if (this.state.nonFixedEventData.length == 0) {
 			insertFixedEventsToGoogle()
+				.then((promises) => {
+					console.log('made it here', promises);
+					this.props.navigation.pop();
+				})
 				.catch(err => {
+					console.log("err", err);
 					if (err) {
 						Alert.alert(
 							'Error',
 							err,
 							[
-								{text: 'OK', onPress: () => this.props.navigation.pop()},
+								{text: 'OK'},
 							],
 							{cancelable: false}
 						);
 					}
 				});
-
-			this.props.navigation.pop();
 		} else {
 			this.props.navigation.navigate(ScheduleCreationRoute);
 		}
