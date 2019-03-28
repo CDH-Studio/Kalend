@@ -505,4 +505,4 @@ export const insertFixedEventsToGoogle = () => {
 		});
 		resolve();
 	});
-}
+};
