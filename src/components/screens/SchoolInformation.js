@@ -189,7 +189,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												University of Ottawa
+												Carleton University
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -215,7 +215,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												Carleton University
+												University of Ottawa
 											</Text>
 										</TouchableOpacity>
 									</View>
