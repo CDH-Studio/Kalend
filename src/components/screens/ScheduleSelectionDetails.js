@@ -165,7 +165,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		};
 		
 		// Waits for the animation to finish, then goes to the next screen
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ScheduleSelectionDetails', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {

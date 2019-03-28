@@ -47,7 +47,7 @@ class SchoolInformation extends React.PureComponent {
 		};
 
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('SchoolInformation', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {

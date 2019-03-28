@@ -21,7 +21,7 @@ class Dashboard extends React.PureComponent {
 			optionsOpen: false,
 			isVisible: false
 		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Dashboard', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {

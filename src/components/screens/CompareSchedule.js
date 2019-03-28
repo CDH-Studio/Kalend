@@ -8,7 +8,7 @@ class CompareSchedule extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('CompareSchedule', props.navigation.state.routeName);
 	}
 
 	render() {

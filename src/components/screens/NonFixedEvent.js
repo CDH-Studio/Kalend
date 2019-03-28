@@ -67,7 +67,7 @@ class NonFixedEvent extends React.PureComponent {
 			snackbarTime: 3000
 		};
 		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('NonFixedEvent', props.navigation.state.routeName);
 	}
 	
 	componentWillMount() {	

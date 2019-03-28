@@ -69,7 +69,7 @@ class UnavailableHours extends React.PureComponent {
 			endOtherWeekEndValidated: true,
 		};
 		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('UnavailableHours', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {

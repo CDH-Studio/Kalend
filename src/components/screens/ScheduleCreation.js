@@ -30,7 +30,7 @@ class ScheduleCreation extends React.PureComponent {
 			goToNextScreen: false
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ScheduleCreation', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
