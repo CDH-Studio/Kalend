@@ -64,8 +64,18 @@ class Dashboard extends React.PureComponent {
 		);
 	}
 	
-	renderEmptyDate = () => {
-		return <View style={styles.noEvents}><Text style={styles.noEventsText}>There's no events for the day.</Text></View>;
+	// renderEmptyDate = () => {
+	// 	return <View style={styles.noEvents}><Text style={styles.noEventsText}>There's no events for the day.</Text></View>;
+	// }
+
+	renderEmptyData = () => {
+		return <View>
+			<Text style={styles.eventsDayTitle}>Events of the Day</Text>
+			
+			<View style={styles.noEvents}>
+				<Text style={styles.noEventsText}>There's no events for the day.</Text>
+			</View>
+		</View>;
 	}
 	
 	rowHasChanged = (r1, r2) => {
@@ -123,7 +133,8 @@ class Dashboard extends React.PureComponent {
 					<Agenda
 						items={this.state.items}
 						renderItem={this.renderItem}
-						renderEmptyDate={this.renderEmptyDate}
+						// renderEmptyDate={this.renderEmptyDate}
+						renderEmptyData={this.renderEmptyData}
 						rowHasChanged={this.rowHasChanged}
 						showOnlyDaySelected={true}
 						shouldChangeDay={this.shouldChangeDay}
