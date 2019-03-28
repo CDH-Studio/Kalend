@@ -12,6 +12,8 @@ import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute,
 import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
 
+const moment = require('moment');
+
 const viewHeight = 774.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
@@ -46,10 +48,10 @@ class Course extends React.PureComponent {
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
 
-			startTime: new Date().toLocaleTimeString(),
+			startTime: moment().format('h:mm A'),
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			endTime: moment().format('h:mm A'),
+			minEndTime: moment().format('h:mm A'),
 			disabledEndTime: true,
 
 			location: ''
@@ -334,10 +336,10 @@ class Course extends React.PureComponent {
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
 
-			startTime: new Date().toLocaleTimeString(),
+			startTime: moment().format('h:mm A'),
 
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			endTime: moment().format('h:mm A'),
+			minEndTime: moment().format('h:mm A'),
 			disabledEndTime: true,
 			endTimeValidated: true,
 

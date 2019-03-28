@@ -14,6 +14,8 @@ import { FixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, blue, dark_blue, gray, statusBlueColor, white } from '../../styles';
 
+const moment = require('moment');
+
 const viewHeight = 515.1428833007812;
 const containerWidth = Dimensions.get('window').width;
 
@@ -52,11 +54,11 @@ class FixedEvent extends React.PureComponent {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			startTime: this.setInitialTime(),
+			startTime: moment().format('h:mm A'),
 			disabledStartTime : false,
 
-			endTime: this.setInitialTime(),
-			minEndTime: this.setInitialTime(),
+			endTime: moment().format('h:mm A'),
+			minEndTime: moment().format('h:mm A'),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -95,16 +97,6 @@ class FixedEvent extends React.PureComponent {
 			containerHeight,
 			showTutShadow
 		});
-	}
-
-	setInitialTime = () => {
-		let time = new Date().toLocaleTimeString();
-		let timeSplit = time.split(':');
-		let timeSplitSpace = time.split(' ');
-
-		time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
-
-		return time;
 	}
 
 	/**
@@ -397,11 +389,11 @@ class FixedEvent extends React.PureComponent {
 			disabledEndDate : true,
 			endDateValidated: true,
 
-			startTime: this.setInitialTime(),
+			startTime: moment().format('h:mm A'),
 			disabledStartTime : false,
 
-			endTime: this.setInitialTime(),
-			minEndTime: this.setInitialTime(),
+			endTime: moment().format('h:mm A'),
+			minEndTime: moment().format('h:mm A'),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
