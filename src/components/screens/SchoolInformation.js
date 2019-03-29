@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StatusBar, TouchableOpacity, TextInput, Platform, Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white, red } from '../../styles';
+import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white } from '../../styles';
 import DatePicker from 'react-native-datepicker';
 import { Header } from 'react-navigation';
 import BottomButtons from '../BottomButtons';
