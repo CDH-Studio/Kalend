@@ -6,7 +6,7 @@ import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { analyzePicture } from '../../services/service';
+import { analyzePicture, storeCoursesEvents } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue, white } from '../../styles';
 import RNFS from 'react-native-fs';
 
@@ -60,11 +60,9 @@ class SchoolScheduleCreation extends React.PureComponent {
 		let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 		analyzePicture({data: fakeEscape})
-			.then(success => {
-				if (success) {
-					this.setState({goToNextScreen: true});
-					this.nextScreen();
-				}
+			.then(data => {
+				this.setState({goToNextScreen: true, data});
+				this.nextScreen();
 			})
 			.catch(err => {
 				if (err) {
@@ -83,6 +81,22 @@ class SchoolScheduleCreation extends React.PureComponent {
 	nextScreen = () => {
 		if (this.state.goToNextScreen && !this.state.alertDialog) {
 			let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+			if (this.state.data != undefined) {
+				storeCoursesEvents(this.state.data)
+					.then((success) => {
+						if (!success) {
+							Alert.alert(
+								'Error',
+								'Trouble converting the parsed data from the schedule to Google Calendar',
+								[
+									{text: 'OK', onPress: () => this.props.navigation.pop()},
+								],
+								{cancelable: false}
+							);
+						}
+					});
+			}
 
 			if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
 				this.props.navigation.navigate(ReviewEventRoute);
@@ -119,7 +133,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 				{
 					text: 'Review Events', 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute);
+						this.props.navigation.dispatch(this.navigateAction);
 					},
 				},
 			],

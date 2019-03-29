@@ -61,11 +61,7 @@ export const analyzePicture = (base64Data) => {
 				if(body.data.length == 0) reject('The data from your schedule could not be extracted, please try again');
 				formatData(body.data)
 					.then(data => {
-						storeCoursesEvents(data)
-							.then((success) => {
-								if(success) return resolve(true);
-								else return reject(false);
-							});
+						return resolve(data);
 					})
 					.catch(err => {
 						reject(err);
