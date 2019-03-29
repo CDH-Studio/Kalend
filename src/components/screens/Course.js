@@ -11,6 +11,7 @@ import BottomButtons from '../BottomButtons';
 import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
 
@@ -27,8 +28,11 @@ class Course extends React.PureComponent {
 		'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 	]
 
+	strings = getStrings().Course;
+	buttonStrings = getStrings().BottomButtons;
+
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === CourseRoute ? 'Add Courses' : 'Edit Course',
+		title: navigation.state.routeName === CourseRoute ? getStrings().Course.addTitle : getStrings().Course.editTitle,
 		headerStyle: {
 			backgroundColor: white,
 		}
@@ -186,7 +190,7 @@ class Course extends React.PureComponent {
 	dayOfWeekOnClick = () => {
 		return ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Cancel'],
+				options: [...this.strings.week, 'Cancel'],
 				cancelButtonIndex: 7,
 			},
 			(buttonIndex) => {
@@ -259,7 +263,7 @@ class Course extends React.PureComponent {
 		let validated = this.fieldValidation();
 		if (!validated) {
 			this.setState({
-				snackbarText: 'Invalid fields, please review to add course',
+				snackbarText: this.strings.snackbarFailure,
 				snackbarVisible: true,
 				snackbarTime: 5000
 			});
@@ -293,7 +297,7 @@ class Course extends React.PureComponent {
 				this.resetField();
 				this.refs._scrollView.scrollTo({x: 0});
 				this.setState({
-					snackbarText: 'Course successfully added',
+					snackbarText: this.strings.snackbarSuccess,
 					snackbarVisible: true,
 					snackbarTime: 3000
 				});
@@ -333,7 +337,7 @@ class Course extends React.PureComponent {
 			summary: '',
 			courseCodeValidated: true,
 			
-			dayOfWeek: 'Monday',
+			dayOfWeek: this.strings.week[0],
 			dayOfWeekValue: 'Monday',
 
 			startTime: moment().format('h:mm A'),
@@ -385,10 +389,10 @@ class Course extends React.PureComponent {
 		}
 		
 		if (this.props.navigation.state.routeName === CourseRoute) {
-			addEventButtonText = 'Add';
+			addEventButtonText = this.buttonStrings.add;
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			addEventButtonText = 'Done';
+			addEventButtonText = this.buttonStrings.done;
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
 		}
@@ -405,7 +409,7 @@ class Course extends React.PureComponent {
 					<ScrollView ref='_scrollView'>
 						<View style={[styles.content, {height: containerHeight}]}>
 							<View style={styles.instruction}>
-								<Text style={styles.text}>Add all your courses from your school schedule</Text>
+								<Text style={styles.text}>{this.strings.description}</Text>
 								<FontAwesome5 name="university"
 									size={130}
 									color={dark_blue}/>
@@ -420,7 +424,7 @@ class Course extends React.PureComponent {
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
-											placeholder="Course Code" 
+											placeholder={this.strings.courseCodePlaceholder}
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.refs.locationInput.focus()}
 											blurOnSubmit={false}
@@ -433,7 +437,7 @@ class Course extends React.PureComponent {
 							</View>
 
 							<View style={styles.dayOfWeekSection}>
-								<Text style={styles.dayOfWeekTitle}>Day of Week</Text>
+								<Text style={styles.dayOfWeekTitle}>{this.strings.dayOfWeek}</Text>
 
 								<View style={styles.dayOfWeekBorder}>
 									{
@@ -443,20 +447,20 @@ class Course extends React.PureComponent {
 											<Picker style={styles.dayOfWeekValues} 
 												selectedValue={this.state.dayOfWeek} 
 												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue, dayOfWeekValue})}>
-												<Picker.Item label="Monday" value="Monday" />
-												<Picker.Item label="Tuesday" value="Tuesday" />
-												<Picker.Item label="Wednesday" value="Wednesday" />
-												<Picker.Item label="Thursday" value="Thursday" />
-												<Picker.Item label="Friday" value="Friday" />
-												<Picker.Item label="Saturday" value="Saturday" />
-												<Picker.Item label="Sunday" value="Sunday" />
+												<Picker.Item label={this.strings.week[0]} value="Monday" />
+												<Picker.Item label={this.strings.week[1]} value="Tuesday" />
+												<Picker.Item label={this.strings.week[2]} value="Wednesday" />
+												<Picker.Item label={this.strings.week[3]} value="Thursday" />
+												<Picker.Item label={this.strings.week[4]} value="Friday" />
+												<Picker.Item label={this.strings.week[5]} value="Saturday" />
+												<Picker.Item label={this.strings.week[6]} value="Sunday" />
 											</Picker>
 									}
 								</View>
 							</View>
 							<View style={styles.timeSection}>
 								<View style={styles.time}>
-									<Text style={styles.blueTitle}>Start Time</Text>
+									<Text style={styles.blueTitle}>{this.strings.startTime}</Text>
 									<DatePicker showIcon={false} 
 										date={this.state.startTime} 
 										mode="time" 
@@ -468,8 +472,8 @@ class Course extends React.PureComponent {
 											}
 										}}
 										format="h:mm A" 
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										is24Hour={false}
 										onDateChange={(startTime) => {
 											this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(startTime, undefined)});
@@ -479,7 +483,7 @@ class Course extends React.PureComponent {
 
 								<View>
 									<View style={styles.time}>
-										<Text style={styles.blueTitle}>End Time</Text>
+										<Text style={styles.blueTitle}>{this.strings.endTime}</Text>
 										<DatePicker showIcon={false} 
 											date={this.state.endTime} 
 											mode="time" 
@@ -493,8 +497,8 @@ class Course extends React.PureComponent {
 											}}
 											format="h:mm A" 
 											minDate={this.state.minEndTime}
-											confirmBtnText="Confirm" 
-											cancelBtnText="Cancel" 
+											confirmBtnText={this.strings.confirmButton}
+											cancelBtnText={this.strings.cancelButton}
 											is24Hour={false}
 											onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, endTime)})}/>
 									</View>
@@ -511,7 +515,7 @@ class Course extends React.PureComponent {
 									<TextInput style={styles.textInputText} 
 										onFocus={() => this.scrollToInput(this.refs.locationInput, 230)}
 										maxLength={1024}
-										placeholder="Location" 
+										placeholder={this.strings.locationPlaceholder}
 										ref='locationInput'
 										returnKeyType = {'done'}
 										onChangeText={(location) => this.setState({location})} 
@@ -520,7 +524,7 @@ class Course extends React.PureComponent {
 							</View>
 
 							<BottomButtons twoButtons={showNextButton}
-								buttonText={[addEventButtonText, 'Done']}
+								buttonText={[addEventButtonText, this.buttonStrings.done]}
 								buttonMethods={[addEventButtonFunction, () => {
 									let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
