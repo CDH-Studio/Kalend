@@ -466,6 +466,7 @@ class Course extends React.PureComponent {
 											}
 										}}
 										format="h:mm A" 
+										locale={'US'}
 										confirmBtnText="Confirm" 
 										cancelBtnText="Cancel" 
 										is24Hour={false}
@@ -490,6 +491,7 @@ class Course extends React.PureComponent {
 													textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
 											}}
 											format="h:mm A"
+											locale={'US'}
 											confirmBtnText="Confirm" 
 											cancelBtnText="Cancel" 
 											is24Hour={false}
