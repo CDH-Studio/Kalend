@@ -3,7 +3,7 @@ import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform,Alert } f
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearCourse, clearFixedEvents } from '../../actions';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearCourse, clearFixedEvents, setNavigationScreen } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
@@ -176,7 +176,7 @@ class ReviewEvent extends React.PureComponent {
 				.then(() => {
 					this.props.dispatch(clearCourse());
 					this.props.dispatch(clearFixedEvents());
-					
+					this.props.dispatch(setNavigationScreen({successfullyInsertedEvents: true}));
 					this.props.navigation.pop();
 				})
 				.catch(err => {

@@ -1434,6 +1434,7 @@ export const dashboardStyles = StyleSheet.create({
 			},
 		}),
 	},
+
 	...DashboardButton,
 });
 

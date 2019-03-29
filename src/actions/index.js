@@ -204,7 +204,8 @@ export function setNavigationScreen (data) {
 		route: data.route,
 		main: data.main,
 		routes: data.routes,
-		reviewEventSelected: data.reviewEventSelected
+		reviewEventSelected: data.reviewEventSelected,
+		successfullyInsertedEvents: data.successfullyInsertedEvents
 	};
 
 	return action;
