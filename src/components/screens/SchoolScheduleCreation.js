@@ -62,7 +62,8 @@ class SchoolScheduleCreation extends React.PureComponent {
 		analyzePicture({data: fakeEscape})
 			.then(success => {
 				if (success) {
-					this.props.navigation.dispatch(this.navigateAction);
+					this.setState({goToNextScreen: true});
+					this.nextScreen();
 				}
 			})
 			.catch(err => {
@@ -86,7 +87,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 			if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
 				this.props.navigation.navigate(ReviewEventRoute);
 			} else {
-				this.props.navigation.navigate(DashboardNavigator);
+				this.props.navigation.dispatch(this.navigateAction);
 			}
 		}
 	}
