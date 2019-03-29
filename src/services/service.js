@@ -484,7 +484,7 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
-				console.log('course', data)
+				console.log('course', data);
 				if(data.error) reject('There was a problem inserting Course');
 				resolve(data);
 			});
