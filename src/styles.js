@@ -1103,8 +1103,8 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingVertical: 5,
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginTop: -20
 	},
 
 	modalInfoTitle: {
@@ -1122,7 +1122,8 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalDetailsView: {
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginTop: 10
 	},
 
 	modalDetailsTitle: {

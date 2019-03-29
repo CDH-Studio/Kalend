@@ -5,11 +5,18 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "lint-client": "node_modules/.bin/eslint src",
+    "android": "react-native run-android --variant=debug",
+    "android-release": "react-native run-android --variant=release",
+    "ios": "react-native run-ios --configuration Debug",
+    "ios-release": "react-native run-ios --configuration Release",
+    "lint": "node_modules/.bin/eslint src",
     "version": "echo $npm_package_version",
     "version-ios": "./version-ios.sh"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.2.1",
+    "@react-native-community/slider": "^1.0.4",
+    "@react-native-community/viewpager": "^1.1.5",
     "lottie-react-native": "^2.6.0",
     "moment": "^2.24.0",
     "number-to-words": "^1.2.4",
@@ -23,6 +30,7 @@
     "react-native-camera": "^2.0.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-firebase": "^5.2.2",
+    "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.1",
     "react-native-iphone-x-helper": "^1.2.0",

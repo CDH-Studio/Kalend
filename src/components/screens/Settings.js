@@ -36,7 +36,7 @@ class Settings extends React.PureComponent {
 		};
 
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Settings', props.navigation.state.routeName);
 	}
 
 	dismiss = () => {

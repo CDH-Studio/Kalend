@@ -4,11 +4,12 @@ import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { insertFixedEventsToGoogle } from '../../services/service';
 
 const priorityLevels = {
 	0: 'Low',
@@ -40,7 +41,7 @@ class ReviewEvent extends React.PureComponent {
 			showTutShadow: true
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ReviewEvent', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -64,7 +65,7 @@ class ReviewEvent extends React.PureComponent {
 				if (data.startTime === undefined) {
 					hours = `${data.hours[0][0]}:${data.hours[0][1]} ${data.hours[0][2]} - ${data.hours[1][0]}:${data.hours[1][1]} ${data.hours[1][2]}`;
 				} else {
-					hours = this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime);
+					hours = data.startTime + ' - ' + data.endTime;
 				}
 
 				schoolScheduleData.push({
@@ -82,7 +83,7 @@ class ReviewEvent extends React.PureComponent {
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
 					recurrence: data.recurrenceValue,
-					hours: data.allDay ? 'All-Day' : (this.formatTime(data.startTime) + ' - ' + this.formatTime(data.endTime)),
+					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
 					location: data.location,
 					description: data.description
 				});
@@ -108,17 +109,6 @@ class ReviewEvent extends React.PureComponent {
 			nonFixedEventData,
 			schoolScheduleData
 		});
-	}
-
-	formatTime = (time) => {
-		if (time.split(':').length === 3) {
-			let timeSplit = time.split(':');
-			let timeSplitSpace = time.split(' ');
-
-			time = timeSplit[0] + ':' + timeSplit[1] + ' ' + timeSplitSpace[1];
-		}
-
-		return time;
 	}
 	
 	deleteEvent = (id, category) => {
@@ -174,17 +164,38 @@ class ReviewEvent extends React.PureComponent {
 				'Error',
 				'You need to create events in order to generate a Calendar',
 				[
-					{text: 'OK', onPress: () => console.log('Okay pressed')},
+					{text: 'OK'},
 				],
 				{cancelable: false}
 			);
 			return;
 		}
-		this.props.navigation.navigate(ScheduleCreationRoute);
+
+		if (this.state.nonFixedEventData.length == 0) {
+			insertFixedEventsToGoogle()
+				.then((promises) => {
+					console.log('made it here', promises);
+					this.props.navigation.pop();
+				})
+				.catch(err => {
+					console.log('err', err);
+					if (err) {
+						Alert.alert(
+							'Error',
+							err,
+							[
+								{text: 'OK'},
+							],
+							{cancelable: false}
+						);
+					}
+				});
+		} else {
+			this.props.navigation.navigate(ScheduleCreationRoute);
+		}
 	}
 
 	render() {
-		console.log('reviewEvent', store.getState());
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
@@ -198,7 +209,11 @@ class ReviewEvent extends React.PureComponent {
 								<Text style={styles.sectionTitle}>School Schedule</Text>
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
-										this.props.navigation.navigate(SchoolScheduleRoute);
+										if (this.props.checked) {
+											this.props.navigation.navigate(CourseRoute);
+										} else {
+											this.props.navigation.navigate(SchoolScheduleRoute);
+										}
 									} else {
 										this.props.navigation.navigate(SchoolInformationRoute, {reviewEvent: true});
 									}
@@ -306,7 +321,8 @@ function mapStateToProps(state) {
 		NonFixedEventsReducer,
 		CoursesReducer, 
 		selectedIndex: NavigationReducer.reviewEventSelected,
-		hasSchoolInformation: SchoolInformationReducer.info
+		hasSchoolInformation: SchoolInformationReducer.info,
+		checked: SchoolInformationReducer.info && SchoolInformationReducer.info.info.checked === 'third'
 	};
 } 
 

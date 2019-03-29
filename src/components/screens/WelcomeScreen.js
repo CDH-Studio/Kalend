@@ -22,7 +22,7 @@ class WelcomeScreen extends React.PureComponent {
 		super(props);
 
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('WelcomeScreen', props.navigation.state.routeName);
 	}
 
 	/**

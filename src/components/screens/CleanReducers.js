@@ -33,7 +33,7 @@ class CleanReducers extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('CleanReducers', props.navigation.state.routeName);
 	}
 	
 	render() {

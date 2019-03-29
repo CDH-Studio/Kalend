@@ -1,5 +1,6 @@
 import React from 'react';
-import { StatusBar, View, ScrollView, Text, Slider, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView, findNodeHandle } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView, findNodeHandle } from 'react-native';
+import Slider from '@react-native-community/slider';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -66,7 +67,7 @@ class NonFixedEvent extends React.PureComponent {
 			snackbarTime: 3000
 		};
 		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('NonFixedEvent', props.navigation.state.routeName);
 	}
 	
 	componentWillMount() {	
@@ -497,9 +498,6 @@ class NonFixedEvent extends React.PureComponent {
 											placeholder="Description"
 											ref="descriptionInput"
 											returnKeyType = {'done'}
-											onSubmitEditing={() => {
-												addEventButtonFunction();
-											}}
 											onChangeText={(description) => this.setState({description})}
 											value={this.state.description}/>
 									</View>

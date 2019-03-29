@@ -67,7 +67,7 @@ class EventOverview extends React.PureComponent {
 					<Text style={styles.modalDetailsSubtitle}>Location: </Text>
 					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 				</View>;
-			detailHeight = 40;
+			detailHeight = 45;
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = this.props.fixedEventsColor;
