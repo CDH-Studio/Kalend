@@ -159,20 +159,17 @@ export const storeCoursesEvents = (events) => {
 export const InsertCourseEventToCalendar = (event) => {
 	let calendarID = store.getState().CalendarReducer.id;
 
-	let obj = { 
-		'end': {},
-		'start': {}
-	};
+	let obj = {};
 	
-	obj.end.dateTime = event.end.dateTime;
-	obj.start.dateTime = event.start.dateTime;
+	obj.end = event.end;
+	obj.start = event.start;
 	obj.recurrence = event.recurrence;
 	obj.location = event.location;
 	obj.description = event.description;
 	obj.summary = event.summary;
 	obj.colorId = store.getState().CalendarReducer.courseColor;
-	//console.log('course obj', obj);
-	return insertEvent(calendarID,event,{});	
+
+	return insertEvent(calendarID,obj,{});	
 };
 
 
@@ -484,6 +481,7 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
+				console.log('course', data)
 				if(data.error) reject('There was a problem inserting Course');
 				resolve(data);
 			});
