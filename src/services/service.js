@@ -445,6 +445,12 @@ let storeNonFixedEvent = (availableDate, event) => {
 			'end': {},
 			'start': {}
 		};
+		
+		if (event.isRecurrent) {
+			obj.recurrence = ['RRULE:FREQ=WEEKLY;'];
+			obj.start.timeZone = 'America/Toronto';
+			obj.end.timeZone = 'America/Toronto';
+		}
 
 		obj.summary = event.title;
 		obj.location = event.location;
