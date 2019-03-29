@@ -647,7 +647,15 @@ class FixedEvent extends React.PureComponent {
 									<View style={styles.textInputBorder}>
 										{
 											Platform.OS === 'ios' ? 
-												<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
+												<View>
+													<MaterialIcons name="arrow-drop-down"
+														size={20}
+														style={{position: 'absolute', right: 0}} />
+													<Text style={{padding: 1}} 
+														onPress={this.recurrenceOnClick}>
+														{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}
+													</Text>
+												</View>
 												:	
 												<Picker style={styles.recurrence} 
 													selectedValue={this.state.recurrence} 
@@ -657,6 +665,7 @@ class FixedEvent extends React.PureComponent {
 													<Picker.Item label="Weekly" value="WEEKLY" />
 													<Picker.Item label="Monthly" value="MONTHLY" />
 												</Picker>
+
 										}
 									</View>
 								</View>

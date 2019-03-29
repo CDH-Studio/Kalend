@@ -438,7 +438,15 @@ class Course extends React.PureComponent {
 								<View style={styles.dayOfWeekBorder}>
 									{
 										Platform.OS === 'ios' ? 
-											<Text onPress={this.dayOfWeekOnClick} >{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
+											<View>
+												<MaterialIcons name="arrow-drop-down"
+													size={20}
+													style={{position: 'absolute', right: 0}} />
+												<Text style={{padding: 1}} 
+													onPress={this.dayOfWeekOnClick}>
+													{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}
+												</Text>
+											</View>
 											:	
 											<Picker style={styles.dayOfWeekValues} 
 												selectedValue={this.state.dayOfWeek} 
