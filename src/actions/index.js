@@ -3,6 +3,7 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
+	SET_LANGUAGE,
 	UPDATE_NFE, 
 	SIGNED_IN, 
 	SIGNED_OUT, 
@@ -29,7 +30,8 @@ import {
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
-	CLEAR_OPENED
+	CLEAR_OPENED,
+	CLEAR_SETTINGS
 } from '../constants';
 
 
@@ -228,6 +230,15 @@ export function setSchoolInformation (info) {
 	return action;
 }
 
+export function setLanguage (language) {
+	const action = {
+		type: SET_LANGUAGE,
+		language
+	};
+
+	return action;
+}
+
 /*** CLEAR ***/
 export function clearCalendarID () {
 	const action = {
@@ -312,6 +323,14 @@ export function clearState () {
 export function clearUnavailableHours () {
 	const action = {
 		type: CLEAR_UNAVAILABLE_HOURS
+	};
+
+	return action;
+}
+
+export function clearLanguage () {
+	const action = {
+		type: CLEAR_SETTINGS
 	};
 
 	return action;

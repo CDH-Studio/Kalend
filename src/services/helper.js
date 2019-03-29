@@ -1,5 +1,6 @@
 import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
+import strings from '../assets/strings';
 
 export const convertToDictionary  = (data) => {
 	let dict = {};
@@ -169,6 +170,12 @@ export const clearEveryReducer = () => {
 	];
 
 	reducersDeleteActions.map(action => store.dispatch(action()));
+};
 
-	console.log(store.getState());
+export const getStrings = () => {
+	const { language } = store.getState().SettingsReducer;
+
+	let lang = language ? language : 'en';
+
+	return strings[lang];
 };
