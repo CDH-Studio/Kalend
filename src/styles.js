@@ -515,12 +515,14 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	errorCourseCode: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		marginLeft: 45
 	},
 
 	errorEndTime: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		paddingLeft: 5
@@ -615,12 +617,14 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	errorTitle: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 42
+		marginLeft: 45
 	},
 
 	errorEnd: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		alignSelf: 'flex-start',
@@ -733,13 +737,15 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	errorTitle: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
-		marginLeft: 40,
+		marginLeft: 45,
 		paddingBottom: 5
 	},
 
 	errorEndDate: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		alignSelf: 'flex-start',
@@ -747,6 +753,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 	
 	errorDuration: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		paddingBottom: 5
@@ -867,6 +874,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 	},
 
 	errorEndTime: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		width: 140,
@@ -1623,7 +1631,7 @@ export const schoolInformationStyles = StyleSheet.create({
 
 	error: {
 		fontFamily: 'Raleway-Regular',
-		color: red,
+		color: 'red',
 		marginVertical: 10,
 		marginLeft: 5
 	}
