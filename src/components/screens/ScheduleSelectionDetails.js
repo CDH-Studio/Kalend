@@ -7,6 +7,7 @@ import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
+import { calendarColors } from '../../../config';
 export const containerPaddingDetails = 10;
 
 const days = [
@@ -306,14 +307,32 @@ class ScheduleSelectionDetails extends React.PureComponent {
 let mapStateToProps = (state) => {
 	const { index } = state.ScheduleSelectionReducer;
 	const { GeneratedNonFixedEventsReducer } = state;
-	const { colors, fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+
+	fixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === fixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	nonFixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === nonFixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	courseColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === courseColor) {
+			return Object.values(i)[0];
+		}
+	});
 
 	return {
 		index,
 		GeneratedNonFixedEventsReducer,
-		fixedEventsColor: colors.event[Number(fixedEventsColor)+1].background,
-		nonFixedEventsColor: colors.event[Number(nonFixedEventsColor)+1].background,
-		courseColor: colors.event[Number(courseColor)+1].background
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
 	};
 };
 

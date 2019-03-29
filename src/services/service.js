@@ -220,13 +220,16 @@ export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
 			let calendarID;
+			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
 				if (data.items[i].summary === 'Kalend') {
 					calendarID = data.items[i].id;
+					calendarColor = data.items[i].backgroundColor;
+
 					console.log('found one!', calendarID);
 				}
 			}
-			resolve(calendarID);
+			resolve({calendarID, calendarColor});
 		});
 	});
 };
@@ -237,7 +240,7 @@ export const getCalendarID2 = () => {
 export const createCalendar = () => {
 	return new Promise( function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-			resolve(data.id);
+			resolve({calendarID: data.id, calendarColor: data.backgroundColor});
 		});
 	});
 };

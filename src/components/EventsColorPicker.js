@@ -7,6 +7,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
 import { setCourseColor, setFixedColor, setNonFixedColor } from '../actions';
 import { eventsColorPickerStyles as styles } from '../styles';
+import { calendarColors } from '../../config';
 
 class EventsColorPicker extends React.Component {
 
@@ -58,9 +59,16 @@ class EventsColorPicker extends React.Component {
 	 * Saves the selected colors in redux
 	 */
 	saveColors = () => {
-		this.props.setCourseColor(this.state.selectedColors[0].toString());
-		this.props.setFixedColor(this.state.selectedColors[1].toString());
-		this.props.setNonFixedColor(this.state.selectedColors[2].toString());
+		this.props.setCourseColor(this.getCorrespondingColorIndex(this.state.selectedColors[0]));
+		this.props.setFixedColor(this.getCorrespondingColorIndex(this.state.selectedColors[1]));
+		this.props.setNonFixedColor(this.getCorrespondingColorIndex(this.state.selectedColors[2]));
+	}
+
+	/**
+	 * Return the correct color index
+	 */
+	getCorrespondingColorIndex = (index) => {
+		return Object.keys(calendarColors[index])[0];
 	}
 
 	/**
@@ -135,20 +143,35 @@ let mapStateToProps = (state) => {
 	let { courseColor, nonFixedEventsColor, fixedEventsColor } = CalendarReducer;
 
 	let colors = [];
-	if ('colors' in CalendarReducer) {
-		if ('event' in CalendarReducer.colors) {
-			let { event } = CalendarReducer.colors;
-
-			// Formats the colors to only be in an array
-			let keys = Object.keys(event);
-			colors = keys.map((key) => {
-				return event[key].background;
-			});
-
-			// Removes the three last colors (too vibrant)
-			colors.splice(-3, 3);
+	calendarColors.map(data => {
+		let i = Object.values(data)[0];
+		if (i != undefined) {
+			colors.push(i);
 		}
-	}
+	});
+
+	// Object.values(calendarColors).map(i => {
+	// 	if (i != undefined) {
+	// 		colors.push('rgb(' + i[0] + ', ' + i[1] + ', ' + i[2] + ')');
+	// 	}
+	// });
+
+	colors.push(CalendarReducer.calendarColor);
+
+	// if ('colors' in CalendarReducer) {
+	// 	if ('event' in CalendarReducer.colors) {
+	// 		let { event } = CalendarReducer.colors;
+
+	// // Formats the colors to only be in an array
+	// let keys = Object.values(calendarColors);
+	// colors = keys.map((key) => {
+	// 	return event[key].background;
+	// });
+
+	// // Removes the three last colors (too vibrant)
+	// colors.splice(-3, 3);
+	// 	}
+	// }
 
 	return {
 		colors,

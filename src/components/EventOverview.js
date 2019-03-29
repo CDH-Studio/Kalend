@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { setNavigationScreen } from '../actions';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
+import { calendarColors } from '../../config';
 
 
 /**
@@ -305,11 +306,30 @@ class EventOverview extends React.PureComponent {
 }
 
 let mapStateToProps = (state) => {
-	const { colors, fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+
+	fixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === fixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	nonFixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === nonFixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	courseColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === courseColor) {
+			return Object.values(i)[0];
+		}
+	});
+
 	return {
-		fixedEventsColor: colors.event[Number(fixedEventsColor)+1].background,
-		nonFixedEventsColor: colors.event[Number(nonFixedEventsColor)+1].background,
-		courseColor: colors.event[Number(courseColor)+1].background
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
 	};
 };
 

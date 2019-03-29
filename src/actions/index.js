@@ -7,6 +7,7 @@ import {
 	SET_NONFIXED_COLOR,
 	SET_COURSE_COLOR,
 	SET_FIXED_COLOR,
+	SET_CALENDAR_COLOR,
 	CREATE_CALENDAR,
 	SIGNED_IN, 
 	SIGNED_OUT, 
@@ -263,6 +264,15 @@ export function setCourseColor (courseColor) {
 	const action = {
 		type: SET_COURSE_COLOR,
 		courseColor
+	};
+
+	return action;
+}
+
+export function setCalendarColor (calendarColor) {
+	const action = {
+		type: SET_CALENDAR_COLOR,
+		calendarColor
 	};
 
 	return action;

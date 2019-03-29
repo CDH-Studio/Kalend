@@ -1713,7 +1713,7 @@ export const eventsColorPickerStyles = StyleSheet.create({
 	}, 
 
 	viewPager: {
-		height: 200,
+		height: 250,
 		flexDirection: 'column-reverse'
 	}, 
 

@@ -1,4 +1,4 @@
-import { CREATE_CALENDAR, CLEAR_CALENDAR, ADD_COLORS, SET_FIXED_COLOR, SET_NONFIXED_COLOR, SET_COURSE_COLOR } from '../constants';
+import { CREATE_CALENDAR, CLEAR_CALENDAR, ADD_COLORS, SET_FIXED_COLOR, SET_NONFIXED_COLOR, SET_COURSE_COLOR, SET_CALENDAR_COLOR } from '../constants';
 
 let calendar = {
 	fixedEventsColor: '3', 
@@ -7,7 +7,7 @@ let calendar = {
 };
 
 export default function CalendarReducer(state = calendar, action) {
-	const { id, colors, fixedEventsColor, nonFixedEventsColor, courseColor } = action;
+	const { id, colors, fixedEventsColor, nonFixedEventsColor, courseColor, calendarColor } = action;
 
 	switch (action.type) {
 
@@ -44,6 +44,12 @@ export default function CalendarReducer(state = calendar, action) {
 		case CLEAR_CALENDAR:
 			return {
 				...calendar
+			};
+
+		case SET_CALENDAR_COLOR:
+			return {
+				...state,
+				calendarColor,
 			};
 
 		default:
