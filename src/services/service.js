@@ -1,4 +1,4 @@
-import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger } from './helper';
+import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, getRandomDate } from './helper';
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
@@ -372,13 +372,20 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	obj.items = [{'id': calendarID}];
 	return new Promise( async function(resolve, reject) {
 		let available = false;
-		let eventStartDate = new Date(event.startDate);
-		let eventEndDate = new Date(event.endDate);
+		let eventStartDate = new Date();
+		let eventEndDate = new Date();
 		let eventHours = event.hours;
 		let eventMinutes = event.minutes;
 
+		
 		// If not a specific Date Range then make it a week range
-		if(event.specificDateRange == false) eventEndDate.setDate(eventStartDate.getDate() + 7);
+		if(event.specificDateRange == false) {
+			eventEndDate.setDate(eventStartDate.getDate() + 7);
+
+		}  else {
+			eventStartDate = new Date(event.startDate);
+			eventEndDate = new Date(event.endDate);
+		}
 			
 		// Check if the total duration must be divided
 		if (event.isDividable) {
@@ -391,12 +398,11 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 		while(!available) {
 			let randomStartTime = getRndInteger(startDayTime, endDayTime - eventHours);
 			let randomStartTimeMinutes = getRndInteger(0, 60);
-			let randomDay = getRndInteger(eventStartDate.getDate(), eventEndDate.getDate());
-			let startDate = new Date(eventStartDate);
-			let endDate = new Date(eventEndDate);
+			let startDate = getRandomDate(eventStartDate.getTime(), eventEndDate.getTime());
+			let endDate = new Date(startDate);
+		
 
 			startDate.setHours(randomStartTime, randomStartTimeMinutes);
-			startDate.setDate(randomDay);
 			endDate.setTime(startDate.getTime() + (eventHours * 60000 * 60) + (eventMinutes * 60000));
 
 			// If the random generated Date is has already been tested, skip the itteration
@@ -424,6 +430,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 		}
 	});
 }
+
 
 /**
  *	pushes the non fixed event into redux store
