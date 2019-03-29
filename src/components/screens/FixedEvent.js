@@ -58,7 +58,6 @@ class FixedEvent extends React.PureComponent {
 			disabledStartTime : false,
 
 			endTime: moment().format('h:mm A'),
-			minEndTime: moment().format('h:mm A'),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -591,8 +590,7 @@ class FixedEvent extends React.PureComponent {
 												color: !this.state.endTimeValidated ? '#ff0000' : gray,
 												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 										}}
-										format="h:mm A" 
-										minDate={this.state.minEndTime}
+										format="h:mm A"
 										confirmBtnText="Confirm" 
 										cancelBtnText="Cancel" 
 										is24Hour={false}
