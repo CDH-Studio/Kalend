@@ -173,7 +173,7 @@ PODS:
     - React
   - RNGestureHandler (1.1.0):
     - React
-  - RNVectorIcons (6.4.2):
+  - RNVectorIcons (6.3.0):
     - React
   - yoga (0.59.2.React)
 
@@ -287,7 +287,7 @@ SPEC CHECKSUMS:
   react-native-slider: f9e501d8ae01322ac4246c57c3655005269c8928
   RNFS: c9bbde46b0d59619f8e7b735991c60e0f73d22c1
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
-  RNVectorIcons: 6607bd3a30291d0edb56f9bbe7ae411ee2b928b0
+  RNVectorIcons: cb42a5653c046f12ca16c9480c571b52620559e8
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
 PODFILE CHECKSUM: d1afc3887349cf4ba6b1553d112d1a95f96d12bc
