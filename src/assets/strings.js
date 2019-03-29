@@ -7,6 +7,7 @@ export default {
 
 		}, 
 		Course: {
+			name: 'Course',
 			addTitle: 'Add Course',
 			editTitle: 'Edit Course',
 			description: 'Add all your courses from your school schedule',
@@ -22,13 +23,38 @@ export default {
 			endTime: 'End Time'
 		},
 		Dashboard: {
-
+			name: 'Dashboard',
+			createSchedule: 'Create Schedule',
+			fabSchool: 'Add School Schedule',
+			fabFixedEvent: 'Add Fixed Event',
+			fabNonFixedEvent: 'Add Non-Fixed Event',
 		},
 		FixedEvent: {
-
+			name: 'FixedEvent',
+			addTitle: 'Add Fixed Event',
+			editTitle: 'Edit Fixed Event',
+			description: 'Add your events, office hours, appointments, etc.',
+			recurrence: ['None', 'Everyday', 'Weekly', 'Monthly'],
+			cancel: 'Cancel',
+			snackbarSuccess: 'Event successfully added',
+			snackbarFailure: 'Invalid fields, please review to add event',
+			titleEmpty: 'Title cannot be empty.',
+			datesTimesEmpty: 'Please select Dates and Times.',
+			timesEmpty: 'Please select an End Date and Time.',
+			alldayEmpty: 'Please select a Start and End Date.',
+			allday: 'All-Day',
+			start: 'Start',
+			end: 'End',
+			confirmButton: 'Confirm',
+			cancelButton: 'Cancel',
+			titlePlaceholder: 'Title',
+			locationPlaceholder: 'Location',
+			descriptionPlaceholder: 'Description',
 		},
 		Home: {
-
+			name: 'Home',
+			createdBy: 'Created by ',
+			cdhStudio: 'CDH Studio'
 		},
 		NonFixedEvent: {
 

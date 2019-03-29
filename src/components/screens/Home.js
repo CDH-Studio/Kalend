@@ -11,11 +11,15 @@ import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 /** 
  * Home/Login screen of the app.
- * Permits the user to log into the app with their Google account.*/
+ * Permits the user to log into the app with their Google account.
+ */
 class Home extends React.PureComponent {
+
+	strings = getStrings().Home;
 
 	constructor(props) {
 		super(props);
@@ -110,9 +114,9 @@ class Home extends React.PureComponent {
 									Linking.openURL('https://cdhstudio.ca/');
 								}}>
 								<Text style={styles.cdhSectionText}>
-									<Text style={styles.cdhText}>Created by </Text>
+									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>
 
-									<Text style={styles.cdhLink}>CDH Studio</Text>
+									<Text style={styles.cdhLink}>{this.strings.cdhStudio}</Text>
 								</Text>
 							</TouchableOpacity>
 						</View>

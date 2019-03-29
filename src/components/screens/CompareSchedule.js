@@ -2,8 +2,11 @@ import React from 'react';
 import { StatusBar, View, Platform } from 'react-native';
 import { compareScheduleStyles as styles } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { getStrings } from '../../services/helper';
 
 class CompareSchedule extends React.PureComponent {
+
+	strings = getStrings().CompareSchedule;
 
 	constructor(props) {
 		super(props);

@@ -13,6 +13,7 @@ import BottomButtons from '../BottomButtons';
 import { FixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, blue, dark_blue, gray, statusBlueColor, white } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
 
@@ -24,8 +25,11 @@ const containerWidth = Dimensions.get('window').width;
  */
 class FixedEvent extends React.PureComponent {
 
+	strings = getStrings().FixedEvent;
+	buttonStrings = getStrings().BottomButtons;
+
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === FixedEventRoute ? 'Add Fixed Events' : 'Edit Fixed Event',
+		title: navigation.state.routeName === FixedEventRoute ? getStrings().FixedEvent.addTitle : getStrings().FixedEvent.editTitle,
 		headerStyle: {
 			backgroundColor: white
 		}
@@ -63,7 +67,7 @@ class FixedEvent extends React.PureComponent {
 			endTimeValidated: true,
 
 			location: '',
-			recurrenceValue: 'None',
+			recurrenceValue: this.strings.recurrence[0],
 			recurrence: 'NONE',
 			description: '',
 
@@ -272,7 +276,7 @@ class FixedEvent extends React.PureComponent {
 	recurrenceOnClick = () => {
 		return ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['None', 'Everyday', 'Weekly', 'Monthly', 'Cancel'],
+				options: [...this.strings.recurrence, this.strings.cancel],
 				cancelButtonIndex: 4,
 				tintColor: blue
 			},
@@ -353,7 +357,7 @@ class FixedEvent extends React.PureComponent {
 	addAnotherEvent = () => {
 		if (!this.fieldValidation()) {
 			this.setState({
-				snackbarText: 'Invalid fields, please review to add event',
+				snackbarText: this.strings.snackbarFailure,
 				snackbarVisible: true,
 				snackbarTime: 5000
 			});
@@ -364,7 +368,7 @@ class FixedEvent extends React.PureComponent {
 		this.setState(this.resetField());
 		this.refs._scrollView.scrollTo({x: 0});
 		this.setState({
-			snackbarText: 'Event successfully added',
+			snackbarText: this.strings.snackbarSuccess,
 			snackbarVisible: true,
 			snackbarTime: 3000
 		});
@@ -398,7 +402,7 @@ class FixedEvent extends React.PureComponent {
 			endTimeValidated: true,
 
 			location: '',
-			recurrenceValue: 'None',
+			recurrenceValue: this.strings.recurrence[0],
 			recurrence: 'NONE',
 			description: '',
 
@@ -430,22 +434,22 @@ class FixedEvent extends React.PureComponent {
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
-			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+			errorTitle = <Text style={styles.errorTitle}>{this.strings.titleEmpty}</Text>;
 		} else {
 			errorTitle = null;
 		}
 
 		if(this.state.allDay === false) {
 			if (!this.state.endDateValidated && !this.state.endTimeValidated) {
-				errorEnd = <Text style={styles.errorEnd}>Please select Dates and Times.</Text>;
+				errorEnd = <Text style={styles.errorEnd}>{this.strings.datesTimesEmpty}</Text>;
 			} else if (!this.state.endTimeValidated) {
-				errorEnd = <Text style={styles.errorEnd}>Please select an End Date and Time.</Text>;
+				errorEnd = <Text style={styles.errorEnd}>{this.strings.timesEmpty}</Text>;
 			} else {
 				errorEnd = null;
 			}
 		} else {
 			if (!this.state.endDateValidated) {
-				errorEnd = <Text style={styles.errorEnd}>Please select a Start and End Date.</Text>;
+				errorEnd = <Text style={styles.errorEnd}>{this.strings.alldayEmpty}</Text>;
 			} else {
 				errorEnd = null;
 			}
@@ -455,10 +459,10 @@ class FixedEvent extends React.PureComponent {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === FixedEventRoute) {
-			addEventButtonText = 'Add';
+			addEventButtonText = this.buttonStrings.add;
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			addEventButtonText = 'Done';
+			addEventButtonText = this.buttonStrings.done;
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
 		}
@@ -476,7 +480,7 @@ class FixedEvent extends React.PureComponent {
 						scrollEventThrottle={100}>
 						<View style={[styles.content, {height: containerHeight}]}>
 							<View style={styles.instruction}>
-								<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
+								<Text style={styles.text}>{this.strings.description}</Text>
 								
 								<MaterialCommunityIcons name="calendar-today"
 									size={130}
@@ -492,7 +496,7 @@ class FixedEvent extends React.PureComponent {
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText}
 											maxLength={1024}
-											placeholder="Title" 
+											placeholder={this.strings.titlePlaceholder}
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.refs.locationInput.focus()}
 											blurOnSubmit={false}
@@ -506,7 +510,7 @@ class FixedEvent extends React.PureComponent {
 
 							<View style={styles.timeSection}>
 								<View style={[styles.allDay, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>All-Day</Text>
+									<Text style={styles.blueTitle}>{this.strings.allday}</Text>
 									<View style={styles.switch}>
 										<Switch trackColor={{false: 'lightgray', true: blue}} 
 											ios_backgroundColor={'lightgray'} 
@@ -522,7 +526,7 @@ class FixedEvent extends React.PureComponent {
 								</View>
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>Start</Text>
+									<Text style={styles.blueTitle}>{this.strings.start}</Text>
 									<DatePicker showIcon={false} 
 										date={this.state.startDate} 
 										mode="date" 
@@ -535,8 +539,8 @@ class FixedEvent extends React.PureComponent {
 										format="ddd., MMM DD, YYYY"
 										minDate={this.state.minStartDate}
 										maxDate={this.state.maxStartDate}
-										confirmBtnText="Confirm"
-										cancelBtnText="Cancel"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										onDateChange={this.startDateOnDateChange} />
 										
 									<DatePicker showIcon={false} 
@@ -552,14 +556,14 @@ class FixedEvent extends React.PureComponent {
 												opacity: this.state.allDay ? 0 : 1} 
 										}}
 										format="h:mm A" 
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										is24Hour={false}
 										onDateChange={this.startTimeOnDateChange}/>
 								</View>
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>End</Text>
+									<Text style={styles.blueTitle}>{this.strings.end}</Text>
 									<DatePicker showIcon={false} 
 										date={this.state.endDate} 
 										mode="date" 
@@ -574,8 +578,8 @@ class FixedEvent extends React.PureComponent {
 												textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
 										format="ddd., MMM DD, YYYY" 
 										minDate={this.state.minEndDate}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										onDateChange={this.endDateOnDateChange} />
 
 									<DatePicker showIcon={false} 
@@ -593,8 +597,8 @@ class FixedEvent extends React.PureComponent {
 										}}
 										format="h:mm A" 
 										minDate={this.state.minEndTime}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										is24Hour={false}
 										onDateChange={this.endTimeOnDateChange}/>
 								</View>
@@ -612,7 +616,7 @@ class FixedEvent extends React.PureComponent {
 										<TextInput style={styles.textInputText} 
 											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
-											placeholder="Location" 
+											placeholder={this.strings.locationPlaceholder} 
 											ref='locationInput'
 											returnKeyType = {'next'}
 											onSubmitEditing={() =>  this.refs.descriptionInput.focus()}
@@ -631,7 +635,7 @@ class FixedEvent extends React.PureComponent {
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
 											onFocus={() => this.scrollToInput(this.refs.descriptionInput, 300)}
-											placeholder="Description" 
+											placeholder={this.strings.descriptionPlaceholder} 
 											ref='descriptionInput'
 											returnKeyType = {'done'}
 											onChangeText={(description) => this.setState({description})} 
@@ -652,10 +656,10 @@ class FixedEvent extends React.PureComponent {
 												<Picker style={styles.recurrence} 
 													selectedValue={this.state.recurrence} 
 													onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-													<Picker.Item label="None" value="NONE" />
-													<Picker.Item label="Everyday" value="DAILY" />
-													<Picker.Item label="Weekly" value="WEEKLY" />
-													<Picker.Item label="Monthly" value="MONTHLY" />
+													<Picker.Item label={this.strings.recurrence[0]} value="NONE" />
+													<Picker.Item label={this.strings.recurrence[1]} value="DAILY" />
+													<Picker.Item label={this.strings.recurrence[2]} value="WEEKLY" />
+													<Picker.Item label={this.strings.recurrence[3]} value="MONTHLY" />
 												</Picker>
 										}
 									</View>
@@ -663,7 +667,7 @@ class FixedEvent extends React.PureComponent {
 							</View>
 
 							<BottomButtons twoButtons={showNextButton}
-								buttonText={[addEventButtonText, 'Done']}
+								buttonText={[addEventButtonText, this.buttonStrings.done]}
 								buttonMethods={[addEventButtonFunction, this.skip]} />
 						</View>
 					</ScrollView>

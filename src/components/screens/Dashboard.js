@@ -6,12 +6,15 @@ import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
+import { getStrings } from '../../services/helper';
 
 /**
  * Dashboard of the application which shows the user's calendar and
  * the differents options they can access.
  */
 class Dashboard extends React.PureComponent {
+
+	strings = getStrings().Dashboard;
 
 	constructor(props) {
 		super(props);
@@ -50,7 +53,7 @@ class Dashboard extends React.PureComponent {
 						onPress={() => {
 							this.props.navigation.navigate(ReviewEventRoute);
 						}}>
-						<Text style={styles.buttonText}>Create Schedule</Text>
+						<Text style={styles.buttonText}>{this.strings.createSchedule}</Text>
 					</TouchableOpacity>
 
 					<FAB.Group
@@ -60,7 +63,7 @@ class Dashboard extends React.PureComponent {
 						icon={optionsOpen ? 'close' : 'add'}
 						actions={[
 							{icon: 'school',
-								label: 'Add School Schedule',
+								label: this.strings.fabSchool,
 								onPress: () => {
 									if (store.getState().SchoolInformationReducer.info) {
 										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
@@ -74,10 +77,10 @@ class Dashboard extends React.PureComponent {
 								}
 							},
 							{icon: 'today',
-								label: 'Add Fixed Event',
+								label: this.strings.fabFixedEvent,
 								onPress: () => this.props.navigation.navigate(FixedEventRoute)},
 							{icon: 'face',
-								label: 'Add Non-Fixed Event',
+								label: this.strings.fabNonFixedEvent,
 								onPress: () => this.props.navigation.navigate(NonFixedEventRoute)},
 						]}
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}

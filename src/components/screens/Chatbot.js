@@ -2,11 +2,15 @@ import React from 'react';
 import { StatusBar, View, Platform } from 'react-native';
 import { chatbotStyles as styles } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { getStrings } from '../../services/helper';
 
 /**
  * Permits the user to input or modifiy events in their calendar by talking to a chatbot
  */
 class Chatbot extends React.PureComponent {
+	
+	strings = getStrings().Chatbot;
+
 	constructor(props) {
 		super(props);
 
