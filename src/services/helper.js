@@ -49,7 +49,7 @@ export const formatData = (data) => {
 	}
 	return new Promise( function(resolve, reject) {
 		if(events.length == 0) {
-			reject('Something went wrong while formating data (Array length == 0)');
+			reject(getStrings().ServicesError.formatDate);
 		} else {
 			resolve(events);
 		}

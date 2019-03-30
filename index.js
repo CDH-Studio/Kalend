@@ -32,6 +32,7 @@ import SchoolInformation from './src/components/screens/SchoolInformation';
 import CleanReducers from './src/components/screens/CleanReducers';
 import { blue, dark_blue, white } from './src/styles.js';
 import { ScheduleCreationRoute, ReviewEventRoute, SchoolScheduleCreationRoute } from './src/constants/screenNames.js';
+import { getStrings } from './src/services/helper';
 
 const theme = {
 	...DefaultTheme,
@@ -69,7 +70,7 @@ const DashboardNavigator = createBottomTabNavigator(
 					screen: Dashboard,
 					navigationOptions: {
 						...dashboardInnerScreenOptions,
-						title: 'Home'
+						title: getStrings().Dashboard.name
 					}
 				}
 			}),
@@ -86,7 +87,7 @@ const DashboardNavigator = createBottomTabNavigator(
 					screen: Chatbot,
 					navigationOptions: {
 						...dashboardInnerScreenOptions,
-						title: 'Chatbot'
+						title: getStrings().Chatbot.name
 					}
 				}
 			}),
@@ -103,7 +104,7 @@ const DashboardNavigator = createBottomTabNavigator(
 					screen: CompareSchedule,
 					navigationOptions: {
 						...dashboardInnerScreenOptions,
-						title: 'Compare Schedules'
+						title: getStrings().CompareSchedule.name
 					}
 				}
 			}),
@@ -121,7 +122,7 @@ const DashboardNavigator = createBottomTabNavigator(
 					screen: Settings,
 					navigationOptions: {
 						...dashboardInnerScreenOptions,
-						title: 'Settings'
+						title: getStrings().Settings.name
 					}
 				}
 			}),

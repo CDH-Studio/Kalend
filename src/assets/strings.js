@@ -124,14 +124,14 @@ const en = {
 	},
 	ScheduleSelection: {
 		name: 'Schedule Selection',
-		weekLetter: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+		weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 		cancel: 'Cancel',
 		backAlertTitle: 'Discarding changes',
 		backAlertDescription: 'The created schedules will be deleted if you proceed, where do you want to go?',
 		description: 'Below you will find schedules of the current week created by the application. Please select the one you prefer.',
 		courses: 'Courses',
 		fixedEvents: 'Fixed Events',
-		NonFixedEvents: 'Non-Fixed Events',
+		nonFixedEvents: 'Non-Fixed Events',
 	},
 	ScheduleSelectionDetails: {
 		name: 'Schedule Selection Details',
@@ -239,6 +239,15 @@ const en = {
 		cancel: 'Cancel',
 		yes: 'Yes',
 	},
+	ServicesError: {
+		formatDate: 'Something went wrong while formating data (Array length == 0)',
+		analyzePictureServerReceive: 'Could not receive response from the server, please try again',
+		analyzePictureServerConnect: 'Could not connect to the server, please try again later',
+		analyzePictureData: 'The data from your schedule could not be extracted, please try again',
+		findEmptySlots: 'Something went wrong while checking for events in Google Calendar',
+		insertFixedCourse: 'There was a problem inserting Course',
+		insertFixed: 'There was a problem inserting Fixed Event'
+	},
 	BottomButtons: {
 		add: 'Add',
 		next: 'Next',
@@ -248,6 +257,7 @@ const en = {
 
 const fr = {
 	Course: {
+		name: 'Cours',
 		addTitle: 'Ajout de cours',
 		editTitle: 'Modifier le cours',
 		description: 'Ajoutez tous vos cours de votre horaire scolaire',
@@ -261,6 +271,9 @@ const fr = {
 		cancelButton: 'Annuler',
 		startTime: 'Heure de début',
 		endTime: 'Heure de fin',
+		courseCodeEmpty: 'Cote de cours ne peux pas être vide.',
+		timeEmpty: 'Sélectionner un temp de début et fin.',
+		cancel: 'Annuler',
 	},
 	BottomButtons: {
 		add: 'Ajout',

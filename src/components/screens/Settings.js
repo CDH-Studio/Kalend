@@ -139,7 +139,7 @@ class Settings extends React.PureComponent {
 								clearEveryReducer();
 								this.props.navigation.navigate(LoginNavigator);
 							}}>
-							<Text style={styles.buttonLogOutText}></Text>
+							<Text style={styles.buttonLogOutText}>{this.strings.logout}</Text>
 						</TouchableOpacity>
 
 						<Text style={styles.version}>{this.strings.version}</Text>
