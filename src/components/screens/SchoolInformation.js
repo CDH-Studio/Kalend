@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StatusBar, TouchableOpacity, TextInput, Platform, Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white } from '../../styles';
+import { schoolInformationStyles as styles, dark_blue, statusBlueColor, gray, white, red } from '../../styles';
 import DatePicker from 'react-native-datepicker';
 import { Header } from 'react-navigation';
 import BottomButtons from '../BottomButtons';
@@ -170,7 +170,7 @@ class SchoolInformation extends React.PureComponent {
 								<View>
 									<View style={styles.radioButton}>
 										<RadioButton.Android color={dark_blue}
-											uncheckedColor={schoolValidated ? gray : 'red'}
+											uncheckedColor={schoolValidated ? gray : red}
 											value="first"
 											status={checked === 'first' ? 'checked' : 'unchecked'}
 											onPress={() => {
@@ -188,7 +188,7 @@ class SchoolInformation extends React.PureComponent {
 											});
 											this.refs._other.blur();
 										}}>
-											<Text style={[styles.smallText, {color: schoolValidated ? null : 'red'}]}>
+											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
 												Carleton University
 											</Text>
 										</TouchableOpacity>
@@ -196,7 +196,7 @@ class SchoolInformation extends React.PureComponent {
 									
 									<View style={styles.radioButton}>
 										<RadioButton.Android color={dark_blue}
-											uncheckedColor={schoolValidated ? gray : 'red'}
+											uncheckedColor={schoolValidated ? gray : red}
 											value="second"
 											status={checked === 'second' ? 'checked' : 'unchecked'}
 											onPress={() => {
@@ -214,7 +214,7 @@ class SchoolInformation extends React.PureComponent {
 											});
 											this.refs._other.blur();
 										}}>
-											<Text style={[styles.smallText, {color: schoolValidated ? null : 'red'}]}>
+											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
 												University of Ottawa
 											</Text>
 										</TouchableOpacity>
@@ -222,7 +222,7 @@ class SchoolInformation extends React.PureComponent {
 
 									<View style={styles.radioButton}>
 										<RadioButton.Android color={dark_blue}
-											uncheckedColor={schoolValidated ? gray : 'red'}
+											uncheckedColor={schoolValidated ? gray : red}
 											value="third"
 											status={checked === 'third' ? 'checked' : 'unchecked'}
 											onPress={() => {
@@ -269,7 +269,7 @@ class SchoolInformation extends React.PureComponent {
 											dateInput:{borderWidth: 0}, 
 											dateText:{
 												fontFamily: 'OpenSans-Regular',
-												color: !endDateValidated ? 'red' : gray
+												color: !endDateValidated ? red : gray
 											}
 										}}
 										placeholder={startDate}
@@ -296,7 +296,7 @@ class SchoolInformation extends React.PureComponent {
 											dateInput:{borderWidth: 0}, 
 											dateText:{
 												fontFamily: 'OpenSans-Regular', 
-												color: !endDateValidated ? 'red' : gray,
+												color: !endDateValidated ? red : gray,
 												textDecorationLine: disabledEndDate ? 'line-through' : 'none'}}} 
 										placeholder={endDate} 
 										format="ddd., MMM DD, YYYY" 
