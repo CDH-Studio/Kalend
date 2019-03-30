@@ -159,19 +159,16 @@ export const storeCoursesEvents = (events) => {
 export const InsertCourseEventToCalendar = (event) => {
 	let calendarID = store.getState().CalendarReducer.id;
 
-	let obj = { 
-		'end': {},
-		'start': {}
-	};
-	
-	obj.end.dateTime = event.end.dateTime;
-	obj.start.dateTime = event.start.dateTime;
+	let obj = {};
+
+	obj.end = event.end;
+	obj.start = event.start;
 	obj.recurrence = event.recurrence;
 	obj.location = event.location;
 	obj.description = event.description;
 	obj.summary = event.summary;
-	//console.log('course obj', obj);
-	return insertEvent(calendarID,event,{});	
+
+	return insertEvent(calendarID, obj,{});	
 };
 
 
@@ -445,7 +442,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 			'end': {},
 			'start': {}
 		};
-		
+
 		if (event.isRecurrent) {
 			obj.recurrence = ['RRULE:FREQ=WEEKLY;'];
 			obj.start.timeZone = 'America/Toronto';
