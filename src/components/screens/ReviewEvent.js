@@ -97,7 +97,7 @@ class ReviewEvent extends React.PureComponent {
 				nonFixedEventData.push({
 					title: data.title,
 					location: data.location,
-					priorityLevel: priorityLevels[data.priority],
+					priorityLevel: this.priorityLevels[data.priority],
 					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): this.strings.week,
 					description: data.description,
 					occurence: `${data.occurrence} ${this.strings.timeWeek}`,
