@@ -115,6 +115,17 @@ export function getRndInteger(__min, __max) {
 }
 
 /**
+ *	Generates a random date between an interval of start date and end date
+ * 
+ * @param {Date} start Start date of the interval
+ * @param {Date} end End date of the interval
+ */
+export function getRandomDate(start, end) {
+	let newDate = new Date(start + Math.random() * (end - start));
+	return  newDate;
+}
+
+/**
  *	Divides the duration by the number of occurences
  * 
  * @param {integer} __hours hours of duration

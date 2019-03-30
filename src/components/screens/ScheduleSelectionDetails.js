@@ -8,6 +8,7 @@ import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
+
 export const containerPaddingDetails = 10;
 
 const days = [
@@ -60,6 +61,7 @@ class ScheduleEvent extends React.PureComponent  {
 		minutes = (minutes < 10) ? `0${minutes}`: minutes;
 		let period = hours >= 12 ? 'PM' : 'AM';
 
+		hours = hours > 12 ? hours - 12 : hours;
 		return {hours, minutes, period};
 	}
 
