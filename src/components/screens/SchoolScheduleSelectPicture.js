@@ -37,7 +37,9 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 			fetchParams: { 
 				first: imagesPerLoad, 
 				assetType: 'Photos',
-				groupTypes: 'All'
+				...Platform.OS === 'ios' ? {
+					groupTypes: 'All'
+				} : {}
 			},
 			showFAB: false,
 			loadingAnimationValue: 0,
