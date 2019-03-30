@@ -10,7 +10,10 @@ import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
+import { getStartDate } from '../../services/helper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
+
+const moment = require('moment');
 
 const viewHeight = 774.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -40,22 +43,17 @@ class Course extends React.PureComponent {
 
 		this.state = { 
 			containerHeight,
-
-			summary: '',
-
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
-
-			startTime: new Date().toLocaleTimeString(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			startTime: moment().format('h:mm A'),
+			endTime: moment().format('h:mm A'),
+			minEndTime: moment().format('h:mm A'),
 			disabledEndTime: true,
-
+			summary: '',
 			location: ''
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Course', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -264,25 +262,23 @@ class Course extends React.PureComponent {
 			return false;
 		}
 
-		// gets the next weekday date
-		let date = this.getNextWeekdayDate();
+		let courseStartDate = getStartDate(this.props.semesterStartDate, this.state.dayOfWeek);
+		let courseEndDate = getStartDate(this.props.semesterStartDate, this.state.dayOfWeek);
 
-		let endtime = new Date(date.getTime());
-		endtime = this.getDateFromTimeString(this.state.endTime, endtime);
-		endtime = endtime.toJSON();
+		courseEndDate = this.getDateFromTimeString(this.state.endTime, courseEndDate);
+		courseEndDate = courseEndDate.toJSON();
 
-		let starttime = new Date(date.getTime());
-		starttime = this.getDateFromTimeString(this.state.startTime, starttime);
-		starttime = starttime.toJSON();
+		courseStartDate = this.getDateFromTimeString(this.state.startTime, courseStartDate);
+		courseStartDate = courseStartDate.toJSON();
 
 		return this.setState({
 			end: {
 				timeZone: 'America/Toronto',
-				dateTime: endtime
+				dateTime: courseEndDate
 			},
 			start: {
 				timeZone: 'America/Toronto',
-				dateTime: starttime
+				dateTime: courseStartDate
 			}
 		}, () => {
 			this.props.dispatch(addCourse(this.state));
@@ -308,17 +304,11 @@ class Course extends React.PureComponent {
 	}
 
 	getDateFromTimeString = (timeString, currentDate) => {
-		if (currentDate === undefined) {
-			currentDate = new Date();
-		}
-
 		// cleans up the time in the state
 		let info = timeString.split(' ').map(i => i.split(':'));
 		currentDate.setHours( 
 			parseInt(info[0][0]) + (info[1][0] === 'AM' ? 0 : 12), 
-			parseInt(info[0][1]), 
-			0,
-			0);
+			parseInt(info[0][1]));
 			
 		return currentDate;
 	}
@@ -330,23 +320,18 @@ class Course extends React.PureComponent {
 		this.setState({
 			summary: '',
 			courseCodeValidated: true,
-			
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
-
-			startTime: new Date().toLocaleTimeString(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
+			startTime: moment().format('h:mm A'),
+			endTime: moment().format('h:mm A'),
+			minEndTime: moment().format('h:mm A'),
 			disabledEndTime: true,
 			endTimeValidated: true,
-
 			location: '',
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000,
-
-			recurrence: 'RRULE:FREQ=WEEKLY;UNTIL=20190327'
+			recurrence: [`RRULE:FREQ=WEEKLY;UNTIL=${this.props.semesterEndDate};`]
 		});
 	}
 
@@ -512,9 +497,6 @@ class Course extends React.PureComponent {
 										placeholder="Location" 
 										ref='locationInput'
 										returnKeyType = {'done'}
-										onSubmitEditing={() => {
-											addEventButtonFunction();
-										}}
 										onChangeText={(location) => this.setState({location})} 
 										value={this.state.location}/>
 								</View>
@@ -551,13 +533,18 @@ class Course extends React.PureComponent {
 }
 
 let mapStateToProps = (state) => {
-	const { CoursesReducer, NavigationReducer } = state;
+	const { CoursesReducer, NavigationReducer, SchoolInformationReducer } = state;
 	let selected = NavigationReducer.reviewEventSelected;
+	let semesterEndDate = new Date(SchoolInformationReducer.info.info.endDate);
+	let semesterStartDate = new Date(SchoolInformationReducer.info.info.startDate);
+	semesterEndDate  = semesterEndDate.toISOString().split('T')[0].replace(/-/g, '');
 
 	return {
 		CourseState: CoursesReducer[selected],
 		CoursesReducer,
-		selectedIndex: selected
+		selectedIndex: selected,
+		semesterEndDate,
+		semesterStartDate
 	};
 };
 

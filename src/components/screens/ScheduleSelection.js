@@ -139,24 +139,26 @@ class Schedule extends React.PureComponent {
 
 	componentWillMount() {
 		this.setState({ai: this.props.ai, aiEvents: this.props.aiEvents});
+		this.createTimes();
 	}
 
 	componentWillReceiveProps(props) {
 		this.setState({ai: props.ai, aiEvents: props.aiEvents});
-
-		let { school, fixed, ai } = props;
-
-		if (!Array.isArray(ai)) {
-			ai = [ai];
-		}
-
-		this.createTimes({school, fixed, ai});
+		this.createTimes();
 	}
 
 	/**
 	 * Creates the time intervals between two lines according to the events that are present in the calendar
 	 */
-	createTimes = (data) => {
+	createTimes = () => {
+		let { school, fixed, ai } = this.props;
+
+		if (!Array.isArray(ai)) {
+			ai = [ai];
+		}
+
+		let data = {school, fixed, ai};
+
 		let hours = [];
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
@@ -210,7 +212,7 @@ class Schedule extends React.PureComponent {
 				currentHour -= 12;
 				count ++;
 			}
-		}		
+		}	
 		
 		// Saves the information in the state
 		this.setState({
@@ -395,7 +397,7 @@ class ScheduleSelection extends React.PureComponent {
 		};
 
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ScheduleSelection',  props.navigation.state.routeName);
 	}
 
 	componentWillMount() {

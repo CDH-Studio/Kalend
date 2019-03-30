@@ -66,7 +66,7 @@ jobs:
 
       - run:
           name: Linter
-          command: yarn run lint-client
+          command: yarn lint
 
   android-build:
     working_directory: ~/Kalend

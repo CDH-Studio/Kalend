@@ -247,29 +247,6 @@ exports[`NumericInputs render correctly 1`] = `
 </View>
 `;
 
-exports[`Slider renders correctly 1`] = `
-<RCTSlider
-  disabled={false}
-  enabled={true}
-  maximumValue={1}
-  minimumTrackTintColor="#FFBF69"
-  minimumValue={0}
-  onChange={null}
-  onResponderTerminationRequest={[Function]}
-  onSlidingComplete={null}
-  onStartShouldSetResponder={[Function]}
-  onValueChange={null}
-  step={0.5}
-  style={
-    Object {
-      "height": 40,
-    }
-  }
-  thumbTintColor="#FF9F1C"
-  value={0}
-/>
-`;
-
 exports[`StatusBar renders correctly 1`] = `null`;
 
 exports[`Switch renders correctly 1`] = `

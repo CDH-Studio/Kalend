@@ -8,6 +8,7 @@ import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
+
 export const containerPaddingDetails = 10;
 
 const days = [
@@ -60,6 +61,7 @@ class ScheduleEvent extends React.PureComponent  {
 		minutes = (minutes < 10) ? `0${minutes}`: minutes;
 		let period = hours >= 12 ? 'PM' : 'AM';
 
+		hours = hours > 12 ? hours - 12 : hours;
 		return {hours, minutes, period};
 	}
 
@@ -165,7 +167,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		};
 		
 		// Waits for the animation to finish, then goes to the next screen
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ScheduleSelectionDetails', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {

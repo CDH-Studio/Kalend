@@ -3,7 +3,7 @@ import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-nativ
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { HeaderBackButton } from 'react-navigation';
-import { InsertCourseEventToCalendar, InsertFixedEventToCalendar, generateCalendars, setUserInfo } from '../../services/service';
+import { generateCalendars, setUserInfo, insertFixedEventsToGoogle } from '../../services/service';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, white } from '../../styles';
@@ -30,13 +30,13 @@ class ScheduleCreation extends React.PureComponent {
 			goToNextScreen: false
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ScheduleCreation', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
 		setUserInfo();
-		this.InsertFixedEventsToGoogle()
+		insertFixedEventsToGoogle()
 			.then(() => {
 				if (this.props.NonFixedEventsReducer.length != 0) {
 					setTimeout(() =>{ 
@@ -53,7 +53,7 @@ class ScheduleCreation extends React.PureComponent {
 						'Error',
 						err,
 						[
-							{text: 'OK', onPress: () => this.props.navigation.navigate(DashboardNavigator)},
+							{text: 'OK', onPress: () => this.props.navigation.pop()},
 						],
 						{cancelable: false}
 					);
@@ -103,38 +103,6 @@ class ScheduleCreation extends React.PureComponent {
 		generateCalendars().then(() => {
 			this.setState({goToNextScreen: true});
 			this.navigateToSelection();
-		});
-	}
-
-	InsertFixedEventsToGoogle = () => {
-		return new Promise((resolve, reject) => {
-			this.props.CoursesReducer.forEach(async (event) => {
-				await InsertCourseEventToCalendar(event).then(data => {
-					if (data.error) {
-						reject(data.error);
-					}
-				});
-			});
-
-			this.props.FixedEventsReducer.map(async (event) => {
-				let info = {
-					title: event.title,
-					location: event.location,
-					description: event.description,
-					recurrence: event.recurrence,
-					allDay: event.allDay,
-					startDate: event.startDate,
-					startTime: event.startTime,
-					endDate: event.endDate,
-					endTime: event.endTime
-				}; 
-				await InsertFixedEventToCalendar(info).then(data => {
-					if (data.error) {
-						reject(data.error);
-					}
-				});
-			});
-			resolve();
 		});
 	}
 

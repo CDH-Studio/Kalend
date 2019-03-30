@@ -52,7 +52,7 @@ class Dashboard extends React.PureComponent {
 			isVisible: false,
 			calendarOpened: false
 		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Dashboard', props.navigation.state.routeName);
 	}
 	
 	renderItem(item) {
@@ -172,7 +172,11 @@ class Dashboard extends React.PureComponent {
 								label: 'Add School Schedule',
 								onPress: () => {
 									if (store.getState().SchoolInformationReducer.info) {
-										this.props.navigation.navigate(SchoolScheduleRoute);
+										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
+											this.props.navigation.navigate(CourseRoute);
+										} else {
+											this.props.navigation.navigate(SchoolScheduleRoute);
+										}
 									} else {
 										this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
 									}

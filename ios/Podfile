@@ -15,6 +15,7 @@ target 'Kalend' do
     'RCTWebSocket', # Needed for debugging
     'RCTAnimation', # Needed for FlatList and animations running on native UI thread
     'ART',
+    'RCTImage',
   ]
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
@@ -31,12 +32,14 @@ target 'Kalend' do
   pod 'Fabric', '~> 1.7.13'
   pod 'Crashlytics', '~> 3.10.7'
   pod 'Firebase/Performance', '~> 5.15.0'
+  pod 'lottie-ios', :path => '../node_modules/lottie-ios'
+  pod 'react-native-async-storage', :path => '../node_modules/@react-native-community/async-storage'
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   target 'Kalend-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'lottie-ios', :path => '../node_modules/lottie-ios'
-
   end
 
   target 'KalendTests' do

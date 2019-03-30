@@ -47,7 +47,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 		};
 		
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('SchoolScheduleSelectPicture', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {

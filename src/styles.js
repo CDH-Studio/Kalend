@@ -867,6 +867,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 	},
 
 	errorEndTime: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		width: 140,
@@ -1103,8 +1104,8 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingVertical: 5,
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginTop: -20
 	},
 
 	modalInfoTitle: {
@@ -1122,7 +1123,8 @@ export const eventOverviewStyles = StyleSheet.create({
 	},
 
 	modalDetailsView: {
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		marginTop: 10
 	},
 
 	modalDetailsTitle: {

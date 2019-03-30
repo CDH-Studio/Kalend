@@ -8,7 +8,7 @@ import { Header } from 'react-navigation';
 import BottomButtons from '../BottomButtons';
 import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
-import { SchoolScheduleRoute } from '../../constants/screenNames';
+import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -47,7 +47,7 @@ class SchoolInformation extends React.PureComponent {
 		};
 
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('SchoolInformation', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
@@ -127,7 +127,11 @@ class SchoolInformation extends React.PureComponent {
 
 			if (temp) {
 				if (temp.schoolSchedule || temp.reviewEvent) {
-					this.props.navigation.navigate(SchoolScheduleRoute);
+					if (this.state.checked === 'third') {
+						this.props.navigation.navigate(CourseRoute);
+					} else {
+						this.props.navigation.navigate(SchoolScheduleRoute);
+					}
 				} else {
 					this.props.navigation.pop();
 				}
@@ -185,7 +189,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												University of Ottawa
+												Carleton University
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -211,7 +215,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												Carleton University
+												University of Ottawa
 											</Text>
 										</TouchableOpacity>
 									</View>
