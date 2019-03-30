@@ -8,7 +8,7 @@ import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
 import { setDashboardData } from '../../actions';
-import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
 /**
@@ -118,26 +118,26 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen, calendarOpened} = this.state;
-		let showCloseFab;
+		const {optionsOpen} = this.state;
+		// let showCloseFab;
 		// let currentMonthText = 'jninm';
 
-		if (calendarOpened) {
-			showCloseFab = 
-			<View style={styles.closeCalendarView}>
-				<FAB
-					style={styles.closeCalendarFab}
-					small
-					theme={{colors:{accent:dark_blue}}}
-					icon="close"
-					onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
-			</View>;
+		// if (calendarOpened) {
+		// 	showCloseFab = 
+		// 	<View style={styles.closeCalendarView}>
+		// 		<FAB
+		// 			style={styles.closeCalendarFab}
+		// 			small
+		// 			theme={{colors:{accent:dark_blue}}}
+		// 			icon="close"
+		// 			onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
+		// 	</View>;
 
-			// currentMonthText = null;
-		} else {
-			showCloseFab = null;
-			// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
-		}
+		// 	// currentMonthText = null;
+		// } else {
+		// 	showCloseFab = null;
+		// 	// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
+		// }
 
 		return(
 			<Portal.Host style={{flex:1}}>
@@ -157,10 +157,10 @@ class Dashboard extends React.PureComponent {
 						rowHasChanged={this.rowHasChanged}
 						showOnlyDaySelected={true}
 						shouldChangeDay={this.shouldChangeDay}
-						onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
+						// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
 					/>
 
-					{showCloseFab}
+					{/* {showCloseFab} */}
 
 					<FAB.Group
 						ref={ref => this.touchable = ref}
