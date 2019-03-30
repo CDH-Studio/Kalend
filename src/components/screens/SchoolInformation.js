@@ -11,12 +11,17 @@ import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { ScrollView } from 'react-native-gesture-handler';
+import { getStrings } from '../../services/helper';
 
 const viewHeight = 584;
 
 class SchoolInformation extends React.PureComponent {
+
+	strings = getStrings().SchoolInformation;
+	buttonStrings = getStrings().BottomButtons;
+
 	static navigationOptions = {
-		title: 'Set School Information',
+		title: getStrings().SchoolInformation.title,
 		headerTintColor: dark_blue,
 		headerStyle: {
 			backgroundColor: white,
@@ -156,7 +161,7 @@ class SchoolInformation extends React.PureComponent {
 						console.log(height);
 					}}>
 						<View style={styles.instruction}>
-							<Text style={styles.text}>Please enter the information about your current semester</Text>
+							<Text style={styles.text}>{this.strings.description}</Text>
 							
 							<MaterialIcons name="info-outline"
 								size={130}
@@ -165,7 +170,7 @@ class SchoolInformation extends React.PureComponent {
 
 						<View style={styles.bottomContent}>
 							<View style={styles.school}> 
-								<Text style={styles.subHeader}>Post-Secondary Institution</Text>
+								<Text style={styles.subHeader}>{this.strings.institution}</Text>
 
 								<View>
 									<View style={styles.radioButton}>
@@ -189,7 +194,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												Carleton University
+												{this.strings.carletonU}
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -215,7 +220,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												University of Ottawa
+												{this.strings.uOttawa}
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -232,7 +237,7 @@ class SchoolInformation extends React.PureComponent {
 												});
 												this.refs._other.focus();
 											}} />
-										<TextInput placeholder="Other"
+										<TextInput placeholder={this.strings.other}
 											ref="_other"
 											style={styles.otherInput}
 											maxLength={1024}
@@ -248,17 +253,17 @@ class SchoolInformation extends React.PureComponent {
 										schoolValidated ?
 											null
 											:
-											<Text style={styles.error}>Please select an institution</Text>
+											<Text style={styles.error}>{this.strings.noInstitution}</Text>
 									}
 								</View>
 							</View>
 
 							<View style={styles.duration}>
-								<Text style={styles.subHeader}>Semester Duration</Text>
+								<Text style={styles.subHeader}>{this.strings.duration}</Text>
 								
 								<View style={styles.date}>
 									<Text style={styles.blueTitle}>
-										Start
+										{this.strings.start}
 									</Text>
 									
 									<DatePicker showIcon={false} 
@@ -276,14 +281,14 @@ class SchoolInformation extends React.PureComponent {
 										format="ddd., MMM DD, YYYY"
 										minDate={minStartDate}
 										maxDate={maxStartDate}
-										confirmBtnText="Confirm"
-										cancelBtnText="Cancel"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										onDateChange={this.startDateOnDateChange} />
 								</View>
 								
 								<View style={styles.date}>
 									<Text style={styles.blueTitle}>
-										End
+										{this.strings.end}
 									</Text>
 
 									<DatePicker showIcon={false} 
@@ -301,8 +306,8 @@ class SchoolInformation extends React.PureComponent {
 										placeholder={endDate} 
 										format="ddd., MMM DD, YYYY" 
 										minDate={minEndDate}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										onDateChange={this.endDateOnDateChange} />
 								</View>
 
@@ -310,14 +315,14 @@ class SchoolInformation extends React.PureComponent {
 									endDateValidated ?
 										null
 										:
-										<Text style={styles.error}>Please select a start and end date</Text>
+										<Text style={styles.error}>{this.strings.noDuration}</Text>
 								}
 							</View>
 						</View>
 
 						<View style={{marginBottom:20}}>
 							<BottomButtons twoButtons={false} 
-								buttonText={['Done']}
+								buttonText={[this.buttonStrings.done]}
 								buttonMethods={[this.saveInformation]}
 							/>
 						</View>

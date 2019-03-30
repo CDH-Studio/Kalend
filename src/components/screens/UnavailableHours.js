@@ -7,6 +7,7 @@ import {setUnavailableHours} from '../../actions';
 import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
 
@@ -14,6 +15,9 @@ const moment = require('moment');
  * Permits the user to input the hours they are not available or don't want to have anything booked
  */
 class UnavailableHours extends React.PureComponent {
+
+	strings = getStrings().UnavailableHours;
+	buttonStrings = getStrings().BottomButtons;
 
 	static navigationOptions = {
 		title: 'Set Unavailable Hours',
@@ -165,7 +169,7 @@ class UnavailableHours extends React.PureComponent {
 			if (this.state[type] === true) {
 				let endValidated = 'end' + type.charAt(0).toUpperCase() + type.slice(1);
 				if (!this.state[endValidated + 'Validated']) {
-					error[endValidated] = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
+					error[endValidated] = <Text style={styles.errorEndTime}>{this.strings.timesEmpty}</Text>;
 				} else {
 					error[endValidated] = null;
 				}
@@ -181,7 +185,7 @@ class UnavailableHours extends React.PureComponent {
 				<ScrollView>
 					<View style={[styles.content]}>
 						<View style={styles.instruction}>
-							<Text style={styles.text}>Add the hours for which you're not available or you don't want anything to be booked.</Text>
+							<Text style={styles.text}>{this.strings.description}</Text>
 							<MaterialCommunityIcons name="clock-alert-outline"
 								size={130}
 								color={dark_blue}/>
@@ -194,13 +198,13 @@ class UnavailableHours extends React.PureComponent {
 										size={30}
 										color={dark_blue}/>
 
-									<Text style={styles.blueTitle}>Sleeping Hours</Text>
+									<Text style={styles.blueTitle}>{this.strings.sleeping}</Text>
 								</View>
 								<View>
 									<View style={styles.rowContent}>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week</Text>
+												<Text style={styles.type}>{this.strings.week}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.sleepWeek && Platform.OS !== 'ios') ? dark_blue : null}
@@ -221,8 +225,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startSleepWeek) => {
 															this.setState({
@@ -247,8 +251,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndSleepWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endSleepWeek) => this.setState({endSleepWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -258,7 +262,7 @@ class UnavailableHours extends React.PureComponent {
 
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week-End</Text>
+												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.sleepWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
@@ -280,8 +284,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startSleepWeekEnd) => {
 															this.setState({
@@ -306,8 +310,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndSleepWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endSleepWeekEnd) => this.setState({endSleepWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -324,14 +328,14 @@ class UnavailableHours extends React.PureComponent {
 										size={30}
 										color={dark_blue}/>
 
-									<Text style={styles.blueTitle}>Commuting Hours</Text>
+									<Text style={styles.blueTitle}>{this.strings.commuting}</Text>
 								</View>
 
 								<View>
 									<View style={styles.rowContent}>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week</Text>
+												<Text style={styles.type}>{this.strings.week}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.commutingWeek && Platform.OS !== 'ios') ? dark_blue : null}
@@ -353,8 +357,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startCommutingWeek) => {
 															this.setState({
@@ -379,8 +383,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndCommutingWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endCommutingWeek) => this.setState({endCommutingWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -389,7 +393,7 @@ class UnavailableHours extends React.PureComponent {
 										</View>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week-End</Text>
+												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.commutingWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
@@ -411,8 +415,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startCommutingWeekEnd) => {
 															this.setState({
@@ -437,8 +441,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndCommutingWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endCommutingWeekEnd) => this.setState({endCommutingWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -455,14 +459,14 @@ class UnavailableHours extends React.PureComponent {
 										size={30}
 										color={dark_blue}/>
 
-									<Text style={styles.blueTitle}>Eating Hours</Text>
+									<Text style={styles.blueTitle}>{this.strings.eating}</Text>
 								</View>
 
 								<View>
 									<View style={styles.rowContent}>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week</Text>
+												<Text style={styles.type}>{this.strings.week}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.eatingWeek && Platform.OS !== 'ios') ? dark_blue : null}
@@ -484,8 +488,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startEatingWeek) => {
 															this.setState({
@@ -509,8 +513,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndEatingWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endEatingWeek) => this.setState({endEatingWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -519,7 +523,7 @@ class UnavailableHours extends React.PureComponent {
 										</View>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week-End</Text>
+												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.eatingWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
@@ -541,8 +545,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startEatingWeekEnd) => {
 															this.setState({
@@ -566,8 +570,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndEatingWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endEatingWeekEnd) => this.setState({endEatingWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -584,14 +588,14 @@ class UnavailableHours extends React.PureComponent {
 										size={30}
 										color={dark_blue}/>
 
-									<Text style={styles.blueTitle}>Other Unavailable Hours</Text>
+									<Text style={styles.blueTitle}>{this.strings.other}</Text>
 								</View>
 
 								<View>
 									<View style={styles.rowContent}>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week</Text>
+												<Text style={styles.type}>{this.strings.week}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.otherWeek && Platform.OS !== 'ios') ? dark_blue : null}
@@ -613,8 +617,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startOtherWeek) => {
 															this.setState({
@@ -638,8 +642,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndOtherWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endOtherWeek) => this.setState({endOtherWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -648,7 +652,7 @@ class UnavailableHours extends React.PureComponent {
 										</View>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
-												<Text style={styles.type}>Week-End</Text>
+												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
 												<Switch trackColor={{false: 'lightgray', true: blue}}
 													thumbColor={(this.state.otherWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
@@ -670,8 +674,8 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel" 
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(startOtherWeekEnd) => {
 															this.setState({
@@ -695,8 +699,8 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndOtherWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
-														confirmBtnText="Confirm" 
-														cancelBtnText="Cancel"
+														confirmBtnText={this.strings.confirmButton}
+														cancelBtnText={this.strings.cancelButton}
 														is24Hour={false}
 														onDateChange={(endOtherWeekEnd) => this.setState({endOtherWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -708,15 +712,15 @@ class UnavailableHours extends React.PureComponent {
 							</View>
 						
 							<Text style={styles.manual}>
-								<Text style={styles.textManual}>Want to add more specific unavailable hours? Add them as </Text>
-								<Text style={styles.buttonManual} onPress={() => this.manualImport()}>Fixed Events</Text>
+								<Text style={styles.textManual}></Text>
+								<Text style={styles.buttonManual} onPress={() => this.manualImport()}>{this.strings.fixedEvents}</Text>
 								<Text style={styles.textManual}>!</Text>
 							</Text>
 						</View>
 
 						<View style={[styles.buttons, {marginBottom: 20}]}>
 							<TouchableOpacity style={[styles.button, {width:'100%'}]} onPress={this.next}>
-								<Text style={styles.buttonText}>Done</Text>
+								<Text style={styles.buttonText}>{this.buttonStrings.done}</Text>
 							</TouchableOpacity>
 						</View>
 					</View>

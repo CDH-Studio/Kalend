@@ -9,11 +9,13 @@ import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducers
 import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
-import { clearEveryReducer } from '../../services/helper';
+import { clearEveryReducer, getStrings } from '../../services/helper';
 
 const viewHeight = 669.1428833007812;
 
 class Settings extends React.PureComponent {
+
+	strings = getStrings().Settings;
 
 	static navigationOptions = ({navigation}) => ({
 		headerRight: (__DEV__ ? <IconButton
@@ -64,21 +66,21 @@ class Settings extends React.PureComponent {
 								size={30}
 								color={blue} />
 								
-							<Text style={styles.title}>Profile</Text>
+							<Text style={styles.title}>{this.strings.profile}</Text>
 						</View>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
 								this.props.navigation.navigate(UnavailableRoute);
 							}}>
-							<Text style={styles.buttonText}>Set Unavailable Hours</Text>
+							<Text style={styles.buttonText}>{this.strings.unavailableHours}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
 								this.props.navigation.navigate(SchoolInformationRoute);
 							}}>
-							<Text style={styles.buttonText}>Set School Information</Text>
+							<Text style={styles.buttonText}>{this.strings.schoolInformation}</Text>
 						</TouchableOpacity>
 
 						<View style={styles.titleRow}>
@@ -86,15 +88,15 @@ class Settings extends React.PureComponent {
 								size={30}
 								color={blue} />
 
-							<Text style={styles.title}>Preferences</Text>
+							<Text style={styles.title}>{this.strings.preferences}</Text>
 						</View>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Notifications</Text>
+							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Theme</Text>
+							<Text style={styles.buttonText}>{this.strings.theme}</Text>
 						</TouchableOpacity>
 
 						<View style={styles.titleRow}>
@@ -102,33 +104,33 @@ class Settings extends React.PureComponent {
 								size={30}
 								color={blue} />
 
-							<Text style={styles.title}>General</Text>
+							<Text style={styles.title}>{this.strings.general}</Text>
 						</View>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Help</Text>
+							<Text style={styles.buttonText}>{this.strings.help}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Reload Tutorial</Text>
+							<Text style={styles.buttonText}>{this.strings.tutorial}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Reset/Delete Calendar</Text>
+							<Text style={styles.buttonText}>{this.strings.deleteCalendar}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Clear Cache/Data</Text>
+							<Text style={styles.buttonText}>{this.strings.clearCache}</Text>
 						</TouchableOpacity>
 						
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Privacy Policy</Text>
+							<Text style={styles.buttonText}>{this.strings.privacyPolicy}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button} onPress={ ()=>{
 							Linking.openURL('https://cdhstudio.ca/');
 						}}>
-							<Text style={styles.buttonText}>CDH Studio</Text>
+							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -137,10 +139,10 @@ class Settings extends React.PureComponent {
 								clearEveryReducer();
 								this.props.navigation.navigate(LoginNavigator);
 							}}>
-							<Text style={styles.buttonLogOutText}>Log out</Text>
+							<Text style={styles.buttonLogOutText}></Text>
 						</TouchableOpacity>
 
-						<Text style={styles.version}>Version 0.2.0</Text>
+						<Text style={styles.version}>{this.strings.version}</Text>
 					</View>
 				</ScrollView>
 			</View>

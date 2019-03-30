@@ -8,11 +8,14 @@ import { connect } from 'react-redux';
 import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, white } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { getStrings } from '../../services/helper';
 
 /**
  * The loading screen shown after the user reviewed their events
  */
 class ScheduleCreation extends React.PureComponent {
+
+	strings = getStrings().ScheduleCreation;
 
 	// Removes the header
 	static navigationOptions = ({ navigation }) => ({
@@ -50,10 +53,10 @@ class ScheduleCreation extends React.PureComponent {
 			.catch(err => {
 				if (err) {
 					Alert.alert(
-						'Error',
+						this.strings.error,
 						err,
 						[
-							{text: 'OK', onPress: () => this.props.navigation.pop()},
+							{text: this.strings.ok, onPress: () => this.props.navigation.pop()},
 						],
 						{cancelable: false}
 					);
@@ -70,11 +73,11 @@ class ScheduleCreation extends React.PureComponent {
 	handleBackButton = () => {
 		this.setState({alertDialog: true});
 		Alert.alert(
-			'Stopping creation',
-			'The schedules will stop being generated if you proceed, where do you want to go?',
+			this.strings.backAlertTitle,
+			this.strings.backAlertDescription,
 			[
 				{
-					text: 'Cancel',
+					text: this.strings.cancel,
 					style: 'cancel',
 					onPress: () => {
 						this.setState({alertDialog: false});
@@ -82,13 +85,13 @@ class ScheduleCreation extends React.PureComponent {
 					}
 				},
 				{
-					text: 'Dashboard',
+					text: getStrings().Dashboard.name,
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
 					}
 				},
 				{
-					text: 'Review Events', 
+					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
 						this.props.navigation.navigate(ReviewEventRoute);
 					},
@@ -123,9 +126,9 @@ class ScheduleCreation extends React.PureComponent {
 					backgroundColor={'rgba(0,0,0,0.5)'} />
 
 				<Surface style={styles.surface}>
-					<Text style={styles.title}>Creating your Schedule</Text>
+					<Text style={styles.title}>{this.strings.dialogTitle}</Text>
 
-					<Text style={styles.subtitle}>Our AI is now perfecting multiple schedule for you</Text>
+					<Text style={styles.subtitle}>{this.strings.dialogDescription}</Text>
 
 					<Progress.Bar style={styles.progressBar} 
 						indeterminate={true} 

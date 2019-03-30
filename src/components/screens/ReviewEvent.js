@@ -10,20 +10,22 @@ import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import { insertFixedEventsToGoogle } from '../../services/service';
-
-const priorityLevels = {
-	0: 'Low',
-	0.5: 'Normal',
-	1: 'High'
-};
+import { getStrings } from '../../services/helper';
 
 /**
  * Permits users to verify and edit the events they added
  */
 class ReviewEvent extends React.PureComponent {
 
+	strings = getStrings().ReviewEvent;
+	priorityLevels = {
+		0: this.strings.low,
+		0.5: this.strings.normal,
+		1: this.strings.high
+	};
+
 	static navigationOptions = {
-		title: 'Create a Schedule',
+		title: getStrings().ReviewEvent.title,
 		headerStyle: {
 			backgroundColor: white,
 		}
@@ -83,7 +85,7 @@ class ReviewEvent extends React.PureComponent {
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
 					recurrence: data.recurrenceValue,
-					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
+					hours: data.allDay ? this.strings.allDay : (data.startTime + ' - ' + data.endTime),
 					location: data.location,
 					description: data.description
 				});
@@ -96,9 +98,9 @@ class ReviewEvent extends React.PureComponent {
 					title: data.title,
 					location: data.location,
 					priorityLevel: priorityLevels[data.priority],
-					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'Week',
+					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): this.strings.week,
 					description: data.description,
-					occurence: `${data.occurrence} times/week`,
+					occurence: `${data.occurrence} ${this.strings.timeWeek}`,
 					duration: `${data.hours}h ${data.minutes}m`
 				});
 			});
@@ -161,10 +163,10 @@ class ReviewEvent extends React.PureComponent {
 
 		if (this.state.schoolScheduleData.length == 0 && this.state.nonFixedEventData.length == 0 && this.state.fixedEventData.length == 0 ) {
 			Alert.alert(
-				'Error',
-				'You need to create events in order to generate a Calendar',
+				this.strings.error,
+				this.strings.noEvent,
 				[
-					{text: 'OK'},
+					{text: this.strings.ok},
 				],
 				{cancelable: false}
 			);
@@ -173,18 +175,16 @@ class ReviewEvent extends React.PureComponent {
 
 		if (this.state.nonFixedEventData.length == 0) {
 			insertFixedEventsToGoogle()
-				.then((promises) => {
-					console.log('made it here', promises);
+				.then(() => {
 					this.props.navigation.pop();
 				})
 				.catch(err => {
-					console.log('err', err);
 					if (err) {
 						Alert.alert(
-							'Error',
+							this.strings.error,
 							err,
 							[
-								{text: 'OK'},
+								{text: this.strings.ok},
 							],
 							{cancelable: false}
 						);
@@ -206,7 +206,7 @@ class ReviewEvent extends React.PureComponent {
 					<View style={styles.content}>
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>School Schedule</Text>
+								<Text style={styles.sectionTitle}>this.strings.courseTitle</Text>
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {
@@ -226,7 +226,7 @@ class ReviewEvent extends React.PureComponent {
 
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text style={styles.textNoData}>No School Schedule or Courses added</Text> : 
+									<Text style={styles.textNoData}>{this.strings.noCourse}</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -243,7 +243,7 @@ class ReviewEvent extends React.PureComponent {
 
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>Fixed Events</Text>
+								<Text style={styles.sectionTitle}>{this.strings.fixedTitle}</Text>
 								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute)}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
@@ -253,7 +253,7 @@ class ReviewEvent extends React.PureComponent {
 
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No Fixed events added</Text> : 
+									<Text style={styles.textNoData}>{this.strings.noFixed}</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -272,7 +272,7 @@ class ReviewEvent extends React.PureComponent {
 
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
+								<Text style={styles.sectionTitle}>{this.strings.nonFixedTitle}</Text>
 								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute)}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
@@ -282,7 +282,7 @@ class ReviewEvent extends React.PureComponent {
 
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No Non-Fixed events added</Text> : 
+									<Text style={styles.textNoData}>{this.strings.noNonFixed}</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 

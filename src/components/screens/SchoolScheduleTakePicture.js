@@ -8,6 +8,7 @@ import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
 import { takePictureStyles as styles, red, blue, white, dark_blue } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -20,7 +21,7 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
 class SchoolScheduleTakePicture extends React.PureComponent {
 
 	static navigationOptions = {
-		title: 'Take a Picture',
+		title: getStrings().SchoolScheduleTakePicture.title,
 		headerTransparent: true,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.3)',

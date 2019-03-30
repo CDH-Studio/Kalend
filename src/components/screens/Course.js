@@ -190,26 +190,25 @@ class Course extends React.PureComponent {
 	dayOfWeekOnClick = () => {
 		return ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: [...this.strings.week, 'Cancel'],
+				options: [...this.strings.week, this.strings.cancel],
 				cancelButtonIndex: 7,
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.state.dayOfWeekValue = 'Monday';
+					this.setState({dayOfWeekValue: 'Monday'});
 				} else if (buttonIndex === 1) {
-					this.state.dayOfWeekValue = 'Tuesday';
+					this.setState({dayOfWeekValue: 'Tuesday'});
 				} else if (buttonIndex === 2) {
-					this.state.dayOfWeekValue = 'Wednesday';
+					this.setState({dayOfWeekValue: 'Wednesday'});
 				} else if (buttonIndex === 3) {
-					this.state.dayOfWeekValue = 'Thursday';
+					this.setState({dayOfWeekValue: 'Thursday'});
 				} else if (buttonIndex === 4) {
-					this.state.dayOfWeekValue = 'Friday';
+					this.setState({dayOfWeekValue: 'Friday'});
 				} else if (buttonIndex === 5) {
-					this.state.dayOfWeekValue = 'Saturday';
+					this.setState({dayOfWeekValue: 'Saturday'});
 				} else if (buttonIndex === 6) {
-					this.state.dayOfWeekValue = 'Sunday';
+					this.setState({dayOfWeekValue: 'Sunday'});
 				}
-				this.forceUpdate();
 			},
 		);
 	}
@@ -377,13 +376,13 @@ class Course extends React.PureComponent {
 		let showNextButton = true;
 
 		if (!this.state.courseCodeValidated) {
-			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
+			errorCourseCode = <Text style={styles.errorCourseCode}>{this.strings.courseCodeEmpty}</Text>;
 		} else {
 			errorCourseCode = null;
 		}
 
 		if (!this.state.endTimeValidated) {
-			errorEndTime = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
+			errorEndTime = <Text style={styles.errorEndTime}>{this.strings.timeEmpty}</Text>;
 		} else {
 			errorEndTime = null;
 		}

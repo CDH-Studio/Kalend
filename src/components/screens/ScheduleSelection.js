@@ -9,6 +9,9 @@ import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
 import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
+import { getStrings } from '../../services/helper';
+
+const strings = getStrings().ScheduleSelection;
 
 export const containerPadding = 10;
 export const lineThickness = 1;
@@ -126,7 +129,7 @@ class Schedule extends React.PureComponent {
 		let ordinal = converter.toWordsOrdinal(this.props.id+1);
 
 		this.state = {
-			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+			weekLetters: strings.weekLetters,
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			showShadow: true,
 			hours: [0, 4, 8, 12, 4, 8, 0],
@@ -375,12 +378,12 @@ class Schedule extends React.PureComponent {
  */
 class ScheduleSelection extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
-		title: 'Schedule Selection',
+		title: strings.name,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
 		},
 		gesturesEnabled: false,
-		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => {
+		headerLeft: <HeaderBackButton tintColor={dark_blue} onPress={() => {
 			navigation.getParam('onBackPress')(); 
 		}} />,
 	});
@@ -424,15 +427,15 @@ class ScheduleSelection extends React.PureComponent {
 
 	handleBackButton = () => {
 		Alert.alert(
-			'Discarding changes',
-			'The created schedules will be deleted if you proceed, where do you want to go?',
+			strings.backAlertTitle,
+			strings.backAlertDescription,
 			[
 				{
-					text: 'Cancel',
+					text: strings.cancel,
 					style: 'cancel',
 				},
 				{
-					text: 'Dashboard',
+					text: getStrings().Dashboard.name,
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
 						this.props.dispatch(clearGeneratedCalendars());
@@ -440,7 +443,7 @@ class ScheduleSelection extends React.PureComponent {
 					}
 				},
 				{
-					text: 'Review Events', 
+					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
 						this.props.navigation.navigate(ReviewEventRoute);
 						this.props.dispatch(clearGeneratedCalendars());
@@ -501,19 +504,19 @@ class ScheduleSelection extends React.PureComponent {
 
 				<ScrollView >
 					<View style={styles.content}>
-						<Text style={styles.description}>Below you will find schedules of the current week created by the application. Please select the one you prefer.</Text>
+						<Text style={styles.description}>{strings.description}</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: calendarEventColors.red, backgroundColor: calendarEventColorsInside.red}]}></View>
-								<Text style={styles.legendText}>Courses</Text>
+								<Text style={styles.legendText}>{strings.courses}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: calendarEventColors.green, backgroundColor: calendarEventColorsInside.green}]}></View>
-								<Text style={styles.legendText}>Fixed Events</Text>
+								<Text style={styles.legendText}>{strings.fixedEvents}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: calendarEventColors.purple, backgroundColor: calendarEventColorsInside.purple}]}></View>
-								<Text style={styles.legendText}>Non-Fixed Events</Text>
+								<Text style={styles.legendText}>{strings.nonFixedEvents}</Text>
 							</View>
 						</View>
 						{

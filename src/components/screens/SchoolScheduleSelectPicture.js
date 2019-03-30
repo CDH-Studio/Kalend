@@ -8,6 +8,7 @@ import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import { selectPictureStyles as styles, white, blue } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -21,7 +22,7 @@ const imagesPerLoad = 99;
 class SchoolScheduleSelectPicture extends React.PureComponent {
 
 	static navigationOptions = {
-		title: 'Select Picture',
+		title: getStrings().SchoolScheduleSelectPicture.title,
 		headerTransparent: true,
 	};
 
