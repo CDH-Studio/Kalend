@@ -36,6 +36,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 			fetchParams: { 
 				first: imagesPerLoad, 
 				assetType: 'Photos',
+				groupTypes: 'All'
 			},
 			showFAB: false,
 			loadingAnimationValue: 0,
@@ -75,6 +76,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 	getPhotos = () => {
 		CameraRoll.getPhotos(this.state.fetchParams)
 			.then((data) => {
+				console.log(data);
 				
 				// Adds to the existing array of images the newly fetched images
 				let images = this.state.images;
