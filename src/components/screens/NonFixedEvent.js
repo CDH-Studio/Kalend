@@ -422,7 +422,7 @@ class NonFixedEvent extends React.PureComponent {
 									</View>
 
 									<View style={styles.questionLayout}>
-										<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? this.strings.numberTimeDate : this.strings.nubmerTimeWeek}</Text>
+										<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? this.strings.numberTimeDate : this.strings.numberTimeWeek}</Text>
 
 										<NumericInput initValue={this.state.occurrence}
 											value={this.state.occurrence}

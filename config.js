@@ -17,6 +17,8 @@ export const calendarEventColorsInside = {
 
 export const gradientColors = ['#32D2DC', '#153d73'];
 
+console.log(getStrings());
+
 const slidesInfo = getStrings().WelcomeScreen;
 export const slides = [
 	{

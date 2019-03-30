@@ -1,8 +1,3 @@
-export default {
-	en,
-	fr
-};
-
 const en = {
 	Chatbot: {
 		name: 'Chatbot',
@@ -77,7 +72,7 @@ const en = {
 		availability: 'Availability',
 		dates: 'Dates',
 		week: 'Week',
-		specificData: 'Specific Date Range',
+		specificDate: 'Specific Date Range',
 		startDate: 'Start Date',
 		confirmButton: 'Confirm',
 		cancelButton: 'Cancel',
@@ -272,4 +267,9 @@ const fr = {
 		next: 'Prochain',
 		done: 'Terminé',
 	},
+};
+
+export default {
+	en,
+	fr
 };

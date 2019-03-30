@@ -81,7 +81,7 @@ class SchoolSchedule extends React.PureComponent {
 						<FontAwesome5 name="university"
 							size={130}
 							color={dark_blue} />
-						<Text style={styles.text}></Text>
+						<Text style={styles.text}>{this.strings.description}</Text>
 					</View>
 					
 					<View style={styles.button}>

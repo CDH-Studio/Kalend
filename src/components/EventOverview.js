@@ -7,7 +7,7 @@ import { setNavigationScreen } from '../actions';
 import { calendarEventColors } from '../../config';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
-import { getSrings } from '../services/helper';
+import { getStrings } from '../services/helper';
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
@@ -26,7 +26,7 @@ import { getSrings } from '../services/helper';
  */
 class EventOverview extends React.PureComponent {
 
-	strings = getSrings().EventOverview;
+	strings = getStrings().EventOverview;
 
 	constructor(props) {
 		super(props);

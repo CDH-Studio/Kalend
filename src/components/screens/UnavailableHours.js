@@ -712,7 +712,7 @@ class UnavailableHours extends React.PureComponent {
 							</View>
 						
 							<Text style={styles.manual}>
-								<Text style={styles.textManual}></Text>
+								<Text style={styles.textManual}>{this.strings.manual}</Text>
 								<Text style={styles.buttonManual} onPress={() => this.manualImport()}>{this.strings.fixedEvents}</Text>
 								<Text style={styles.textManual}>!</Text>
 							</Text>

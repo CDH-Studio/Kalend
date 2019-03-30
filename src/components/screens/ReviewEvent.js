@@ -206,7 +206,7 @@ class ReviewEvent extends React.PureComponent {
 					<View style={styles.content}>
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>this.strings.courseTitle</Text>
+								<Text style={styles.sectionTitle}>{this.strings.courseTitle}</Text>
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {

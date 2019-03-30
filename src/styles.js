@@ -259,7 +259,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: white
+		color: white,
+		textTransform: 'uppercase'
 	},
 
 	buttonTake: {
@@ -285,7 +286,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonTakeText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: white
+		color: white,
+		textTransform: 'uppercase'
 	},
 
 	manual: {
