@@ -765,6 +765,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.2.1.tgz#b4ba4f378e910518f3075e285c02f95143a5793c"
   integrity sha512-m6ROGDsXh7UryWoqw33iIp1a24O90vDiXQbPM4uju90sw11qjXtCO6cGCRSV1rz1jFn5L9gQ3HE6CcaQ0TXX/w==
 
+"@react-native-community/cameraroll@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-1.0.3.tgz#fa1834b5f4c89073e43aac29e441d1f6db87b642"
+  integrity sha512-gSpqtFrypY3qr6QR17ADV7qnfWU3BEzMffaKu4kcX8fz21kSjpS1OaklyAsQxhIiEHgK64V3QYduqttMKQChrQ==
+
 "@react-native-community/cli@^1.2.1":
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-1.4.6.tgz#fc719675cb95d1146c004c8829ae32d50fb4dde3"
