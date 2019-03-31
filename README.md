@@ -48,4 +48,4 @@ Make sure to install every development dependencies mentionned above before proc
         * On iOS `yarn ios-release` or `react-native run-android`
 
 
-### For more information please go and see our [wiki](https://github.com/CDH-Studio/Kalend/wiki)
+#### Go to our [wiki](https://github.com/CDH-Studio/Kalend/wiki) for more information
