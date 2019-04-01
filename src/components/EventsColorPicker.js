@@ -108,7 +108,6 @@ class EventsColorPicker extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		console.log(this.state.selectedColors);
 
 		return (
 			<View style={styles.container}>
@@ -139,7 +138,6 @@ class EventsColorPicker extends React.Component {
 
 let mapStateToProps = (state) => {
 	const { CalendarReducer } = state;
-	console.log(CalendarReducer);
 	let { courseColor, nonFixedEventsColor, fixedEventsColor } = CalendarReducer;
 
 	let colors = [];

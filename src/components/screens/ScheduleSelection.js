@@ -78,8 +78,6 @@ class ScheduleEvent extends React.PureComponent {
 				break;
 		}
 
-		console.log(this.props);
-
 		this.setState({height,width,left,top,color, colorInside});
 	}
 
@@ -479,6 +477,9 @@ class ScheduleSelection extends React.PureComponent {
 				courseColor: this.props.courseColor,
 				fixedEventsColor: this.props.fixedEventsColor,
 				nonFixedEventsColor: this.props.nonFixedEventsColor,
+				insideFixedEventsColor: this.props.insideFixedEventsColor,
+				insideNonFixedEventsColor: this.props.insideNonFixedEventsColor,
+				insideCourseColor: this.props.insideCourseColor,
 			}}
 			fixed={this.state.data.fixed}
 			school={this.state.data.school}
@@ -535,41 +536,51 @@ let mapStateToProps = (state) => {
 	let insideNonFixedEventsColor = nonFixedEventsColor;
 	let insideCourseColor = courseColor;
 
-	fixedEventsColor = calendarColors.map(i => {
-		if (Object.keys(i)[0] === fixedEventsColor) {
-			return Object.values(i)[0];
-		}
-	});
+	for (let i = 0; i < calendarColors.length; i++) {
+		let key = Object.keys(calendarColors[i])[0];
+		let value = Object.values(calendarColors[i])[0];
 
-	nonFixedEventsColor = calendarColors.map(i => {
-		if (Object.keys(i)[0] === nonFixedEventsColor) {
-			return Object.values(i)[0];
+		switch(key) {
+			case fixedEventsColor:
+				fixedEventsColor = value;
+				insideFixedEventsColor = Object.values(calendarInsideColors[i])[0];
+				break;
+			
+			case nonFixedEventsColor:
+				nonFixedEventsColor = value;
+				insideNonFixedEventsColor = Object.values(calendarInsideColors[i])[0];
+				break;
+				
+			case courseColor:
+				courseColor = value;
+				insideCourseColor = Object.values(calendarInsideColors[i])[0];
+				break;
 		}
-	});
+	}
 
-	courseColor = calendarColors.map(i => {
-		if (Object.keys(i)[0] === courseColor) {
-			return Object.values(i)[0];
-		}
-	});
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
 
-	insideFixedEventsColor = calendarInsideColors.map(i => {
-		if (Object.keys(i)[0] === insideFixedEventsColor) {
-			return Object.values(i)[0];
-		}
-	});
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
 
-	insideNonFixedEventsColor = calendarInsideColors.map(i => {
-		if (Object.keys(i)[0] === insideNonFixedEventsColor) {
-			return Object.values(i)[0];
-		}
-	});
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
+	}
+	
+	if (!insideFixedEventsColor) {
+		insideFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
 
-	insideCourseColor = calendarInsideColors.map(i => {
-		if (Object.keys(i)[0] === insideCourseColor) {
-			return Object.values(i)[0];
-		}
-	});
+	if (!insideNonFixedEventsColor) {
+		insideNonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideCourseColor) {
+		insideCourseColor = state.CalendarReducer.calendarColor;
+	}
 
 	return {
 		fixedEventsColor,

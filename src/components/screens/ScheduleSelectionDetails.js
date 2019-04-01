@@ -311,23 +311,36 @@ let mapStateToProps = (state) => {
 	const { GeneratedNonFixedEventsReducer } = state;
 	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
 
-	fixedEventsColor = calendarColors.map(i => {
-		if (Object.keys(i)[0] === fixedEventsColor) {
-			return Object.values(i)[0];
-		}
-	});
+	for (let i = 0; i < calendarColors.length; i++) {
+		let key = Object.keys(calendarColors[i])[0];
+		let value = Object.values(calendarColors[i])[0];
 
-	nonFixedEventsColor = calendarColors.map(i => {
-		if (Object.keys(i)[0] === nonFixedEventsColor) {
-			return Object.values(i)[0];
+		switch(key) {
+			case fixedEventsColor:
+				fixedEventsColor = value;
+				break;
+			
+			case nonFixedEventsColor:
+				nonFixedEventsColor = value;
+				break;
+				
+			case courseColor:
+				courseColor = value;
+				break;
 		}
-	});
+	}
 
-	courseColor = calendarColors.map(i => {
-		if (Object.keys(i)[0] === courseColor) {
-			return Object.values(i)[0];
-		}
-	});
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
+	}
 
 	return {
 		index,

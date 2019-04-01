@@ -327,6 +327,18 @@ let mapStateToProps = (state) => {
 		}
 	}
 
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
+	}
+
 	return {
 		fixedEventsColor,
 		nonFixedEventsColor,
