@@ -42,7 +42,7 @@ Make sure to install every development dependencies mentionned above before proc
 1. Clone the repo `git clone https://github.com/CDH-Studio/Kalend.git`
 2. Change directory `cd Kalend`
 3. Install project dependencies `yarn install` or just `yarn`
-    * **Note** if you want to test it on iOS, you need to install pod dependencies by doing `cd ios && pod install`
+    * **Note**: if you want to test it on iOS, you need to install pod dependencies by doing `cd ios && pod install`
 4. Run the application
     1. In the debug environment
         * On Android `yarn android` or `react-native run-android`
