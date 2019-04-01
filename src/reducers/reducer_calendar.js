@@ -1,9 +1,9 @@
 import { CREATE_CALENDAR, CLEAR_CALENDAR, ADD_COLORS, SET_FIXED_COLOR, SET_NONFIXED_COLOR, SET_COURSE_COLOR, SET_CALENDAR_COLOR } from '../constants';
 
 let calendar = {
-	fixedEventsColor: '3', 
-	nonFixedEventsColor: '0',
-	courseColor: '1'
+	fixedEventsColor: '4', 
+	nonFixedEventsColor: '1',
+	courseColor: '2'
 };
 
 export default function CalendarReducer(state = calendar, action) {
