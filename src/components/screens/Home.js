@@ -5,7 +5,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { setCalendarID, logonUser, setCalendarColor } from '../../actions';
 import { gradientColors } from '../../../config/config';
-import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
