@@ -161,46 +161,47 @@ class Dashboard extends React.PureComponent {
 		// }
 
 		return(
-			<Portal.Host style={{flex:1}}>
-				<View style={styles.content}>
-					<StatusBar translucent={true}
-						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-						backgroundColor={'#166489'} />	
+			<View>
+				<Portal.Host style={{flex:1}}>
+					<View style={styles.content}>
+						<StatusBar translucent={true}
+							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+							backgroundColor={'#166489'} />	
 
-					{/* <View style={styles.calendarBack}>
-						<Text style={styles.calendarBackText}>{currentMonthText}</Text>
-					</View> */}
+						{/* <View style={styles.calendarBack}>
+							<Text style={styles.calendarBackText}>{currentMonthText}</Text>
+						</View> */}
 
-					<Agenda ref='agenda'
-						items={this.state.items}
-						renderItem={this.renderItem}
-						renderEmptyData={this.renderEmptyData}
-						rowHasChanged={this.rowHasChanged}
-						showOnlyDaySelected={true}
-						shouldChangeDay={this.shouldChangeDay}
-						theme={{agendaKnobColor: dark_blue}}
-						// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
-					/>
+						<Agenda ref='agenda'
+							items={this.state.items}
+							renderItem={this.renderItem}
+							renderEmptyData={this.renderEmptyData}
+							rowHasChanged={this.rowHasChanged}
+							showOnlyDaySelected={true}
+							shouldChangeDay={this.shouldChangeDay}
+							theme={{agendaKnobColor: dark_blue}}
+							// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
+						/>
 
-					{/* {showCloseFab} */}
+						{/* {showCloseFab} */}
 
-					<FAB.Group
-						ref={ref => this.touchable = ref}
-						theme={{colors:{accent:blue}}}
-						open={optionsOpen}
-						icon={optionsOpen ? 'close' : 'add'}
-						actions={[
-							{icon: 'school',
-								label: 'Add School Schedule',
-								onPress: () => {
-									if (store.getState().SchoolInformationReducer.info) {
-										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
-											this.props.navigation.navigate(CourseRoute);
-										} else {
-											this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
+						<FAB.Group
+							ref={ref => this.touchable = ref}
+							theme={{colors:{accent:blue}}}
+							open={optionsOpen}
+							icon={optionsOpen ? 'close' : 'add'}
+							actions={[
+								{icon: 'school',
+									label: 'Add School Schedule',
+									onPress: () => {
+										if (store.getState().SchoolInformationReducer.info) {
+											if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
+												this.props.navigation.navigate(CourseRoute);
+											} else {
+												this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
+											}
 										}
 									}
-
 								},
 								{icon: 'today',
 									label: 'Add Fixed Event',
