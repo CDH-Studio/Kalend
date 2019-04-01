@@ -3,7 +3,7 @@ import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimens
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
 import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { calendarEventColors, calendarEventColorsInside } from '../../../config/config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
