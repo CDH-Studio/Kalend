@@ -37,31 +37,6 @@ exports[`Buttons render correctly 1`] = `
 </View>
 `;
 
-exports[`Icons render correctly 1`] = `
-<Text
-  allowFontScaling={false}
-  style={
-    Array [
-      Object {
-        "color": "#ffffff",
-        "fontSize": 130,
-      },
-      undefined,
-      Object {
-        "fontFamily": "Font Awesome 5 Free",
-        "fontStyle": "normal",
-        "fontWeight": "normal",
-      },
-      Object {
-        "fontWeight": "700",
-      },
-    ]
-  }
->
-  
-</Text>
-`;
-
 exports[`Image Background renders correctly 1`] = `
 <View
   accessibilityIgnoresInvertColors={true}

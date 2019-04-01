@@ -3,8 +3,8 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { setCalendarID, logonUser } from '../../actions';
-import { gradientColors } from '../../../config';
+import { setCalendarID, logonUser, setCalendarColor } from '../../actions';
+import { gradientColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
@@ -38,11 +38,13 @@ class Home extends React.PureComponent {
 	setCalendar() {
 		getCalendarID2().then(data => {
 			if (data === undefined) {
-				createCalendar().then(id => {
-					this.props.setCalendarID(id);
+				createCalendar().then(data => {
+					this.props.setCalendarID(data.calendarID);
+					this.props.setCalendarColor(data.calendarColor);
 				});
 			} else {
-				this.props.setCalendarID(data);
+				this.props.setCalendarID(data.calendarID);
+				this.props.setCalendarColor(data.calendarColor);
 			}
 		});
 	}
@@ -134,7 +136,7 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, setCalendarColor}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
