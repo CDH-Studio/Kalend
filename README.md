@@ -23,7 +23,11 @@ Below is a list of development dependencies to run the project, you can either i
   * Sources for Android 28
   * Intel x86 Emulator Accelerator (HAXM installer)
 
-### Automatic install
+### Manual install
+
+A basic install of [React Native](https://facebook.github.io/react-native/docs/getting-started#installing-dependencies) should be fine to run this project.
+
+### Automatic install (windows only)
 
 If you have none of the dependencies listed above and want to install from scratch, located at the root of this project, there is a file called **setup.ps1** in the config folder. To install via the script:
 
@@ -46,5 +50,9 @@ Make sure to install every development dependencies mentionned above before proc
     2. In the release environment
         * On Android `yarn android-release` or `react-native run-android`
         * On iOS `yarn ios-release` or `react-native run-android`
+
+**Note**: to get the Google Sign In working on the debug version of Android, you need to replace the *debug.keystore* located in .android folder of your home directory by the project's keystore file located in the project's android folder.
+
+The code for the backend part of this project is located in another [repository](https://github.com/CDH-Studio/Kalend-backend), which contains the code necessary for the server-side part of the project.
 
 #### Go to our [wiki](https://github.com/CDH-Studio/Kalend/wiki) for more information
