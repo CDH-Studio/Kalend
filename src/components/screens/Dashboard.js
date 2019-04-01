@@ -105,10 +105,13 @@ class Dashboard extends React.PureComponent {
 				}
 			}
 		);
-		
 	}
+
 	componentWillMount() {
 		this.setDashboardDataService();
+	}
+
+	componentWillUnmount() {
 		this.willFocusSubscription.remove();
 	}
 

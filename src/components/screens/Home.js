@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
+import { DashboardNavigator } from '../../constants/screenNames';
 
 /** 
  * Home/Login screen of the app.
@@ -40,10 +41,12 @@ class Home extends React.PureComponent {
 				createCalendar().then(data => {
 					this.props.setCalendarID(data.calendarID);
 					this.props.setCalendarColor(data.calendarColor);
+					this.props.navigation.navigate(DashboardNavigator);
 				});
 			} else {
 				this.props.setCalendarID(data.calendarID);
 				this.props.setCalendarColor(data.calendarColor);
+				this.props.navigation.navigate(DashboardNavigator);
 			}
 		});
 	}
