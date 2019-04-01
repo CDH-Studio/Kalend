@@ -1,7 +1,7 @@
 import { getEventsInstances } from './google_calendar';
 import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
-
+const moment = require('moment');
 
 export const convertToDictionary  = (data) => {
 	let dict = {};
@@ -72,13 +72,7 @@ export const selectionSort = (arr) => {
 };
 
 const convertLocalTimeStringToSimple = (tempDate) => {
-	let date = new Date(tempDate);
-	let data = date.toLocaleTimeString().split(' ');
-	let period = data[1];
-	let time = data[0].split(':');
-	time.splice(-1);
-
-	return `${time[0]}:${time[1]} ${period}`;
+	return new moment(tempDate).format('h:mm A');
 };
 
 export const formatData = (data) => {
