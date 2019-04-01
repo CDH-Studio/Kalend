@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 // test("SchoolSchedule renders correctly", () => {
 // 	const tree = renderer.create(<SchoolSchedule />).toJSON();
 // 	expect(tree).toMatchSnapshot();
-// });
+// }); 
 
 test("Linear Gradient renders correctly", () => {
 	const linearGradient = renderer.create(<LinearGradient style={{flex: 1, width: '100%', height: '110%'}} colors={['#1473E6', '#0E55AA']}></LinearGradient>).toJSON();
@@ -26,11 +26,6 @@ test("Buttons render correctly", () => {
 		<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
 	</TouchableOpacity>).toJSON();
 	expect(button).toMatchSnapshot();
-});
-
-test('Icons render correctly', () => {
-	const icon = renderer.create(<FontAwesome5 name="university" size={130} color='#ffffff'/>).toJSON();
-	expect(icon).toMatchSnapshot();
 });
 
 const styles = StyleSheet.create({

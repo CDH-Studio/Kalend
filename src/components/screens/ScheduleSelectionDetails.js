@@ -2,12 +2,14 @@ import React from 'react';
 import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { calendarEventColors } from '../../../config';
+import { calendarColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
+
+const moment = require('moment');
 
 export const containerPaddingDetails = 10;
 
@@ -39,13 +41,13 @@ class ScheduleEvent extends React.PureComponent  {
 		let color;
 		switch (props.info.type) {
 			case 'fixed':
-				color = 'red';
+				color = this.props.colors.fixedEventsColor;
 				break;
 			case 'school':
-				color = 'green';
+				color = this.props.colors.courseColor;
 				break;
 			case 'nonFixed':
-				color = 'purple';
+				color = this.props.colors.nonFixedEventsColor;
 				break;
 		}
 
@@ -53,36 +55,16 @@ class ScheduleEvent extends React.PureComponent  {
 			color
 		};
 	}
-	
-	getTime = (time) => {
-		time = new Date(time);
-		let hours = time.getHours();
-		let minutes = time.getMinutes();
-		minutes = (minutes < 10) ? `0${minutes}`: minutes;
-		let period = hours >= 12 ? 'PM' : 'AM';
-
-		hours = hours > 12 ? hours - 12 : hours;
-		return {hours, minutes, period};
-	}
 
 	render() {
 		const { color } = this.state;
-		const { location, end, start, title, summary } = this.props.info;
-		let startTime, endTime, time;
-		if (end != undefined) {
-			startTime = this.getTime(start.dateTime);
-			endTime = this.getTime(end.dateTime);
-			time = `${startTime.hours}:${startTime.minutes} ${startTime.period} - ${endTime.hours}:${endTime.minutes} ${endTime.period}`;
-		} else {
-			const { startTime, endTime } = this.props.info;
-			time = `${startTime} - ${endTime}`;
-		}
+		const { location, time, title, summary } = this.props.info;
 
 		let actualTitle =  (title == undefined) ? summary: title;
 
 		return (
 			<View style={styles.eventContainer}>
-				<View style={[styles.scheduleEventColor, {backgroundColor: calendarEventColors[color]}]} />	
+				<View style={[styles.scheduleEventColor, {backgroundColor: color}]} />	
 
 				<View style={styles.eventData}>
 					<Text style={styles.eventTitle}>{actualTitle}</Text>
@@ -115,9 +97,41 @@ class ScheduleDay extends React.PureComponent {
 	}
 	
 	componentWillMount() {
-		this.setState({day:this.props.day, data: this.props.data});
+		let { data, day } = this.props;
+
+		// Formats the time
+		data.map((info) => {
+			let { end, start } = info;
+			let startTime, endTime, time;
+
+			if (info.end != undefined) {
+				startTime = this.getTime(start.dateTime);
+				endTime = this.getTime(end.dateTime);
+				time = `${startTime.hours}:${startTime.minutes} ${startTime.period} - ${endTime.hours}:${endTime.minutes} ${endTime.period}`;
+			} else {
+				const { startTime, endTime } = info;
+				time = `${startTime} - ${endTime}`;
+			}
+
+			info.time = time;
+		});
+
+		// Sorts the event
+		data.sort((a,b) => new moment(a.time, 'h:mm A') - new moment(b.time, 'h:mm A'));
+
+		this.setState({day, data});
 	}
 	
+	getTime = (time) => {
+		time = new Date(time);
+		let hours = time.getHours();
+		let minutes = time.getMinutes();
+		minutes = (minutes < 10) ? `0${minutes}`: minutes;
+		let period = hours >= 12 ? 'PM' : 'AM';
+
+		hours = hours > 12 ? hours - 12 : hours;
+		return {hours, minutes, period};
+	}
 
 	render() {
 		const { day, data } = this.state;
@@ -127,7 +141,7 @@ class ScheduleDay extends React.PureComponent {
 
 				{
 					data.map((info, key) => {
-						return <ScheduleEvent key={key} info={info} />;
+						return <ScheduleEvent key={key} info={info} colors={this.props.colors} />;
 					})
 				}
 			</View>
@@ -283,6 +297,11 @@ class ScheduleSelectionDetails extends React.PureComponent {
 							objectArray.map((day, key) => {
 							
 								return (<ScheduleDay key={key} 
+									colors={{
+										courseColor: this.props.courseColor,
+										fixedEventsColor: this.props.fixedEventsColor,
+										nonFixedEventsColor: this.props.nonFixedEventsColor,
+									}}
 									day={day} 
 									data={this.getEventForWeekday(day)} />);
 							})
@@ -304,10 +323,32 @@ class ScheduleSelectionDetails extends React.PureComponent {
 let mapStateToProps = (state) => {
 	const { index } = state.ScheduleSelectionReducer;
 	const { GeneratedNonFixedEventsReducer } = state;
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+
+	fixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === fixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	nonFixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === nonFixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	courseColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === courseColor) {
+			return Object.values(i)[0];
+		}
+	});
 
 	return {
 		index,
-		GeneratedNonFixedEventsReducer
+		GeneratedNonFixedEventsReducer,
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
 	};
 };
 
