@@ -262,7 +262,7 @@ export const eventsToScheduleSelectionData = () => {
 			let endDateTime = new Date(event.end.dateTime);
 			let day = startDateTime.getDay();
 			let start =  startDateTime.getHours();
-			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 			let chunks = end - start;
 			
 			let obj = {
@@ -278,7 +278,7 @@ export const eventsToScheduleSelectionData = () => {
 			let endDateTime = new Date(`${event.endDate} ${event.endTime}`); 
 			let day = startDateTime.getDay();
 			let start =  startDateTime.getHours();
-			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 			let chunks = end - start;
 			
 			let obj = {
@@ -296,7 +296,7 @@ export const eventsToScheduleSelectionData = () => {
 				let endDateTime = new Date(event.end.dateTime);
 				let day = startDateTime.getDay();
 				let start =  startDateTime.getHours();
-				let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+				let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 				let chunks = end - start;
 				
 				let obj = {

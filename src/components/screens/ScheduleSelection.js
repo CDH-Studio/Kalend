@@ -92,18 +92,7 @@ class ScheduleEvent extends React.PureComponent {
 				height: height, 
 				width: width,
 				top: top,
-				left: left,
-				...Platform.select({
-					ios: {
-						shadowColor: black,
-						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: this.props.showShadow ? 0.2 : 0,
-						shadowRadius: 1,    
-					},
-					android: {
-						elevation: this.props.showShadow ? 3 : 0,
-					},
-				}) }}>
+				left: left,}}>
 			</View>
 		);
 	}
@@ -166,7 +155,7 @@ class Schedule extends React.PureComponent {
 		Object.entries(data).map((i) => {
 			i[1].map((i) => {
 				let start = i.start;
-				let end = i.start + i.chunks;
+				let end = i.start + Math.ceil(i.chunks);
 
 				if (start < earliestHour) {
 					earliestHour = start;
