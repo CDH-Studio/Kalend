@@ -136,7 +136,7 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen} = this.state;
+		const {optionsOpen, snackbarVisible, snackbarTime, snackbarText} = this.state;
 		// let showCloseFab;
 		// let currentMonthText = 'jninm';
 
@@ -159,28 +159,28 @@ class Dashboard extends React.PureComponent {
 
 		return(
 			<View style={{flex:1}}>
-			<Portal.Host>
-				<View style={styles.content}>
-					<StatusBar translucent={true}
-						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-						backgroundColor={'#166489'} />	
+				<Portal.Host>
+					<View style={styles.content}>
+						<StatusBar translucent={true}
+							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+							backgroundColor={'#166489'} />	
 
-					{/* <View style={styles.calendarBack}>
-						<Text style={styles.calendarBackText}>{currentMonthText}</Text>
-					</View> */}
+						{/* <View style={styles.calendarBack}>
+							<Text style={styles.calendarBackText}>{currentMonthText}</Text>
+						</View> */}
 
-					<Agenda ref='agenda'
-						items={this.state.items}
-						renderItem={this.renderItem}
-						renderEmptyData={this.renderEmptyData}
-						rowHasChanged={this.rowHasChanged}
-						showOnlyDaySelected={true}
-						shouldChangeDay={this.shouldChangeDay}
-						theme={{agendaKnobColor: dark_blue}}
-						// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
-					/>
+						<Agenda ref='agenda'
+							items={this.state.items}
+							renderItem={this.renderItem}
+							renderEmptyData={this.renderEmptyData}
+							rowHasChanged={this.rowHasChanged}
+							showOnlyDaySelected={true}
+							shouldChangeDay={this.shouldChangeDay}
+							theme={{agendaKnobColor: dark_blue}}
+							// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
+						/>
 
-					{/* {showCloseFab} */}
+						{/* {showCloseFab} */}
 
 						<FAB.Group
 							ref={ref => this.touchable = ref}

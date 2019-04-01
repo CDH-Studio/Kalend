@@ -249,6 +249,10 @@ export function setDashboardData (data) {
 	const action = {
 		type: SET_DASHBOARD_DATA,
 		data
+	};
+
+	return action;
+}
 
 export function setFixedColor (fixedEventsColor) {
 	const action = {
