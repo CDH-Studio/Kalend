@@ -167,6 +167,7 @@ export const InsertCourseEventToCalendar = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 	obj.summary = event.summary;
+	obj.colorId = store.getState().CalendarReducer.courseColor;
 
 	return insertEvent(calendarID, obj,{});	
 };
@@ -205,6 +206,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 	obj.summary = event.title;
 	obj.location = event.location;
 	obj.description = event.description;
+	obj.colorId = store.getState().CalendarReducer.fixedEventsColor;
 
 	return insertEvent(calendarID,obj,{});	
 };
@@ -218,13 +220,16 @@ export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
 			let calendarID;
+			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
 				if (data.items[i].summary === 'Kalend') {
 					calendarID = data.items[i].id;
+					calendarColor = data.items[i].backgroundColor;
+
 					console.log('found one!', calendarID);
 				}
 			}
-			resolve(calendarID);
+			resolve({calendarID, calendarColor});
 		});
 	});
 };
@@ -235,7 +240,7 @@ export const getCalendarID2 = () => {
 export const createCalendar = () => {
 	return new Promise( function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-			resolve(data.id);
+			resolve({calendarID: data.id, calendarColor: data.backgroundColor});
 		});
 	});
 };
@@ -454,6 +459,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 		obj.description = event.description;
 		obj.end.dateTime = availableDate.endDate;
 		obj.start.dateTime = availableDate.startDate;
+		obj.colorId = store.getState().CalendarReducer.nonFixedEventsColor;
 	
 		store.dispatch(addGeneratedNonFixedEvent(obj));
 		resolve();
@@ -491,6 +497,7 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
+				console.log('course', data);
 				if(data.error) reject('There was a problem inserting Course');
 				resolve(data);
 			});

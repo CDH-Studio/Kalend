@@ -3,7 +3,7 @@ import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimens
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
 import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { calendarEventColors, calendarEventColorsInside } from '../../../config/config';
+import { calendarColors } from '../../../config/config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
@@ -65,16 +65,16 @@ class ScheduleEvent extends React.PureComponent {
 		// Gets the appropriate color for the event
 		switch (kind) {
 			case 'fixed':
-				color = calendarEventColors.red;
-				colorInside = calendarEventColorsInside.red;
+				color = this.props.colors.fixedEventsColor;
+				colorInside = this.props.colors.fixedEventsColor;
 				break;
 			case 'school':
-				color = calendarEventColors.green;
-				colorInside = calendarEventColorsInside.green;
+				color = this.props.colors.courseColor;
+				colorInside = this.props.colors.courseColor;
 				break;
 			case 'ai':
-				color = calendarEventColors.purple;
-				colorInside = calendarEventColorsInside.purple;
+				color = this.props.colors.nonFixedEventsColor;
+				colorInside = this.props.colors.nonFixedEventsColor;
 				break;
 		}
 
@@ -230,7 +230,7 @@ class Schedule extends React.PureComponent {
 	}
 
 	render() {
-		const { numOfLines, id} = this.props;
+		const { numOfLines, id, colors } = this.props;
 		// console.log('data in render', id, data.ai[id]);
 		const { weekLetters, ordinal, hours, showShadow, startOffset, timeInterval } = this.state;
 
@@ -299,6 +299,7 @@ class Schedule extends React.PureComponent {
 							{ 
 								this.props.school.map((info, key) => {
 									return  <ScheduleEvent key={key} 
+										colors={colors}
 										showShadow={showShadow} 
 										chunks={info.chunks} 
 										day={info.day} 
@@ -312,6 +313,7 @@ class Schedule extends React.PureComponent {
 							{ 
 								this.props.fixed.map((info, key) => {
 									return  <ScheduleEvent key={key} 
+										colors={colors}
 										showShadow={showShadow} 
 										chunks={info.chunks} 
 										day={info.day} 
@@ -326,6 +328,7 @@ class Schedule extends React.PureComponent {
 							
 								this.state.ai.map((info, key) => {
 									return  <ScheduleEvent key={key} 
+										colors={colors}
 										showShadow={showShadow} 
 										chunks={info.chunks} 
 										day={info.day} 
@@ -470,6 +473,11 @@ class ScheduleSelection extends React.PureComponent {
 	
 	_renderItem = ({item, index}) => {
 		return <Schedule nextScreen={this.nextScreen} 
+			colors={{
+				courseColor: this.props.courseColor,
+				fixedEventsColor: this.props.fixedEventsColor,
+				nonFixedEventsColor: this.props.nonFixedEventsColor,
+			}}
 			fixed={this.state.data.fixed}
 			school={this.state.data.school}
 			ai={item}
@@ -493,15 +501,15 @@ class ScheduleSelection extends React.PureComponent {
 						<Text style={styles.description}>Below you will find schedules of the current week created by the application. Please select the one you prefer.</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: calendarEventColors.red, backgroundColor: calendarEventColorsInside.red}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.courseColor}]}></View>
 								<Text style={styles.legendText}>Courses</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: calendarEventColors.green, backgroundColor: calendarEventColorsInside.green}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.fixedEventsColor}]}></View>
 								<Text style={styles.legendText}>Fixed Events</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: calendarEventColors.purple, backgroundColor: calendarEventColorsInside.purple}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.nonFixedEventsColor}]}></View>
 								<Text style={styles.legendText}>Non-Fixed Events</Text>
 							</View>
 						</View>
@@ -518,4 +526,33 @@ class ScheduleSelection extends React.PureComponent {
 	}
 }
 
-export default connect()(ScheduleSelection);
+
+let mapStateToProps = (state) => {
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+
+	fixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === fixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	nonFixedEventsColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === nonFixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	courseColor = calendarColors.map(i => {
+		if (Object.keys(i)[0] === courseColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	return {
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
+	};
+};
+
+export default connect(mapStateToProps, null)(ScheduleSelection);

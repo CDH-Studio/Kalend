@@ -1684,3 +1684,121 @@ export const scheduleCreateStyles = StyleSheet.create({
 		alignSelf:'center'
 	}
 });
+
+export const eventsColorPickerStyles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	modal: {
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	modalContent: {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+	},
+
+	modalTitle: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		padding: 15, 
+		fontSize: 20, 
+		paddingLeft: 20
+	}, 
+
+	viewPager: {
+		height: 250,
+		flexDirection: 'column-reverse'
+	}, 
+
+	button: {
+		justifyContent: 'flex-end', 
+		width: '100%', 
+		flexDirection: 'row'
+	}, 
+
+	buttonText: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+		padding: 15, 
+		paddingRight: 20,
+		paddingTop: 0
+	}, 
+
+	circleColor: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 25,
+		width: 50,
+		margin: 5,
+		height: 50,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	}, 
+
+	dimmedCircle: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#00000040',
+		borderRadius: 25,
+		width: 50,
+		height: 50,
+	},
+
+	circleContainer: {
+		flexDirection: 'row', 
+		flexWrap: 'wrap', 
+		margin: 5, 
+		width: Dimensions.get('window').width > 240 ? 240 : Dimensions.get('window').width
+	},
+
+	colorsSliderContainer: {
+		justifyContent: 'center', 
+		alignItems: 'center'
+	}, 
+
+	pager: {
+		backgroundColor: 'white',
+		height: 48
+	}, 
+
+	pagerText: {
+		color: gray, 
+		fontFamily: 'Raleway-Medium'
+	}, 
+
+	pagerSelectedBorder: {
+		height: 3,
+		backgroundColor: dark_blue
+	}, 
+
+	pagerSelectedText: {
+		color: dark_blue, 
+		fontFamily: 'Raleway-Bold'
+	}
+});
