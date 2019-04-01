@@ -2,12 +2,12 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { FAB, Portal } from 'react-native-paper';
+import { FAB, Portal, Snackbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
-import { setDashboardData } from '../../actions';
+import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
@@ -50,7 +50,10 @@ class Dashboard extends React.PureComponent {
 			optionsOpen: false,
 			items: {},
 			isVisible: false,
-			calendarOpened: false
+			calendarOpened: false,
+			snackbarVisible: false,
+			snackbarTime: 3000,
+			snackbarText: '',
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
 	}
@@ -88,11 +91,25 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	componentDidMount() {
-		this.setState({isVisible: true});
+		this.setState({isVisible: true});     
+		this.willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			() => {
+				if (store.getState().NavigationReducer.successfullyInsertedEvents) {
+					this.setState({
+						snackbarText: 'Event(s) successfully added',
+						snackbarVisible: true
+					});
+
+					this.props.dispatch(setNavigationScreen({successfullyInsertedEvents: null}));
+				}
+			}
+		);
 		
 	}
 	componentWillMount() {
 		this.setDashboardDataService();
+		this.willFocusSubscription.remove();
 	}
 
 	setDashboardDataService = () => {
@@ -108,6 +125,7 @@ class Dashboard extends React.PureComponent {
 				console.log('err', err);
 			});
 	}
+
 
 	showPopover = () => {
 		this.setState({isVisible: true});
@@ -140,7 +158,8 @@ class Dashboard extends React.PureComponent {
 		// }
 
 		return(
-			<Portal.Host style={{flex:1}}>
+			<View style={{flex:1}}>
+			<Portal.Host>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
@@ -163,37 +182,60 @@ class Dashboard extends React.PureComponent {
 
 					{/* {showCloseFab} */}
 
-					<FAB.Group
-						ref={ref => this.touchable = ref}
-						theme={{colors:{accent:blue}}}
-						open={optionsOpen}
-						icon={optionsOpen ? 'close' : 'add'}
-						actions={[
-							{icon: 'school',
-								label: 'Add School Schedule',
-								onPress: () => {
-									if (store.getState().SchoolInformationReducer.info) {
-										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
-											this.props.navigation.navigate(CourseRoute);
+						<FAB.Group
+							ref={ref => this.touchable = ref}
+							theme={{colors:{accent:blue}}}
+							open={optionsOpen}
+							icon={optionsOpen ? 'close' : 'add'}
+							actions={[
+								{icon: 'school',
+									label: 'Add School Schedule',
+									onPress: () => {
+										if (store.getState().SchoolInformationReducer.info) {
+											if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
+												this.props.navigation.navigate(CourseRoute);
+											} else {
+												this.props.navigation.navigate(SchoolScheduleRoute);
+											}
 										} else {
-											this.props.navigation.navigate(SchoolScheduleRoute);
+											this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
 										}
-									} else {
-										this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
 									}
-								}
-							},
-							{icon: 'today',
-								label: 'Add Fixed Event',
-								onPress: () => this.props.navigation.navigate(FixedEventRoute)},
-							{icon: 'face',
-								label: 'Add Non-Fixed Event',
-								onPress: () => this.props.navigation.navigate(NonFixedEventRoute)},
-						]}
-						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
-						style={styles.fab} />
-				</View>
-			</Portal.Host>
+
+								},
+								{icon: 'today',
+									label: 'Add Fixed Event',
+									onPress: () => this.props.navigation.navigate(FixedEventRoute)},
+								{icon: 'face',
+									label: 'Add Non-Fixed Event',
+									onPress: () => this.props.navigation.navigate(NonFixedEventRoute)},
+							]}
+							onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
+							style={styles.fab} />
+
+						{/* <View>
+							<Popover popoverStyle={styles.tooltipView}
+								isVisible={this.state.isVisible}
+								fromView={this.touchable}
+								onClose={() => this.closePopover()}>
+								<Feather name="x"
+									style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
+									size={25}
+									color={black} />
+								<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
+							</Popover>
+						</View> */}
+					</View>
+				</Portal.Host>
+
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
+			</View>
 		);
 	}
 }

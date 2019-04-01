@@ -1,5 +1,5 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, ActivityIndicator, Text, Platform, NativeModules } from 'react-native';
+import { ScrollView, View, StatusBar, ActivityIndicator, Text, Platform, NativeModules } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import { selectPictureStyles as styles, white, blue } from '../../styles';
+import CameraRoll from '@react-native-community/cameraroll';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -36,6 +37,9 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 			fetchParams: { 
 				first: imagesPerLoad, 
 				assetType: 'Photos',
+				...Platform.OS === 'ios' ? {
+					groupTypes: 'All'
+				} : {}
 			},
 			showFAB: false,
 			loadingAnimationValue: 0,
