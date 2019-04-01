@@ -310,7 +310,7 @@ class SchoolInformation extends React.PureComponent {
 									endDateValidated ?
 										null
 										:
-										<Text style={styles.error}>Please select a start and end date</Text>
+										<Text style={styles.error}>Please select a Start and End date</Text>
 								}
 							</View>
 						</View>

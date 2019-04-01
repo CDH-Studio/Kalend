@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { IconButton } from 'react-native-paper';
+import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { setNavigationScreen } from '../actions';
-import { calendarEventColors } from '../../config';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
+import { calendarColors } from '../../config/config';
 
 
 /**
@@ -60,7 +61,7 @@ class EventOverview extends React.PureComponent {
 		let detailHeight;
 
 		if (this.props.category === 'SchoolSchedule') {
-			categoryColor = calendarEventColors.red;
+			categoryColor = this.props.courseColor;
 			categoryIcon = 'school';
 			details = 
 				<View style={styles.modalDetailView}>
@@ -70,7 +71,7 @@ class EventOverview extends React.PureComponent {
 			detailHeight = 45;
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
-			categoryColor = calendarEventColors.green;
+			categoryColor = this.props.fixedEventsColor;
 			categoryIcon = 'calendar-today';
 			details = 
 				<View>
@@ -92,7 +93,7 @@ class EventOverview extends React.PureComponent {
 			detailHeight = 80;
 			editScreen = 'FixedEvent';
 		} else {
-			categoryColor = calendarEventColors.purple;
+			categoryColor = this.props.nonFixedEventsColor;
 			categoryIcon = 'face';
 			details = 
 				<View>
@@ -304,4 +305,33 @@ class EventOverview extends React.PureComponent {
 	}
 }
 
-export default EventOverview;
+let mapStateToProps = (state) => {
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+	
+	for (let i = 0; i < calendarColors.length; i++) {
+		let key = Object.keys(calendarColors[i])[0];
+		let value = Object.values(calendarColors[i])[0];
+
+		switch(key) {
+			case fixedEventsColor:
+				fixedEventsColor = value;
+				break;
+			
+			case nonFixedEventsColor:
+				nonFixedEventsColor = value;
+				break;
+				
+			case courseColor:
+				courseColor = value;
+				break;
+		}
+	}
+
+	return {
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
+	};
+};
+
+export default connect(mapStateToProps, null)(EventOverview);

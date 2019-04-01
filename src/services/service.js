@@ -61,11 +61,7 @@ export const analyzePicture = (base64Data) => {
 				if(body.data.length == 0) reject('The data from your schedule could not be extracted, please try again');
 				formatData(body.data)
 					.then(data => {
-						storeCoursesEvents(data)
-							.then((success) => {
-								if(success) return resolve(true);
-								else return reject(false);
-							});
+						return resolve(data);
 					})
 					.catch(err => {
 						reject(err);
@@ -167,6 +163,7 @@ export const InsertCourseEventToCalendar = (event) => {
 	obj.location = event.location;
 	obj.description = event.description;
 	obj.summary = event.summary;
+	obj.colorId = store.getState().CalendarReducer.courseColor;
 
 	return insertEvent(calendarID, obj,{});	
 };
@@ -205,6 +202,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 	obj.summary = event.title;
 	obj.location = event.location;
 	obj.description = event.description;
+	obj.colorId = store.getState().CalendarReducer.fixedEventsColor;
 
 	return insertEvent(calendarID,obj,{});	
 };
@@ -218,13 +216,16 @@ export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
 			let calendarID;
+			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
 				if (data.items[i].summary === 'Kalend') {
 					calendarID = data.items[i].id;
+					calendarColor = data.items[i].backgroundColor;
+
 					console.log('found one!', calendarID);
 				}
 			}
-			resolve(calendarID);
+			resolve({calendarID, calendarColor});
 		});
 	});
 };
@@ -235,7 +236,7 @@ export const getCalendarID2 = () => {
 export const createCalendar = () => {
 	return new Promise( function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-			resolve(data.id);
+			resolve({calendarID: data.id, calendarColor: data.backgroundColor});
 		});
 	});
 };
@@ -262,7 +263,7 @@ export const eventsToScheduleSelectionData = () => {
 			let endDateTime = new Date(event.end.dateTime);
 			let day = startDateTime.getDay();
 			let start =  startDateTime.getHours();
-			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 			let chunks = end - start;
 			
 			let obj = {
@@ -278,7 +279,7 @@ export const eventsToScheduleSelectionData = () => {
 			let endDateTime = new Date(`${event.endDate} ${event.endTime}`); 
 			let day = startDateTime.getDay();
 			let start =  startDateTime.getHours();
-			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 			let chunks = end - start;
 			
 			let obj = {
@@ -296,7 +297,7 @@ export const eventsToScheduleSelectionData = () => {
 				let endDateTime = new Date(event.end.dateTime);
 				let day = startDateTime.getDay();
 				let start =  startDateTime.getHours();
-				let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+				let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 				let chunks = end - start;
 				
 				let obj = {
@@ -454,6 +455,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 		obj.description = event.description;
 		obj.end.dateTime = availableDate.endDate;
 		obj.start.dateTime = availableDate.startDate;
+		obj.colorId = store.getState().CalendarReducer.nonFixedEventsColor;
 	
 		store.dispatch(addGeneratedNonFixedEvent(obj));
 		resolve();
@@ -512,6 +514,7 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
+				console.log('course', data);
 				if(data.error) reject('There was a problem inserting Course');
 				resolve(data);
 			});

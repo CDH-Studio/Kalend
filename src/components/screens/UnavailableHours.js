@@ -221,6 +221,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -247,6 +248,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndSleepWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -280,6 +282,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -306,6 +309,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndSleepWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -353,6 +357,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -379,6 +384,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndCommutingWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -411,6 +417,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -437,6 +444,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndCommutingWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -484,6 +492,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -509,6 +518,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndEatingWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -541,6 +551,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -566,6 +577,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndEatingWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -613,6 +625,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -638,6 +651,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndOtherWeek ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}
@@ -670,6 +684,7 @@ class UnavailableHours extends React.PureComponent {
 															}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel" 
 														is24Hour={false}
@@ -695,6 +710,7 @@ class UnavailableHours extends React.PureComponent {
 																textDecorationLine: this.state.disabledEndOtherWeekEnd ? 'line-through' : 'none'}
 														}}
 														format="h:mm A" 
+														locale={'US'}
 														confirmBtnText="Confirm" 
 														cancelBtnText="Cancel"
 														is24Hour={false}

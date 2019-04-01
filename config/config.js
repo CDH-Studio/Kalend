@@ -1,17 +1,20 @@
 export const webClientId = '359972006564-9tngmtaigit300v7kqjr48sph3apvq38.apps.googleusercontent.com';
 export const googleIdentityScope = ['profile', 'https://www.googleapis.com/auth/calendar'];
 
-export const calendarEventColors = {
-	red: '#E57B73',
-	green: '#36B478',
-	purple: '#7885CA'
-};
-
-export const calendarEventColorsInside = {
-	red: '#EDA49E',
-	green: '#52CB91',
-	purple: '#9DA6D8'
-};
+export const calendarColors = [
+	{'4': 'rgb(216, 129, 119)'},
+	{'11': 'rgb(196, 40, 27)'},
+	{'5': 'rgb(238, 191, 75)'},
+	{'6': 'rgb(226, 92, 51)'},
+	{'2': 'rgb(93, 178, 126)'},
+	{'10': 'rgb(57, 125, 73)'},
+	{'7': 'rgb(65, 155, 223)'},
+	{'9': 'rgb(65, 84, 175)'},
+	{'1': 'rgb(123, 135, 198)'},
+	{'3': 'rgb(130, 51, 164)'},
+	{'8': 'rgb(97, 97, 97)'},
+	{'0': null}
+];
 
 export const gradientColors = ['#32D2DC', '#153d73'];
 
