@@ -360,14 +360,15 @@ export const cameraRollImageStyles = StyleSheet.create({
 	},
 
 	touch: {
+		backgroundColor:'#232323',
 		margin: 5,
 		borderRadius: 5,
 		...Platform.select({
 			ios: {
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2  
+				shadowOpacity: 0.5,
+				shadowRadius: 5
 			},
 			android: {
 				elevation: 5
@@ -393,8 +394,8 @@ export const cameraRollImageStyles = StyleSheet.create({
 	},
 
 	shadow : {
-		backgroundColor:'#232323',
-		position:'absolute', 
+		backgroundColor: '#232323',
+		position: 'absolute', 
 		opacity: 0.4
 	}
 });
