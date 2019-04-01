@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { setNavigationScreen } from '../actions';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
-import { calendarColors } from '../../config';
+import { calendarColors } from '../../config/config';
 
 
 /**

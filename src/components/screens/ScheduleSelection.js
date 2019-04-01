@@ -3,12 +3,12 @@ import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimens
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
 import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
+import { calendarColors } from '../../../config/config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
 import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
-import { calendarColors } from '../../../config';
 
 export const containerPadding = 10;
 export const lineThickness = 1;

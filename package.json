@@ -2,6 +2,7 @@
   "name": "Kalend",
   "version": "0.2.0",
   "private": true,
+  "license": "ISC",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",

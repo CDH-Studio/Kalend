@@ -2,12 +2,12 @@ import React from 'react';
 import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
+import { calendarColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
-import { calendarColors } from '../../../config';
 
 export const containerPaddingDetails = 10;
 

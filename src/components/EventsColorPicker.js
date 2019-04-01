@@ -7,7 +7,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
 import { setCourseColor, setFixedColor, setNonFixedColor } from '../actions';
 import { eventsColorPickerStyles as styles } from '../styles';
-import { calendarColors } from '../../config';
+import { calendarColors } from '../../config/config';
 
 class EventsColorPicker extends React.Component {
 
