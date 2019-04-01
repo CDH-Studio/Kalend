@@ -116,7 +116,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 					}
 				},
 				{
-					text: 'Review Events', 
+					text: 'Create a Schedule', 
 					onPress: () => {
 						this.props.navigation.navigate(ReviewEventRoute);
 					},

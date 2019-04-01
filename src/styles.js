@@ -867,6 +867,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 	},
 
 	errorEndTime: {
+		fontFamily: 'Raleway-Regular',
 		color: 'red',
 		fontSize: 12,
 		width: 140,

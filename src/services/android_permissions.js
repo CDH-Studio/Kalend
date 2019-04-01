@@ -25,8 +25,8 @@ let requestCamera = async () => {
 			PermissionsAndroid.PERMISSIONS.CAMERA, {
 				title: 'Camera Permission',
 				message:
-				'Kalend needs access to your camera to allow' +
-				'you to take a picture of you schedule.',
+				'Kalend needs access to your camera to allow ' +
+				'you to take a picture of your schedule.',
 				buttonNegative: 'Cancel',
 				buttonPositive: 'OK',
 			},
