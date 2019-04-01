@@ -9,6 +9,8 @@ import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
 
+const moment = require('moment');
+
 export const containerPaddingDetails = 10;
 
 const days = [
@@ -53,30 +55,10 @@ class ScheduleEvent extends React.PureComponent  {
 			color
 		};
 	}
-	
-	getTime = (time) => {
-		time = new Date(time);
-		let hours = time.getHours();
-		let minutes = time.getMinutes();
-		minutes = (minutes < 10) ? `0${minutes}`: minutes;
-		let period = hours >= 12 ? 'PM' : 'AM';
-
-		hours = hours > 12 ? hours - 12 : hours;
-		return {hours, minutes, period};
-	}
 
 	render() {
 		const { color } = this.state;
-		const { location, end, start, title, summary } = this.props.info;
-		let startTime, endTime, time;
-		if (end != undefined) {
-			startTime = this.getTime(start.dateTime);
-			endTime = this.getTime(end.dateTime);
-			time = `${startTime.hours}:${startTime.minutes} ${startTime.period} - ${endTime.hours}:${endTime.minutes} ${endTime.period}`;
-		} else {
-			const { startTime, endTime } = this.props.info;
-			time = `${startTime} - ${endTime}`;
-		}
+		const { location, time, title, summary } = this.props.info;
 
 		let actualTitle =  (title == undefined) ? summary: title;
 
@@ -115,9 +97,41 @@ class ScheduleDay extends React.PureComponent {
 	}
 	
 	componentWillMount() {
-		this.setState({day:this.props.day, data: this.props.data});
+		let { data, day } = this.props;
+
+		// Formats the time
+		data.map((info) => {
+			let { end, start } = info;
+			let startTime, endTime, time;
+
+			if (info.end != undefined) {
+				startTime = this.getTime(start.dateTime);
+				endTime = this.getTime(end.dateTime);
+				time = `${startTime.hours}:${startTime.minutes} ${startTime.period} - ${endTime.hours}:${endTime.minutes} ${endTime.period}`;
+			} else {
+				const { startTime, endTime } = info;
+				time = `${startTime} - ${endTime}`;
+			}
+
+			info.time = time;
+		});
+
+		// Sorts the event
+		data.sort((a,b) => new moment(a.time, 'h:mm A') - new moment(b.time, 'h:mm A'));
+
+		this.setState({day, data});
 	}
 	
+	getTime = (time) => {
+		time = new Date(time);
+		let hours = time.getHours();
+		let minutes = time.getMinutes();
+		minutes = (minutes < 10) ? `0${minutes}`: minutes;
+		let period = hours >= 12 ? 'PM' : 'AM';
+
+		hours = hours > 12 ? hours - 12 : hours;
+		return {hours, minutes, period};
+	}
 
 	render() {
 		const { day, data } = this.state;
