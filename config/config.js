@@ -16,6 +16,21 @@ export const calendarColors = [
 	{'0': null}
 ];
 
+export const calendarInsideColors = [
+	{'4': 'rgb(227, 166, 159)'},
+	{'11': 'rgb(226, 61, 48)'},
+	{'5': 'rgb(242, 208, 122)'},
+	{'6': 'rgb(232, 128, 96)'},
+	{'2': 'rgb(128, 194, 154)'},
+	{'10': 'rgb(73, 160, 93)'},
+	{'7': 'rgb(109, 178, 230)'},
+	{'9': 'rgb(95, 113, 196)'},
+	{'1': 'rgb(159, 167, 213)'},
+	{'3': 'rgb(159, 69, 197)'},
+	{'8': 'rgb(123, 123, 123)'},
+	{'0': null}
+];
+
 export const gradientColors = ['#32D2DC', '#153d73'];
 
 export const slides = [

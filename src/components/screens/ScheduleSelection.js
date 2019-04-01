@@ -3,7 +3,7 @@ import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimens
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
 import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { calendarColors } from '../../../config/config';
+import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
@@ -66,17 +66,19 @@ class ScheduleEvent extends React.PureComponent {
 		switch (kind) {
 			case 'fixed':
 				color = this.props.colors.fixedEventsColor;
-				colorInside = this.props.colors.fixedEventsColor;
+				colorInside = this.props.colors.insideFixedEventsColor;
 				break;
 			case 'school':
 				color = this.props.colors.courseColor;
-				colorInside = this.props.colors.courseColor;
+				colorInside = this.props.colors.insideCourseColor;
 				break;
 			case 'ai':
 				color = this.props.colors.nonFixedEventsColor;
-				colorInside = this.props.colors.nonFixedEventsColor;
+				colorInside = this.props.colors.insideNonFixedEventsColor;
 				break;
 		}
+
+		console.log(this.props);
 
 		this.setState({height,width,left,top,color, colorInside});
 	}
@@ -501,15 +503,15 @@ class ScheduleSelection extends React.PureComponent {
 						<Text style={styles.description}>Below you will find schedules of the current week created by the application. Please select the one you prefer.</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.courseColor}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.insideCourseColor}]}></View>
 								<Text style={styles.legendText}>Courses</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.fixedEventsColor}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.insideFixedEventsColor}]}></View>
 								<Text style={styles.legendText}>Fixed Events</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.nonFixedEventsColor}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.insideNonFixedEventsColor}]}></View>
 								<Text style={styles.legendText}>Non-Fixed Events</Text>
 							</View>
 						</View>
@@ -529,6 +531,9 @@ class ScheduleSelection extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+	let insideFixedEventsColor = fixedEventsColor;
+	let insideNonFixedEventsColor = nonFixedEventsColor;
+	let insideCourseColor = courseColor;
 
 	fixedEventsColor = calendarColors.map(i => {
 		if (Object.keys(i)[0] === fixedEventsColor) {
@@ -548,10 +553,31 @@ let mapStateToProps = (state) => {
 		}
 	});
 
+	insideFixedEventsColor = calendarInsideColors.map(i => {
+		if (Object.keys(i)[0] === insideFixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	insideNonFixedEventsColor = calendarInsideColors.map(i => {
+		if (Object.keys(i)[0] === insideNonFixedEventsColor) {
+			return Object.values(i)[0];
+		}
+	});
+
+	insideCourseColor = calendarInsideColors.map(i => {
+		if (Object.keys(i)[0] === insideCourseColor) {
+			return Object.values(i)[0];
+		}
+	});
+
 	return {
 		fixedEventsColor,
 		nonFixedEventsColor,
-		courseColor
+		courseColor,
+		insideNonFixedEventsColor,
+		insideFixedEventsColor,
+		insideCourseColor
 	};
 };
 
