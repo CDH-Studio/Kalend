@@ -35,7 +35,7 @@ If you have none of the dependencies listed above and want to install from scrat
 2. Run `Set-ExecutionPolicy RemoteSigned` to be able to run the PowerShell script. Then enter **a** when asked for an input.
 3. Run `cd config`, then `.\script.ps1` to run the script. Follow the instructions displayed in PowerShell when running the script
 
-## Get up and running
+## Getting up and running
 
 Make sure to install every development dependencies mentionned above before proceding.
 
