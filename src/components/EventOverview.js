@@ -4,7 +4,7 @@ import { IconButton } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { setNavigationScreen } from '../actions';
-import { calendarEventColors } from '../../config';
+import { calendarEventColors } from '../../config/config';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
 

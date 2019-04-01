@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { calendarEventColors } from '../../../config';
+import { calendarEventColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import updateNavigation from '../NavigationHelper';

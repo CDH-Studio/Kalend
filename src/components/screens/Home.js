@@ -4,7 +4,7 @@ import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { setCalendarID, logonUser } from '../../actions';
-import { gradientColors } from '../../../config';
+import { gradientColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';

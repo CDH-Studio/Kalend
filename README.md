@@ -25,11 +25,11 @@ Below is a list of development dependencies to run the project, you can either i
 
 ### Automatic install
 
-If you have none of the dependencies listed above and want to install from scratch, located at the root of this project, there is a file called **setup.ps1**. To install via the script:
+If you have none of the dependencies listed above and want to install from scratch, located at the root of this project, there is a file called **setup.ps1** in the config folder. To install via the script:
 
 1. Open a PowerShell window with Administrator privileges.
 2. Run `Set-ExecutionPolicy RemoteSigned` to be able to run the PowerShell script. Then enter **a** when asked for an input.
-3. Run `.\script.ps1` to run the script. Follow the instructions displayed in PowerShell when running the script
+3. Run `cd config`, then `.\script.ps1` to run the script. Follow the instructions displayed in PowerShell when running the script
 
 ## Get up and running
 
@@ -46,6 +46,5 @@ Make sure to install every development dependencies mentionned above before proc
     2. In the release environment
         * On Android `yarn android-release` or `react-native run-android`
         * On iOS `yarn ios-release` or `react-native run-android`
-
 
 #### Go to our [wiki](https://github.com/CDH-Studio/Kalend/wiki) for more information
