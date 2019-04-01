@@ -9,7 +9,8 @@ export const black = '#000';
 export const blue = '#1D84B5';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
-export const red = '#B80000';
+export const red = '#FF0000';
+export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
 
@@ -515,13 +516,15 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	errorCourseCode: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		marginLeft: 45
 	},
 
 	errorEndTime: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		paddingLeft: 5
 	},
@@ -615,13 +618,15 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	errorTitle: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
-		marginLeft: 42
+		marginLeft: 45
 	},
 
 	errorEnd: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		alignSelf: 'flex-start',
 		marginLeft: 12
@@ -733,21 +738,24 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	errorTitle: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
-		marginLeft: 40,
+		marginLeft: 45,
 		paddingBottom: 5
 	},
 
 	errorEndDate: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		alignSelf: 'flex-start',
 		paddingBottom: 5
 	},
 	
 	errorDuration: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		paddingBottom: 5
 	},
@@ -868,7 +876,7 @@ export const unavailableHoursStyles = StyleSheet.create({
 
 	errorEndTime: {
 		fontFamily: 'Raleway-Regular',
-		color: 'red',
+		color: red,
 		fontSize: 12,
 		width: 140,
 		textAlign: 'center'
@@ -1527,7 +1535,7 @@ export const settingsStyles = StyleSheet.create({
 	buttonLogOutText: {
 		fontFamily: 'Raleway-Regular',
 		fontSize: 16,
-		color: '#ff0000'
+		color: red
 	},
 
 	version: {
