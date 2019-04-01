@@ -161,8 +161,8 @@ class Dashboard extends React.PureComponent {
 		// }
 
 		return(
-			<View>
-				<Portal.Host style={{flex:1}}>
+			<View> style={{flex:1}}
+				<Portal.Host>
 					<View style={styles.content}>
 						<StatusBar translucent={true}
 							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
