@@ -81,11 +81,13 @@ class Home extends React.PureComponent {
 	}
 
 	render() {
+		let source = Platform.OS === 'ios' ? require('../../assets/img/loginScreen/backPattern_ios.png') : 
+			require('../../assets/img/loginScreen/backPattern_android.png');
 		return (
 			<LinearGradient style={styles.container}
 				colors={gradientColors}>
 				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')}
+					source={source}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
 						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}

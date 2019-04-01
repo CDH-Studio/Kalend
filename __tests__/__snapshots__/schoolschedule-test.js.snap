@@ -37,44 +37,6 @@ exports[`Buttons render correctly 1`] = `
 </View>
 `;
 
-exports[`Image Background renders correctly 1`] = `
-<View
-  accessibilityIgnoresInvertColors={true}
-  style={
-    Object {
-      "flex": 1,
-      "height": "110%",
-      "width": "100%",
-    }
-  }
->
-  <Image
-    resizeMode="repeat"
-    source={
-      Object {
-        "testUri": "../../../src/assets/img/loginScreen/backPattern.png",
-      }
-    }
-    style={
-      Array [
-        Object {
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        },
-        Object {
-          "height": "110%",
-          "width": "100%",
-        },
-        undefined,
-      ]
-    }
-  />
-</View>
-`;
-
 exports[`Linear Gradient renders correctly 1`] = `
 <BVLinearGradient
   colors={
