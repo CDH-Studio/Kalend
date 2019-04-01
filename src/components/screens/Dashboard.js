@@ -157,6 +157,7 @@ class Dashboard extends React.PureComponent {
 						rowHasChanged={this.rowHasChanged}
 						showOnlyDaySelected={true}
 						shouldChangeDay={this.shouldChangeDay}
+						theme={{agendaKnobColor: dark_blue}}
 						// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
 					/>
 
