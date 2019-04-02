@@ -111,7 +111,7 @@ class Home extends React.PureComponent {
 
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
-									Linking.openURL('https://cdhstudio.ca/');
+									Linking.openURL('https://cdhstudio.ca/fr');
 								}}>
 								<Text style={styles.cdhSectionText}>
 									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>

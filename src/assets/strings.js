@@ -132,6 +132,7 @@ const en = {
 		courses: 'Courses',
 		fixedEvents: 'Fixed Events',
 		nonFixedEvents: 'Non-Fixed Events',
+		schedule: 'schedule',
 	},
 	ScheduleSelectionDetails: {
 		name: 'Schedule Selection Details',
@@ -200,6 +201,7 @@ const en = {
 	},
 	UnavailableHours: {
 		name: 'Unavailable Hours',
+		title: 'Unavailable Hours',
 		timesEmpty: 'Please select a Start and End Time.',
 		description: 'Add the hours for which you\'re not available or you don\'t want anything to be booked.',
 		manual: 'Want to add more specific unavailable hours? Add them as ',
@@ -260,7 +262,7 @@ const fr = {
 		name: 'Chatbot',
 	},
 	CompareSchedule: {
-		name: 'Comparer horaire',
+		name: 'Comparaison',
 	}, 
 	Course: {
 		name: 'Cours',
@@ -322,8 +324,8 @@ const fr = {
 		snackbarSuccess: 'Événement ajouté avec succès',
 		snackbarFailure: 'Champs non valide(s), veuillez vérifier pour ajouter un événement',
 		titleEmpty: 'Titre ne peut pas être vide.',
-		durationEmpty: 'Veuillez ajouter une durée',
-		specificDateEmpty: 'Veuillez sélectionner une date de début et de fin.',
+		durationEmpty: 'Veuillez ajouter une durée.',
+		specificDateEmpty: 'Veuillez sélectionner un début et une fin.',
 		description: 'Ajoutez les événements que vous aimeriez que Kalend planifie pour vous',
 		titlePlaceholder: 'Titre',
 		availability: 'Disponibilité',
@@ -344,14 +346,14 @@ const fr = {
 		splitDurationWeek: 'Répartir la durée au cours de la semaine?',
 		numberTimeDate: 'Nombre de fois que cela aura lieu au cours de la période de temps',
 		numberTimeWeek: 'Nombre de fois que cela aura lieu au cours de la semaine',
-		everyWeek: 'Toute?',
+		everyWeek: 'À toute les semaines?',
 		priorityLevel: 'Priority Level',
 		details: 'Details',
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
 	ReviewEvent: {
-		name: 'Revue des événements',
+		name: 'Création d\'horaire',
 		title: 'Créer un horaire',
 		allDay: 'Toute la journée',
 		timeWeek: 'fois/semaine',
@@ -368,6 +370,8 @@ const fr = {
 		low: 'Bas',
 		normal: 'Normal',
 		high: 'Haut',
+		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
 	ScheduleCreation: {
 		name: 'Création d\'horaire',
@@ -389,10 +393,13 @@ const fr = {
 		courses: 'Cours',
 		fixedEvents: 'Événements fixes',
 		nonFixedEvents: 'Événements non fixes',
+		schedule: 'horaire',
+		ordinal: ['Premier', 'Deuxième', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième', 'Septième', 'Huitième', 'Neuvième', 'Dixième']
 	},
 	ScheduleSelectionDetails: {
 		name: 'Détails sélection d\'un horaire',
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
 	SchoolInformation: {
 		name: 'Information scolaire',
@@ -457,10 +464,11 @@ const fr = {
 	},
 	UnavailableHours: {
 		name: 'Heures non disponibles',
+		title: 'Heures non disponibles',
 		timesEmpty: 'Veuillez sélectionner un début et une fin.',
 		description: 'Ajoutez les heures pour lesquelles vous n\'êtes pas disponible ou vous ne voulez rien de planifié.',
 		manual: 'Vous voulez ajouter des heures non disponibles plus précises? Ajoutez les en tant qu\'',
-		fixedEvents: 'événements non fixes',
+		fixedEvents: 'événements fixes',
 		sleeping: 'Heures de sommeil',
 		commuting: 'Heures de transports',
 		eating: 'Heures des repas',
@@ -492,7 +500,7 @@ const fr = {
 		dates: 'Date(s) : ',
 		time: 'Heures : ',
 		details: 'Détails',
-		deleteEvent: 'Supprimer cet événement?',
+		deleteEvent: 'Supprimer cet\névénement?',
 		cancel: 'Annuler',
 		yes: 'Oui',
 	},

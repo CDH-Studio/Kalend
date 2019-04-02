@@ -70,9 +70,22 @@ class ReviewEvent extends React.PureComponent {
 					hours = data.startTime + ' - ' + data.endTime;
 				}
 
+				let dayOfWeek;
+				let fr = 'daysEn' in this.strings;
+
+				if (data.day) {
+					dayOfWeek = data.day;
+				} else {
+					dayOfWeek = data.dayOfWeek;
+				}
+
+				if (fr) {
+					dayOfWeek = this.strings.days[this.strings.daysEn.indexOf(dayOfWeek)];
+				}
+
 				schoolScheduleData.push({
 					courseCode: data.summary || data.courseCode,
-					dayOfWeek: data.day || data.dayOfWeek,
+					dayOfWeek,
 					hours,
 					location: data.location
 				});

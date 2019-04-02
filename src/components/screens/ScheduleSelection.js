@@ -126,7 +126,13 @@ class Schedule extends React.PureComponent {
 		super(props);
 
 		// Gets the ordinal word thanks to an existing library and the schedule index
-		let ordinal = converter.toWordsOrdinal(this.props.id+1);
+		let ordinal;
+		console.log(strings);
+		if ('ordinal' in strings) {
+			ordinal = strings.ordinal[this.props.id];
+		} else {
+			ordinal = converter.toWordsOrdinal(this.props.id+1);
+		}
 
 		this.state = {
 			weekLetters: strings.weekLetters,
@@ -251,13 +257,13 @@ class Schedule extends React.PureComponent {
 		return (
 			<View style={styles.scheduleContainer}>
 				<Text style={styles.title}>
-					{ordinal} schedule
+					{ordinal + ' ' + strings.schedule}
 				</Text>
 				
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' Schedule', id, {
+					this.props.nextScreen(ordinal + ' ' + strings.schedule, id, {
 						fixed: this.props.fixed,
 						school: this.props.school,
 						ai: this.state.ai,

@@ -510,7 +510,7 @@ class FixedEvent extends React.PureComponent {
 
 							<View style={styles.timeSection}>
 								<View style={[styles.allDay, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>{this.strings.allday}</Text>
+									<Text style={styles.blueTitleAllDay}>{this.strings.allday}</Text>
 									<View style={styles.switch}>
 										<Switch trackColor={{false: 'lightgray', true: blue}} 
 											ios_backgroundColor={'lightgray'} 
@@ -522,7 +522,6 @@ class FixedEvent extends React.PureComponent {
 												endTimeValidated: true})} 
 											value = {this.state.allDay} />
 									</View>
-									<Text style={styles.empty}>empty</Text>
 								</View>
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>

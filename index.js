@@ -69,12 +69,12 @@ const DashboardNavigator = createBottomTabNavigator(
 				Dashboard: {
 					screen: Dashboard,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: getStrings().Dashboard.name
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
 			navigationOptions: {
+				title: getStrings().Dashboard.name,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `home-variant${focused ? '' : '-outline'}`;
 					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
@@ -86,12 +86,12 @@ const DashboardNavigator = createBottomTabNavigator(
 				Chatbot: {
 					screen: Chatbot,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: getStrings().Chatbot.name
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
 			navigationOptions: {
+				title: getStrings().Chatbot.name,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `chat-bubble${focused ? '' : '-outline'}`;
 					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
@@ -103,13 +103,12 @@ const DashboardNavigator = createBottomTabNavigator(
 				CompareSchedule: {
 					screen: CompareSchedule,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: getStrings().CompareSchedule.name
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
 			navigationOptions: {
-				title: 'Compare',
+				title: getStrings().CompareSchedule.name,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `people${focused ? '' : '-outline'}`;
 					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
@@ -121,12 +120,12 @@ const DashboardNavigator = createBottomTabNavigator(
 				Settings: {
 					screen: Settings,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: getStrings().Settings.name
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
 			navigationOptions: {
+				title: getStrings().Settings.name,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `settings${focused ? '' : '-outline'}`;
 					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;

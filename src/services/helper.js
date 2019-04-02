@@ -175,7 +175,7 @@ export const clearEveryReducer = () => {
 export const getStrings = () => {
 	const { language } = store.getState().SettingsReducer;
 
-	let lang = language ? language : 'en';
+	let lang = language ? language : 'fr';
 
 	return strings[lang];
 };

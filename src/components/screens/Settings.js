@@ -10,6 +10,7 @@ import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
+import { setLanguage } from '../../actions';
 
 const viewHeight = 669.1428833007812;
 
@@ -128,7 +129,7 @@ class Settings extends React.PureComponent {
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button} onPress={ ()=>{
-							Linking.openURL('https://cdhstudio.ca/');
+							Linking.openURL('https://cdhstudio.ca/' + this.props.language === 'en' ? '' : 'fr');
 						}}>
 							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
@@ -142,6 +143,15 @@ class Settings extends React.PureComponent {
 							<Text style={styles.buttonLogOutText}>{this.strings.logout}</Text>
 						</TouchableOpacity>
 
+						
+						<TouchableOpacity style={styles.button}
+							onPress={() => {
+								this.props.dispatch(setLanguage(this.props.language === 'en' ? 'fr' : 'en'));
+								this.forceUpdate();
+							}}>
+							<Text style={styles.buttonLogOutText}>{this.props.language === 'en' ? 'fr' : 'en'}</Text>
+						</TouchableOpacity>
+
 						<Text style={styles.version}>{this.strings.version}</Text>
 					</View>
 				</ScrollView>
@@ -151,13 +161,14 @@ class Settings extends React.PureComponent {
 }
 
 let mapStateToProps = (state) => {
-	const { HomeReducer } = state;
+	const { HomeReducer, SettingsReducer } = state;
 
 	let hasUserInfo = HomeReducer.profile != null;
 
 	return {
 		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
-		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user',
+		language: SettingsReducer.language
 	};
 };
 

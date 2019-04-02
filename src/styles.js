@@ -559,7 +559,7 @@ export const courseStyles = StyleSheet.create({
 	dayOfWeekBorder: {
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
-		width: 150,
+		width: 130,
 		marginLeft: 5
 	},
 
@@ -567,7 +567,7 @@ export const courseStyles = StyleSheet.create({
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
-		marginRight: 20
+		marginRight: 5
 	},
 
 	blueTitle: {
@@ -668,6 +668,14 @@ export const fixedEventStyles = StyleSheet.create({
 		marginRight: -20
 	},
 
+	blueTitleAllDay: {
+		color: dark_blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		marginLeft: 11,
+		marginRight: 20
+	},
+
 	switch: {
 		width: 150,
 		alignItems: 'flex-start'
@@ -686,7 +694,6 @@ export const fixedEventStyles = StyleSheet.create({
 
 	allDay: {
 		flexDirection: 'row',
-		justifyContent: 'space-around',
 		alignItems: 'center',
 		paddingLeft: 30
 	},
@@ -717,7 +724,8 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flex: 1,
 		justifyContent:'space-evenly',
 		paddingHorizontal: 20,
-		marginBottom: 40
+		marginBottom: 40,
+		marginTop: 20
 	},
 
 	instruction: {
@@ -1120,7 +1128,8 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 3,
-		color: gray
+		color: gray,
+		width: 120
 	},
 
 	modalDetailsView: {
@@ -1183,6 +1192,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 20,
 		fontFamily: 'Raleway-SemiBold',
 		marginLeft: 10,
+		marginBottom: 10,
 		color: gray
 	},
 
@@ -1226,12 +1236,14 @@ export const scheduleSelectionStyle = StyleSheet.create({
 	legendRow: {
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
-		marginTop: 10
+		marginTop: 10,
+		flexWrap: 'wrap',
 	},
 
 	singleLegend: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingTop: 10
 	},
 
 	legendColor: {

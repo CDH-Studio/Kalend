@@ -20,7 +20,7 @@ class UnavailableHours extends React.PureComponent {
 	buttonStrings = getStrings().BottomButtons;
 
 	static navigationOptions = {
-		title: 'Set Unavailable Hours',
+		title: getStrings().UnavailableHours.title,
 		headerStyle: {
 			backgroundColor: white
 		},
