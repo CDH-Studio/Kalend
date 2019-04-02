@@ -37,11 +37,6 @@ target 'Kalend' do
   pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  target 'Kalend-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
   target 'KalendTests' do
     inherit! :search_paths
     # Pods for testing

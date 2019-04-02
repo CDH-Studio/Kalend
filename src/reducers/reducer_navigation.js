@@ -5,7 +5,8 @@ let nav = {
 	route: null,
 	main: null,
 	routes: null,
-	reviewEventSelected: null
+	reviewEventSelected: null,
+	successfullyInsertedEvents: null
 };
 
 export default function NavigationReducer(state = nav, action) {
@@ -16,7 +17,8 @@ export default function NavigationReducer(state = nav, action) {
 				route: action.route,
 				main: action.main,
 				routes: action.routes,
-				reviewEventSelected: action.reviewEventSelected
+				reviewEventSelected: action.reviewEventSelected,
+				successfullyInsertedEvents: action.successfullyInsertedEvents
 			};
 		
 		case CLEAR_NAV_SCREEN:

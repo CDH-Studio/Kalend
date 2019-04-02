@@ -3,6 +3,7 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
+	SET_DASHBOARD_DATA,
 	SET_IMG,
 	SET_NONFIXED_COLOR,
 	SET_COURSE_COLOR,
@@ -34,6 +35,7 @@ import {
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
+	CLEAR_DASHBOARD_DATA,
 	CLEAR_OPENED
 } from '../constants';
 
@@ -218,7 +220,8 @@ export function setNavigationScreen (data) {
 		route: data.route,
 		main: data.main,
 		routes: data.routes,
-		reviewEventSelected: data.reviewEventSelected
+		reviewEventSelected: data.reviewEventSelected,
+		successfullyInsertedEvents: data.successfullyInsertedEvents
 	};
 
 	return action;
@@ -237,6 +240,15 @@ export function setSchoolInformation (info) {
 	const action = {
 		type: SET_SCHOOL_INFORMATION,
 		info
+	};
+
+	return action;
+}
+
+export function setDashboardData (data) {
+	const action = {
+		type: SET_DASHBOARD_DATA,
+		data
 	};
 
 	return action;
@@ -338,6 +350,14 @@ export function clearNavigation () {
 export function clearSchedule () {
 	const action = {
 		type: CLEAR_SCHEDULE
+	};
+
+	return action;
+}
+
+export function clearDashboardData () {
+	const action = {
+		type: CLEAR_DASHBOARD_DATA
 	};
 
 	return action;

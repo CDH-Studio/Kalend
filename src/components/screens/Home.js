@@ -5,12 +5,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { setCalendarID, logonUser, setCalendarColor } from '../../actions';
 import { gradientColors } from '../../../config/config';
-import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
+import { DashboardNavigator } from '../../constants/screenNames';
 
 /** 
  * Home/Login screen of the app.
@@ -41,10 +41,12 @@ class Home extends React.PureComponent {
 				createCalendar().then(data => {
 					this.props.setCalendarID(data.calendarID);
 					this.props.setCalendarColor(data.calendarColor);
+					this.props.navigation.navigate(DashboardNavigator);
 				});
 			} else {
 				this.props.setCalendarID(data.calendarID);
 				this.props.setCalendarColor(data.calendarColor);
+				this.props.navigation.navigate(DashboardNavigator);
 			}
 		});
 	}
@@ -61,31 +63,30 @@ class Home extends React.PureComponent {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.setCalendar();
-							this.props.navigation.navigate(DashboardNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								this.setCalendar();
-								this.props.navigation.navigate(DashboardNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					this.setCalendar();
-					this.props.navigation.navigate(DashboardNavigator);
 				}
 			});
 		}
 	}
 
 	render() {
+		let source = Platform.OS === 'ios' ? require('../../assets/img/loginScreen/backPattern_ios.png') : 
+			require('../../assets/img/loginScreen/backPattern_android.png');
 		return (
 			<LinearGradient style={styles.container}
 				colors={gradientColors}>
 				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')}
+					source={source}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
 						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
