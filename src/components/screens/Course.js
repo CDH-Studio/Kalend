@@ -303,13 +303,13 @@ class Course extends React.PureComponent {
 	}
 
 	getDateFromTimeString = (timeString, currentDate) => {
-		let currentMomnet = new moment(currentDate);
+		let currentMoment = new moment(currentDate);
 		let timeMoment = new moment(timeString, 'h:mm A');
 
-		currentMomnet.hours(timeMoment.hours());
-		currentMomnet.minutes(timeMoment.minutes());
+		currentMoment.hours(timeMoment.hours());
+		currentMoment.minutes(timeMoment.minutes());
 
-		return currentMomnet;
+		return currentMoment;
 	}
 
 	/**
