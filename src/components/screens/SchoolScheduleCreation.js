@@ -108,6 +108,25 @@ class SchoolScheduleCreation extends React.PureComponent {
 
 	error = (err) => {
 		console.log('error', err);
+		Alert.alert(
+			'Cannot read file',
+			'This is a bug on iOS, for some reason the selected picture cannot be read. Where do you want to go?',
+			[
+				{
+					text: 'Dashboard',
+					onPress: () => {
+						this.props.navigation.navigate(DashboardNavigator);
+					}
+				},
+				{
+					text: 'Create a Schedule', 
+					onPress: () => {
+						this.props.navigation.dispatch(this.navigateAction);
+					},
+				},
+			],
+			{cancelable: false},
+		);
 	}
 
 	handleBackButton = () => {

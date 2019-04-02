@@ -262,7 +262,7 @@ class Course extends React.PureComponent {
 		}
 
 		let courseStartDate = getStartDate(this.props.semesterStartDate, this.state.dayOfWeek);
-		let courseEndDate = getStartDate(this.props.semesterStartDate, this.state.dayOfWeek);
+		let courseEndDate = new Date(courseStartDate.getTime());
 
 		courseEndDate = this.getDateFromTimeString(this.state.endTime, courseEndDate);
 		courseEndDate = courseEndDate.toJSON();
@@ -303,13 +303,13 @@ class Course extends React.PureComponent {
 	}
 
 	getDateFromTimeString = (timeString, currentDate) => {
-		// cleans up the time in the state
-		let info = timeString.split(' ').map(i => i.split(':'));
-		currentDate.setHours( 
-			parseInt(info[0][0]) + (info[1][0] === 'AM' ? 0 : 12), 
-			parseInt(info[0][1]));
-			
-		return currentDate;
+		let currentMoment = new moment(currentDate);
+		let timeMoment = new moment(timeString, 'h:mm A');
+
+		currentMoment.hours(timeMoment.hours());
+		currentMoment.minutes(timeMoment.minutes());
+
+		return currentMoment;
 	}
 
 	/**

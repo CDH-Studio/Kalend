@@ -1,5 +1,5 @@
 import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents, getCalendar } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
@@ -137,7 +137,7 @@ export const storeCoursesEvents = (events) => {
 				obj.recurrence = recurrence;
 				
 				let courseReduxObj = obj;
-				courseReduxObj.dayOfWeek = event.day;
+				courseReduxObj.dayOfWeekValue = event.day;
 				courseReduxObj.hours = d;
 
 				store.dispatch(addCourse(courseReduxObj));	
@@ -234,9 +234,11 @@ export const getCalendarID2 = () => {
  *	Creates a new calendar, and returns calendarID as a promise
  */
 export const createCalendar = () => {
-	return new Promise( function(resolve) { 
+	return new Promise(function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-			resolve({calendarID: data.id, calendarColor: data.backgroundColor});
+			getCalendar(data.id).then(color => {
+				resolve({calendarID: data.id, calendarColor: color.backgroundColor});
+			});
 		});
 	});
 };

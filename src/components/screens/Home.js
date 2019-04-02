@@ -37,7 +37,7 @@ class Home extends React.PureComponent {
 	 */
 	setCalendar() {
 		getCalendarID2().then(data => {
-			if (data === undefined) {
+			if (data.calendarID === undefined) {
 				createCalendar().then(data => {
 					this.props.setCalendarID(data.calendarID);
 					this.props.setCalendarColor(data.calendarColor);

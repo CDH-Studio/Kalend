@@ -79,6 +79,7 @@ let getCalendarList = () => {
  * @returns {Promise} A promise containing an object with the information about the newly created calendar
  */
 let createSecondaryCalendar = (data) => {
+	console.log('secondary', data);
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars', 'POST', data);
 };
 
@@ -260,6 +261,10 @@ let replaceEvent = (calendarId, eventId, data, query) => {
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId, 'PUT', data, query);
 };
 
+let getCalendar = (calendarId, data, query) => {
+	return apiHelperCall('https://www.googleapis.com/calendar/v3/users/me/calendarList/' + calendarId, 'GET', data, query);
+};
+
 module.exports = { 
 	createSecondaryCalendar, 
 	getCalendarList, 
@@ -274,5 +279,6 @@ module.exports = {
 	addQuickEvent,
 	getEventsInstances,
 	updateEvent,
-	replaceEvent
+	replaceEvent,
+	getCalendar
 };
