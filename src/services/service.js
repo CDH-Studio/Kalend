@@ -137,7 +137,7 @@ export const storeCoursesEvents = (events) => {
 				obj.recurrence = recurrence;
 				
 				let courseReduxObj = obj;
-				courseReduxObj.dayOfWeek = event.day;
+				courseReduxObj.dayOfWeekValue = event.day;
 				courseReduxObj.hours = d;
 
 				store.dispatch(addCourse(courseReduxObj));	
