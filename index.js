@@ -73,12 +73,13 @@ const DashboardNavigator = createBottomTabNavigator(
 					}
 				}
 			}),
-			navigationOptions: {
-				title: getStrings().Dashboard.name,
+			navigationOptions: ({navigation}) => {
+				return {
+					title: store.getState().BottomNavReducer.dashboardTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `home-variant${focused ? '' : '-outline'}`;
 					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
-				},
+				},}
 			}
 		},
 		Chatbot: {
@@ -90,13 +91,13 @@ const DashboardNavigator = createBottomTabNavigator(
 					}
 				}
 			}),
-			navigationOptions: {
-				title: getStrings().Chatbot.name,
+			navigationOptions: ({navigation}) => ({
+				title: store.getState().BottomNavReducer.chatbotTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `chat-bubble${focused ? '' : '-outline'}`;
 					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
 				},
-			}
+			})
 		},
 		CompareSchedule: {
 			screen: createStackNavigator({
@@ -107,13 +108,13 @@ const DashboardNavigator = createBottomTabNavigator(
 					}
 				}
 			}),
-			navigationOptions: {
-				title: getStrings().CompareSchedule.name,
+			navigationOptions: ({navigation}) => ({
+				title: store.getState().BottomNavReducer.compareTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `people${focused ? '' : '-outline'}`;
 					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
 				},
-			}
+			})
 		},
 		Settings: {
 			screen: createStackNavigator({
@@ -124,13 +125,13 @@ const DashboardNavigator = createBottomTabNavigator(
 					}
 				}
 			}),
-			navigationOptions: {
-				title: getStrings().Settings.name,
+			navigationOptions: ({navigation}) => ({
+				title: store.getState().BottomNavReducer.settingsTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `settings${focused ? '' : '-outline'}`;
 					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
 				},
-			}
+			})
 		}
 	},
 	{

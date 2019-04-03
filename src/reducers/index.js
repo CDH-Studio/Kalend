@@ -13,6 +13,7 @@ import UnavailableReducer from './reducer_unavailable';
 import SchoolInformationReducer from './reducer_schoolInformation';
 import GeneratedCalendarsReducer from './reducer_generatedCalendars';
 import SettingsReducer from './reducer_settings';
+import BottomNavReducer from './recuder_bottomNav';
 
 export default combineReducers( 
 	{ 	
@@ -29,6 +30,7 @@ export default combineReducers(
 		GeneratedNonFixedEventsReducer,
 		SchoolInformationReducer,
 		GeneratedCalendarsReducer,
-		SettingsReducer
+		SettingsReducer,
+		BottomNavReducer
 	}
 );

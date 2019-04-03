@@ -4,11 +4,13 @@ import {
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
 	SET_LANGUAGE,
-	UPDATE_NFE, 
+	SET_BOTTOM_STRINGS,
+	SET_IMG, 
 	SIGNED_IN, 
 	SIGNED_OUT, 
-	SET_IMG, 
 	ADD_FE, 
+	ADD_GENERATED_NFE,
+	ADD_GENERATED_CALENDAR,
 	ADD_NFE, 
 	ADD_COURSE, 
 	DELETE_NFE, 
@@ -16,10 +18,9 @@ import {
 	DELETE_COURSE,
 	DELETE_GENERATED_CALENDAR, 
 	UPDATE_FE, 
+	UPDATE_NFE, 
 	UPDATE_COURSE, 
 	CREATE_CALENDAR,
-	ADD_GENERATED_NFE,
-	ADD_GENERATED_CALENDAR,
 	CLEAR_GENERATED_CALENDAR,
 	CLEAR_CALENDAR,
 	CLEAR_COURSE,
@@ -31,7 +32,8 @@ import {
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
 	CLEAR_OPENED,
-	CLEAR_SETTINGS
+	CLEAR_SETTINGS,
+	CLEAR_BOTTOM_STRINGS
 } from '../constants';
 
 
@@ -239,6 +241,15 @@ export function setLanguage (language) {
 	return action;
 }
 
+export function setBottomString (params) {
+	const action = {
+		type: SET_BOTTOM_STRINGS,
+		params
+	};
+
+	return action;
+}
+
 /*** CLEAR ***/
 export function clearCalendarID () {
 	const action = {
@@ -331,6 +342,14 @@ export function clearUnavailableHours () {
 export function clearLanguage () {
 	const action = {
 		type: CLEAR_SETTINGS
+	};
+
+	return action;
+}
+
+export function clearBottomString () {
+	const action = {
+		type: CLEAR_BOTTOM_STRINGS
 	};
 
 	return action;

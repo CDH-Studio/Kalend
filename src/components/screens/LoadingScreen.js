@@ -6,6 +6,8 @@ import AnimatedGradient from '../AnimatedGradient';
 import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
 import { gradientColors } from '../../../config';
 import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
+import { setBottomString } from '../../actions';
+import { getStrings } from '../../services/helper';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
@@ -24,6 +26,13 @@ class LoadingScreen extends React.PureComponent {
 			nextScreen: WelcomeScreen
 		};
 
+		this.props.dispatch(setBottomString({
+			dashboardTitle: getStrings().Dashboard.name, 
+			chatbotTitle: getStrings().Chatbot.name, 
+			compareTitle: getStrings().CompareSchedule.name, 
+			settingsTitle: getStrings().Settings.name
+		}));
+		
 		// Waits for the animation to finish, then goes to the next screen
 		setTimeout(()=> {
 			this.props.navigation.navigate(this.state.nextScreen);

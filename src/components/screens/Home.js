@@ -3,7 +3,7 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { setCalendarID, logonUser } from '../../actions';
+import { setCalendarID, logonUser, setBottomString } from '../../actions';
 import { gradientColors } from '../../../config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
@@ -55,6 +55,15 @@ class Home extends React.PureComponent {
 	 * Log In the user with their Google Account
 	 */
 	signIn = () => {
+		let params = {
+			dashboardTitle: getStrings().Dashboard.title, 
+			chatbotTitle: getStrings().Chatbot.title, 
+			compareTitle: getStrings().CompareSchedule.title, 
+			settingsTitle: getStrings().Settings.title
+		};
+		
+		this.props.setBottomString(params);
+
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
@@ -138,7 +147,7 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, setBottomString }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
