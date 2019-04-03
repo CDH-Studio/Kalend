@@ -218,7 +218,7 @@ export const getCalendarID2 = () => {
 			let calendarID;
 			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
-				if (data.items[i].summary === 'Kalend') {
+				if (data.items[i].summary === 'Kalend' && data.items[i].accessRole === 'owner' ) {
 					calendarID = data.items[i].id;
 					calendarColor = data.items[i].backgroundColor;
 
@@ -565,7 +565,12 @@ export const addPermissionPerson = (email) => {
 		}
 	};
 
-	insertAccessRule(calendarID, data, {sendNotifications: false});
+	return new Promise((resolve, reject) => {
+		insertAccessRule(calendarID, data, {sendNotifications: false}).then(data => {
+			if (data.error)  reject('Cannot add that person');
+			resolve(data);
+		});
+	});
 };
 
 /**
@@ -659,10 +664,14 @@ export const getAvailabilitiesCalendars = (calendarIds, startTime, endTime) => {
 		'timeMax': endTime,
 		items
 	};
+	console.log(data);
 
 	return new Promise((resolve, reject) => {
 		getAvailabilities(data).then(data => {
-			if (data.error) reject('Cannot get availabilities');
+			if (data.error) {
+				console.log(data);
+				reject('Cannot get availabilities');
+			}
 			resolve(data);
 		});
 	});
