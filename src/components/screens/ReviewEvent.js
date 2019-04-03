@@ -167,7 +167,21 @@ class ReviewEvent extends React.PureComponent {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		this.props.navigation.navigate('Edit' + editScreen);
+		let param = {};
+
+		switch(editScreen) {
+			case 'Course':
+				param.editTitle = getStrings().Course.editTitle;
+				break;
+			case 'FixedEvent':
+				param.editTitle = getStrings().FixedEvent.editTitle;
+				break;
+			case 'NonFixedEvent':
+				param.editTitle = getStrings().NonFixedEvent.editTitle;
+				break;
+		}
+
+		this.props.navigation.navigate('Edit' + editScreen, param);
 	}
 
 	/**
@@ -226,7 +240,7 @@ class ReviewEvent extends React.PureComponent {
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {
-											this.props.navigation.navigate(CourseRoute, {title: getStrings().Course.addTitle});
+											this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle});
 										} else {
 											this.props.navigation.navigate(SchoolScheduleRoute, {title: getStrings().SchoolSchedule.title});
 										}
@@ -260,7 +274,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.fixedTitle}</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute, {title: getStrings().FixedEvent.addTitle})}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -289,7 +303,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.nonFixedTitle}</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {title: getStrings().NonFixedEvent.title})}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>

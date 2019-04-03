@@ -32,7 +32,7 @@ class Course extends React.PureComponent {
 	buttonStrings = getStrings().BottomButtons;
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === CourseRoute ? getStrings().Course.addTitle : getStrings().Course.editTitle,
+		title: navigation.state.routeName === CourseRoute ? navigation.state.params.addTitle : navigation.state.params.editTitle,
 		headerStyle: {
 			backgroundColor: white,
 		}

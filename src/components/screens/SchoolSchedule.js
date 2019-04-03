@@ -68,7 +68,7 @@ class SchoolSchedule extends React.PureComponent {
 	 * To go to the appropriate Add Course screen according to the current route
 	 */
 	manualImport() {
-		this.props.navigation.navigate(CourseRoute,  {title: getStrings().Course.addTitle});
+		this.props.navigation.navigate(CourseRoute,  {addTitle: getStrings().Course.addTitle});
 	}
 
 	render() {

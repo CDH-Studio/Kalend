@@ -102,7 +102,7 @@ class UnavailableHours extends React.PureComponent {
 	 * To go to the appropriate Fixed Event screen according to the current route
 	 */
 	manualImport() {
-		this.props.navigation.navigate(UnavailableFixedRoute, {title: 'Add Unavailable Hours'});
+		this.props.navigation.navigate(UnavailableFixedRoute, {addTitle: 'Add Unavailable Hours'});
 	}
 
 	/**

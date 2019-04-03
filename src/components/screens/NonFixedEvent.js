@@ -26,7 +26,7 @@ class NonFixedEvent extends React.PureComponent {
 	buttonStrings = getStrings().BottomButtons;
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === NonFixedEventRoute ? getStrings().NonFixedEvent.addTitle: getStrings().NonFixedEvent.editTitle,
+		title: navigation.state.routeName === NonFixedEventRoute ? navigation.state.params.addTitle : navigation.state.params.editTitle,
 		headerStyle: {
 			backgroundColor: white
 		}

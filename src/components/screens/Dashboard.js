@@ -67,7 +67,7 @@ class Dashboard extends React.PureComponent {
 								onPress: () => {
 									if (store.getState().SchoolInformationReducer.info) {
 										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
-											this.props.navigation.navigate(CourseRoute, {title: getStrings().Course.addTitle});
+											this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle});
 										} else {
 											this.props.navigation.navigate(SchoolScheduleRoute,  {title: getStrings().SchoolSchedule.title});
 										}
@@ -78,10 +78,10 @@ class Dashboard extends React.PureComponent {
 							},
 							{icon: 'today',
 								label: this.strings.fabFixedEvent,
-								onPress: () => this.props.navigation.navigate(FixedEventRoute, {title: getStrings().FixedEvent.title})},
+								onPress: () => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle, editTitle: getStrings().FixedEvent.editTitle})},
 							{icon: 'face',
 								label: this.strings.fabNonFixedEvent,
-								onPress: () => this.props.navigation.navigate(NonFixedEventRoute, {title: getStrings().NonFixedEvent.title})},
+								onPress: () => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})},
 						]}
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />

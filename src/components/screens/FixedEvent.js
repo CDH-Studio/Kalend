@@ -10,7 +10,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { FixedEventRoute } from '../../constants/screenNames';
+import { FixedEventRoute, UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { fixedEventStyles as styles, blue, dark_blue, gray, statusBlueColor, white } from '../../styles';
 import { getStrings } from '../../services/helper';
@@ -29,7 +29,7 @@ class FixedEvent extends React.PureComponent {
 	buttonStrings = getStrings().BottomButtons;
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === FixedEventRoute ? getStrings().FixedEvent.addTitle : getStrings().FixedEvent.editTitle,
+		title: navigation.state.routeName === FixedEventRoute || navigation.state.routeName === UnavailableFixedRoute ? navigation.state.params.addTitle : navigation.state.params.editTitle,
 		headerStyle: {
 			backgroundColor: white
 		}
