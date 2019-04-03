@@ -3,7 +3,7 @@ import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimens
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
 import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
-import { calendarEventColors, calendarEventColorsInside } from '../../../config';
+import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
@@ -68,16 +68,16 @@ class ScheduleEvent extends React.PureComponent {
 		// Gets the appropriate color for the event
 		switch (kind) {
 			case 'fixed':
-				color = calendarEventColors.red;
-				colorInside = calendarEventColorsInside.red;
+				color = this.props.colors.fixedEventsColor;
+				colorInside = this.props.colors.insideFixedEventsColor;
 				break;
 			case 'school':
-				color = calendarEventColors.green;
-				colorInside = calendarEventColorsInside.green;
+				color = this.props.colors.courseColor;
+				colorInside = this.props.colors.insideCourseColor;
 				break;
 			case 'ai':
-				color = calendarEventColors.purple;
-				colorInside = calendarEventColorsInside.purple;
+				color = this.props.colors.nonFixedEventsColor;
+				colorInside = this.props.colors.insideNonFixedEventsColor;
 				break;
 		}
 
@@ -95,18 +95,7 @@ class ScheduleEvent extends React.PureComponent {
 				height: height, 
 				width: width,
 				top: top,
-				left: left,
-				...Platform.select({
-					ios: {
-						shadowColor: black,
-						shadowOffset: { width: 0, height: 2 },
-						shadowOpacity: this.props.showShadow ? 0.2 : 0,
-						shadowRadius: 1,    
-					},
-					android: {
-						elevation: this.props.showShadow ? 3 : 0,
-					},
-				}) }}>
+				left: left,}}>
 			</View>
 		);
 	}
@@ -175,7 +164,7 @@ class Schedule extends React.PureComponent {
 		Object.entries(data).map((i) => {
 			i[1].map((i) => {
 				let start = i.start;
-				let end = i.start + i.chunks;
+				let end = i.start + Math.ceil(i.chunks);
 
 				if (start < earliestHour) {
 					earliestHour = start;
@@ -250,7 +239,7 @@ class Schedule extends React.PureComponent {
 	}
 
 	render() {
-		const { numOfLines, id} = this.props;
+		const { numOfLines, id, colors } = this.props;
 		// console.log('data in render', id, data.ai[id]);
 		const { weekLetters, ordinal, hours, showShadow, startOffset, timeInterval } = this.state;
 
@@ -319,6 +308,7 @@ class Schedule extends React.PureComponent {
 							{ 
 								this.props.school.map((info, key) => {
 									return  <ScheduleEvent key={key} 
+										colors={colors}
 										showShadow={showShadow} 
 										chunks={info.chunks} 
 										day={info.day} 
@@ -332,6 +322,7 @@ class Schedule extends React.PureComponent {
 							{ 
 								this.props.fixed.map((info, key) => {
 									return  <ScheduleEvent key={key} 
+										colors={colors}
 										showShadow={showShadow} 
 										chunks={info.chunks} 
 										day={info.day} 
@@ -346,6 +337,7 @@ class Schedule extends React.PureComponent {
 							
 								this.state.ai.map((info, key) => {
 									return  <ScheduleEvent key={key} 
+										colors={colors}
 										showShadow={showShadow} 
 										chunks={info.chunks} 
 										day={info.day} 
@@ -490,6 +482,14 @@ class ScheduleSelection extends React.PureComponent {
 	
 	_renderItem = ({item, index}) => {
 		return <Schedule nextScreen={this.nextScreen} 
+			colors={{
+				courseColor: this.props.courseColor,
+				fixedEventsColor: this.props.fixedEventsColor,
+				nonFixedEventsColor: this.props.nonFixedEventsColor,
+				insideFixedEventsColor: this.props.insideFixedEventsColor,
+				insideNonFixedEventsColor: this.props.insideNonFixedEventsColor,
+				insideCourseColor: this.props.insideCourseColor,
+			}}
 			fixed={this.state.data.fixed}
 			school={this.state.data.school}
 			ai={item}
@@ -513,15 +513,15 @@ class ScheduleSelection extends React.PureComponent {
 						<Text style={styles.description}>{strings.description}</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: calendarEventColors.red, backgroundColor: calendarEventColorsInside.red}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.insideCourseColor}]}></View>
 								<Text style={styles.legendText}>{strings.courses}</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: calendarEventColors.green, backgroundColor: calendarEventColorsInside.green}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.insideFixedEventsColor}]}></View>
 								<Text style={styles.legendText}>{strings.fixedEvents}</Text>
 							</View>
 							<View style={styles.singleLegend}>
-								<View style={[styles.legendColor, {borderColor: calendarEventColors.purple, backgroundColor: calendarEventColorsInside.purple}]}></View>
+								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.insideNonFixedEventsColor}]}></View>
 								<Text style={styles.legendText}>{strings.nonFixedEvents}</Text>
 							</View>
 						</View>
@@ -538,4 +538,67 @@ class ScheduleSelection extends React.PureComponent {
 	}
 }
 
-export default connect()(ScheduleSelection);
+
+let mapStateToProps = (state) => {
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+	let insideFixedEventsColor = fixedEventsColor;
+	let insideNonFixedEventsColor = nonFixedEventsColor;
+	let insideCourseColor = courseColor;
+
+	for (let i = 0; i < calendarColors.length; i++) {
+		let key = Object.keys(calendarColors[i])[0];
+		let value = Object.values(calendarColors[i])[0];
+
+		switch(key) {
+			case fixedEventsColor:
+				fixedEventsColor = value;
+				insideFixedEventsColor = Object.values(calendarInsideColors[i])[0];
+				break;
+			
+			case nonFixedEventsColor:
+				nonFixedEventsColor = value;
+				insideNonFixedEventsColor = Object.values(calendarInsideColors[i])[0];
+				break;
+				
+			case courseColor:
+				courseColor = value;
+				insideCourseColor = Object.values(calendarInsideColors[i])[0];
+				break;
+		}
+	}
+
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
+	}
+	
+	if (!insideFixedEventsColor) {
+		insideFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideNonFixedEventsColor) {
+		insideNonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideCourseColor) {
+		insideCourseColor = state.CalendarReducer.calendarColor;
+	}
+
+	return {
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor,
+		insideNonFixedEventsColor,
+		insideFixedEventsColor,
+		insideCourseColor
+	};
+};
+
+export default connect(mapStateToProps, null)(ScheduleSelection);

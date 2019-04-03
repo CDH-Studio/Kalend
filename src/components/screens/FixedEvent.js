@@ -62,7 +62,6 @@ class FixedEvent extends React.PureComponent {
 			disabledStartTime : false,
 
 			endTime: moment().format('h:mm A'),
-			minEndTime: moment().format('h:mm A'),
 			disabledEndTime : true,
 			endTimeValidated: true,
 
@@ -557,6 +556,7 @@ class FixedEvent extends React.PureComponent {
 										format="h:mm A" 
 										confirmBtnText={this.strings.confirmButton}
 										cancelBtnText={this.strings.cancelButton}
+										locale={'US'}
 										is24Hour={false}
 										onDateChange={this.startTimeOnDateChange}/>
 								</View>
@@ -595,9 +595,9 @@ class FixedEvent extends React.PureComponent {
 												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
 										}}
 										format="h:mm A" 
-										minDate={this.state.minEndTime}
 										confirmBtnText={this.strings.confirmButton}
 										cancelBtnText={this.strings.cancelButton}
+										locale={'US'}
 										is24Hour={false}
 										onDateChange={this.endTimeOnDateChange}/>
 								</View>
@@ -650,7 +650,15 @@ class FixedEvent extends React.PureComponent {
 									<View style={styles.textInputBorder}>
 										{
 											Platform.OS === 'ios' ? 
-												<Text onPress={this.recurrenceOnClick}>{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}</Text>
+												<View>
+													<MaterialIcons name="arrow-drop-down"
+														size={20}
+														style={{position: 'absolute', right: 0}} />
+													<Text style={{padding: 1}} 
+														onPress={this.recurrenceOnClick}>
+														{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}
+													</Text>
+												</View>
 												:	
 												<Picker style={styles.recurrence} 
 													selectedValue={this.state.recurrence} 
@@ -660,6 +668,7 @@ class FixedEvent extends React.PureComponent {
 													<Picker.Item label={this.strings.recurrence[2]} value="WEEKLY" />
 													<Picker.Item label={this.strings.recurrence[3]} value="MONTHLY" />
 												</Picker>
+
 										}
 									</View>
 								</View>

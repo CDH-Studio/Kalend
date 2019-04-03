@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
 import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
-import { gradientColors } from '../../../config';
+import { gradientColors } from '../../../config/config';
 import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 import { setBottomString } from '../../actions';
 import { getStrings } from '../../services/helper';

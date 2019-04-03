@@ -1,5 +1,5 @@
-import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, getRandomDate, getStrings } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
+import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate, getStrings } from './helper';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents, getCalendar } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
@@ -63,11 +63,7 @@ export const analyzePicture = (base64Data) => {
 				if(body.data.length == 0) reject(strings.analyzePictureData);
 				formatData(body.data)
 					.then(data => {
-						storeCoursesEvents(data)
-							.then((success) => {
-								if(success) return resolve(true);
-								else return reject(false);
-							});
+						return resolve(data);
 					})
 					.catch(err => {
 						reject(err);
@@ -143,7 +139,7 @@ export const storeCoursesEvents = (events) => {
 				obj.recurrence = recurrence;
 				
 				let courseReduxObj = obj;
-				courseReduxObj.dayOfWeek = event.day;
+				courseReduxObj.dayOfWeekValue = event.day;
 				courseReduxObj.hours = d;
 
 				store.dispatch(addCourse(courseReduxObj));	
@@ -161,19 +157,17 @@ export const storeCoursesEvents = (events) => {
 export const InsertCourseEventToCalendar = (event) => {
 	let calendarID = store.getState().CalendarReducer.id;
 
-	let obj = { 
-		'end': {},
-		'start': {}
-	};
-	
-	obj.end.dateTime = event.end.dateTime;
-	obj.start.dateTime = event.start.dateTime;
+	let obj = {};
+
+	obj.end = event.end;
+	obj.start = event.start;
 	obj.recurrence = event.recurrence;
 	obj.location = event.location;
 	obj.description = event.description;
 	obj.summary = event.summary;
-	//console.log('course obj', obj);
-	return insertEvent(calendarID,event,{});	
+	obj.colorId = store.getState().CalendarReducer.courseColor;
+
+	return insertEvent(calendarID, obj,{});	
 };
 
 
@@ -210,6 +204,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 	obj.summary = event.title;
 	obj.location = event.location;
 	obj.description = event.description;
+	obj.colorId = store.getState().CalendarReducer.fixedEventsColor;
 
 	return insertEvent(calendarID,obj,{});	
 };
@@ -223,13 +218,16 @@ export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
 			let calendarID;
+			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
 				if (data.items[i].summary === 'Kalend') {
 					calendarID = data.items[i].id;
+					calendarColor = data.items[i].backgroundColor;
+
 					console.log('found one!', calendarID);
 				}
 			}
-			resolve(calendarID);
+			resolve({calendarID, calendarColor});
 		});
 	});
 };
@@ -238,9 +236,11 @@ export const getCalendarID2 = () => {
  *	Creates a new calendar, and returns calendarID as a promise
  */
 export const createCalendar = () => {
-	return new Promise( function(resolve) { 
+	return new Promise(function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-			resolve(data.id);
+			getCalendar(data.id).then(color => {
+				resolve({calendarID: data.id, calendarColor: color.backgroundColor});
+			});
 		});
 	});
 };
@@ -267,7 +267,7 @@ export const eventsToScheduleSelectionData = () => {
 			let endDateTime = new Date(event.end.dateTime);
 			let day = startDateTime.getDay();
 			let start =  startDateTime.getHours();
-			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 			let chunks = end - start;
 			
 			let obj = {
@@ -283,7 +283,7 @@ export const eventsToScheduleSelectionData = () => {
 			let endDateTime = new Date(`${event.endDate} ${event.endTime}`); 
 			let day = startDateTime.getDay();
 			let start =  startDateTime.getHours();
-			let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+			let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 			let chunks = end - start;
 			
 			let obj = {
@@ -301,7 +301,7 @@ export const eventsToScheduleSelectionData = () => {
 				let endDateTime = new Date(event.end.dateTime);
 				let day = startDateTime.getDay();
 				let start =  startDateTime.getHours();
-				let end =  Math.ceil(endDateTime.getHours() + endDateTime.getMinutes()/60);
+				let end =  endDateTime.getHours() + endDateTime.getMinutes()/60;
 				let chunks = end - start;
 				
 				let obj = {
@@ -447,7 +447,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 			'end': {},
 			'start': {}
 		};
-		
+
 		if (event.isRecurrent) {
 			obj.recurrence = ['RRULE:FREQ=WEEKLY;'];
 			obj.start.timeZone = 'America/Toronto';
@@ -459,6 +459,7 @@ let storeNonFixedEvent = (availableDate, event) => {
 		obj.description = event.description;
 		obj.end.dateTime = availableDate.endDate;
 		obj.start.dateTime = availableDate.startDate;
+		obj.colorId = store.getState().CalendarReducer.nonFixedEventsColor;
 	
 		store.dispatch(addGeneratedNonFixedEvent(obj));
 		resolve();
@@ -488,6 +489,27 @@ export const generateCalendars = async () => {
 	}
 
 	return Promise.all(promises);
+};
+
+export const getDataforDashboard = async () => {
+	let calendarID = store.getState().CalendarReducer.id;
+	return new Promise(async (resolve, reject) => {
+		await listEvents(calendarID).then(data => {
+			if (data.error) reject('There was a problem featching your data');
+			convertEventsToDictionary(data.items).then(dict => {
+				if(dict == undefined) reject('There was an error in converting data to dict');
+				resolve(dict);
+			});
+		});
+	});
+};
+
+export const sortEventsInDictonary = (dict) => {
+	for (let [key,value] of Object.entries(dict)) {
+		let sortedValue = selectionSort(value);
+		dict[key] = sortedValue;
+	}
+	return dict;
 };
 
 export const insertFixedEventsToGoogle = async () => {

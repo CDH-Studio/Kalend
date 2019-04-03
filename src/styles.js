@@ -9,7 +9,8 @@ export const black = '#000';
 export const blue = '#1D84B5';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
-export const red = '#B80000';
+export const red = '#FF0000';
+export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
 
@@ -361,14 +362,15 @@ export const cameraRollImageStyles = StyleSheet.create({
 	},
 
 	touch: {
+		backgroundColor:'#232323',
 		margin: 5,
 		borderRadius: 5,
 		...Platform.select({
 			ios: {
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.8,
-				shadowRadius: 2  
+				shadowOpacity: 0.5,
+				shadowRadius: 5
 			},
 			android: {
 				elevation: 5
@@ -394,8 +396,8 @@ export const cameraRollImageStyles = StyleSheet.create({
 	},
 
 	shadow : {
-		backgroundColor:'#232323',
-		position:'absolute', 
+		backgroundColor: '#232323',
+		position: 'absolute', 
 		opacity: 0.4
 	}
 });
@@ -517,13 +519,15 @@ export const courseStyles = StyleSheet.create({
 	},
 
 	errorCourseCode: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		marginLeft: 45
 	},
 
 	errorEndTime: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		paddingLeft: 5
 	},
@@ -617,13 +621,15 @@ export const fixedEventStyles = StyleSheet.create({
 	},
 
 	errorTitle: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
-		marginLeft: 42
+		marginLeft: 45
 	},
 
 	errorEnd: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		alignSelf: 'flex-start',
 		marginLeft: 12
@@ -743,21 +749,24 @@ export const nonFixedEventStyles = StyleSheet.create({
 	},
 
 	errorTitle: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
-		marginLeft: 40,
+		marginLeft: 45,
 		paddingBottom: 5
 	},
 
 	errorEndDate: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		alignSelf: 'flex-start',
 		paddingBottom: 5
 	},
 	
 	errorDuration: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		paddingBottom: 5
 	},
@@ -877,7 +886,8 @@ export const unavailableHoursStyles = StyleSheet.create({
 	},
 
 	errorEndTime: {
-		color: 'red',
+		fontFamily: 'Raleway-Regular',
+		color: red,
 		fontSize: 12,
 		width: 140,
 		textAlign: 'center'
@@ -1422,12 +1432,65 @@ export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 10
+		padding: 10,
+		backgroundColor: '#F6F8FA'
 	},
 
 	fab: {
 		position: 'absolute',
 		right: 0
+	},
+
+	closeCalendarView: {
+		alignItems: 'center'
+	},
+
+	closeCalendarFab: {
+		position: 'absolute',
+		bottom: 0
+	},
+
+	item: {
+		backgroundColor: white,
+		borderRadius: 5,
+		width: '95%',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		marginVertical: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	itemText: {
+		fontFamily: 'OpenSans-Regular',
+		fontSize: 16,
+		color: gray
+	},
+
+	noEvents: {
+		justifyContent: 'center'
+	},
+
+	noEventsText: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		color: gray,
+		paddingTop: 15
+	},
+
+	emptyDate: {
+		height: 15,
+		flex:1,
+		paddingTop: 30
 	},
 
 	tooltipText: {
@@ -1448,6 +1511,26 @@ export const dashboardStyles = StyleSheet.create({
 			},
 		}),
 	},
+
+	calendarBack: {
+		backgroundColor: white
+	},
+	
+	calendarBackText: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		color: dark_blue,
+		textAlign: 'center'
+	},
+
+	eventsDayTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+		marginTop : 20,
+		paddingBottom: 10
+	},
+
 	...DashboardButton,
 });
 
@@ -1540,7 +1623,7 @@ export const settingsStyles = StyleSheet.create({
 	buttonLogOutText: {
 		fontFamily: 'Raleway-Regular',
 		fontSize: 16,
-		color: '#ff0000'
+		color: red
 	},
 
 	version: {
@@ -1748,5 +1831,123 @@ export const scheduleCreateStyles = StyleSheet.create({
 
 	progressBar: {
 		alignSelf:'center'
+	}
+});
+
+export const eventsColorPickerStyles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	modal: {
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	modalContent: {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+	},
+
+	modalTitle: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		padding: 15, 
+		fontSize: 20, 
+		paddingLeft: 20
+	}, 
+
+	viewPager: {
+		height: 250,
+		flexDirection: 'column-reverse'
+	}, 
+
+	button: {
+		justifyContent: 'flex-end', 
+		width: '100%', 
+		flexDirection: 'row'
+	}, 
+
+	buttonText: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+		padding: 15, 
+		paddingRight: 20,
+		paddingTop: 0
+	}, 
+
+	circleColor: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 25,
+		width: 50,
+		margin: 5,
+		height: 50,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	}, 
+
+	dimmedCircle: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#00000040',
+		borderRadius: 25,
+		width: 50,
+		height: 50,
+	},
+
+	circleContainer: {
+		flexDirection: 'row', 
+		flexWrap: 'wrap', 
+		margin: 5, 
+		width: Dimensions.get('window').width > 240 ? 240 : Dimensions.get('window').width
+	},
+
+	colorsSliderContainer: {
+		justifyContent: 'center', 
+		alignItems: 'center'
+	}, 
+
+	pager: {
+		backgroundColor: 'white',
+		height: 48
+	}, 
+
+	pagerText: {
+		color: gray, 
+		fontFamily: 'Raleway-Medium'
+	}, 
+
+	pagerSelectedBorder: {
+		height: 3,
+		backgroundColor: dark_blue
+	}, 
+
+	pagerSelectedText: {
+		color: dark_blue, 
+		fontFamily: 'Raleway-Bold'
 	}
 });

@@ -6,6 +6,12 @@ import {
 	SET_LANGUAGE,
 	SET_BOTTOM_STRINGS,
 	SET_IMG, 
+	SET_DASHBOARD_DATA,
+	SET_NONFIXED_COLOR,
+	SET_COURSE_COLOR,
+	SET_FIXED_COLOR,
+	SET_CALENDAR_COLOR,
+	CREATE_CALENDAR,
 	SIGNED_IN, 
 	SIGNED_OUT, 
 	ADD_FE, 
@@ -13,6 +19,7 @@ import {
 	ADD_GENERATED_CALENDAR,
 	ADD_NFE, 
 	ADD_COURSE, 
+	ADD_COLORS,
 	DELETE_NFE, 
 	DELETE_FE, 
 	DELETE_COURSE,
@@ -20,7 +27,6 @@ import {
 	UPDATE_FE, 
 	UPDATE_NFE, 
 	UPDATE_COURSE, 
-	CREATE_CALENDAR,
 	CLEAR_GENERATED_CALENDAR,
 	CLEAR_CALENDAR,
 	CLEAR_COURSE,
@@ -33,7 +39,8 @@ import {
 	CLEAR_UNAVAILABLE_HOURS,
 	CLEAR_OPENED,
 	CLEAR_SETTINGS,
-	CLEAR_BOTTOM_STRINGS
+	CLEAR_BOTTOM_STRINGS,
+	CLEAR_DASHBOARD_DATA,
 } from '../constants';
 
 
@@ -98,6 +105,15 @@ export function setImageURI (data, hasImage) {
 }
 
 /*** ADD ***/
+export function addColors (colors) {
+	const action = {
+		type: ADD_COLORS, 
+		colors
+	};
+
+	return action;
+}
+
 export function addFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
@@ -208,7 +224,8 @@ export function setNavigationScreen (data) {
 		route: data.route,
 		main: data.main,
 		routes: data.routes,
-		reviewEventSelected: data.reviewEventSelected
+		reviewEventSelected: data.reviewEventSelected,
+		successfullyInsertedEvents: data.successfullyInsertedEvents
 	};
 
 	return action;
@@ -240,11 +257,55 @@ export function setLanguage (language) {
 
 	return action;
 }
+export function setDashboardData (data) {
+	const action = {
+		type: SET_DASHBOARD_DATA,
+		data
+	};
+
+	return action;
+}
 
 export function setBottomString (params) {
 	const action = {
 		type: SET_BOTTOM_STRINGS,
 		params
+	}
+
+	return action;
+}
+
+export function setFixedColor (fixedEventsColor) {
+	const action = {
+		type: SET_FIXED_COLOR,
+		fixedEventsColor
+	};
+
+	return action;
+}
+
+export function setNonFixedColor (nonFixedEventsColor) {
+	const action = {
+		type: SET_NONFIXED_COLOR,
+		nonFixedEventsColor
+	};
+
+	return action;
+}
+
+export function setCourseColor (courseColor) {
+	const action = {
+		type: SET_COURSE_COLOR,
+		courseColor
+	};
+
+	return action;
+}
+
+export function setCalendarColor (calendarColor) {
+	const action = {
+		type: SET_CALENDAR_COLOR,
+		calendarColor
 	};
 
 	return action;
@@ -310,6 +371,14 @@ export function clearNavigation () {
 export function clearSchedule () {
 	const action = {
 		type: CLEAR_SCHEDULE
+	};
+
+	return action;
+}
+
+export function clearDashboardData () {
+	const action = {
+		type: CLEAR_DASHBOARD_DATA
 	};
 
 	return action;

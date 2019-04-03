@@ -229,6 +229,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startSleepWeek) => {
 															this.setState({
@@ -255,8 +256,9 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
-														onDateChange={(endSleepWeek) => this.setState({endSleepWeek})} />
+														onDateChange={(endSleepWeek) => this.setState({endSleepWeek})} /> />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
 
 											{error.endSleepWeek}
@@ -288,6 +290,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startSleepWeekEnd) => {
 															this.setState({
@@ -314,6 +317,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endSleepWeekEnd) => this.setState({endSleepWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -361,6 +365,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startCommutingWeek) => {
 															this.setState({
@@ -387,6 +392,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endCommutingWeek) => this.setState({endCommutingWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -419,6 +425,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startCommutingWeekEnd) => {
 															this.setState({
@@ -445,6 +452,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endCommutingWeekEnd) => this.setState({endCommutingWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -492,6 +500,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startEatingWeek) => {
 															this.setState({
@@ -517,6 +526,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endEatingWeek) => this.setState({endEatingWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -549,6 +559,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startEatingWeekEnd) => {
 															this.setState({
@@ -574,6 +585,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endEatingWeekEnd) => this.setState({endEatingWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -621,6 +633,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startOtherWeek) => {
 															this.setState({
@@ -646,6 +659,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endOtherWeek) => this.setState({endOtherWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
@@ -678,6 +692,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(startOtherWeekEnd) => {
 															this.setState({
@@ -703,6 +718,7 @@ class UnavailableHours extends React.PureComponent {
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
+														locale={'US'}
 														is24Hour={false}
 														onDateChange={(endOtherWeekEnd) => this.setState({endOtherWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}

@@ -12,6 +12,7 @@ import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
 import { setLanguage } from '../../actions';
+import EventsColorPicker from '../EventsColorPicker';
 
 const viewHeight = 669.1428833007812;
 
@@ -35,21 +36,29 @@ class Settings extends React.PureComponent {
 
 		this.state = {
 			containerHeight,
-			languageDialogVisible: false
+			languageDialogVisible: false,
+			showEventsColorPicker: false
 		};
 
 		// Updates the navigation location in redux
 		updateNavigation('Settings', props.navigation.state.routeName);
 	}
 
+	dismiss = () => {
+		this.setState({showEventsColorPicker: false});
+	}
+
 	render() {
-		const { containerHeight } = this.state;
+		const { containerHeight, showEventsColorPicker } = this.state;
 
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'#166489'} />
+				
+				<EventsColorPicker visible={showEventsColorPicker}
+					dismiss={() => this.dismiss()}/>
 
 				<ScrollView>
 					<View style={[styles.content, {height: containerHeight}]}>
@@ -146,7 +155,8 @@ class Settings extends React.PureComponent {
 							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.button}>
+						<TouchableOpacity style={styles.button}
+							onPress={() => this.setState({showEventsColorPicker: true})}>
 							<Text style={styles.buttonText}>{this.strings.theme}</Text>
 						</TouchableOpacity>
 

@@ -14,6 +14,7 @@ import SchoolInformationReducer from './reducer_schoolInformation';
 import GeneratedCalendarsReducer from './reducer_generatedCalendars';
 import SettingsReducer from './reducer_settings';
 import BottomNavReducer from './recuder_bottomNav';
+import DashboardReducer from './reducer_dashboard';
 
 export default combineReducers( 
 	{ 	
@@ -31,6 +32,7 @@ export default combineReducers(
 		SchoolInformationReducer,
 		GeneratedCalendarsReducer,
 		SettingsReducer,
-		BottomNavReducer
+		BottomNavReducer,
+		DashboardReducer
 	}
 );

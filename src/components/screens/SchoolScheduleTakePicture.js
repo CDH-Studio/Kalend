@@ -7,8 +7,8 @@ import { setImageURI } from '../../actions';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { takePictureStyles as styles, red, blue, white, dark_blue } from '../../styles';
 import { getStrings } from '../../services/helper';
+import { takePictureStyles as styles, darkRed, blue, white, dark_blue } from '../../styles';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -179,7 +179,7 @@ class SchoolScheduleTakePicture extends React.PureComponent {
 					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, {backgroundColor: red}]}>
+							style={[styles.capture, {backgroundColor: darkRed}]}>
 							<Entypo name='cross' 
 								size={dismissIcon}
 								color={white} 

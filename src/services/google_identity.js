@@ -1,5 +1,5 @@
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { webClientId, googleIdentityScope } from '../../config';
+import { webClientId, googleIdentityScope } from '../../config/config';
 
 GoogleSignin.configure({
 	scopes: googleIdentityScope,

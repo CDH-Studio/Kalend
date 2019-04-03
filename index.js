@@ -4,8 +4,8 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { name as appName } from './app.json';
-import { blueColor, orangeColor } from './config';
+import { name as appName } from './config/app.json';
+import { blueColor, orangeColor } from './config/config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { store, persistor } from './src/store/index';
@@ -239,7 +239,7 @@ const MainNavigator = createSwitchNavigator(
 		WelcomeScreen,
 		LoadingScreen,
 		DashboardOptionsNavigator,
-		LoginNavigator,
+		LoginNavigator
 	},
 	{
 		initialRouteName: 'LoadingScreen'

@@ -3,9 +3,9 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { setCalendarID, logonUser, setBottomString } from '../../actions';
-import { gradientColors } from '../../../config';
+import { setCalendarID, logonUser, setBottomString, setCalendarColor } from '../../actions';
 import { DashboardNavigator } from '../../constants/screenNames';
+import { gradientColors } from '../../../config/config';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
@@ -41,12 +41,16 @@ class Home extends React.PureComponent {
 	 */
 	setCalendar() {
 		getCalendarID2().then(data => {
-			if (data === undefined) {
-				createCalendar().then(id => {
-					this.props.setCalendarID(id);
+			if (data.calendarID === undefined) {
+				createCalendar().then(data => {
+					this.props.setCalendarID(data.calendarID);
+					this.props.setCalendarColor(data.calendarColor);
+					this.props.navigation.navigate(DashboardNavigator);
 				});
 			} else {
-				this.props.setCalendarID(data);
+				this.props.setCalendarID(data.calendarID);
+				this.props.setCalendarColor(data.calendarColor);
+				this.props.navigation.navigate(DashboardNavigator);
 			}
 		});
 	}
@@ -72,31 +76,30 @@ class Home extends React.PureComponent {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.setCalendar();
-							this.props.navigation.navigate(DashboardNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								this.setCalendar();
-								this.props.navigation.navigate(DashboardNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					this.setCalendar();
-					this.props.navigation.navigate(DashboardNavigator);
 				}
 			});
 		}
 	}
 
 	render() {
+		let source = Platform.OS === 'ios' ? require('../../assets/img/loginScreen/backPattern_ios.png') : 
+			require('../../assets/img/loginScreen/backPattern_android.png');
 		return (
 			<LinearGradient style={styles.container}
 				colors={gradientColors}>
 				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')}
+					source={source}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
 						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
@@ -147,7 +150,7 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser, setBottomString }, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, setBottomString, setCalendarColor }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
