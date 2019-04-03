@@ -169,6 +169,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - rn-fetch-blob (0.10.6):
+    - React/Core
   - RNFS (2.13.3):
     - React
   - RNGestureHandler (1.1.0):
@@ -202,6 +204,7 @@ DEPENDENCIES:
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -248,6 +251,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -285,11 +290,12 @@ SPEC CHECKSUMS:
   react-native-async-storage: fe962994ac710376da9a7a98c43c474b9392b558
   react-native-camera: 9cd8cf5d5f75917a978d3781f315b8191eaee1ff
   react-native-slider: f9e501d8ae01322ac4246c57c3655005269c8928
+  rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNFS: c9bbde46b0d59619f8e7b735991c60e0f73d22c1
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNVectorIcons: cb42a5653c046f12ca16c9480c571b52620559e8
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
-PODFILE CHECKSUM: b0b8da757397d71bb2b285777835a720f186b4d6
+PODFILE CHECKSUM: 8efea22a9e2389a7997112ee0439c00ee26c7694
 
 COCOAPODS: 1.6.1
