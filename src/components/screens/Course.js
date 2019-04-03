@@ -10,9 +10,8 @@ import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { getStartDate } from '../../services/helper';
+import { getStartDate, getStrings } from '../../services/helper';
 import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
-import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
 

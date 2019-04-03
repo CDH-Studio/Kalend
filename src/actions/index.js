@@ -270,7 +270,7 @@ export function setBottomString (params) {
 	const action = {
 		type: SET_BOTTOM_STRINGS,
 		params
-	}
+	};
 
 	return action;
 }
