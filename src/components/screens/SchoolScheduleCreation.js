@@ -88,7 +88,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 			let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
 			if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
-				this.props.navigation.navigate(ReviewEventRoute);
+				this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 			} else {
 				this.props.navigation.navigate(DashboardNavigator);
 			}
@@ -122,7 +122,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 				{
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute);
+						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 					},
 				},
 			],

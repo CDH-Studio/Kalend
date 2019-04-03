@@ -24,12 +24,15 @@ class ReviewEvent extends React.PureComponent {
 		1: this.strings.high
 	};
 
-	static navigationOptions = {
-		title: getStrings().ReviewEvent.title,
-		headerStyle: {
-			backgroundColor: white,
-		}
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerStyle: {
+				backgroundColor: white,
+			}
+		};
 	};
+		
 
 	constructor(props) {
 		super(props);
@@ -204,7 +207,7 @@ class ReviewEvent extends React.PureComponent {
 					}
 				});
 		} else {
-			this.props.navigation.navigate(ScheduleCreationRoute);
+			this.props.navigation.navigate(ScheduleCreationRoute, {title: getStrings().ScheduleCreation.title});
 		}
 	}
 
@@ -223,12 +226,12 @@ class ReviewEvent extends React.PureComponent {
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {
-											this.props.navigation.navigate(CourseRoute);
+											this.props.navigation.navigate(CourseRoute, {title: getStrings().Course.addTitle});
 										} else {
-											this.props.navigation.navigate(SchoolScheduleRoute);
+											this.props.navigation.navigate(SchoolScheduleRoute, {title: getStrings().SchoolSchedule.title});
 										}
 									} else {
-										this.props.navigation.navigate(SchoolInformationRoute, {reviewEvent: true});
+										this.props.navigation.navigate(SchoolInformationRoute, {title: getStrings().SchoolInformation.title, reviewEvent: true});
 									}
 								}}>
 									<MaterialCommunityIcons name="plus-circle" 
@@ -257,7 +260,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.fixedTitle}</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute)}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute, {title: getStrings().FixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -286,7 +289,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.nonFixedTitle}</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute)}>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {title: getStrings().NonFixedEvent.title})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>

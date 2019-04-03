@@ -384,7 +384,7 @@ class Schedule extends React.PureComponent {
  */
 class ScheduleSelection extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
-		title: strings.name,
+		title: navigation.state.params.title,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
 		},
@@ -451,7 +451,7 @@ class ScheduleSelection extends React.PureComponent {
 				{
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute);
+						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 						this.props.dispatch(clearGeneratedCalendars());
 						this.props.dispatch(clearGeneratedNonFixedEvents());
 					},
@@ -475,7 +475,7 @@ class ScheduleSelection extends React.PureComponent {
 	 */
 	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data, delete: this.deleteCalendar});
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title: getStrings().ScheduleSelectionDetails.title, data, delete: this.deleteCalendar});
 	}
 	
 	/**

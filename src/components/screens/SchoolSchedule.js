@@ -14,12 +14,14 @@ class SchoolSchedule extends React.PureComponent {
 
 	strings = getStrings().SchoolSchedule;
 
-	static navigationOptions =  {
-		title: getStrings().SchoolSchedule.title,
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-		},
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTransparent: true,
+			headerStyle: {
+				backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			},
+		};
 	};
 
 	constructor(props) {
@@ -39,11 +41,11 @@ class SchoolSchedule extends React.PureComponent {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				if (accepted) {
-					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
+					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute, {title: getStrings().SchoolScheduleSelectPicture.title});
 				}
 			});
 		} else {
-			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+			this.props.navigation.navigate('SchoolScheduleSelectPicture', {title: getStrings().SchoolScheduleSelectPicture.title});
 		}
 	}
 
@@ -54,11 +56,11 @@ class SchoolSchedule extends React.PureComponent {
 		if (Platform.OS !== 'ios') {
 			requestCamera().then((accepted) => {				
 				if (accepted) {
-					this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
+					this.props.navigation.navigate(SchoolScheduleTakePictureRoute, {title: getStrings().SchoolScheduleTakePicture.title});
 				}
 			});
 		} else {
-			this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
+			this.props.navigation.navigate(SchoolScheduleTakePictureRoute, {title: getStrings().SchoolScheduleTakePicture.title});
 		}
 	}
 
@@ -66,7 +68,7 @@ class SchoolSchedule extends React.PureComponent {
 	 * To go to the appropriate Add Course screen according to the current route
 	 */
 	manualImport() {
-		this.props.navigation.navigate(CourseRoute);
+		this.props.navigation.navigate(CourseRoute,  {title: getStrings().Course.addTitle});
 	}
 
 	render() {

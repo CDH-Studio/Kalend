@@ -93,7 +93,7 @@ class ScheduleCreation extends React.PureComponent {
 				{
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute);
+						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 					},
 				},
 			],
@@ -114,7 +114,7 @@ class ScheduleCreation extends React.PureComponent {
 	 */
 	navigateToSelection = () => {
 		if (this.state.goToNextScreen && !this.state.alertDialog) {
-			this.props.navigation.navigate(ScheduleSelectionRoute);
+			this.props.navigation.navigate(ScheduleSelectionRoute, {title: getStrings().ScheduleSelection.title});
 		}
 	}
 	

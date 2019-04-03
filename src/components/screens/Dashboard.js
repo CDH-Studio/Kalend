@@ -51,7 +51,7 @@ class Dashboard extends React.PureComponent {
 
 					<TouchableOpacity style={styles.button}
 						onPress={() => {
-							this.props.navigation.navigate(ReviewEventRoute);
+							this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 						}}>
 						<Text style={styles.buttonText}>{this.strings.createSchedule}</Text>
 					</TouchableOpacity>
@@ -67,21 +67,21 @@ class Dashboard extends React.PureComponent {
 								onPress: () => {
 									if (store.getState().SchoolInformationReducer.info) {
 										if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
-											this.props.navigation.navigate(CourseRoute);
+											this.props.navigation.navigate(CourseRoute, {title: getStrings().Course.addTitle});
 										} else {
-											this.props.navigation.navigate(SchoolScheduleRoute);
+											this.props.navigation.navigate(SchoolScheduleRoute,  {title: getStrings().SchoolSchedule.title});
 										}
 									} else {
-										this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
+										this.props.navigation.navigate(SchoolInformationRoute, {title: getStrings().SchoolInformation.title, schoolSchedule: true});
 									}
 								}
 							},
 							{icon: 'today',
 								label: this.strings.fabFixedEvent,
-								onPress: () => this.props.navigation.navigate(FixedEventRoute)},
+								onPress: () => this.props.navigation.navigate(FixedEventRoute, {title: getStrings().FixedEvent.title})},
 							{icon: 'face',
 								label: this.strings.fabNonFixedEvent,
-								onPress: () => this.props.navigation.navigate(NonFixedEventRoute)},
+								onPress: () => this.props.navigation.navigate(NonFixedEventRoute, {title: getStrings().NonFixedEvent.title})},
 						]}
 						onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
 						style={styles.fab} />

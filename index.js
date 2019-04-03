@@ -253,7 +253,7 @@ DashboardOptionsNavigator.router.getStateForAction = (action, state) => {
 			state.routes[0],
 			{key: '2',
 				routeName: 'ReviewEvent',
-				params:{}}];
+				params:{title: getStrings().ReviewEvent.title}}];
 
 		return {
 			...state,

@@ -20,12 +20,14 @@ class SchoolInformation extends React.PureComponent {
 	strings = getStrings().SchoolInformation;
 	buttonStrings = getStrings().BottomButtons;
 
-	static navigationOptions = {
-		title: getStrings().SchoolInformation.title,
-		headerTintColor: dark_blue,
-		headerStyle: {
-			backgroundColor: white,
-		}
+	static navigationOptions =  ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTintColor: dark_blue,
+			headerStyle: {
+				backgroundColor: white,
+			}
+		};
 	}
 
 	constructor(props) {
@@ -133,9 +135,9 @@ class SchoolInformation extends React.PureComponent {
 			if (temp) {
 				if (temp.schoolSchedule || temp.reviewEvent) {
 					if (this.state.checked === 'third') {
-						this.props.navigation.navigate(CourseRoute);
+						this.props.navigation.navigate(CourseRoute, {title: getStrings().Course.addTitle});
 					} else {
-						this.props.navigation.navigate(SchoolScheduleRoute);
+						this.props.navigation.navigate(SchoolScheduleRoute, {title: getStrings().SchoolSchedule.title});
 					}
 				} else {
 					this.props.navigation.pop();

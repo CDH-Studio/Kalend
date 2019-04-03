@@ -55,7 +55,7 @@ class LoadingScreen extends React.PureComponent {
 				break;
 			case 'SchoolSchedule':
 				this.setState({
-					nextScreen: DashboardOptionsNavigator
+					nextScreen: DashboardOptionsNavigator,
 				});
 				break;
 			case 'Dashboard':

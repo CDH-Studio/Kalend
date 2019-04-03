@@ -131,10 +131,10 @@ class NonFixedEvent extends React.PureComponent {
 
 		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
 			this.props.dispatch(addNonFixedEvent(this.state));
-			this.props.navigation.navigate(ReviewEventRoute);
+			this.props.navigation.navigate(ReviewEventRoute,  {title: getStrings().ReviewEvent.title});
 		} else {
 			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate(ReviewEventRoute, {changed:true});
+			this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title, changed:true});
 		}
 	}
 

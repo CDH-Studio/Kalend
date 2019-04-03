@@ -124,6 +124,7 @@ const en = {
 	},
 	ScheduleSelection: {
 		name: 'Schedule Selection',
+		title: 'Schedule Selection',
 		weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 		cancel: 'Cancel',
 		backAlertTitle: 'Discarding Selection',
@@ -136,6 +137,7 @@ const en = {
 	},
 	ScheduleSelectionDetails: {
 		name: 'Schedule Selection Details',
+		title: 'Schedule Selection Details',
 		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
 	SchoolInformation: {
@@ -187,6 +189,9 @@ const en = {
 		unavailableHours: 'Set Unavailable Hours',
 		schoolInformation: 'Set School Information',
 		preferences: 'Preferences',
+		changeLanguage: 'Switch to French?',
+		cancel: 'Cancel',
+		yes: 'Yes',
 		notifications: 'Notifications',
 		theme: 'Theme',
 		general: 'General',
@@ -384,7 +389,8 @@ const fr = {
 		backAlertDescription: 'Les horaires vont cesser d\'être générés si vous poursuivez. Où désirez-vous aller?',
 	},
 	ScheduleSelection: {
-		name: 'Sélection d\'un horaire',
+		name: 'Sélection d\'horaire',
+		title: 'Sélection d\'horaire',
 		weekLetters: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
 		cancel: 'Annuler',
 		backAlertTitle: 'Abandonner la sélection',
@@ -397,7 +403,8 @@ const fr = {
 		ordinal: ['Premier', 'Deuxième', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième', 'Septième', 'Huitième', 'Neuvième', 'Dixième']
 	},
 	ScheduleSelectionDetails: {
-		name: 'Détails sélection d\'un horaire',
+		name: 'Détails sélection d\'horaire',
+		title: 'Détails sélection d\'horaire',
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
 		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
@@ -450,6 +457,9 @@ const fr = {
 		unavailableHours: 'Préciser les heures non disponibles',
 		schoolInformation: 'Préciser l\'information scolaire',
 		preferences: 'Préférences',
+		changeLanguage: 'Passer en anglais?',
+		cancel: 'Annuler',
+		yes: 'Oui',
 		notifications: 'Notifications',
 		theme: 'Thème',
 		general: 'Général',

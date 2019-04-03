@@ -1,12 +1,13 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Linking } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Linking, Modal, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { IconButton } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue } from '../../styles';
+import { settingsStyles as styles, blue, gray } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
@@ -33,7 +34,8 @@ class Settings extends React.PureComponent {
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
 		this.state = {
-			containerHeight
+			containerHeight,
+			languageDialogVisible: false
 		};
 
 		// Updates the navigation location in redux
@@ -72,14 +74,14 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.props.navigation.navigate(UnavailableRoute);
+								this.props.navigation.navigate(UnavailableRoute, {title: getStrings().UnavailableHours.title});
 							}}>
 							<Text style={styles.buttonText}>{this.strings.unavailableHours}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.props.navigation.navigate(SchoolInformationRoute);
+								this.props.navigation.navigate(SchoolInformationRoute, {title: getStrings().SchoolInformation.title});
 							}}>
 							<Text style={styles.buttonText}>{this.strings.schoolInformation}</Text>
 						</TouchableOpacity>
@@ -91,6 +93,54 @@ class Settings extends React.PureComponent {
 
 							<Text style={styles.title}>{this.strings.preferences}</Text>
 						</View>
+
+						<TouchableOpacity style={styles.button}
+							onPress={() => this.setState({languageDialogVisible: true})}>
+							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
+						</TouchableOpacity>
+
+						<Modal visible={this.state.languageDialogVisible}
+							transparent={true}
+							onRequestClose={() => {
+								//do nothing;
+							}}
+							animationType={'none'}>
+							<TouchableOpacity style={styles.modalView} 
+								onPress={() => this.setState({languageDialogVisible: false})}
+								activeOpacity={1}>
+								<TouchableWithoutFeedback>
+									<View style={styles.languageDialogContent}>
+										<View style={styles.languageDialogMainRow}>
+											<MaterialIcons name="language"
+												size={80}
+												color={gray} />
+
+											<View style={styles.languagerDialogRightCol}>
+												<Text style={styles.languageDialogQuestion}>{this.strings.changeLanguage}</Text>
+
+												<View style={styles.languageDialogOptions}>
+													<TouchableOpacity onPress={() => this.setState({languageDialogVisible: false})}>
+														<Text style={styles.languageDialogCancel}>{this.strings.cancel}</Text>
+													</TouchableOpacity>
+
+													<TouchableOpacity onPress={() => {
+														this.props.dispatch(setLanguage(this.props.language === 'en' ? 'fr' : 'en'));
+
+														this.setState({languageDialogVisible: false});
+
+														setTimeout(() => { 
+															RNRestart.Restart();
+														}, 50);
+													}}>
+														<Text style={styles.languageDialogYes}>{this.strings.yes}</Text>
+													</TouchableOpacity>
+												</View>
+											</View>
+										</View>
+									</View>
+								</TouchableWithoutFeedback>
+							</TouchableOpacity>
+						</Modal>
 
 						<TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
@@ -141,15 +191,6 @@ class Settings extends React.PureComponent {
 								this.props.navigation.navigate(LoginNavigator);
 							}}>
 							<Text style={styles.buttonLogOutText}>{this.strings.logout}</Text>
-						</TouchableOpacity>
-
-						
-						<TouchableOpacity style={styles.button}
-							onPress={() => {
-								this.props.dispatch(setLanguage(this.props.language === 'en' ? 'fr' : 'en'));
-								this.forceUpdate();
-							}}>
-							<Text style={styles.buttonLogOutText}>{this.props.language === 'en' ? 'fr' : 'en'}</Text>
 						</TouchableOpacity>
 
 						<Text style={styles.version}>{this.strings.version}</Text>

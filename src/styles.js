@@ -1548,6 +1548,67 @@ export const settingsStyles = StyleSheet.create({
 		textAlign: 'center',
 		paddingVertical: 10,
 		color: gray
+	},
+
+	modalView: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#00000080',
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.6,
+				shadowRadius: 7  
+			},
+		}),
+	},
+
+	languageDialogContent: {
+		backgroundColor: white,
+		borderRadius: 8,
+		justifyContent: 'space-between',
+		padding: 10
+	},
+
+	languageDialogMainRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	languageDialogRightCol: {
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		paddingVertical: 10,
+		paddingRight: 10
+	},
+
+	languageDialogQuestion: {
+		fontSize: 20,
+		fontFamily: 'Raleway-SemiBold',
+		marginLeft: 10,
+		marginBottom: 10,
+		color: gray
+	},
+
+	languageDialogOptions: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+
+	languageDialogCancel: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize:16,
+		color: gray
+	},
+
+	languageDialogYes: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		color: '#ff0000',
+		marginLeft: 20
 	}
 });
 

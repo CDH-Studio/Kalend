@@ -19,11 +19,13 @@ class UnavailableHours extends React.PureComponent {
 	strings = getStrings().UnavailableHours;
 	buttonStrings = getStrings().BottomButtons;
 
-	static navigationOptions = {
-		title: getStrings().UnavailableHours.title,
-		headerStyle: {
-			backgroundColor: white
-		},
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerStyle: {
+				backgroundColor: white
+			},
+		};
 	};
 
 	constructor(props) {
@@ -100,7 +102,7 @@ class UnavailableHours extends React.PureComponent {
 	 * To go to the appropriate Fixed Event screen according to the current route
 	 */
 	manualImport() {
-		this.props.navigation.navigate(UnavailableFixedRoute);
+		this.props.navigation.navigate(UnavailableFixedRoute, {title: 'Add Unavailable Hours'});
 	}
 
 	/**

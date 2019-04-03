@@ -529,7 +529,7 @@ class Course extends React.PureComponent {
 
 									if (routes && (routes[routes.length - 3].routeName == ReviewEventRoute || 
 										(routes[routes.length - 3].routeName == SchoolInformationRoute && routes[routes.length - 4].routeName == ReviewEventRoute))) {
-										this.props.navigation.navigate(ReviewEventRoute);
+										this.props.navigation.navigate(ReviewEventRoute,  {title: getStrings().ReviewEvent.title});
 									} else if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
 										this.props.navigation.navigate(DashboardNavigator);
 									} else {
