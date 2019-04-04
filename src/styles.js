@@ -1479,6 +1479,14 @@ export const dashboardStyles = StyleSheet.create({
 		paddingTop: 30
 	},
 
+	eventsDayTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+		marginTop : 20,
+		paddingBottom: 10
+	},
+
 	tooltipText: {
 		fontFamily: 'Raleway-Regular'
 	},
@@ -1509,14 +1517,6 @@ export const dashboardStyles = StyleSheet.create({
 		textAlign: 'center'
 	},
 
-	eventsDayTitle: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 18,
-		color: dark_blue,
-		marginTop : 20,
-		paddingBottom: 10
-	},
-
 	...DashboardButton,
 });
 
@@ -1530,8 +1530,90 @@ export const chatbotStyles = StyleSheet.create({
 export const compareScheduleStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
-	}
+		height: '100%',
+		flex: 1,
+		paddingTop: getStatusBarHeight() + 10
+	},
+
+	item: {
+		backgroundColor: white,
+		borderRadius: 5,
+		width: '95%',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		marginVertical: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+	},
+
+	itemText: {
+		fontFamily: 'OpenSans-Regular',
+		fontSize: 16,
+		color: gray
+	},
+
+
+	noEvents: {
+		justifyContent: 'center'
+	},
+
+	noEventsText: {
+		fontFamily: 'Raleway-Regular',
+		fontSize: 16,
+		color: gray,
+		paddingTop: 15
+	},
+
+	emptyDate: {
+		height: 15,
+		flex:1,
+		paddingTop: 30
+	},
+
+	eventsDayTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+		marginTop : 20,
+	},
+
+	modalTitle: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	}, 
+
+	modalContent: {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		paddingVertical: 15, 
+		paddingHorizontal: 20, 
+	},
+
+	modalAddText: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+	}, 
+
+	modalCloseText: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+		paddingRight: 25
+	}, 
 });
 
 export const settingsStyles = StyleSheet.create({

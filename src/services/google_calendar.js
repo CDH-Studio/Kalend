@@ -18,7 +18,7 @@ let apiHelperCall = (URL, method, body, query) => {
 		headers: {
 			'Accept': 'application/json',
 			'Authorization': 'Bearer ' + accessToken,
-			'Content-Type': 'application/json',
+			// 'Content-Type': 'application/json',
 		}
 	};
 
@@ -33,6 +33,9 @@ let apiHelperCall = (URL, method, body, query) => {
 
 	return fetch(URL + queryText, fetchData)
 		.then((response) => {
+			if (response.status === 204) {
+				return {};
+			}
 			if (response._bodyText === '') {
 				return response;
 			}
@@ -300,6 +303,20 @@ let deleteCalendar = (calendarId) => {
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/users/me/calendarList/' + calendarId, 'DELETE');
 };
 
+/**
+ * Updates the information of an event with the specified attributes
+ * https://developers.google.com/calendar/v3/reference/events/patch
+ * 
+ * @param {String} calendarId The calendar identifier
+ * @param {String} eventId The event identifier
+ * @param {Object} data The JSON object containing the optinal information for the API
+ * @param {Object} query Query parameter object to be appended to the URL
+ * 
+ * @returns {Promise} A promise containing an object with the information of the newly modified event
+ */
+let updateCalendar = (calendarId, eventId, data, query) => {
+	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId, 'PATCH', data, query);
+};
 
 module.exports = { 
 	createSecondaryCalendar, 
@@ -318,5 +335,6 @@ module.exports = {
 	replaceEvent,
 	getCalendar,
 	removeAccessRules,
-	deleteCalendar
+	deleteCalendar,
+	updateCalendar
 };

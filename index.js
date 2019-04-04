@@ -136,7 +136,7 @@ const DashboardNavigator = createBottomTabNavigator(
 	{
 		initialRouteName: 'Dashboard',
 		tabBarOptions: {
-			activeTintColor: blue,
+			activeTintColor: dark_blue,
 		}
 	}
 );
