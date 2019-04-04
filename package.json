@@ -33,7 +33,6 @@
     "react-native-camera": "^2.0.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-firebase": "^5.2.2",
-    "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.1",
     "react-native-iphone-x-helper": "^1.2.0",
@@ -52,6 +51,7 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
+    "rn-fetch-blob": "^0.10.15",
     "rn-viewpager": "^1.2.9",
     "sqlite3": "^4.0.6"
   },
