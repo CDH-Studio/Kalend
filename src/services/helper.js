@@ -234,3 +234,29 @@ export const clearEveryReducer = () => {
 
 	console.log(store.getState());
 };
+
+/**
+* Analyzes the input times and make sure the ranges make sense
+* 
+* @param {String} time The time of the unchanged value
+*/
+export const timeVerification = (startTime, endTime, time) => {
+	if (moment(time, 'h:mm A').isBefore(moment(startTime, 'h:mm A'))) {
+		return startTime;
+	} else if (moment(time, 'h:mm A').isAfter(moment(endTime, 'h:mm A'))) {
+		return endTime;
+	} else {
+		return time;
+	}
+};
+
+export const dateVerification = (startDate, endDate, date) => {
+	if (moment(date, 'ddd., MMM DD, YYYY').isBefore(moment(startDate, 'ddd., MMM DD, YYYY'))) {
+		return startDate;
+	} else if(moment(date, 'ddd., MMM DD, YYYY').isAfter(moment(endDate, 'ddd., MMM DD, YYYY'))) {
+		return endDate;
+	
+	} else {
+		return date;
+	}
+};
