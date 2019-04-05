@@ -1681,7 +1681,9 @@ export const compareScheduleStyles = StyleSheet.create({
 	},
 
 	activityIndicatorContainer: {
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '100%'
 	},
 
 	flatList: {
