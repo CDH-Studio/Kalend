@@ -1429,12 +1429,12 @@ export const dashboardStyles = StyleSheet.create({
 
 	closeCalendarView: {
 		alignItems: 'center',
-		paddingBottom: 10
 	},
 
 	closeCalendarFab: {
 		position: 'absolute',
-		bottom: 0
+		bottom: 0,
+		marginBottom: 15
 	},
 
 	item: {

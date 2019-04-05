@@ -183,8 +183,6 @@ class Dashboard extends React.PureComponent {
 							onCalendarToggled={(calendarOpened) => this.setState({calendarOpened})}
 						/>
 
-						{showCloseFab}
-
 						<FAB.Group
 							ref={ref => this.touchable = ref}
 							theme={{colors:{accent:blue}}}
@@ -227,6 +225,8 @@ class Dashboard extends React.PureComponent {
 						</View> */}
 					</View>
 				</Portal.Host>
+
+				{showCloseFab}
 
 				<Snackbar
 					visible={snackbarVisible}
