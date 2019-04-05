@@ -159,7 +159,7 @@ class Dashboard extends React.PureComponent {
 				</View>
 
 				<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute)}
-					style={{position:'absolute', bottom: 5, right:5}}>
+					style={{position:'absolute', bottom: 13 , right:10}}>
 					<View style={{flexDirection: 'row',
 						justifyContent: 'center',
 						alignItems: 'center',
