@@ -1522,11 +1522,72 @@ export const dashboardStyles = StyleSheet.create({
 	...DashboardButton,
 });
 
+export const calendarShareButtons = StyleSheet.create({
+	sideButton: {
+		backgroundColor: 'white',
+		borderRadius: 5,
+		padding: 8,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		})
+	},
+
+	sideButtonText: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	buttons: {
+		flexDirection: 'row', 
+		margin: 10, 
+		marginTop: 0, 
+		paddingHorizontal: 15
+	},
+
+	availabilityButton: {
+		backgroundColor: dark_blue,
+		borderRadius: 5,
+		padding: 8,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		})
+	},
+
+	availabilityButtonText: {
+		fontFamily: 'Raleway-Regular', 
+		color: white
+	},
+});
+
 export const chatbotStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%'
 	}
+});
+
+export const calendarPermissionStyles = StyleSheet.create({
+	...calendarShareButtons,
+
+	content: {
+		padding: 10
+	},
 });
 
 export const calendarPermissionItemStyles = StyleSheet.create({
@@ -1665,57 +1726,6 @@ export const compareScheduleStyles = StyleSheet.create({
 		paddingRight: 25
 	}, 
 
-	sideButton: {
-		backgroundColor: 'white',
-		borderRadius: 5,
-		padding: 8,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 4,
-			},
-		})
-	},
-
-	sideButtonText: {
-		fontFamily: 'Raleway-Regular', 
-		color: gray
-	},
-
-	buttons: {
-		flexDirection: 'row', 
-		margin: 10, 
-		marginTop: 0, 
-		paddingHorizontal: 15
-	},
-
-	availabilityButton: {
-		backgroundColor: dark_blue,
-		borderRadius: 5,
-		padding: 8,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 4,
-			},
-		})
-	},
-
-	availabilityButtonText: {
-		fontFamily: 'Raleway-Regular', 
-		color: white
-	},
-
 	title: {
 		fontFamily: 'Raleway-Bold', 
 		fontSize: 16, 
@@ -1771,7 +1781,9 @@ export const compareScheduleStyles = StyleSheet.create({
 	emptyData: {
 		padding: 10, 
 		paddingTop: 0
-	}
+	},
+
+	...calendarShareButtons
 });
 
 export const settingsStyles = StyleSheet.create({

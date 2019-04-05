@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { calendarPermissionItemStyles as styles, dark_blue } from '../styles';
 

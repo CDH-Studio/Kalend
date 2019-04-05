@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Image, Animated } from 'react-native';
+import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Animated } from 'react-native';
 import { TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -282,10 +282,14 @@ class CompareSchedule extends React.PureComponent {
 	renderEmptyData = () => {
 		return (
 			<View style={styles.emptyData}>
-				<Text style={styles.eventsDayTitle}>Availabilities</Text>
+				{
+					this.state.showCalendar ? 
+						<Text style={styles.eventsDayTitle}>Availabilities</Text> : null
+				}
 				
 				<View style={styles.noEvents}>
-					<Text style={styles.noEventsText}>There's no availabilities for the day.</Text>
+					<Text style={styles.noEventsText}>{ this.state.showCalendar ?
+						'There\'s no availabilities for the day.' : 'Click on See Availabilities to populate this calendar'}</Text>
 				</View>
 			</View>
 		);
@@ -308,7 +312,7 @@ class CompareSchedule extends React.PureComponent {
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
 				<Animated.View style={[styles.peopleSelection, {height: animatedHeight}]}>
-					<Text style={styles.title}>Compare schedules with</Text>
+					<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>Compare schedules with</Text>
 
 					{ 
 						loadingSharedList ? 
@@ -387,9 +391,9 @@ class CompareSchedule extends React.PureComponent {
 						return (<View style={{height: 70}}/>);
 					}}
 					pastScrollRange={1}
-					futureScrollRange={3}
+					futureScrollRange={4}
 					minDate={this.state.startDate.format('YYYY-MM-DD')}
-					maxDate={showCalendar ? this.state.endDate.format('YYYY-MM-DD') : this.state.startDate.format('YYYY-MM-DD')}
+					maxDate={showCalendar ? moment(this.state.endDate).format('YYYY-MM-DD') : this.state.startDate.format('YYYY-MM-DD')}
 					shouldChangeDay={this.shouldChangeDay}
 					hideKnob={!showCalendar}
 					theme={{agendaKnobColor: dark_blue}}/>
