@@ -1564,6 +1564,11 @@ export const compareScheduleStyles = StyleSheet.create({
 		color: gray
 	},
 
+	itemTextAMPM: {
+		fontFamily: 'OpenSans-Bold',
+		fontSize: 16,
+		color: black
+	},
 
 	noEvents: {
 		justifyContent: 'center'

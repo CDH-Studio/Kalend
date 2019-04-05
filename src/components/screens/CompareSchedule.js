@@ -248,8 +248,8 @@ class CompareSchedule extends React.PureComponent {
 					// Formats to wix calendar data
 					ranges.map(range => {
 						dates[range.start.format('YYYY-MM-DD')].push({
-							start: range.start.format('h:mm A'),
-							end: range.end.format('h:mm A')
+							start: range.start,
+							end: range.end
 						});
 					});
 
@@ -274,10 +274,11 @@ class CompareSchedule extends React.PureComponent {
 	renderItem(item) {
 		return (
 			<View style={styles.item}>
-				<Text style={styles.itemText}>Available</Text>
-				<View style={{flexDirection: 'column'}}>
-					<Text style={styles.itemText}>{item.start} - {item.end}</Text>
-				</View>
+				<Text style={styles.itemText}>{item.start.format('h:mm')} </Text>
+				<Text style={styles.itemText}>{item.start.format('A')} </Text>
+				<Text style={styles.itemTextAMPM}>- </Text>
+				<Text style={styles.itemText}>{item.end.format('h:mm')} </Text>
+				<Text style={styles.itemText}>{item.end.format('A')}</Text>
 			</View>
 		);
 	}
