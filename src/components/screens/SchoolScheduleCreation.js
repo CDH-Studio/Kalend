@@ -8,8 +8,7 @@ import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenName
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture, storeCoursesEvents } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue, white } from '../../styles';
-import RNFS from 'react-native-fs';
-import { getStrings } from '../../services/helper';
+import RNFetchBlob from 'rn-fetch-blob';
 
 /**
  * The loading screen after the User uploads a picture
@@ -43,7 +42,16 @@ class SchoolScheduleCreation extends React.PureComponent {
 	
 	componentWillMount() {	
 		if (this.props.hasImage) {
-			RNFS.readFile(this.props.imgURI, 'base64')
+			let uri = this.props.imgURI;
+
+			// Related to this issue https://github.com/facebook/react-native/issues/24185
+			if (Platform.OS === 'ios') {
+				const appleId = uri.substring(5, 41);
+				const ext = 'JPG';
+				uri = `assets-library://asset/asset.${ext}?id=${appleId}&ext=${ext}`;
+			}
+			
+			RNFetchBlob.fs.readFile(uri, 'base64')
 				.then(data => {
 					console.log(data);
 					if (data != undefined) {
@@ -112,25 +120,6 @@ class SchoolScheduleCreation extends React.PureComponent {
 
 	error = (err) => {
 		console.log('error', err);
-		Alert.alert(
-			'Cannot read file',
-			'This is a bug on iOS, for some reason the selected picture cannot be read. Where do you want to go?',
-			[
-				{
-					text: 'Dashboard',
-					onPress: () => {
-						this.props.navigation.navigate(DashboardNavigator);
-					}
-				},
-				{
-					text: 'Create a Schedule', 
-					onPress: () => {
-						this.props.navigation.dispatch(this.navigateAction);
-					},
-				},
-			],
-			{cancelable: false},
-		);
 	}
 
 	handleBackButton = () => {

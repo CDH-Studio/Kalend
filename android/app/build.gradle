@@ -184,7 +184,7 @@ android {
 dependencies {
     implementation project(':react-native-restart')
     implementation project(':@react-native-community_cameraroll')
-    implementation project(':react-native-fs')
+    implementation project(':rn-fetch-blob')    
     implementation project(':@react-native-community_viewpager')
     implementation project(':@react-native-community_slider')
     implementation project(':@react-native-community_async-storage')

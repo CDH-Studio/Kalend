@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
-import com.rnfs.RNFSPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -24,6 +23,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.RNFetchBlob.RNFetchBlobPackage;   
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +43,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new ReactNativeRestartPackage(),
             new CameraRollPackage(),
-            new RNFSPackage(),
             new RNCViewPagerPackage(),
             new ReactSliderPackage(),
             new AsyncStoragePackage(),
@@ -57,7 +56,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseMessagingPackage(),
           new RNFirebaseAnalyticsPackage(),
           new RNFirebaseCrashlyticsPackage(),
-          new RNFirebasePerformancePackage()
+          new RNFirebasePerformancePackage(),
+          new RNFetchBlobPackage()
       );
     }
 
