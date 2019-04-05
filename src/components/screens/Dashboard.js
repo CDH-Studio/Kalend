@@ -139,26 +139,26 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen, snackbarVisible, snackbarTime, snackbarText} = this.state;
-		// let showCloseFab;
+		const {optionsOpen, calendarOpened, snackbarVisible, snackbarTime, snackbarText} = this.state;
+		let showCloseFab;
 		// let currentMonthText = 'jninm';
 
-		// if (calendarOpened) {
-		// 	showCloseFab = 
-		// 	<View style={styles.closeCalendarView}>
-		// 		<FAB
-		// 			style={styles.closeCalendarFab}
-		// 			small
-		// 			theme={{colors:{accent:dark_blue}}}
-		// 			icon="close"
-		// 			onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
-		// 	</View>;
+		if (calendarOpened) {
+			showCloseFab = 
+			<View style={styles.closeCalendarView}>
+				<FAB
+					style={styles.closeCalendarFab}
+					small
+					theme={{colors:{accent:dark_blue}}}
+					icon="close"
+					onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
+			</View>;
 
-		// 	// currentMonthText = null;
-		// } else {
-		// 	showCloseFab = null;
-		// 	// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
-		// }
+			// currentMonthText = null;
+		} else {
+			showCloseFab = null;
+			// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
+		}
 
 		return(
 			<View style={{flex:1}}>
@@ -180,10 +180,10 @@ class Dashboard extends React.PureComponent {
 							showOnlyDaySelected={true}
 							shouldChangeDay={this.shouldChangeDay}
 							theme={{agendaKnobColor: dark_blue}}
-							// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
+							onCalendarToggled={(calendarOpened) => this.setState({calendarOpened})}
 						/>
 
-						{/* {showCloseFab} */}
+						{showCloseFab}
 
 						<FAB.Group
 							ref={ref => this.touchable = ref}

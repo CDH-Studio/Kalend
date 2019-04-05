@@ -1428,7 +1428,8 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	closeCalendarView: {
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 10
 	},
 
 	closeCalendarFab: {
