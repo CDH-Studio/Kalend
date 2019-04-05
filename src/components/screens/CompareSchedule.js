@@ -1,53 +1,57 @@
 import React from 'react';
 import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Image } from 'react-native';
-import { Checkbox, TextInput, Snackbar } from 'react-native-paper';
+import { Checkbox, TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Agenda } from 'react-native-calendars';
 import Modal from 'react-native-modal';
-import { compareScheduleStyles as styles, white, dark_blue, blue, gray } from '../../styles';
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+import { compareScheduleStyles as styles, dark_blue, blue, gray, whiteRipple, blueRipple } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 
-import Moment from 'moment';
-import { extendMoment } from 'moment-range';
-
 const moment = extendMoment(Moment);
 
-class MyListItem extends React.PureComponent {
+/**
+ * The component populating the flatList
+ * 
+ * @prop {String} id The id of the item in the list
+ * @prop {Boolean} selected The value of the checkbox
+ * @prop {String} name The name of the person to be displayed next to the icon
+ * @prop {String} photo	The photo from google account
+ * @prop {Function} onPressItem the function to be triggered in the parent component when the item is touched
+ */
+class CalendarItem extends React.PureComponent {
 	_onPress = () => {
 		this.props.onPressItem(this.props.id);
 	};
   
 	render() {
 		return (
-			<View style={{flexDirection: 'row', alignItems: 'center'}}>
+			<View style={styles.calendarItem}>
 				<Checkbox.Android status={this.props.selected ? 'checked' : 'unchecked'}
 					onPress={this._onPress} 
-					theme={{colors:{accent:dark_blue}}}/>
-				<TouchableOpacity onPress={this._onPress} style={{flexDirection: 'row', alignItems: 'center'}}>
-					<View style={{height: 40, width: 40, borderRadius: 20, position: 'absolute', 
-					backgroundColor: 'black',
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.4,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 4,
-			},
-		}),}}/>
-					<Image style={{height: 40, width: 40, borderRadius: 20}}
-						source={{uri:'https://api.adorable.io/avatars/asd'}}/>
-					<Text style={{fontFamily: 'Raleway-Regular', color: gray, width: '82%', paddingLeft: 10}}>{this.props.name}</Text>
+					theme={{colors:{accent:dark_blue}}} />
+
+				<TouchableOpacity onPress={this._onPress} style={styles.calendarItemTouch}>
+					<View style={styles.calendarItemImageContainer}>
+						<Image style={styles.calendarItemImage}
+							source={{uri: this.props.photo == undefined ? 'https://api.adorable.io/avatars/' + this.props.name : this.props.photo}} />
+					</View>
+
+					<Text style={styles.calendarItemName}>
+						{this.props.name}
+					</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 }
 
+/**
+ * The screen for comparing schedules
+ */
 class CompareSchedule extends React.PureComponent {
 
 	static navigationOptions = {
@@ -64,7 +68,9 @@ class CompareSchedule extends React.PureComponent {
 			snackbarVisible: false,
 			snackbarTime: 3000,
 			snackbarText: '',
-			loadingSharedList: true
+			loadingSharedList: true,
+			startDate: moment().startOf('day'),
+			endDate: moment().startOf('day').add(90, 'd'),
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
@@ -74,36 +80,48 @@ class CompareSchedule extends React.PureComponent {
 		this.refreshData();
 	}
 
+	/**
+	 * Funciton to be called to reload data from the flatList
+	 */
 	refreshData = () => {
 		this.setState({loadingSharedList: true});
-		listSharedKalendCalendars().then((data) => {
-			this.setState({
-				userAvailabilities: data,
-				selected: (new Map()),
-				loadingSharedList: false
+		setTimeout(() => {
+			listSharedKalendCalendars().then((data) => {
+				this.setState({
+					userAvailabilities: data,
+					selected: (new Map()),
+					loadingSharedList: false
+				});
 			});
-		});
+		}, 500);
 	}
 
+	/**
+	 * The callback function when the CalendarItem is touched
+	 */
 	_onPressItem = (id) => {
-		// updater functions are preferred for transactional updates
 		this.setState((state) => {
-			// copy the map rather than modifying state.
 			const selected = new Map(state.selected);
-			selected.set(id, !selected.get(id)); // toggle
+			selected.set(id, !selected.get(id));
 			return {selected};
 		});
 	};
 	
+	/**
+	 * The render function for the items in the flatList
+	 */
 	_renderItem = ({item, index}) => {
-		return (<MyListItem
-			id={index}
-			onPressItem={this._onPressItem}
-			selected={!!this.state.selected.get(index)}
-			name={item.id} />
+		return (
+			<CalendarItem id={index}
+				onPressItem={this._onPressItem}
+				selected={!!this.state.selected.get(index)}
+				name={item.id} />
 		);
 	};
 
+	/**
+	 * Callback fuction when the button add is touched in the modal
+	 */
 	addPerson = () => {
 		addPermissionPerson(this.state.searchText)
 			.then(() => {
@@ -120,6 +138,9 @@ class CompareSchedule extends React.PureComponent {
 			});
 	}
 
+	/**
+	 * Callback function when the button to delete/remove people is touched
+	 */
 	removePeople = () => {
 		let selectedValue = this.getListIdSelected();
 		let empty = selectedValue.length === 0;
@@ -148,6 +169,9 @@ class CompareSchedule extends React.PureComponent {
 		}
 	}
 
+	/**
+	 * Returns a list of calendarIds that are selected from the flatList
+	 */
 	getListIdSelected = () => {
 		let selectedValue = [];
 
@@ -160,6 +184,9 @@ class CompareSchedule extends React.PureComponent {
 		return selectedValue;
 	}
 
+	/**
+	 * Callback function when seeAvailabilities is triggered
+	 */
 	seeAvailabilities = () => {
 		let selectedValue = this.getListIdSelected();
 
@@ -169,11 +196,13 @@ class CompareSchedule extends React.PureComponent {
 				snackbarVisible: true
 			});
 		} else {
-			getAvailabilitiesCalendars([...selectedValue, this.props.calendarID], moment().startOf('week').toJSON(), moment().endOf('week').toJSON())
+			getAvailabilitiesCalendars([...selectedValue, this.props.calendarID], this.state.startDate.toJSON(), this.state.endDate.toJSON())
 				.then(data => {
+					let startDate = moment(this.state.startDate);
+
+					// Creates the basic object for the wix calendar
 					let dates = {};
-					let startDate = moment().startOf('week');
-					for (let i = 0; i < 7; i ++) {
+					while(startDate.isBefore(this.state.endDate)) {
 						dates[startDate.format('YYYY-MM-DD')] = [];
 						startDate.add(1, 'd');
 					}
@@ -224,13 +253,7 @@ class CompareSchedule extends React.PureComponent {
 						});
 					});
 
-					console.log(data);
-					console.log(ranges);
-					console.log(dates);
-
 					this.setState({
-						// dataModalText: JSON.stringify(dates),
-						// dataModalVisible: true, 
 						agendaData: dates
 					});
 				})
@@ -243,24 +266,35 @@ class CompareSchedule extends React.PureComponent {
 		}
 	}
 
+	/**
+	 * The render function for each event in the calendar
+	 * 
+	 * @param {Object} item Information about the current event
+	 */
 	renderItem(item) {
 		return (
 			<View style={styles.item}>
-				<Text style={styles.itemText}>Not available</Text>
-				<Text style={styles.itemText}>{item.start}</Text>
-				<Text style={styles.itemText}>{item.end}</Text>
+				<Text style={styles.itemText}>Available</Text>
+				<View style={{flexDirection: 'column'}}>
+					<Text style={styles.itemText}>{item.start} - {item.end}</Text>
+				</View>
 			</View>
 		);
 	}
 
+	/**
+	 * The render function for empty dates
+	 */
 	renderEmptyData = () => {
-		return <View style={{padding: 10, paddingTop: 0}}>
-			<Text style={styles.eventsDayTitle}>Availabilities</Text>
-			
-			<View style={styles.noEvents}>
-				<Text style={styles.noEventsText}>There's no availabilities for the day.</Text>
+		return (
+			<View style={styles.emptyData}>
+				<Text style={styles.eventsDayTitle}>Availabilities</Text>
+				
+				<View style={styles.noEvents}>
+					<Text style={styles.noEventsText}>There's no availabilities for the day.</Text>
+				</View>
 			</View>
-		</View>;
+		);
 	}
 	
 	rowHasChanged = (r1, r2) => {
@@ -272,110 +306,69 @@ class CompareSchedule extends React.PureComponent {
 	}
 
 	render() {
-		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, dataModalVisible, dataModalText, loadingSharedList, agendaData } = this.state;
-
+		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData } = this.state;
 
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor={'#166489'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<View style={{padding: 10, paddingHorizontal: 25}}>
-					<Text style={{fontFamily: 'Raleway-Bold', fontSize: 16, color: gray}}>Compare schedules with</Text>
+				<View style={styles.peopleSelection}>
+					<Text style={styles.title}>Compare schedules with</Text>
 
-					{ loadingSharedList ? 
-						<View style={{height: 160, justifyContent: 'center'}}>
-							<ActivityIndicator animating={loadingSharedList} style={{padding:15, }} size="large" color={gray} />
-						</View> :
-						<FlatList data={userAvailabilities}
-							renderItem={this._renderItem}
-							keyExtractor={(item, index) => index.toString()}
-							style={{flexWrap: 'wrap', height: userAvailabilities.length === 0 ? null : 160, paddingVertical: 10, marginLeft: -7}} 
-							scrollEnabled={userAvailabilities.legnth === 0}
-							ListEmptyComponent={() => (
-								<TouchableOpacity onPress={this.refreshData}>
-									<View style={{height: 160, justifyContent: 'center', alignItems: 'center'}}>
-										<MaterialCommunityIcons size={50}
-											name='calendar-search'
-											color={gray}/>
-										<Text style={{fontFamily: 'Raleway-Bold', color: gray}}>No calendars found</Text> 
-										<Text style={{fontFamily: 'Raleway-Regular', color: gray}}>Tap to refresh the calendar info</Text> 
-									</View>
-								</TouchableOpacity>
-							)}
-							refreshControl={
-								<RefreshControl
-									refreshing={this.state.loadingSharedList}
-									onRefresh={this.refreshData}
-									tintColor={gray}
-									colors={[dark_blue, blue]} />
-							} />
+					{ 
+						loadingSharedList ? 
+							<View style={styles.activityIndicatorContainer}>
+								<ActivityIndicator animating={loadingSharedList} 
+									size="large" 
+									color={gray} />
+							</View> :
+							<FlatList data={userAvailabilities}
+								renderItem={this._renderItem}
+								keyExtractor={(item, index) => index.toString()}
+								style={[styles.flatList, {height: userAvailabilities.length === 0 ? null : 180}]} 
+								scrollEnabled={userAvailabilities.legnth !== 0}
+								ListEmptyComponent={() => (
+									<TouchableOpacity onPress={this.refreshData}>
+										<View style={styles.emptyContainer}>
+											<MaterialCommunityIcons size={50}
+												name='calendar-search'
+												color={gray}/>
+											<Text style={styles.emptyTitle}>No calendars found</Text> 
+											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
+										</View>
+									</TouchableOpacity>
+								)}
+								refreshControl={
+									<RefreshControl
+										refreshing={this.state.loadingSharedList}
+										onRefresh={this.refreshData}
+										tintColor={gray}
+										colors={[dark_blue, blue]} />
+								} />
 					}
 				</View>
 
-				<View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 10, marginTop: 0, paddingHorizontal: 15}}>
-					
+				<View style={styles.buttons}>
+					<TouchableRipple onPress={this.removePeople}
+						style={styles.sideButton}
+						rippleColor={whiteRipple}
+						overlayColor={whiteRipple}>
+						<Text style={styles.sideButtonText}>Delete</Text>
+					</TouchableRipple>
 
-					<TouchableOpacity onPress={this.removePeople}style={{
-						backgroundColor: 'white',
-						borderRadius: 5,
-						padding: 5,
+					<TouchableRipple onPress={this.seeAvailabilities}style={styles.availabilityButton}
+						rippleColor={whiteRipple}
+						underlayColor={blueRipple}>
+						<Text style={styles.availabilityButtonText}>See Availabilities</Text>
+					</TouchableRipple>
 
-						...Platform.select({
-							ios: {
-								shadowColor: '#000000',
-								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: 0.3,
-								shadowRadius: 3,    
-							},
-							android: {
-								elevation: 4,
-							},
-						}),}}>
-						<Text style={{fontFamily: 'Raleway-Regular', color: gray}}>Delete</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.seeAvailabilities}style={{
-						backgroundColor: dark_blue,
-						borderRadius: 5,
-						padding: 5,
-						marginRight: 10,
-
-						...Platform.select({
-							ios: {
-								shadowColor: '#000000',
-								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: 0.3,
-								shadowRadius: 3,    
-							},
-							android: {
-								elevation: 4,
-							},
-						}),}}>
-						<Text style={{fontFamily: 'Raleway-Regular', color: white}}>See Availabilities</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => this.setState({searchModalVisible: true}) }
-						style={{
-							backgroundColor: 'white',
-							borderRadius: 5,
-							padding: 5,
-
-							...Platform.select({
-								ios: {
-									shadowColor: '#000000',
-									shadowOffset: { width: 0, height: 2 },
-									shadowOpacity: 0.3,
-									shadowRadius: 3,    
-								},
-								android: {
-									elevation: 4,
-								},
-							}),}}>
-						<Text style={{
-							fontFamily: 'Raleway-Regular', 
-							color: gray
-						}}>Add</Text>
-					</TouchableOpacity>
+					<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
+						style={styles.sideButton}
+						rippleColor={whiteRipple}
+						underlayColor={whiteRipple}>
+						<Text style={styles.sideButtonText}>Add</Text>
+					</TouchableRipple>
 				</View>
 
 				<Agenda ref='agenda'
@@ -384,32 +377,31 @@ class CompareSchedule extends React.PureComponent {
 					renderItem={this.renderItem}
 					renderEmptyData={this.renderEmptyData}
 					rowHasChanged={this.rowHasChanged}
+					listTitle='Availabilities'
 					renderEmptyDate={() => {
-						return (<View />);
+						return (<View style={{height: 70}}/>);
 					}}
-					hideKnob={true}
-					minDate={moment().startOf('week').format('YYYY-MM-DD')}
-					maxDate={moment().endOf('week').format('YYYY-MM-DD')}
+					pastScrollRange={1}
+					futureScrollRange={3}
+					minDate={this.state.startDate.format('YYYY-MM-DD')}
+					maxDate={this.state.endDate.format('YYYY-MM-DD')}
 					shouldChangeDay={this.shouldChangeDay}
 					theme={{agendaKnobColor: dark_blue}}/>
 
 				<Modal isVisible={searchModalVisible}
-				avoidKeyboard
+					avoidKeyboard
 					onBackdropPress={() => this.setState({searchModalVisible: false})}>
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>Enter the person's email</Text>
 
 						<TextInput  mode="outlined"
-							style={{width: '100%', backgroundColor: white, marginVertical: 15,
-								fontFamily: 'Raleway-Regular', 
-								color: gray}}
+							style={styles.modalTextInput}
 							theme={{colors:{primary: dark_blue}}}
 							label='Email'
 							value={this.state.text}
 							onChangeText={searchText => this.setState({ searchText })}/>
 
-						<View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-
+						<View style={styles.modalButtons}>
 							<TouchableOpacity onPress={() => this.setState({searchModalVisible: false})}>
 								<Text style={styles.modalCloseText}>Close</Text>
 							</TouchableOpacity>
@@ -420,15 +412,7 @@ class CompareSchedule extends React.PureComponent {
 							}}>
 								<Text style={styles.modalAddText}>Add</Text>
 							</TouchableOpacity>
-
 						</View>
-					</View>
-				</Modal>
-
-				<Modal isVisible={dataModalVisible}
-					onBackdropPress={() => this.setState({dataModalVisible: false})}>
-					<View style={{borderRadius: 5, padding: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: white }}>
-						<Text>{dataModalText}</Text>
 					</View>
 				</Modal>
 

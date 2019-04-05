@@ -13,6 +13,8 @@ export const red = '#FF0000';
 export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
 export const gray = '#565454';
+export const whiteRipple = '#DDDDDD';
+export const blueRipple = dark_blue + '50';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {
@@ -1542,6 +1544,7 @@ export const compareScheduleStyles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 10,
 		marginVertical: 5,
+		flexDirection: 'row',
 		...Platform.select({
 			ios: {
 				shadowColor: '#000000',
@@ -1614,6 +1617,155 @@ export const compareScheduleStyles = StyleSheet.create({
 		fontSize: 16, 
 		paddingRight: 25
 	}, 
+
+	sideButton: {
+		backgroundColor: 'white',
+		borderRadius: 5,
+		padding: 8,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		})
+	},
+
+	sideButtonText: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	buttons: {
+		flexDirection: 'row', 
+		justifyContent: 'space-between', 
+		margin: 10, 
+		marginTop: 0, 
+		paddingHorizontal: 15
+	},
+
+	availabilityButton: {
+		backgroundColor: dark_blue,
+		borderRadius: 5,
+		padding: 8,
+		marginRight: 10,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		})
+	},
+
+	availabilityButtonText: {
+		fontFamily: 'Raleway-Regular', 
+		color: white
+	},
+
+	title: {
+		fontFamily: 'Raleway-Bold', 
+		fontSize: 16, 
+		color: gray
+	},
+
+	activityIndicatorContainer: {
+		height: 180, 
+		justifyContent: 'center'
+	},
+
+	flatList: {
+		flexWrap: 'wrap', 
+		paddingVertical: 10, 
+		marginLeft: -7
+	},
+
+	emptyContainer: {
+		height: 160, 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+
+	emptyTitle: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+	
+	emptyDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	modalTextInput: {
+		width: '100%', 
+		backgroundColor: white, 
+		marginVertical: 15,
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	modalButtons: {
+		flexDirection: 'row', 
+		justifyContent: 'flex-end'
+	},
+
+	calendarItem: {
+		flexDirection: 'row', 
+		alignItems: 'center'
+	},
+
+	calendarItemTouch: {
+		flexDirection: 'row', 
+		alignItems: 'center'
+	},
+
+	calendarItemImageContainer: {
+		borderRadius: 20,
+		marginVertical: 8,
+		backgroundColor: 'black',
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3,    
+			},
+			android: { 
+				elevation: 7,
+			}
+		})
+	},
+
+	calendarItemImage: {
+		height: 40,
+		width: 40, 
+		borderRadius: 20
+	},
+
+	calendarItemName: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		width: '82%', 
+		paddingLeft: 10
+	},
+
+	peopleSelection: {
+		padding: 10, 
+		paddingHorizontal: 25
+	},
+
+	emptyData: {
+		padding: 10, 
+		paddingTop: 0
+	}
 });
 
 export const settingsStyles = StyleSheet.create({

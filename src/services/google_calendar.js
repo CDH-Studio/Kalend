@@ -18,7 +18,7 @@ let apiHelperCall = (URL, method, body, query) => {
 		headers: {
 			'Accept': 'application/json',
 			'Authorization': 'Bearer ' + accessToken,
-			// 'Content-Type': 'application/json',
+			'Content-Type': 'application/json',
 		}
 	};
 

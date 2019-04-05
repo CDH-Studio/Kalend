@@ -5480,7 +5480,7 @@ react-native-app-intro-slider@^1.0.1:
 
 "react-native-calendars@git+https://github.com/MarieEveLegault/react-native-calendar-kalend.git":
   version "1.19.3"
-  resolved "git+https://github.com/MarieEveLegault/react-native-calendar-kalend.git#3a47dd67d3959df9c9cc4b9c7ec1c8568303b78c"
+  resolved "git+https://github.com/MarieEveLegault/react-native-calendar-kalend.git#101408cd16d3f6f9a06e14d3d72ec121ebf21029"
   dependencies:
     lodash.get "^4.4.2"
     lodash.isequal "^4.5.0"
@@ -5620,11 +5620,6 @@ react-native-safe-module@^1.1.0:
   version "1.0.0-alpha.22"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
-
-react-native-simple-radio-button@^2.7.3:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/react-native-simple-radio-button/-/react-native-simple-radio-button-2.7.3.tgz#c7227c0f963d6bbcfa245255d18a5a8b98fde41f"
-  integrity sha512-kiYRarFj7PXzV9fbQwMBiYwS4YnhrR4NZGT68atlFIoNFxZLrt5OMCDqXZqu6R6bUWKLndzPpO/nhXc6/OU1Mg==
 
 react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   version "1.3.4"

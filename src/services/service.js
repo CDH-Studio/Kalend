@@ -664,8 +664,8 @@ export const getAvailabilitiesCalendars = (calendarIds, startTime, endTime) => {
 		'timeMax': endTime,
 		items
 	};
-	console.log(data);
 
+	console.log(data);
 	return new Promise((resolve, reject) => {
 		getAvailabilities(data).then(data => {
 			if (data.error) {
