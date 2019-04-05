@@ -42,6 +42,7 @@ import {
 	CLEAR_BOTTOM_STRINGS,
 	CLEAR_DASHBOARD_DATA,
 } from '../constants';
+// import { LocaleConfig } from 'react-native-calendars';
 
 
 /*** UPDATE ***/
@@ -254,6 +255,8 @@ export function setLanguage (language) {
 		type: SET_LANGUAGE,
 		language
 	};
+
+	// LocaleConfig.defaultLocale = language;
 
 	return action;
 }

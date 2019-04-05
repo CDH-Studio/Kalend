@@ -11,8 +11,6 @@ import { eventsToScheduleSelectionData } from '../../services/service';
 import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
 import { getStrings } from '../../services/helper';
 
-const strings = getStrings().ScheduleSelection;
-
 export const containerPadding = 10;
 export const lineThickness = 1;
 export const lineColor = '#999';
@@ -110,21 +108,21 @@ class ScheduleEvent extends React.PureComponent {
  * @prop {Integer} id The number of the schedule
  */
 class Schedule extends React.PureComponent {
+	strings = getStrings().ScheduleSelection;
 
 	constructor(props) {
 		super(props);
 
 		// Gets the ordinal word thanks to an existing library and the schedule index
 		let ordinal;
-		console.log(strings);
-		if ('ordinal' in strings) {
-			ordinal = strings.ordinal[this.props.id];
+		if ('ordinal' in this.strings) {
+			ordinal = this.strings.ordinal[this.props.id];
 		} else {
 			ordinal = converter.toWordsOrdinal(this.props.id+1);
 		}
 
 		this.state = {
-			weekLetters: strings.weekLetters,
+			weekLetters: this.strings.weekLetters,
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			showShadow: true,
 			hours: [0, 4, 8, 12, 4, 8, 0],
@@ -246,13 +244,13 @@ class Schedule extends React.PureComponent {
 		return (
 			<View style={styles.scheduleContainer}>
 				<Text style={styles.title}>
-					{ordinal + ' ' + strings.schedule}
+					{ordinal + ' ' + this.strings.schedule}
 				</Text>
 				
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' ' + strings.schedule, id, {
+					this.props.nextScreen(ordinal + ' ' + this.strings.schedule, id, {
 						fixed: this.props.fixed,
 						school: this.props.school,
 						ai: this.state.ai,
@@ -375,6 +373,8 @@ class Schedule extends React.PureComponent {
  * The component which encloses all of the schedules which has been generated
  */
 class ScheduleSelection extends React.PureComponent {
+	strings = getStrings().ScheduleSelection;
+
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.state.params.title,
 		headerStyle: {
@@ -425,11 +425,11 @@ class ScheduleSelection extends React.PureComponent {
 
 	handleBackButton = () => {
 		Alert.alert(
-			strings.backAlertTitle,
-			strings.backAlertDescription,
+			this.strings.backAlertTitle,
+			this.strings.backAlertDescription,
 			[
 				{
-					text: strings.cancel,
+					text: this.strings.cancel,
 					style: 'cancel',
 				},
 				{
@@ -510,19 +510,19 @@ class ScheduleSelection extends React.PureComponent {
 
 				<ScrollView >
 					<View style={styles.content}>
-						<Text style={styles.description}>{strings.description}</Text>
+						<Text style={styles.description}>{this.strings.description}</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.insideCourseColor}]}></View>
-								<Text style={styles.legendText}>{strings.courses}</Text>
+								<Text style={styles.legendText}>{this.strings.courses}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.insideFixedEventsColor}]}></View>
-								<Text style={styles.legendText}>{strings.fixedEvents}</Text>
+								<Text style={styles.legendText}>{this.strings.fixedEvents}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.insideNonFixedEventsColor}]}></View>
-								<Text style={styles.legendText}>{strings.nonFixedEvents}</Text>
+								<Text style={styles.legendText}>{this.strings.nonFixedEvents}</Text>
 							</View>
 						</View>
 						{

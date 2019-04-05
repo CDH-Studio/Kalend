@@ -30,6 +30,9 @@ const en = {
 		fabSchool: 'Add School Schedule',
 		fabFixedEvent: 'Add Fixed Event',
 		fabNonFixedEvent: 'Add Non-Fixed Event',
+		eventsDayTitle: 'Events of the Day',
+		noEventsText: 'There\'s no events for the day.',
+		create: 'Create'
 	},
 	FixedEvent: {
 		name: 'Fixed Event',
@@ -294,6 +297,9 @@ const fr = {
 		fabSchool: 'Ajouter un horaire scolaire',
 		fabFixedEvent: 'Ajouter un événement fixe',
 		fabNonFixedEvent: 'Ajouter un événement non fixe',
+		eventsDayTitle: 'Événements de la journée',
+		noEventsText: 'Il n\'y a pas d\'événements pour la journée.',
+		create: 'Créer'
 	},
 	FixedEvent: {
 		name: 'Événement Fixe',

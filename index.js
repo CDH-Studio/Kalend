@@ -76,10 +76,11 @@ const DashboardNavigator = createBottomTabNavigator(
 			navigationOptions: ({navigation}) => {
 				return {
 					title: store.getState().BottomNavReducer.dashboardTitle,
-				tabBarIcon: ({ focused, tintColor }) => {
-					const iconName = `home-variant${focused ? '' : '-outline'}`;
-					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
-				},}
+					tabBarIcon: ({ focused, tintColor }) => {
+						const iconName = `home-variant${focused ? '' : '-outline'}`;
+						return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
+					},
+				}
 			}
 		},
 		Chatbot: {

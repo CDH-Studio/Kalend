@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture, storeCoursesEvents } from '../../services/service';
+import { getStrings } from '../../services/helper';
 import { schoolScheduleCreationStyles as styles, dark_blue, white } from '../../styles';
 import RNFetchBlob from 'rn-fetch-blob';
 
