@@ -325,7 +325,7 @@ class CompareSchedule extends React.PureComponent {
 								renderItem={this._renderItem}
 								keyExtractor={(item, index) => index.toString()}
 								style={styles.flatList} 
-								scrollEnabled={userAvailabilities.legnth !== 0}
+								scrollEnabled={userAvailabilities.length !== 0}
 								ListEmptyComponent={() => (
 									<TouchableOpacity onPress={this.refreshData}>
 										<View style={styles.emptyContainer}>

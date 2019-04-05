@@ -1588,6 +1588,12 @@ export const calendarPermissionStyles = StyleSheet.create({
 	content: {
 		padding: 10
 	},
+
+	title: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 18,
+		color: dark_blue,
+	},
 });
 
 export const calendarPermissionItemStyles = StyleSheet.create({
@@ -1745,7 +1751,7 @@ export const compareScheduleStyles = StyleSheet.create({
 	},
 
 	emptyContainer: {
-		height: 160, 
+		height: 210, 
 		justifyContent: 'center', 
 		alignItems: 'center'
 	},
