@@ -615,18 +615,18 @@ export const listPermissions = () => {
 				if (data.error)  reject('There was a problem getting the list of person who have access to your calendar');
 
 				let list = data.items.reduce((acc, data) => {
-					let info = {}; 
-					info.email = data.scope.value;
-					info.id = data.id;
-					info.role = data.role; 
+					if (!data.role.includes('owner')) {
+						let info = {}; 
+						info.email = data.scope.value;
+						info.id = data.id;
+						info.role = data.role; 
+						acc.push(info);
+					}
 					
-					acc.push(info);
 					return acc;
 				}, []);
 
-				list.filter(i => !i.role.includes('owner'));
-
-				resolve(data);
+				resolve(list);
 			});
 	});
 };

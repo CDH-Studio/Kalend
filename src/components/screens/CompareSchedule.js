@@ -7,10 +7,10 @@ import { Agenda } from 'react-native-calendars';
 import Modal from 'react-native-modal';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import { compareScheduleStyles as styles, dark_blue, blue, gray, whiteRipple, blueRipple } from '../../styles';
+import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
-import CalendarPermissionItem from '../CalendarPermissionItem';
+import CalendarScheduleItem from '../CalendarScheduleItem';
 
 const moment = extendMoment(Moment);
 
@@ -81,7 +81,7 @@ class CompareSchedule extends React.PureComponent {
 	 */
 	_renderItem = ({item, index}) => {
 		return (
-			<CalendarPermissionItem id={index}
+			<CalendarScheduleItem id={index}
 				onPressItem={this._onPressItem}
 				selected={!!this.state.selected.get(index)}
 				name={item.id} />
@@ -342,7 +342,7 @@ class CompareSchedule extends React.PureComponent {
 										refreshing={this.state.loadingSharedList}
 										onRefresh={this.refreshData}
 										tintColor={gray}
-										colors={[dark_blue, blue]} />
+										colors={[dark_blue]} />
 								} />
 					}
 				</Animated.View> 

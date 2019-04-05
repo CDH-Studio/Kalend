@@ -1586,7 +1586,10 @@ export const calendarPermissionStyles = StyleSheet.create({
 	...calendarShareButtons,
 
 	content: {
-		padding: 10
+		padding: 10,
+		flex: 1, 
+		width: '100%',
+		height: '100%'
 	},
 
 	title: {
@@ -1594,6 +1597,33 @@ export const calendarPermissionStyles = StyleSheet.create({
 		fontSize: 18,
 		color: dark_blue,
 	},
+
+	emptyContainer: {
+		height: Dimensions.get('window').height - 2 * (getStatusBarHeight() + Header.HEIGHT) - 50, 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+
+	emptyTitle: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+	
+	emptyDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	list: {
+		flex: 1
+	},
+
+	activityIndicatorContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '100%'
+	},
+
 });
 
 export const calendarPermissionItemStyles = StyleSheet.create({
