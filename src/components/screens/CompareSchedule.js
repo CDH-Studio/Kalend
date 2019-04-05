@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Image } from 'react-native';
+import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Image, Animated } from 'react-native';
 import { Checkbox, TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,6 +54,8 @@ class CalendarItem extends React.PureComponent {
  */
 class CompareSchedule extends React.PureComponent {
 
+	listHeight = 280;
+
 	static navigationOptions = {
 		header: null
 	}
@@ -71,6 +73,8 @@ class CompareSchedule extends React.PureComponent {
 			loadingSharedList: true,
 			startDate: moment().startOf('day'),
 			endDate: moment().startOf('day').add(90, 'd'),
+			showCalendar: false,
+			animatedHeight: new Animated.Value(this.listHeight)
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
@@ -190,80 +194,104 @@ class CompareSchedule extends React.PureComponent {
 	seeAvailabilities = () => {
 		let selectedValue = this.getListIdSelected();
 
-		if (selectedValue.length === 0) {
+		if (this.state.showCalendar) {
 			this.setState({
-				snackbarText: 'Please check some checkboxes before comparing availabilities',
-				snackbarVisible: true
+				showCalendar: false,
+				agendaData: {},
+			}, () => {
+				this.forceUpdate();
+				Animated.timing(
+					this.state.animatedHeight,
+					{
+						toValue: this.listHeight,
+					},
+				).start();
 			});
 		} else {
-			getAvailabilitiesCalendars([...selectedValue, this.props.calendarID], this.state.startDate.toJSON(), this.state.endDate.toJSON())
-				.then(data => {
-					let startDate = moment(this.state.startDate);
+			if (selectedValue.length === 0) {
+				this.setState({
+					snackbarText: 'Please check some checkboxes before comparing availabilities',
+					snackbarVisible: true
+				});
+			} else {
+				getAvailabilitiesCalendars([...selectedValue, this.props.calendarID], this.state.startDate.toJSON(), this.state.endDate.toJSON())
+					.then(data => {
+						let startDate = moment(this.state.startDate);
 
-					// Creates the basic object for the wix calendar
-					let dates = {};
-					while(startDate.isBefore(this.state.endDate)) {
-						dates[startDate.format('YYYY-MM-DD')] = [];
-						startDate.add(1, 'd');
-					}
+						// Creates the basic object for the wix calendar
+						let dates = {};
+						while(startDate.isBefore(this.state.endDate)) {
+							dates[startDate.format('YYYY-MM-DD')] = [];
+							startDate.add(1, 'd');
+						}
 
-					// Flattens the data received
-					let busyStringRanges = Object.values(data.calendars).map(value => value.busy).flat(1);
+						// Flattens the data received
+						let busyStringRanges = Object.values(data.calendars).map(value => value.busy).flat(1);
 
-					// Converts them to moment ranges
-					let ranges = busyStringRanges.map(i => {
-						let start = moment(i.start);
-						let end = moment(i.end);
+						// Converts them to moment ranges
+						let ranges = busyStringRanges.map(i => {
+							let start = moment(i.start);
+							let end = moment(i.end);
 
-						return moment.range(start, end);
-					});
+							return moment.range(start, end);
+						});
 
-					// Checks for overlaping ranges, combines them if they are
-					for (let i = 0; i < ranges.length - 1; i++) {
-						for (let j = i+1; j < ranges.length; j++) {
-							if (ranges[i].overlaps(ranges[j], { adjacent: true })) {
-								ranges[i] = ranges[i].add(ranges[j], { adjacent: true });
-								ranges.splice(j, 1);
-								j = i;
+						// Checks for overlaping ranges, combines them if they are
+						for (let i = 0; i < ranges.length - 1; i++) {
+							for (let j = i+1; j < ranges.length; j++) {
+								if (ranges[i].overlaps(ranges[j], { adjacent: true })) {
+									ranges[i] = ranges[i].add(ranges[j], { adjacent: true });
+									ranges.splice(j, 1);
+									j = i;
+								}
 							}
 						}
-					}
 
-					// Split dates
-					for (let i = 0; i < ranges.length - 1; i++) {
-						Object.keys(dates).map(date => {
-							if (ranges[i].contains(moment(date))) {
-								ranges[i] = moment.range(
-									ranges[i].start,
-									moment(date)
-								);
-								ranges.push(moment.range(
-									moment(date),
-									ranges[i].end
-								));
-							}
+						// Split dates
+						for (let i = 0; i < ranges.length - 1; i++) {
+							Object.keys(dates).map(date => {
+								if (ranges[i].contains(moment(date))) {
+									ranges[i] = moment.range(
+										ranges[i].start,
+										moment(date)
+									);
+									ranges.push(moment.range(
+										moment(date),
+										ranges[i].end
+									));
+								}
+							});
+						}
+
+						// Formats to wix calendar data
+						ranges.map(range => {
+							dates[range.start.format('YYYY-MM-DD')].push({
+								start: range.start,
+								end: range.end
+							});
 						});
-					}
 
-					// Formats to wix calendar data
-					ranges.map(range => {
-						dates[range.start.format('YYYY-MM-DD')].push({
-							start: range.start,
-							end: range.end
+						Animated.timing(
+							// Animate value over time
+							this.state.animatedHeight, // The value to drive
+							{
+								toValue: 0, // Animate to final value of 1
+							},
+						).start(); // Start the animation
+						this.setState({
+							agendaData: dates,
+							showCalendar: true
+						});
+					})
+					.catch((err) => {
+						this.setState({
+							snackbarText: err,
+							snackbarVisible: true
 						});
 					});
-
-					this.setState({
-						agendaData: dates
-					});
-				})
-				.catch((err) => {
-					this.setState({
-						snackbarText: err,
-						snackbarVisible: true
-					});
-				});
+			}
 		}
+
 	}
 
 	/**
@@ -307,14 +335,14 @@ class CompareSchedule extends React.PureComponent {
 	}
 
 	render() {
-		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData } = this.state;
+		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight } = this.state;
 
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<View style={styles.peopleSelection}>
+				<Animated.View style={[styles.peopleSelection, {height: animatedHeight}]}>
 					<Text style={styles.title}>Compare schedules with</Text>
 
 					{ 
@@ -327,7 +355,7 @@ class CompareSchedule extends React.PureComponent {
 							<FlatList data={userAvailabilities}
 								renderItem={this._renderItem}
 								keyExtractor={(item, index) => index.toString()}
-								style={[styles.flatList, {height: userAvailabilities.length === 0 ? null : 180}]} 
+								style={styles.flatList} 
 								scrollEnabled={userAvailabilities.legnth !== 0}
 								ListEmptyComponent={() => (
 									<TouchableOpacity onPress={this.refreshData}>
@@ -348,28 +376,39 @@ class CompareSchedule extends React.PureComponent {
 										colors={[dark_blue, blue]} />
 								} />
 					}
-				</View>
+				</Animated.View> 
 
-				<View style={styles.buttons}>
-					<TouchableRipple onPress={this.removePeople}
-						style={styles.sideButton}
-						rippleColor={whiteRipple}
-						overlayColor={whiteRipple}>
-						<Text style={styles.sideButtonText}>Delete</Text>
-					</TouchableRipple>
+				<View style={[styles.buttons, {justifyContent: showCalendar ? 'center' : 'space-between'}]}>
+					{
+						showCalendar ?
+							null :
+							<TouchableRipple onPress={this.removePeople}
+								style={styles.sideButton}
+								rippleColor={whiteRipple}
+								overlayColor={whiteRipple}>
+								<Text style={styles.sideButtonText}>Delete</Text>
+							</TouchableRipple>
+					}
 
-					<TouchableRipple onPress={this.seeAvailabilities}style={styles.availabilityButton}
+					<TouchableRipple onPress={this.seeAvailabilities}
+						style={[styles.availabilityButton, {marginRight: showCalendar ? 0 : 15, width: showCalendar ? '100%' : null}]}
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}>
-						<Text style={styles.availabilityButtonText}>See Availabilities</Text>
+						<Text style={styles.availabilityButtonText}>
+							{ showCalendar ? 'Modify Settings' : 'See Availabilities' }
+						</Text>
 					</TouchableRipple>
 
-					<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
-						style={styles.sideButton}
-						rippleColor={whiteRipple}
-						underlayColor={whiteRipple}>
-						<Text style={styles.sideButtonText}>Add</Text>
-					</TouchableRipple>
+					{
+						showCalendar ?
+							null :
+							<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
+								style={styles.sideButton}
+								rippleColor={whiteRipple}
+								underlayColor={whiteRipple}>
+								<Text style={styles.sideButtonText}>Add</Text>
+							</TouchableRipple>
+					}
 				</View>
 
 				<Agenda ref='agenda'
@@ -385,8 +424,9 @@ class CompareSchedule extends React.PureComponent {
 					pastScrollRange={1}
 					futureScrollRange={3}
 					minDate={this.state.startDate.format('YYYY-MM-DD')}
-					maxDate={this.state.endDate.format('YYYY-MM-DD')}
+					maxDate={showCalendar ? this.state.endDate.format('YYYY-MM-DD') : this.state.startDate.format('YYYY-MM-DD')}
 					shouldChangeDay={this.shouldChangeDay}
+					hideKnob={!showCalendar}
 					theme={{agendaKnobColor: dark_blue}}/>
 
 				<Modal isVisible={searchModalVisible}

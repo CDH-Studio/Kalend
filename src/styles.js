@@ -1647,7 +1647,6 @@ export const compareScheduleStyles = StyleSheet.create({
 
 	buttons: {
 		flexDirection: 'row', 
-		justifyContent: 'space-between', 
 		margin: 10, 
 		marginTop: 0, 
 		paddingHorizontal: 15
@@ -1657,7 +1656,6 @@ export const compareScheduleStyles = StyleSheet.create({
 		backgroundColor: dark_blue,
 		borderRadius: 5,
 		padding: 8,
-		marginRight: 10,
 		...Platform.select({
 			ios: {
 				shadowColor: '#000000',
@@ -1683,7 +1681,6 @@ export const compareScheduleStyles = StyleSheet.create({
 	},
 
 	activityIndicatorContainer: {
-		height: 180, 
 		justifyContent: 'center'
 	},
 
