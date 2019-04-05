@@ -5,7 +5,7 @@ import { IconButton } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
-import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
+import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
@@ -100,6 +100,11 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>Notifications</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity style={styles.button}
+							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute)}>
+							<Text style={styles.buttonText}>Modify who can see your calendar</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
