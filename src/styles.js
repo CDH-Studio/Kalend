@@ -1529,6 +1529,48 @@ export const chatbotStyles = StyleSheet.create({
 	}
 });
 
+export const calendarPermissionItemStyles = StyleSheet.create({
+	calendarItem: {
+		flexDirection: 'row', 
+		alignItems: 'center'
+	},
+
+	calendarItemTouch: {
+		flexDirection: 'row', 
+		alignItems: 'center'
+	},
+
+	calendarItemImageContainer: {
+		borderRadius: 20,
+		marginVertical: 8,
+		backgroundColor: 'black',
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3,    
+			},
+			android: { 
+				elevation: 7,
+			}
+		})
+	},
+
+	calendarItemImage: {
+		height: 40,
+		width: 40, 
+		borderRadius: 20
+	},
+
+	calendarItemName: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		width: '82%', 
+		paddingLeft: 10
+	},
+});
+
 export const compareScheduleStyles = StyleSheet.create({
 	content: {
 		width: '100%',
@@ -1719,46 +1761,6 @@ export const compareScheduleStyles = StyleSheet.create({
 	modalButtons: {
 		flexDirection: 'row', 
 		justifyContent: 'flex-end'
-	},
-
-	calendarItem: {
-		flexDirection: 'row', 
-		alignItems: 'center'
-	},
-
-	calendarItemTouch: {
-		flexDirection: 'row', 
-		alignItems: 'center'
-	},
-
-	calendarItemImageContainer: {
-		borderRadius: 20,
-		marginVertical: 8,
-		backgroundColor: 'black',
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.4,
-				shadowRadius: 3,    
-			},
-			android: { 
-				elevation: 7,
-			}
-		})
-	},
-
-	calendarItemImage: {
-		height: 40,
-		width: 40, 
-		borderRadius: 20
-	},
-
-	calendarItemName: {
-		fontFamily: 'Raleway-Regular', 
-		color: gray, 
-		width: '82%', 
-		paddingLeft: 10
 	},
 
 	peopleSelection: {

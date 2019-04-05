@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Image, Animated } from 'react-native';
-import { Checkbox, TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
+import { TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Agenda } from 'react-native-calendars';
@@ -10,44 +10,9 @@ import { extendMoment } from 'moment-range';
 import { compareScheduleStyles as styles, dark_blue, blue, gray, whiteRipple, blueRipple } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
+import CalendarPermissionItem from '../CalendarPermissionItem';
 
 const moment = extendMoment(Moment);
-
-/**
- * The component populating the flatList
- * 
- * @prop {String} id The id of the item in the list
- * @prop {Boolean} selected The value of the checkbox
- * @prop {String} name The name of the person to be displayed next to the icon
- * @prop {String} photo	The photo from google account
- * @prop {Function} onPressItem the function to be triggered in the parent component when the item is touched
- */
-class CalendarItem extends React.PureComponent {
-	_onPress = () => {
-		this.props.onPressItem(this.props.id);
-	};
-  
-	render() {
-		return (
-			<View style={styles.calendarItem}>
-				<Checkbox.Android status={this.props.selected ? 'checked' : 'unchecked'}
-					onPress={this._onPress} 
-					theme={{colors:{accent:dark_blue}}} />
-
-				<TouchableOpacity onPress={this._onPress} style={styles.calendarItemTouch}>
-					<View style={styles.calendarItemImageContainer}>
-						<Image style={styles.calendarItemImage}
-							source={{uri: this.props.photo == undefined ? 'https://api.adorable.io/avatars/' + this.props.name : this.props.photo}} />
-					</View>
-
-					<Text style={styles.calendarItemName}>
-						{this.props.name}
-					</Text>
-				</TouchableOpacity>
-			</View>
-		);
-	}
-}
 
 /**
  * The screen for comparing schedules
@@ -116,7 +81,7 @@ class CompareSchedule extends React.PureComponent {
 	 */
 	_renderItem = ({item, index}) => {
 		return (
-			<CalendarItem id={index}
+			<CalendarPermissionItem id={index}
 				onPressItem={this._onPressItem}
 				selected={!!this.state.selected.get(index)}
 				name={item.id} />
