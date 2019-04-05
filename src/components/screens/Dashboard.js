@@ -19,6 +19,7 @@ LocaleConfig.locales['fr'] = {
 	dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
 	dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.']
 };
+
 /**
  * Dashboard of the application which shows the user's calendar and
  * the differents options they can access.
