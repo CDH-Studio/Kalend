@@ -306,8 +306,8 @@ class NonFixedEvent extends React.PureComponent {
 													}}
 													format="ddd., MMM DD, YYYY"
 													onDateChange={(startDate) => {
-														this.setState({startDate});
-														this.setState({endDate: dateVerification(this.state.startDate, this.state.endDate, this.state.endDate)});
+														this.setState({startDate,
+															endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)});
 													}} />
 											</View>
 										
@@ -324,8 +324,8 @@ class NonFixedEvent extends React.PureComponent {
 													}}
 													format="ddd., MMM DD, YYYY"
 													onDateChange={(endDate) => {
-														this.setState({endDate});
-														this.setState({startDate: dateVerification(this.state.startDate, this.state.endDate, this.state.startDate)});
+														this.setState({endDate,
+															startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)});
 													}} />
 											</View>
 										</View>: null}

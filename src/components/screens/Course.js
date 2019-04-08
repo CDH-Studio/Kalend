@@ -347,8 +347,8 @@ class Course extends React.PureComponent {
 										locale={'US'}
 										is24Hour={false}
 										onDateChange={(startTime) => {
-											this.setState({startTime});
-											this.setState({endTime: timeVerification(this.state.startTime, this.state.endTime, this.state.endTime)});
+											this.setState({startTime,
+												endTime: timeVerification(startTime, this.state.endTime, this.state.endTime)});
 										}} />
 								</View>
 
@@ -365,8 +365,8 @@ class Course extends React.PureComponent {
 										locale={'US'}
 										is24Hour={false}
 										onDateChange={(endTime) => {
-											this.setState({endTime});
-											this.setState({startTime: timeVerification(this.state.startTime, this.state.endTime, this.state.startTime)});
+											this.setState({endTime,
+												startTime: timeVerification(this.state.startTime, endTime, this.state.startTime)});
 										}} />
 								</View>
 							</View>

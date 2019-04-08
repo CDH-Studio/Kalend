@@ -337,9 +337,9 @@ class FixedEvent extends React.PureComponent {
 										}}
 										format="ddd., MMM DD, YYYY"
 										onDateChange={(startDate) => {
-											this.setState({startDate});
-											this.setState({endDate: dateVerification(this.state.startDate, this.state.endDate, this.state.endDate)});
-											this.dateTimeStateVerification();
+											this.setState({
+												startDate,
+												endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)}, () => this.dateTimeStateVerification());
 										}} />
 										
 									<DatePicker showIcon={false} 
@@ -356,8 +356,7 @@ class FixedEvent extends React.PureComponent {
 										locale={'US'}
 										is24Hour={false}
 										onDateChange={(startTime) => {
-											this.setState({startTime});
-											this.setState({endTime: this.dateTimeVerification(this.state.endTime)});
+											this.setState({startTime}, () => this.setState({endTime: this.dateTimeVerification(this.state.endTime)}));
 										}} />
 								</View>
 
@@ -373,9 +372,9 @@ class FixedEvent extends React.PureComponent {
 										}}
 										format="ddd., MMM DD, YYYY"
 										onDateChange={(endDate) => {
-											this.setState({endDate});
-											this.setState({startDate: dateVerification(this.state.startDate, this.state.endDate, this.state.startDate)});
-											this.dateTimeStateVerification();
+											this.setState({
+												endDate,
+												startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)}, () => this.dateTimeStateVerification());
 										}} />
 
 									<DatePicker showIcon={false} 
@@ -392,8 +391,7 @@ class FixedEvent extends React.PureComponent {
 										locale={'US'}
 										is24Hour={false}
 										onDateChange={(endTime) => {
-											this.setState({endTime});
-											this.setState({startTime: this.dateTimeVerification(this.state.startTime)});
+											this.setState({endTime}, () => this.setState({startTime: this.dateTimeVerification(this.state.startTime)}));
 										}} />
 								</View>
 							</View>
