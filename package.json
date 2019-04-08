@@ -33,6 +33,7 @@
     "react-native-camera": "^2.0.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-firebase": "^5.2.2",
+    "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.1",
     "react-native-iphone-x-helper": "^1.2.0",

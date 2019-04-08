@@ -238,7 +238,7 @@ export const clearEveryReducer = () => {
 export const getStrings = () => {
 	const { language } = store.getState().SettingsReducer;
 
-	let lang = language ? language : 'fr';
+	let lang = language ? language : 'en';
 	// LocaleConfig.defaultLocale = language;
 
 	return strings[lang];

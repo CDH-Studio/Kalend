@@ -6,7 +6,7 @@ import AnimatedGradient from '../AnimatedGradient';
 import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
 import { gradientColors } from '../../../config/config';
 import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
-import { setBottomString } from '../../actions';
+import { setBottomString, setLanguage } from '../../actions';
 import { getStrings } from '../../services/helper';
 
 const logoFile = require('../../assets/logoAnim.json');
@@ -32,6 +32,10 @@ class LoadingScreen extends React.PureComponent {
 			compareTitle: getStrings().CompareSchedule.name, 
 			settingsTitle: getStrings().Settings.name
 		}));
+
+		if (props.language === undefined) {
+			this.props.dispatch(setLanguage('en'));
+		}
 		
 		// Waits for the animation to finish, then goes to the next screen
 		setTimeout(()=> {
@@ -106,7 +110,8 @@ class LoadingScreen extends React.PureComponent {
 let mapStateToProps = (state) => {
 	return {
 		main: state.NavigationReducer.main, 
-		profile: state.HomeReducer.profile
+		profile: state.HomeReducer.profile,
+		language: state.SettingsReducer.language
 	};
 };
 
