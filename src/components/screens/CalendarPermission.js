@@ -136,27 +136,15 @@ class CalendarPermission extends React.PureComponent {
 								renderItem={this._renderItem}
 								keyExtractor={(item, index) => index.toString()}
 								style={styles.flatList} 
-								style={styles.flatList} 
-								style={styles.flatList} 
-								style={styles.flatList} 
-								style={styles.flatList} 
-								scrollEnabled={data.legnth !== 0}
+								scrollEnabled={data.length !== 0}
 								ListEmptyComponent={() => (
 									<TouchableOpacity onPress={this.refreshData}>
 										<View style={styles.emptyContainer}>
 											<MaterialCommunityIcons size={50}
 												name='account-search'
 												color={gray}/>
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
+											<Text style={styles.emptyTitle}>No people found</Text> 
+											<Text style={styles.emptyDescription}>Tap to refresh the sharing info</Text> 
 										</View>
 									</TouchableOpacity>
 								)}

@@ -1624,6 +1624,11 @@ export const calendarPermissionStyles = StyleSheet.create({
 		height: '100%'
 	},
 
+	buttons: {
+		...calendarShareButtons.buttons,
+		justifyContent: 'flex-end',
+		marginHorizontal: 0
+	}
 });
 
 export const calendarPermissionItemStyles = StyleSheet.create({

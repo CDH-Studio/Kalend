@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Animated } from 'react-native';
+import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Animated, NativeModules } from 'react-native';
 import { TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -39,7 +39,7 @@ class CompareSchedule extends React.PureComponent {
 			startDate: moment().startOf('day'),
 			endDate: moment().startOf('day').add(90, 'd'),
 			showCalendar: false,
-			animatedHeight: new Animated.Value(this.listHeight)
+			animatedHeight: new Animated.Value(1)
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
@@ -169,6 +169,7 @@ class CompareSchedule extends React.PureComponent {
 					this.state.animatedHeight,
 					{
 						toValue: this.listHeight,
+						useNativeDriver: true,
 					},
 				).start();
 			});
@@ -240,7 +241,8 @@ class CompareSchedule extends React.PureComponent {
 							// Animate value over time
 							this.state.animatedHeight, // The value to drive
 							{
-								toValue: 0, // Animate to final value of 1
+								toValue: 0,
+								useNativeDriver: true,
 							},
 						).start(); // Start the animation
 						this.setState({
@@ -311,7 +313,7 @@ class CompareSchedule extends React.PureComponent {
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<Animated.View style={[styles.peopleSelection, {height: animatedHeight}]}>
+				<Animated.View style={[styles.peopleSelection, {height: this.listHeight, transform: [{'translateY': animatedHeight}]}]}>
 					<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>Compare schedules with</Text>
 
 					{ 
@@ -364,7 +366,7 @@ class CompareSchedule extends React.PureComponent {
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}>
 						<Text style={styles.availabilityButtonText}>
-							{ showCalendar ? 'Modify Settings' : 'See Availabilities' }
+							{ showCalendar ? 'Add / Remove User(s)' : 'See Availabilities' }
 						</Text>
 					</TouchableRipple>
 
