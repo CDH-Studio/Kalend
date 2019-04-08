@@ -409,6 +409,9 @@ class CompareSchedule extends React.PureComponent {
 							theme={{colors:{primary: dark_blue}}}
 							label='Email'
 							value={this.state.text}
+							autoCapitalize={false}
+							autoComplete='email'
+							keyboardType='email-address'
 							onChangeText={searchText => this.setState({ searchText })}/>
 
 						<View style={styles.modalButtons}>
