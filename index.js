@@ -60,6 +60,7 @@ const dashboardInnerScreenOptions = {
 		backgroundColor: blue,
 		marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 	},
+	headerBackTitle: null
 };
 
 const DashboardNavigator = createBottomTabNavigator(
@@ -80,7 +81,7 @@ const DashboardNavigator = createBottomTabNavigator(
 						const iconName = `home-variant${focused ? '' : '-outline'}`;
 						return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
 					},
-				}
+				};
 			}
 		},
 		Chatbot: {
@@ -144,7 +145,8 @@ const DashboardNavigator = createBottomTabNavigator(
 );
 
 DashboardNavigator.navigationOptions = {
-	header: null
+	header: null,
+	headerBackTitle: null,
 };
 
 const DashboardOptionsNavigatorOptions = {
@@ -154,7 +156,8 @@ const DashboardOptionsNavigatorOptions = {
 	},
 	headerStyle: {
 		marginTop: StatusBar.currentHeight
-	}
+	},
+	headerBackTitle: null,
 };
 
 const DashboardOptionsNavigator = createStackNavigator(

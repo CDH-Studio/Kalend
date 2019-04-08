@@ -3,7 +3,7 @@ const en = {
 		name: 'Chatbot',
 	},
 	CompareSchedule: {
-		name: 'Compare Schedule',
+		name: 'Compare',
 	}, 
 	Course: {
 		name: 'Course',
