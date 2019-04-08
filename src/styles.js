@@ -1419,7 +1419,8 @@ export const dashboardStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		padding: 10,
-		backgroundColor: '#F6F8FA'
+		backgroundColor: '#F6F8FA',
+		paddingTop: getStatusBarHeight() + 10
 	},
 
 	fab: {
@@ -1523,21 +1524,24 @@ export const dashboardStyles = StyleSheet.create({
 export const chatbotStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		paddingTop: getStatusBarHeight()
 	}
 });
 
 export const compareScheduleStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		paddingTop: getStatusBarHeight()
 	}
 });
 
 export const settingsStyles = StyleSheet.create({
 	container: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		paddingTop: getStatusBarHeight()
 	},
 
 	content: {
@@ -1571,12 +1575,13 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	topProfileContainer: {
-		alignItems: 'center'
+		alignItems: 'center',
+		margin: 20
 	},
 
 	profileDescription: {
 		fontFamily: 'Raleway-SemiBold', 
-		color: gray, 
+		color: Platform.OS === 'ios' ? black : gray, 
 		fontSize: 17,
 		textAlign: 'center'
 	},

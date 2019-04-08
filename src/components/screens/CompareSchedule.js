@@ -5,6 +5,10 @@ import updateNavigation from '../NavigationHelper';
 
 class CompareSchedule extends React.PureComponent {
 
+	static navigationOptions = {
+		header: null
+	}
+
 	constructor(props) {
 		super(props);
 
@@ -15,8 +19,8 @@ class CompareSchedule extends React.PureComponent {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#166489'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={'#00000050'} />
 			</View>
 		);
 	}

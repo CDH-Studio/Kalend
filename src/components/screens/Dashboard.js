@@ -40,6 +40,7 @@ class Dashboard extends React.PureComponent {
 					color={white}/>
 			</TouchableOpacity>
 		),
+		header: null
 	});
 
 	constructor(props) {
@@ -165,8 +166,8 @@ class Dashboard extends React.PureComponent {
 				<Portal.Host>
 					<View style={styles.content}>
 						<StatusBar translucent={true}
-							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-							backgroundColor={'#166489'} />	
+							barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+							backgroundColor={'#00000050'} />	
 
 						{/* <View style={styles.calendarBack}>
 							<Text style={styles.calendarBackText}>{currentMonthText}</Text>

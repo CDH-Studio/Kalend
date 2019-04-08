@@ -16,13 +16,9 @@ const viewHeight = 669.1428833007812;
 
 class Settings extends React.PureComponent {
 
-	static navigationOptions = ({navigation}) => ({
-		headerRight: (__DEV__ ? <IconButton
-			icon="delete"
-			onPress={() => navigation.navigate(CleanReducersRoute)}
-			size={20}
-			color={blue}/> : null)
-	});
+	static navigationOptions = {
+		header: null
+	}
 
 	constructor(props) {
 		super(props);
@@ -49,8 +45,8 @@ class Settings extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#166489'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={'#00000050'} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
 					dismiss={() => this.dismiss()}/>
@@ -67,6 +63,15 @@ class Settings extends React.PureComponent {
 								{this.props.userName}
 							</Text>
 						</View>
+{/* 
+						<View style={styles.titleRow}>
+						
+							{__DEV__ ? <IconButton
+								icon="delete"
+								onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
+								size={20}
+								color={blue}/> : null}
+						</View> */}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
