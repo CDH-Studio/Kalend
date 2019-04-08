@@ -11,6 +11,8 @@ import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
+const moment = require('moment');
+
 /**
  * Dashboard of the application which shows the user's calendar and
  * the differents options they can access.
@@ -54,6 +56,7 @@ class Dashboard extends React.PureComponent {
 			snackbarVisible: false,
 			snackbarTime: 3000,
 			snackbarText: '',
+			month: ''
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
 	}
@@ -84,6 +87,14 @@ class Dashboard extends React.PureComponent {
 	shouldChangeDay = (r1, r2) => {
 		return r1 !== r2;
 	}
+
+	getMonth(date) {
+		const month = date - 1;
+		const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+			'July', 'August', 'September', 'October', 'November', 'December'];
+			
+		this.setState({ month: monthNames[month], showMonth: true });
+	}
 	
 	timeToString = (time) => {
 		const date = new Date(time);
@@ -109,6 +120,11 @@ class Dashboard extends React.PureComponent {
 
 	componentWillMount() {
 		this.setDashboardDataService();
+
+		const currentDate = moment(this.props.selectedDate, 'YYYY/MM/DD');
+		const month = currentDate.format('M');
+		
+		this.getMonth(month);
 	}
 
 	componentWillUnmount() {
@@ -168,14 +184,20 @@ class Dashboard extends React.PureComponent {
 							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 							backgroundColor={'#166489'} />	
 
-						{/* <View style={styles.calendarBack}>
-							<Text style={styles.calendarBackText}>{currentMonthText}</Text>
-						</View> */}
+						<View style={styles.calendarBack}>
+							<Text style={styles.calendarBackText}>{this.state.month}</Text>
+						</View>
 
 						<Agenda ref='agenda'
 							items={this.state.items}
 							renderItem={this.renderItem}
 							renderEmptyData={this.renderEmptyData}
+							onDayChange={(date) => {
+								this.getMonth(date.month);
+							}}
+							onDayPress={(date) => {
+								this.getMonth(date.month);
+							}}
 							rowHasChanged={this.rowHasChanged}
 							showOnlyDaySelected={true}
 							shouldChangeDay={this.shouldChangeDay}

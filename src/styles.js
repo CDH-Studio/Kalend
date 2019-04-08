@@ -1500,14 +1500,16 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	calendarBack: {
-		backgroundColor: white
+		backgroundColor: white,
+		justifyContent: 'center'
 	},
 	
 	calendarBackText: {
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
+		fontSize: 18,
 		color: dark_blue,
-		textAlign: 'center'
+		textAlign: 'center',
+		paddingVertical: 5
 	},
 
 	eventsDayTitle: {
