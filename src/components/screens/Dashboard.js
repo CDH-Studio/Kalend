@@ -156,7 +156,7 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen, calendarOpened, snackbarVisible, snackbarTime, snackbarText, month, showMonth} = this.state;
+		const {optionsOpen, calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
 		let showCloseFab;
 		let showMonthView;
 
