@@ -63,15 +63,18 @@ class Settings extends React.PureComponent {
 								{this.props.userName}
 							</Text>
 						</View>
-{/* 
-						<View style={styles.titleRow}>
 						
-							{__DEV__ ? <IconButton
-								icon="delete"
-								onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
-								size={20}
-								color={blue}/> : null}
-						</View> */}
+						
+						
+						{
+							__DEV__ ?
+								<View style={styles.titleRow}> 
+									<IconButton icon="delete"
+										onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
+										size={20}
+										color={blue}/> 
+								</View>: null
+						}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
