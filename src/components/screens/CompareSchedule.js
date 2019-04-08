@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Animated, NativeModules } from 'react-native';
+import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Animated, NativeModules, LayoutAnimation } from 'react-native';
 import { TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,6 +13,10 @@ import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPer
 import CalendarScheduleItem from '../CalendarScheduleItem';
 
 const moment = extendMoment(Moment);
+
+// Enables the LayoutAnimation on Android
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 /**
  * The screen for comparing schedules
@@ -39,7 +43,7 @@ class CompareSchedule extends React.PureComponent {
 			startDate: moment().startOf('day'),
 			endDate: moment().startOf('day').add(90, 'd'),
 			showCalendar: false,
-			animatedHeight: new Animated.Value(1)
+			animatedHeight: this.listHeight
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
@@ -165,13 +169,15 @@ class CompareSchedule extends React.PureComponent {
 				agendaData: {},
 			}, () => {
 				this.forceUpdate();
-				Animated.timing(
-					this.state.animatedHeight,
-					{
-						toValue: this.listHeight,
-						useNativeDriver: true,
-					},
-				).start();
+				LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+				this.setState({animatedHeight: this.listHeight});
+				// Animated.timing(
+				// 	this.state.animatedHeight,
+				// 	{
+				// 		toValue: this.listHeight,
+				// 		useNativeDriver: true,
+				// 	},
+				// ).start();
 			});
 		} else {
 			if (selectedValue.length === 0) {
@@ -236,15 +242,18 @@ class CompareSchedule extends React.PureComponent {
 								end: range.end
 							});
 						});
+						
+						LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+						this.setState({animatedHeight: 0});
 
-						Animated.timing(
-							// Animate value over time
-							this.state.animatedHeight, // The value to drive
-							{
-								toValue: 0,
-								useNativeDriver: true,
-							},
-						).start(); // Start the animation
+						// Animated.timing(
+						// 	// Animate value over time
+						// 	this.state.animatedHeight, // The value to drive
+						// 	{
+						// 		toValue: 0,
+						// 		useNativeDriver: true,
+						// 	},
+						// ).start(); // Start the animation
 						this.setState({
 							agendaData: dates,
 							showCalendar: true
@@ -311,45 +320,49 @@ class CompareSchedule extends React.PureComponent {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor="#00000050" />
 
-				<Animated.View style={[styles.peopleSelection, {height: this.listHeight, transform: [{'translateY': animatedHeight}]}]}>
-					<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>Compare schedules with</Text>
+				{
+					showCalendar ?
+						null :
+						<Animated.View style={[styles.peopleSelection, {height:  animatedHeight}]}>
+							<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>Compare schedules with</Text>
 
-					{ 
-						loadingSharedList ? 
-							<View style={styles.activityIndicatorContainer}>
-								<ActivityIndicator animating={loadingSharedList} 
-									size="large" 
-									color={gray} />
-							</View> :
-							<FlatList data={userAvailabilities}
-								renderItem={this._renderItem}
-								keyExtractor={(item, index) => index.toString()}
-								style={styles.flatList} 
-								scrollEnabled={userAvailabilities.length !== 0}
-								ListEmptyComponent={() => (
-									<TouchableOpacity onPress={this.refreshData}>
-										<View style={styles.emptyContainer}>
-											<MaterialCommunityIcons size={50}
-												name='calendar-search'
-												color={gray}/>
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
-										</View>
-									</TouchableOpacity>
-								)}
-								refreshControl={
-									<RefreshControl
-										refreshing={this.state.loadingSharedList}
-										onRefresh={this.refreshData}
-										tintColor={gray}
-										colors={[dark_blue]} />
-								} />
-					}
-				</Animated.View> 
+							{ 
+								loadingSharedList ? 
+									<View style={styles.activityIndicatorContainer}>
+										<ActivityIndicator animating={loadingSharedList} 
+											size="large" 
+											color={gray} />
+									</View> :
+									<FlatList data={userAvailabilities}
+										renderItem={this._renderItem}
+										keyExtractor={(item, index) => index.toString()}
+										style={styles.flatList} 
+										scrollEnabled={userAvailabilities.length !== 0}
+										ListEmptyComponent={() => (
+											<TouchableOpacity onPress={this.refreshData}>
+												<View style={styles.emptyContainer}>
+													<MaterialCommunityIcons size={50}
+														name='calendar-search'
+														color={gray}/>
+													<Text style={styles.emptyTitle}>No calendars found</Text> 
+													<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
+												</View>
+											</TouchableOpacity>
+										)}
+										refreshControl={
+											<RefreshControl
+												refreshing={this.state.loadingSharedList}
+												onRefresh={this.refreshData}
+												tintColor={gray}
+												colors={[dark_blue]} />
+										} />
+							}
+						</Animated.View> }
 
-				<View style={[styles.buttons, {justifyContent: showCalendar ? 'center' : 'space-between'}]}>
+				<View style={[styles.buttons, {justifyContent: 'space-between'}]}>
 					{
 						showCalendar ?
 							null :
@@ -358,8 +371,7 @@ class CompareSchedule extends React.PureComponent {
 								rippleColor={whiteRipple}
 								overlayColor={whiteRipple}>
 								<Text style={styles.sideButtonText}>Delete</Text>
-							</TouchableRipple>
-					}
+							</TouchableRipple>}
 
 					<TouchableRipple onPress={this.seeAvailabilities}
 						style={[styles.availabilityButton, {marginRight: showCalendar ? 0 : 15, width: showCalendar ? '100%' : null}]}
@@ -369,17 +381,13 @@ class CompareSchedule extends React.PureComponent {
 							{ showCalendar ? 'Add / Remove User(s)' : 'See Availabilities' }
 						</Text>
 					</TouchableRipple>
-
-					{
-						showCalendar ?
-							null :
-							<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
-								style={styles.sideButton}
-								rippleColor={whiteRipple}
-								underlayColor={whiteRipple}>
-								<Text style={styles.sideButtonText}>Add</Text>
-							</TouchableRipple>
-					}
+					<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
+						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1}]}
+						disabled={showCalendar}
+						rippleColor={whiteRipple}
+						underlayColor={whiteRipple}>
+						<Text style={styles.sideButtonText}>Add</Text>
+					</TouchableRipple>
 				</View>
 
 				<Agenda ref='agenda'
@@ -400,6 +408,7 @@ class CompareSchedule extends React.PureComponent {
 					hideKnob={!showCalendar}
 					theme={{agendaKnobColor: dark_blue}}/>
 
+
 				<Modal isVisible={searchModalVisible}
 					avoidKeyboard
 					onBackdropPress={() => this.setState({searchModalVisible: false})}>
@@ -411,7 +420,7 @@ class CompareSchedule extends React.PureComponent {
 							theme={{colors:{primary: dark_blue}}}
 							label='Email'
 							value={this.state.text}
-							autoCapitalize={false}
+							autoCapitalize='none'
 							autoComplete='email'
 							keyboardType='email-address'
 							onChangeText={searchText => this.setState({ searchText })}/>

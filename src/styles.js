@@ -1571,7 +1571,7 @@ export const calendarShareButtons = StyleSheet.create({
 
 	availabilityButtonText: {
 		fontFamily: 'Raleway-Regular', 
-		color: white
+		color: white,
 	},
 });
 
