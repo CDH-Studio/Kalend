@@ -56,6 +56,7 @@ class Dashboard extends React.PureComponent {
 			snackbarVisible: false,
 			snackbarTime: 3000,
 			snackbarText: '',
+			showMonth: false,
 			month: ''
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
@@ -121,7 +122,7 @@ class Dashboard extends React.PureComponent {
 	componentWillMount() {
 		this.setDashboardDataService();
 
-		const currentDate = moment(this.props.selectedDate, 'YYYY/MM/DD');
+		const currentDate = moment();
 		const month = currentDate.format('M');
 		
 		this.getMonth(month);
@@ -155,9 +156,9 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen, calendarOpened, snackbarVisible, snackbarTime, snackbarText} = this.state;
+		const {optionsOpen, calendarOpened, snackbarVisible, snackbarTime, snackbarText, month, showMonth} = this.state;
 		let showCloseFab;
-		// let currentMonthText = 'jninm';
+		let showMonthView;
 
 		if (calendarOpened) {
 			showCloseFab = 
@@ -169,11 +170,16 @@ class Dashboard extends React.PureComponent {
 					icon="close"
 					onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
 			</View>;
+	
+			showMonthView = null;
 
-			// currentMonthText = null;
 		} else {
 			showCloseFab = null;
-			// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
+
+			showMonthView = 
+			<View style={styles.calendarBack}>
+				<Text style={styles.calendarBackText}>{month}</Text>
+			</View>;
 		}
 
 		return(
@@ -184,9 +190,7 @@ class Dashboard extends React.PureComponent {
 							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 							backgroundColor={'#166489'} />	
 
-						<View style={styles.calendarBack}>
-							<Text style={styles.calendarBackText}>{this.state.month}</Text>
-						</View>
+						{showMonthView}
 
 						<Agenda ref='agenda'
 							items={this.state.items}

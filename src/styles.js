@@ -1509,7 +1509,7 @@ export const dashboardStyles = StyleSheet.create({
 		fontSize: 18,
 		color: dark_blue,
 		textAlign: 'center',
-		paddingVertical: 5
+		paddingTop: 10
 	},
 
 	eventsDayTitle: {
