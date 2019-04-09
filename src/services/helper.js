@@ -15,35 +15,42 @@ export const convertToDictionary  = (data) => {
 	return dict; 
 };
 
-
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 export const convertEventsToDictionary  = async (data) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let dict = {};
 
 	if (data == undefined) return;
 
-	data.forEach(async (event) => {
+	await data.forEach(async (event) => {
 		if (event.RECURRENCE) {
 			// Get all recurring events if it has recurrence
-			await getEventsInstances(calendarID, event.id).then(instances => {
+			console.log('called');
+			await getEventsInstances(calendarID, event.ID).then(async instances => {
+				let tempEvent = event;
+				
 				instances.items.forEach(eventRec => {
+					console.log('eventRec', eventRec);
 					let item = {};
+					item.category = tempEvent.CATEGORY;
 					item.name = eventRec.summary;
 					let keyDate = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime.split('T')[0];
 					item.date = keyDate;
 					item.actualTime = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime;
-	
-					item.time = `${convertLocalTimeStringToSimple(eventRec.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+					item.time = (eventRec.start.date)? '' : `${convertLocalTimeStringToSimple(eventRec.start.dateTime)} - ${convertLocalTimeStringToSimple(eventRec.end.dateTime)}`;
 					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
 				});
 			});
 		} else {
 			let item = {};
 			item.name = event.SUMMARY;
+			item.category = event.CATEGORY;
 			let keyDate = event.START.split('T')[0];
 			item.date = keyDate;
 			item.actualTime = event.START;
-			item.time = (event.ALLDAY) ? '': `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+			item.time = (event.ALLDAY) ? '': `${convertLocalTimeStringToSimple(event.START)} - ${convertLocalTimeStringToSimple(event.END)}`;
 			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
 		}
 	});
