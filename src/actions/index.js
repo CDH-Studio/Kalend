@@ -3,6 +3,7 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
+	SET_SELECTED_CALENDAR,
 	UPDATE_NFE, 
 	SIGNED_IN, 
 	SIGNED_OUT, 
@@ -32,6 +33,7 @@ import {
 	CLEAR_OPENED
 } from '../constants';
 
+export *  from './allEvents';
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -223,6 +225,15 @@ export function setSchoolInformation (info) {
 	const action = {
 		type: SET_SCHOOL_INFORMATION,
 		info
+	};
+
+	return action;
+}
+
+export function setSelectedCalendar(index) {
+	const action = {
+		type: SET_SELECTED_CALENDAR,
+		index
 	};
 
 	return action;

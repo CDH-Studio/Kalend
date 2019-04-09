@@ -1,4 +1,4 @@
-import {ADD_GENERATED_CALENDAR, CLEAR_GENERATED_CALENDAR, DELETE_GENERATED_CALENDAR} from '../constants';
+import {ADD_GENERATED_CALENDAR, CLEAR_GENERATED_CALENDAR, DELETE_GENERATED_CALENDAR, SET_SELECTED_CALENDAR} from '../constants';
 
 export default function GeneratedCalendarsReducer(state = [], action) {
 	const { calendar, index } = action;
@@ -14,6 +14,9 @@ export default function GeneratedCalendarsReducer(state = [], action) {
 		case CLEAR_GENERATED_CALENDAR:
 			return [];
 			
+		case SET_SELECTED_CALENDAR:
+			state[index].selected = true;
+			return state;
 		default:
 			return state;
 	}
