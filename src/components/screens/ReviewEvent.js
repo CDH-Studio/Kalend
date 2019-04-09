@@ -3,11 +3,13 @@ import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform,Alert } f
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, addEvents, clearCourse, clearFixedEvents, setNavigationScreen } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
+import { bindActionCreators } from 'redux';
+import { storeGeneratedCalendars } from '../../services/api/storage_services';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import { insertFixedEventsToGoogle } from '../../services/service';
 
@@ -156,8 +158,8 @@ class ReviewEvent extends React.PureComponent {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		this.props.dispatch(clearGeneratedCalendars());
-		this.props.dispatch(clearGeneratedNonFixedEvents());
+		this.props.clearGeneratedCalendars();
+		this.props.clearGeneratedNonFixedEvents();
 
 		if (this.state.schoolScheduleData.length == 0 && this.state.nonFixedEventData.length == 0 && this.state.fixedEventData.length == 0 ) {
 			Alert.alert(
@@ -171,28 +173,34 @@ class ReviewEvent extends React.PureComponent {
 			return;
 		}
 
-		if (this.state.nonFixedEventData.length == 0) {
-			insertFixedEventsToGoogle()
-				.then((promises) => {
-					console.log('made it here', promises);
-					this.props.navigation.pop();
-				})
-				.catch(err => {
-					console.log('err', err);
-					if (err) {
-						Alert.alert(
-							'Error',
-							err,
-							[
-								{text: 'OK'},
-							],
-							{cancelable: false}
-						);
-					}
-				});
-		} else {
-			this.props.navigation.navigate(ScheduleCreationRoute);
-		}
+		insertFixedEventsToGoogle()
+			.then((promises) => {
+				if (this.state.nonFixedEventData.length == 0) {
+					storeGeneratedCalendars(promises).then(success => {
+						if(success) {
+							this.props.clearCourse();
+							this.props.clearFixedEvents();
+							this.props.setNavigationScreen({successfullyInsertedEvents: true});
+							this.props.navigation.pop();
+						}
+					});
+				} else {
+					this.props.navigation.navigate(ScheduleCreationRoute);	
+				}			
+			})
+			.catch(err => {
+				console.log('err', err);
+				if (err) {
+					Alert.alert(
+						'Error',
+						err,
+						[
+							{text: 'OK'},
+						],
+						{cancelable: false}
+					);
+				}
+			});
 	}
 
 	render() {
@@ -326,4 +334,9 @@ function mapStateToProps(state) {
 	};
 } 
 
-export default connect(mapStateToProps, null)(ReviewEvent);
+
+let mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ addEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearCourse, clearFixedEvents, setNavigationScreen}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewEvent);
