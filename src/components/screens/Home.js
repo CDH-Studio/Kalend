@@ -10,6 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
+import { storeUserInfoService, updateUser } from '../../services/api/storage_services';
 import { homeStyles as styles } from '../../styles';
 
 /** 
@@ -29,21 +30,46 @@ class Home extends React.PureComponent {
 	 * Sets the user information
 	 */
 	setUser = (userInfo) => {
-		this.props.logonUser(userInfo);	
+		this.props.logonUser(userInfo);
+		this.setCalendar().then(id => {
+			userInfo.calendarID = id;
+			storeUserInfoService(userInfo)
+				.then(res => res.json())
+				.then((success) => {
+					if (success) {
+						this.props.logonUser(userInfo);
+						this.props.navigation.navigate(DashboardNavigator);
+					} else {
+						alert('There was an error setting Users data');
+					}
+				})
+				.catch((err) => {
+					console.log('err', err);
+				});
+		});
 	}
 
 	/**
 	 * Creates the Kalend calendar in the user's Google Account
 	 */
 	setCalendar() {
-		getCalendarID2().then(data => {
-			if (data === undefined) {
-				createCalendar().then(id => {
-					this.props.setCalendarID(id);
+		return new Promise( async (resolve, reject) =>  {
+			await getCalendarID2()
+				.then( data => {
+					if (data === undefined) {
+						createCalendar()
+							.then(id => {
+								this.props.setCalendarID(id);
+								resolve(id);
+							});
+					} else {
+						this.props.setCalendarID(data);
+						resolve(data);
+					}
+				}).catch(err => {
+					reject(err);
+					alert(err);
 				});
-			} else {
-				this.props.setCalendarID(data);
-			}
 		});
 	}
 	
@@ -58,20 +84,18 @@ class Home extends React.PureComponent {
 					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
-							this.setCalendar();
-							this.props.navigation.navigate(DashboardNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
-								this.setCalendar();
-								this.props.navigation.navigate(DashboardNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
-					this.setCalendar();
+					this.setCalendar().then(id => {
+						updateUser({values:[id], columns:['CALENDARID']});	
+					});
 					this.props.navigation.navigate(DashboardNavigator);
 				}
 			});
@@ -104,7 +128,6 @@ class Home extends React.PureComponent {
 									color={GoogleSigninButton.Color.Light} 
 									onPress={this.signIn} />
 							</View>
-
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
 									Linking.openURL('https://cdhstudio.ca/');
