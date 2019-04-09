@@ -37,6 +37,8 @@ target 'Kalend' do
   pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
+  pod 'react-native-safari-view', :path => '../node_modules/react-native-safari-view'
+
   target 'KalendTests' do
     inherit! :search_paths
     # Pods for testing
