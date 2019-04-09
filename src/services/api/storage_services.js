@@ -50,6 +50,5 @@ export const storeGeneratedCalendars = (info) => {
 };
 
 export const getEvents = () => {
-	console.log('getEvents');
 	return apiHelperCall(server + 'api/getEvents', 'GET');
 };

@@ -2,6 +2,7 @@ import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteg
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents, getCalendar } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
+import { getEvents } from './api/storage_services';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser, addEvents } from '../actions';
 import firebase from 'react-native-firebase';
 
@@ -493,13 +494,16 @@ export const generateCalendars = async () => {
 export const getDataforDashboard = async () => {
 	let calendarID = store.getState().CalendarReducer.id;
 	return new Promise(async (resolve, reject) => {
-		await listEvents(calendarID).then(data => {
-			if (data.error) reject('There was a problem featching your data');
-			convertEventsToDictionary(data.items).then(dict => {
-				if(dict == undefined) reject('There was an error in converting data to dict');
-				resolve(dict);
+			getEvents()
+				.then(res => res.json())
+				.then((events) => {
+				if(events.length != 0) {
+					convertEventsToDictionary(events).then(dict => {
+						if(dict == undefined) reject('There was an error in converting data to dict');
+						resolve(dict);
+					});
+				}
 			});
-		});
 	});
 };
 

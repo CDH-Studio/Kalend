@@ -10,7 +10,6 @@ import { getEvents } from '../../services/api/storage_services';
 import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { dashboardStyles as styles, blue, white, dark_blue, black, statusBarDark } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
-import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
 /**
@@ -95,12 +94,6 @@ class Dashboard extends React.PureComponent {
 	
 	componentDidMount() {
 		this.setState({isVisible: true});
-		// getEvents().then((events) => {
-	 	// 	if(events.length != 0) {
-		// 		 console.log('events', events);
-		// 	 }
-		// });
-
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {

@@ -23,7 +23,7 @@ export const convertEventsToDictionary  = async (data) => {
 	if (data == undefined) return;
 
 	data.forEach(async (event) => {
-		if (event.recurrence) {
+		if (event.RECURRENCE) {
 			// Get all recurring events if it has recurrence
 			await getEventsInstances(calendarID, event.id).then(instances => {
 				instances.items.forEach(eventRec => {
@@ -31,7 +31,7 @@ export const convertEventsToDictionary  = async (data) => {
 					item.name = eventRec.summary;
 					let keyDate = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime.split('T')[0];
 					item.date = keyDate;
-					item.actualTime = eventRec.start.dateTime;
+					item.actualTime = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime;
 	
 					item.time = `${convertLocalTimeStringToSimple(eventRec.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
 					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
@@ -39,11 +39,11 @@ export const convertEventsToDictionary  = async (data) => {
 			});
 		} else {
 			let item = {};
-			let keyDate = (event.start.date) ? event.start.date : event.start.dateTime.split('T')[0];
-			item.name = event.summary;
+			item.name = event.SUMMARY;
+			let keyDate = event.START.split('T')[0];
 			item.date = keyDate;
-			item.actualTime = event.start.dateTime;
-			item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+			item.actualTime = event.START;
+			item.time = (event.ALLDAY) ? '': `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
 			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
 		}
 	});
