@@ -1876,3 +1876,59 @@ export const eventsColorPickerStyles = StyleSheet.create({
 		fontFamily: 'Raleway-Bold'
 	}
 });
+
+export const importCalendarStyles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15
+	},
+
+	itemView: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	itemText: {
+		fontFamily: 'Raleway-Regular',
+		color: gray
+	},
+
+	title: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	},
+
+	buttons: {
+		justifyContent: 'flex-end', 
+		width: '100%', 
+		flexDirection: 'row'
+	}, 
+
+	buttonText: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+		marginLeft: 20
+	}, 
+
+	buttonCancelText: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+	}, 
+
+	flatlist: {
+		marginVertical: 10,
+		marginLeft: -7
+	}
+});
