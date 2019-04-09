@@ -21,7 +21,6 @@ let googleSignIn = async () => {
 
 let googleSignOut = async () => {
 	try {
-		await GoogleSignin.revokeAccess();
 		await GoogleSignin.signOut();
 	} catch (error) {
 		// console.error(error);

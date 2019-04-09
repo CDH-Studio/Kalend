@@ -1,5 +1,5 @@
 import { store } from '../store';
-let accessToken;
+import { googleGetCurrentUserInfo } from './google_identity';
 
 /**
  * Helper method for the Google Calendar API calls
@@ -9,9 +9,9 @@ let accessToken;
  * @param {Object} body The body of the call
  * @param {Object} query Query parameter object to be appended to the URL
  */
-let apiHelperCall = (URL, method, body, query) => {
-	accessToken = store.getState().HomeReducer.profile.profile.accessToken;
-	//accessToken = "ya29.Glu-BlpDlUfWvL5rkqAwV6WUfx4XCfsGku8G072--YzoPjC3_6yb4Rh4b0pXNI5uxF35W_V_-eOhxYkfIyU3XuHlsN0rkt_32sXKe1zxPv6C6TYr_-idfDxj_cE8"
+let apiHelperCall = async (URL, method, body, query) => {
+	let userInfo = await googleGetCurrentUserInfo();
+	let accessToken = userInfo.accessToken;
 
 	let fetchData = {
 		method,
