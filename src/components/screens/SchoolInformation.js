@@ -11,6 +11,7 @@ import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { ScrollView } from 'react-native-gesture-handler';
+import { storeSchoolInfoService } from '../../services/api/storage_services';
 
 const viewHeight = 584;
 
@@ -43,6 +44,7 @@ class SchoolInformation extends React.PureComponent {
 			schoolValidated: true,
 
 			checked: 'none',
+			value:'',
 			otherSchool: ''
 		};
 
@@ -122,22 +124,41 @@ class SchoolInformation extends React.PureComponent {
 	 */
 	saveInformation = () => {
 		if (this.validateDates()) {
-			this.props.dispatch(setSchoolInformation(this.state));
-			let temp = this.props.navigation.state.params;
+			let {startDate, endDate, value, checked} = this.state;
+			value = (checked == 'third') ? 0: value;
 
-			if (temp) {
-				if (temp.schoolSchedule || temp.reviewEvent) {
-					if (this.state.checked === 'third') {
-						this.props.navigation.navigate(CourseRoute);
+			storeSchoolInfoService({startDate, endDate, value})
+				.then(res => res.json())
+				.then(success => {
+					console.log('success', success);
+					if (success) {
+						this.props.dispatch(setSchoolInformation(this.state));
+						this.navigateAfterSettingUp();
 					} else {
-						this.props.navigation.navigate(SchoolScheduleRoute);
+						alert('failed');
 					}
+				})
+				.catch(err => {
+					console.log('errrr', err);
+				});
+		}
+	}
+
+	navigateAfterSettingUp = () => {
+		let temp = this.props.navigation.state.params;
+
+		if (temp) {
+			if (temp.schoolSchedule || temp.reviewEvent) {
+				if (this.state.checked === 'third') {
+					this.props.navigation.navigate(CourseRoute);
 				} else {
-					this.props.navigation.pop();
+					this.props.navigation.navigate(SchoolScheduleRoute);
 				}
 			} else {
 				this.props.navigation.pop();
 			}
+		} else {
+			this.props.navigation.pop();
 		}
 	}
 
@@ -176,6 +197,7 @@ class SchoolInformation extends React.PureComponent {
 											onPress={() => {
 												this.setState({
 													checked: 'first',
+													value: 1,
 													schoolValidated: true
 												});
 												this.refs._other.blur();
@@ -184,6 +206,7 @@ class SchoolInformation extends React.PureComponent {
 										<TouchableOpacity onPress={() => {
 											this.setState({
 												checked: 'first',
+												value: 1,
 												schoolValidated: true
 											});
 											this.refs._other.blur();
@@ -202,6 +225,7 @@ class SchoolInformation extends React.PureComponent {
 											onPress={() => {
 												this.setState({
 													checked: 'second',
+													value: 2,
 													schoolValidated: true
 												});
 												this.refs._other.blur();
@@ -210,6 +234,7 @@ class SchoolInformation extends React.PureComponent {
 										<TouchableOpacity onPress={() => {
 											this.setState({
 												checked: 'second',
+												value: 2,
 												schoolValidated: true
 											});
 											this.refs._other.blur();

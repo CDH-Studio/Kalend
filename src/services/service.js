@@ -2,7 +2,7 @@ import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteg
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
-import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
+import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser, addEvents } from '../actions';
 import firebase from 'react-native-firebase';
 
 let serverUrl = 'http://52.60.127.46:8080';
@@ -217,6 +217,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
+			console.log ('data', data);
 			let calendarID;
 			for (let i = 0; i < data.items.length; i++) {
 				if (data.items[i].summary === 'Kalend') {
@@ -491,7 +492,10 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
+
 				if(data.error) reject('There was a problem inserting Course');
+				data.category = 3;
+				store.dispatch(addEvents(data));
 				resolve(data);
 			});
 		}));
@@ -513,6 +517,8 @@ export const insertFixedEventsToGoogle = async () => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertFixedEventToCalendar(info).then(data => {
 				if (data.error)  reject('There was a problem inserting Fixed Event');
+				data.category = 2;
+				store.dispatch(addEvents(data));
 				resolve(data);
 			});
 		}));

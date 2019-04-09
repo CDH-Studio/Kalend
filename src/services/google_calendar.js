@@ -1,5 +1,5 @@
 import { store } from '../store';
-import { googleGetCurrentUserInfo } from './google_identity';
+import { getTokens } from './google_identity';
 
 /**
  * Helper method for the Google Calendar API calls
@@ -10,8 +10,9 @@ import { googleGetCurrentUserInfo } from './google_identity';
  * @param {Object} query Query parameter object to be appended to the URL
  */
 let apiHelperCall = async (URL, method, body, query) => {
-	let userInfo = await googleGetCurrentUserInfo();
-	let accessToken = userInfo.accessToken;
+	let tokenData = await getTokens();
+	console.log('tokenData', tokenData);
+	let accessToken = tokenData.accessToken;
 
 	let fetchData = {
 		method,
