@@ -1928,7 +1928,39 @@ export const importCalendarStyles = StyleSheet.create({
 	}, 
 
 	flatlist: {
-		marginVertical: 10,
-		marginLeft: -7
-	}
+		paddingVertical: 5,
+		marginVertical: 5,
+		marginLeft: -7,
+		maxHeight: 180,
+	},
+	
+	description: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		marginTop: 5
+	},
+
+	activityIndicatorContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 180,
+		paddingVertical: 5,
+		marginVertical: 5,
+	},
+
+	emptyContainer: {
+		height: 180, 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+
+	emptyTitle: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+
+	emptyDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
 });
