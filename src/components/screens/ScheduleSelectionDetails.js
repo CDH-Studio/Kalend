@@ -223,7 +223,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		if (data.schoolEvents.length != 0) {
 			data.schoolEvents.forEach(event => {
 				event.type = 'school';
-				console.log(' school event', event);
 				temp_days[event.dayOfWeekValue].push(event);
 			});
 		}
@@ -231,7 +230,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		if (data.fixedEvents.length != 0) {
 			data.fixedEvents.forEach(event => {
 				event.type = 'fixed';
-				console.log(' fixed event', event);
 				let day = new Date(event.startDate).getDay();
 				temp_days[days[day]].push(event);
 			});
@@ -240,7 +238,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		if (data.aiEvents) {
 			data.aiEvents.forEach(event => {
 				event.type = 'nonFixed';
-				console.log(' non event', event);
 				let day = new Date(event.start.dateTime).getDay();
 				temp_days[days[day]].push(event);
 			});
