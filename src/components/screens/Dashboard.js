@@ -8,6 +8,7 @@ import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
+import { calendarColors } from '../../../config/config';
 import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
@@ -63,8 +64,20 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	renderItem(item) {
+		let category;
+
+		if (item.category === 'Course') {
+			category = this.props.courseColor;
+		} else if (item.category === 'FixedEvent') {
+			category = this.props.fixedEventsColor;
+		} else if (item.category === 'NonFixedEvent') {
+			category = this.props.nonFixedEventsColor;
+		} else {
+			category = white;
+		}
+		
 		return (
-			<View style={[styles.item]}>
+			<View style={[styles.item, {backgroundColor:{category}}]}>
 				<Text style={styles.itemText}>{item.name}</Text>
 				<Text style={styles.itemText}>{item.time}</Text>
 			</View>
@@ -195,6 +208,7 @@ class Dashboard extends React.PureComponent {
 						<Agenda ref='agenda'
 							items={this.state.items}
 							renderItem={this.renderItem}
+							listTitle={'Events of the Day'}
 							renderEmptyData={this.renderEmptyData}
 							onDayChange={(date) => {
 								this.getMonth(date.month);
@@ -266,4 +280,33 @@ class Dashboard extends React.PureComponent {
 	}
 }
 
-export default connect()(Dashboard);
+let mapStateToProps = (state) => {
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+	
+	for (let i = 0; i < calendarColors.length; i++) {
+		let key = Object.keys(calendarColors[i])[0];
+		let value = Object.values(calendarColors[i])[0];
+
+		switch(key) {
+			case fixedEventsColor:
+				fixedEventsColor = value;
+				break;
+			
+			case nonFixedEventsColor:
+				nonFixedEventsColor = value;
+				break;
+				
+			case courseColor:
+				courseColor = value;
+				break;
+		}
+	}
+
+	return {
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
+	};
+};
+
+export default connect(mapStateToProps)(Dashboard);

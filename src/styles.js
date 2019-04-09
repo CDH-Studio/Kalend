@@ -1418,8 +1418,7 @@ export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 10,
-		backgroundColor: '#F6F8FA'
+		paddingHorizontal: 10
 	},
 
 	fab: {
@@ -1438,7 +1437,6 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	item: {
-		backgroundColor: white,
 		borderRadius: 5,
 		width: '95%',
 		paddingVertical: 10,
