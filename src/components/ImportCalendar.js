@@ -8,6 +8,12 @@ import { importCalendarStyles as styles, dark_blue, gray } from '../styles';
 import { getCalendarList, listEvents, insertEvent } from '../services/google_calendar';
 import { Checkbox } from 'react-native-paper';
 
+/**
+ * Modal view to import events from other calendars to the Kalend calendar
+ * 
+ * @prop {Boolean} visible Visibility of this component main modal view
+ * @prop {Function} dismiss Updates the state in the parent component
+ */
 class ImportCalendar extends React.PureComponent {
 
 	constructor(props) {
@@ -44,11 +50,13 @@ class ImportCalendar extends React.PureComponent {
 	 * Dismisses the modal
 	 */
 	removeModal = () => {
-		// this.importEvents();
 		this.setState({ visible: false });
-		// this.props.dismiss();
+		this.props.dismiss();
 	}
 
+	/**
+	 * Gets the information about the calendar(s) of the user and stores it in the state
+	 */
 	getCalendars = async () => {
 		this.setState({loading: true});
 
@@ -82,6 +90,9 @@ class ImportCalendar extends React.PureComponent {
 		});
 	};
 
+	/**
+	 * The render function for the items in the flatList
+	 */
 	_renderItem = ({item, index}) => {
 		let status = !!this.state.selected.get(index);
 		return (
@@ -114,9 +125,13 @@ class ImportCalendar extends React.PureComponent {
 		return selectedValue;
 	}
 
+	/**
+	 * Imports all the events to the Kalend calendar from the list of selected calendar
+	 */
 	importEvents = async () => {
 		let selectedCalendars = this.getListIdSelected();
 
+		// Gets the events from every calendar selected
 		let data = await Promise.all(
 			selectedCalendars.map(id => {
 				return new Promise((resolve, reject) => {
@@ -126,9 +141,10 @@ class ImportCalendar extends React.PureComponent {
 				});
 			}));
 
+		// Flattens out the array of array of events
 		data = data.flat(1);
-		console.log(data);
 
+		// Removes undesired properties from the event
 		data = data.reduce((acc, i) => {
 			delete i.updated;
 			delete i.created;
@@ -151,8 +167,8 @@ class ImportCalendar extends React.PureComponent {
 			noEvents: data.length === 0
 		});
 
-
 		if (data.length !== 0) {
+			// Adds the events to the Kalend calendar
 			let promises = [];
 			promises = data.map(event => {
 				return new Promise((resolve, reject) => {
@@ -166,20 +182,22 @@ class ImportCalendar extends React.PureComponent {
 			});
 
 			Promise.all(promises)
-				.then(data => {
+				.then(() => {
 					this.setState({endProgressText: 'Calendar' + (selectedCalendars.length > 1 ? 's' : '') + ' successfully imported!'});
 					setTimeout(() => {
 						this.setState({progressVisible: false});
 					}, 3000);
 				})
-				.catch(err => this.setState({endProgressText: 'Imported some of the calendar events'}));
+				.catch(() => this.setState({endProgressText: 'Imported some of the calendar events'}));
 		} else {
+			// Display that no events could be found in the selected calendar
 			this.setState({endProgressText: 'No events found in the selected calendar' + (selectedCalendars.length > 1 ? 's' : '')});
 			setTimeout(() => {
 				this.setState({progressVisible: false});
 			}, 3000);
 		}
 
+		// Removes the modal to select the calendars and shows the progress modal
 		this.setState({
 			visible: false,
 			showProgress: true
@@ -210,58 +228,62 @@ class ImportCalendar extends React.PureComponent {
 							}
 						</Text>
 
-						{	loading ?
-							<View style={styles.activityIndicatorContainer}>
-								<ActivityIndicator animating={loading} 
-									size="large" 
-									color={gray} />
-							</View> :
-							<FlatList data={data}
-								style={styles.flatlist}
-								showsVerticalScrollIndicator={true} 
-								renderItem={this._renderItem}
-								extraData={this.state}
-								keyExtractor={(item, index) => index.toString()} 
-								scrollEnabled={data.length !== 0}
-								ListEmptyComponent={() => (
-									<TouchableOpacity onPress={this.getCalendars}>
-										<View style={styles.emptyContainer}>
-											<MaterialCommunityIcons size={50}
-												name='calendar-search'
-												color={gray}/>
-											<Text style={styles.emptyTitle}>No calendars found</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
-										</View>
-									</TouchableOpacity>
-								)}
-								refreshControl={
-									<RefreshControl
-										refreshing={loading}
-										onRefresh={this.getCalendars}
-										tintColor={gray}
-										colors={[dark_blue]} />
-								}/>
+						{	
+							loading ?
+								<View style={styles.activityIndicatorContainer}>
+									<ActivityIndicator animating={loading} 
+										size="large" 
+										color={gray} />
+								</View> :
+								<FlatList data={data}
+									style={styles.flatlist}
+									showsVerticalScrollIndicator={true} 
+									renderItem={this._renderItem}
+									extraData={this.state}
+									keyExtractor={(item, index) => index.toString()} 
+									scrollEnabled={data.length !== 0}
+									ListEmptyComponent={() => (
+										<TouchableOpacity onPress={this.getCalendars}>
+											<View style={styles.emptyContainer}>
+												<MaterialCommunityIcons size={50}
+													name='calendar-search'
+													color={gray}/>
+												<Text style={styles.emptyTitle}>No calendars found</Text> 
+												<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
+											</View>
+										</TouchableOpacity>
+									)}
+									refreshControl={
+										<RefreshControl
+											refreshing={loading}
+											onRefresh={this.getCalendars}
+											tintColor={gray}
+											colors={[dark_blue]} />
+									}/>
 						}
 
 						<View style={styles.buttons}>
 							<TouchableOpacity onPress={this.removeModal}>
 								<Text style={styles.buttonCancelText}>Cancel</Text>
 							</TouchableOpacity>
+
 							<TouchableOpacity onPress={this.importEvents}>
 								<Text style={styles.buttonText}>Import</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</Modal>
+
 				<Modal isVisible={progressVisible}
 					useNativeDriver>
 					<View style={styles.modalContent}>
 						<Text style={styles.title}>Importing Selected Calendar</Text>
 						{
 							(totalEvents !== 0 || noEvents) && totalEvents === doneEvents ? 
-								<Text style={{fontFamily: 'Raleway-Regular', color: gray, paddingTop: 10}}>{endProgressText}</Text>:
+								<Text style={styles.progressModalFinished}>{endProgressText}</Text>
+								:
 								<View>
-									<Text style={{fontFamily: 'Raleway-Regular', color: gray, paddingVertical: 10}}>Number of events imported {doneEvents} out of {totalEvents}</Text>
+									<Text style={styles.progressModalDescription}>Number of events imported {doneEvents} out of {totalEvents}</Text>
 								
 									<Progress.Bar style={{alignSelf:'center'}} 
 										indeterminate={false} 
@@ -272,7 +294,6 @@ class ImportCalendar extends React.PureComponent {
 										unfilledColor={'#79A7D2'} />
 								</View>
 						}
-
 					</View>
 				</Modal>
 			</View>

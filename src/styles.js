@@ -1963,4 +1963,16 @@ export const importCalendarStyles = StyleSheet.create({
 		fontFamily: 'Raleway-Regular', 
 		color: gray
 	},
+
+	progressModalDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		paddingVertical: 10
+	},
+
+	progressModalFinished: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		paddingTop: 10
+	}
 });
