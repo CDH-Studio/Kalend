@@ -1417,8 +1417,7 @@ const DashboardButton = StyleSheet.create({
 export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%',
-		paddingHorizontal: 10
+		height: '100%'
 	},
 
 	fab: {

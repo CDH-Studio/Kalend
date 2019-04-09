@@ -204,24 +204,30 @@ class Dashboard extends React.PureComponent {
 							backgroundColor={'#166489'} />	
 
 						{showMonthView}
-
-						<Agenda ref='agenda'
-							items={this.state.items}
-							renderItem={this.renderItem}
-							listTitle={'Events of the Day'}
-							renderEmptyData={this.renderEmptyData}
-							onDayChange={(date) => {
-								this.getMonth(date.month);
-							}}
-							onDayPress={(date) => {
-								this.getMonth(date.month);
-							}}
-							rowHasChanged={this.rowHasChanged}
-							showOnlyDaySelected={true}
-							shouldChangeDay={this.shouldChangeDay}
-							theme={{agendaKnobColor: dark_blue}}
-							onCalendarToggled={(calendarOpened) => this.setState({calendarOpened})}
-						/>
+					
+						<View style={styles.content}>
+							<Agenda ref='agenda'
+								items={this.state.items}
+								renderItem={this.renderItem}
+								listTitle={'Events of the Day'}
+								renderEmptyData={this.renderEmptyData}
+								onDayChange={(date) => {
+									this.getMonth(date.month);
+								}}
+								onDayPress={(date) => {
+									this.getMonth(date.month);
+								}}
+								rowHasChanged={this.rowHasChanged}
+								showOnlyDaySelected={true}
+								shouldChangeDay={this.shouldChangeDay}
+								theme={{agendaKnobColor: dark_blue, backgroundColor: white}}
+								onCalendarToggled={(calendarOpened) => {
+									this.setState({calendarOpened}, () => {
+										this.forceUpdate();
+									});
+								}}
+							/>
+						</View>
 
 						<FAB.Group
 							ref={ref => this.touchable = ref}
