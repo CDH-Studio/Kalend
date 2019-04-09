@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, blue } from '../../styles';
+import { getEvents } from '../../services/api/storage_services';
 import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 
 /**
@@ -26,6 +27,11 @@ class Dashboard extends React.PureComponent {
 
 	componentDidMount() {
 		this.setState({isVisible: true});
+		getEvents().then((events) => {
+	 		if(events.length != 0) {
+				 console.log('events', events);
+			 }
+		});
 	}
 
 	showPopover = () =>{
