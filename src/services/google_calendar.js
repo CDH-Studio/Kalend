@@ -10,7 +10,10 @@ import { getTokens } from './google_identity';
  * @param {Object} query Query parameter object to be appended to the URL
  */
 let apiHelperCall = async (URL, method, body, query) => {
-	let tokenData = await getTokens();
+
+
+ 	let tokenData = await getTokens();
+
 	console.log('tokenData', tokenData);
 	let accessToken = tokenData.accessToken;
 
@@ -227,7 +230,9 @@ let addQuickEvent = (calendarId, data, query) => {
  * @returns {Promise} A promise containing an object with all of the recurrent events
  */
 let getEventsInstances = (calendarId, eventId, data, query) => {
-	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId + '/instances', 'GET', data, query);
+	return  new Promise(resolve => {
+		resolve(apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId + '/instances', 'GET', data, query));
+	});
 };
 
 /**
