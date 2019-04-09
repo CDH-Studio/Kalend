@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, View, Platform } from 'react-native';
-import { chatbotStyles as styles } from '../../styles';
+import { chatbotStyles as styles, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
 /**
@@ -23,7 +23,7 @@ class Chatbot extends React.PureComponent {
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor={'#00000050'} />
+					backgroundColor={statusBarDark} />
 			</View>
 		);
 	}

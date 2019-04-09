@@ -6,7 +6,7 @@ import { FAB, Portal, Snackbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
+import { dashboardStyles as styles, blue, white, dark_blue, black, statusBarDark } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
@@ -167,7 +167,7 @@ class Dashboard extends React.PureComponent {
 					<View style={styles.content}>
 						<StatusBar translucent={true}
 							barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-							backgroundColor={'#00000050'} />	
+							backgroundColor={statusBarDark} />	
 
 						{/* <View style={styles.calendarBack}>
 							<Text style={styles.calendarBackText}>{currentMonthText}</Text>

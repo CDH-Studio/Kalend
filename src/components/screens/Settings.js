@@ -6,7 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue } from '../../styles';
+import { settingsStyles as styles, blue, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer } from '../../services/helper';
@@ -46,7 +46,7 @@ class Settings extends React.PureComponent {
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor={'#00000050'} />
+					backgroundColor={statusBarDark} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
 					dismiss={() => this.dismiss()}/>
