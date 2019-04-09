@@ -419,7 +419,7 @@ const fr = {
 		title: 'Préciser l\'information scolaire',
 		description: 'Veuillez entrer l\'information à propos de votre session présente',
 		institution: 'Établissement post-secondaire',
-		carletonU: 'Carleton University',
+		carletonU: 'Université Carleton',
 		uOttawa: 'Université d\'Ottawa',
 		other: 'Autre',
 		noInstitution: 'Veuillez sélectionner un établissement',
