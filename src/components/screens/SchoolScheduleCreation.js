@@ -6,9 +6,9 @@ import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
 import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { analyzePicture } from '../../services/service';
+import { analyzePicture, storeCoursesEvents } from '../../services/service';
 import { schoolScheduleCreationStyles as styles, dark_blue, white } from '../../styles';
-import RNFS from 'react-native-fs';
+import RNFetchBlob from 'rn-fetch-blob';
 
 /**
  * The loading screen after the User uploads a picture
@@ -39,7 +39,16 @@ class SchoolScheduleCreation extends React.PureComponent {
 	
 	componentWillMount() {	
 		if (this.props.hasImage) {
-			RNFS.readFile(this.props.imgURI, 'base64')
+			let uri = this.props.imgURI;
+
+			// Related to this issue https://github.com/facebook/react-native/issues/24185
+			if (Platform.OS === 'ios') {
+				const appleId = uri.substring(5, 41);
+				const ext = 'JPG';
+				uri = `assets-library://asset/asset.${ext}?id=${appleId}&ext=${ext}`;
+			}
+			
+			RNFetchBlob.fs.readFile(uri, 'base64')
 				.then(data => {
 					console.log(data);
 					if (data != undefined) {
@@ -60,10 +69,9 @@ class SchoolScheduleCreation extends React.PureComponent {
 		let fakeEscape = base64String.replace(/[+]/g,'PLUS');
 		fakeEscape = fakeEscape.replace(/[=]/g,'EQUALS');
 		analyzePicture({data: fakeEscape})
-			.then(success => {
-				if (success) {
-					this.props.navigation.dispatch(this.navigateAction);
-				}
+			.then(data => {
+				this.setState({goToNextScreen: true, data});
+				this.nextScreen();
 			})
 			.catch(err => {
 				if (err) {
@@ -83,10 +91,26 @@ class SchoolScheduleCreation extends React.PureComponent {
 		if (this.state.goToNextScreen && !this.state.alertDialog) {
 			let routes = this.props.navigation.dangerouslyGetParent().state.routes;
 
+			if (this.state.data != undefined) {
+				storeCoursesEvents(this.state.data)
+					.then((success) => {
+						if (!success) {
+							Alert.alert(
+								'Error',
+								'Trouble converting the parsed data from the schedule to Google Calendar',
+								[
+									{text: 'OK', onPress: () => this.props.navigation.pop()},
+								],
+								{cancelable: false}
+							);
+						}
+					});
+			}
+
 			if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
 				this.props.navigation.navigate(ReviewEventRoute);
 			} else {
-				this.props.navigation.navigate(DashboardNavigator);
+				this.props.navigation.dispatch(this.navigateAction);
 			}
 		}
 	}
@@ -118,7 +142,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 				{
 					text: 'Create a Schedule', 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute);
+						this.props.navigation.dispatch(this.navigateAction);
 					},
 				},
 			],

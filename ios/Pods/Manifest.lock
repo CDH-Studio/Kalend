@@ -101,8 +101,8 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.1)
   - lottie-ios (2.5.0)
-  - lottie-react-native (2.6.0):
-    - lottie-ios
+  - lottie-react-native (2.6.1):
+    - lottie-ios (~> 2.5.0)
     - React
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
@@ -110,72 +110,72 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
-  - React (0.59.1):
-    - React/Core (= 0.59.1)
-  - react-native-async-storage (1.2.1):
+  - React (0.59.3):
+    - React/Core (= 0.59.3)
+  - react-native-async-storage (1.2.4):
     - React
-  - react-native-camera (2.0.2):
+  - react-native-camera (2.2.2):
     - React
-    - react-native-camera/RCT (= 2.0.2)
-    - react-native-camera/RN (= 2.0.2)
-  - react-native-camera/RCT (2.0.2):
+    - react-native-camera/RCT (= 2.2.2)
+    - react-native-camera/RN (= 2.2.2)
+  - react-native-camera/RCT (2.2.2):
     - React
-  - react-native-camera/RN (2.0.2):
+  - react-native-camera/RN (2.2.2):
     - React
   - react-native-slider (1.0.4):
     - React
-  - React/ART (0.59.1):
+  - React/ART (0.59.3):
     - React/Core
-  - React/Core (0.59.1):
-    - yoga (= 0.59.1.React)
-  - React/CxxBridge (0.59.1):
+  - React/Core (0.59.3):
+    - yoga (= 0.59.3.React)
+  - React/CxxBridge (0.59.3):
     - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
     - React/jsiexecutor
-  - React/cxxreact (0.59.1):
+  - React/cxxreact (0.59.3):
     - boost-for-react-native (= 1.63.0)
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
     - React/jsinspector
-  - React/DevSupport (0.59.1):
+  - React/DevSupport (0.59.3):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.59.1)
-  - React/jsi (0.59.1):
+  - React/fishhook (0.59.3)
+  - React/jsi (0.59.3):
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
-  - React/jsiexecutor (0.59.1):
+  - React/jsiexecutor (0.59.3):
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
     - React/cxxreact
     - React/jsi
-  - React/jsinspector (0.59.1)
-  - React/RCTAnimation (0.59.1):
+  - React/jsinspector (0.59.3)
+  - React/RCTAnimation (0.59.3):
     - React/Core
-  - React/RCTBlob (0.59.1):
+  - React/RCTBlob (0.59.3):
     - React/Core
-  - React/RCTImage (0.59.1):
+  - React/RCTImage (0.59.3):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.59.1):
+  - React/RCTNetwork (0.59.3):
     - React/Core
-  - React/RCTText (0.59.1):
+  - React/RCTText (0.59.3):
     - React/Core
-  - React/RCTWebSocket (0.59.1):
+  - React/RCTWebSocket (0.59.3):
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNFS (2.13.3):
-    - React
+  - rn-fetch-blob (0.10.6):
+    - React/Core
   - RNGestureHandler (1.1.0):
     - React
   - RNVectorIcons (6.3.0):
     - React
-  - yoga (0.59.1.React)
+  - yoga (0.59.3.React)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -202,7 +202,7 @@ DEPENDENCIES:
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNFS (from `../node_modules/react-native-fs`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -248,8 +248,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
-  RNFS:
-    :path: "../node_modules/react-native-fs"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNVectorIcons:
@@ -278,18 +278,18 @@ SPEC CHECKSUMS:
   GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
-  lottie-react-native: 05b6e2dd502d7a91ff128036c4f0984363e5eb4a
+  lottie-react-native: 3d8181d43619b1fe804c828bd5a09d20fe8bdea7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
-  React: 34a405ead72252839fdc4afc1f972a7ed984af84
-  react-native-async-storage: fe962994ac710376da9a7a98c43c474b9392b558
-  react-native-camera: 6c4e4ae3039ec7904bc4cc134dcf7aca50f9134e
+  React: b52fdb80565505b7e4592b313a38868f5df51641
+  react-native-async-storage: fa98f9a2857afb12128c50c59e506f1925d7bd5b
+  react-native-camera: 32863503868ee60bd93421de052dad5625d55ff0
   react-native-slider: f9e501d8ae01322ac4246c57c3655005269c8928
-  RNFS: c9bbde46b0d59619f8e7b735991c60e0f73d22c1
+  rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNVectorIcons: cb42a5653c046f12ca16c9480c571b52620559e8
-  yoga: 8fb47f180b19b0dadb285a09e4c74c8a41721d3a
+  yoga: 1a492113f66a35e9e583bb0434f4b8cc668dd839
 
-PODFILE CHECKSUM: d1afc3887349cf4ba6b1553d112d1a95f96d12bc
+PODFILE CHECKSUM: 0d1f075eb07ec6b7a81687e587ffdf38a759c1c9
 
 COCOAPODS: 1.6.1

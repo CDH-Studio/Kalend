@@ -72,7 +72,7 @@ class ReviewEvent extends React.PureComponent {
 
 				schoolScheduleData.push({
 					courseCode: data.summary || data.courseCode,
-					dayOfWeek: data.day || data.dayOfWeek,
+					dayOfWeek: data.day || data.dayOfWeekValue,
 					hours,
 					location: data.location
 				});
@@ -332,7 +332,7 @@ function mapStateToProps(state) {
 		hasSchoolInformation: SchoolInformationReducer.info,
 		checked: SchoolInformationReducer.info && SchoolInformationReducer.info.info.checked === 'third'
 	};
-} 
+}
 
 
 let mapDispatchToProps = (dispatch) => {

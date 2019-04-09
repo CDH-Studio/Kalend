@@ -238,7 +238,7 @@ const MainNavigator = createSwitchNavigator(
 		WelcomeScreen,
 		LoadingScreen,
 		DashboardOptionsNavigator,
-		LoginNavigator,
+		LoginNavigator
 	},
 	{
 		initialRouteName: 'LoadingScreen'

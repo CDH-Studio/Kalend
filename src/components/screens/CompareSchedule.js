@@ -1,9 +1,13 @@
 import React from 'react';
 import { StatusBar, View, Platform } from 'react-native';
-import { compareScheduleStyles as styles } from '../../styles';
+import { compareScheduleStyles as styles, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 
 class CompareSchedule extends React.PureComponent {
+
+	static navigationOptions = {
+		header: null
+	}
 
 	constructor(props) {
 		super(props);
@@ -15,8 +19,8 @@ class CompareSchedule extends React.PureComponent {
 		return(
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#166489'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={statusBarDark} />
 			</View>
 		);
 	}

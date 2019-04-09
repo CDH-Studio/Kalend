@@ -3,15 +3,15 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { setCalendarID, logonUser } from '../../actions';
+import { setCalendarID, logonUser, setCalendarColor } from '../../actions';
 import { gradientColors } from '../../../config/config';
-import { DashboardNavigator } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { storeUserInfoService, updateUser } from '../../services/api/storage_services';
 import { homeStyles as styles } from '../../styles';
+import { DashboardNavigator } from '../../constants/screenNames';
 
 /** 
  * Home/Login screen of the app.
@@ -60,10 +60,12 @@ class Home extends React.PureComponent {
 						createCalendar()
 							.then(id => {
 								this.props.setCalendarID(id);
+								this.props.setCalendarColor(data.calendarColor);
 								resolve(id);
 							});
 					} else {
 						this.props.setCalendarID(data);
+						this.props.setCalendarColor(data.calendarColor);
 						resolve(data);
 					}
 				}).catch(err => {
@@ -71,7 +73,8 @@ class Home extends React.PureComponent {
 					alert(err);
 				});
 		});
-	}
+	}	
+
 	
 	/**
 	 * Log In the user with their Google Account
@@ -103,11 +106,13 @@ class Home extends React.PureComponent {
 	}
 
 	render() {
+		let source = Platform.OS === 'ios' ? require('../../assets/img/loginScreen/backPattern_ios.png') : 
+			require('../../assets/img/loginScreen/backPattern_android.png');
 		return (
 			<LinearGradient style={styles.container}
 				colors={gradientColors}>
 				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')}
+					source={source}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
 						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
@@ -157,7 +162,7 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, setCalendarColor}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
