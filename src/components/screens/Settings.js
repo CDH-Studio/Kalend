@@ -11,6 +11,7 @@ import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer } from '../../services/helper';
 import EventsColorPicker from '../EventsColorPicker';
+import ImportCalendar from '../ImportCalendar';
 
 const viewHeight = 669.1428833007812;
 
@@ -32,19 +33,24 @@ class Settings extends React.PureComponent {
 
 		this.state = {
 			containerHeight, 
-			showEventsColorPicker: false
+			showEventsColorPicker: false,
+			showImportCalendar: false
 		};
 
 		// Updates the navigation location in redux
 		updateNavigation('Settings', props.navigation.state.routeName);
 	}
 
-	dismiss = () => {
+	dismissEventsColorPicker = () => {
 		this.setState({showEventsColorPicker: false});
 	}
 
+	dismissImportCalendar = () => {
+		this.setState({showImportCalendar: false});
+	}
+
 	render() {
-		const { containerHeight, showEventsColorPicker } = this.state;
+		const { containerHeight, showEventsColorPicker, showImportCalendar } = this.state;
 
 		return(
 			<View style={styles.container}>
@@ -53,7 +59,10 @@ class Settings extends React.PureComponent {
 					backgroundColor={'#166489'} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
-					dismiss={() => this.dismiss()}/>
+					dismiss={() => this.dismissEventsColorPicker()}/>
+
+				<ImportCalendar visible={showImportCalendar}
+					dismiss={() => this.dismissImportCalendar()}/>
 
 				<ScrollView>
 					<View style={[styles.content, {height: containerHeight}]}>
@@ -75,6 +84,13 @@ class Settings extends React.PureComponent {
 								
 							<Text style={styles.title}>Profile</Text>
 						</View>
+
+						<TouchableOpacity style={styles.button}
+							onPress={() => {
+								this.setState({showImportCalendar: true});
+							}}>
+							<Text style={styles.buttonText}>Import Calendar</Text>
+						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {

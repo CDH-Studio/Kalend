@@ -10,7 +10,6 @@ import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
-import ImportCalendar from '../ImportCalendar';
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -168,8 +167,6 @@ class Dashboard extends React.PureComponent {
 						<StatusBar translucent={true}
 							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 							backgroundColor={'#166489'} />	
-
-						<ImportCalendar visible />
 
 						{/* <View style={styles.calendarBack}>
 							<Text style={styles.calendarBackText}>{currentMonthText}</Text>

@@ -44,6 +44,8 @@ class ImportCalendar extends React.PureComponent {
 		this.setState({
 			visible: newProps.visible,
 		});
+
+		console.log(this.state);
 	}
 
 	/**
@@ -185,7 +187,7 @@ class ImportCalendar extends React.PureComponent {
 				.then(() => {
 					this.setState({endProgressText: 'Calendar' + (selectedCalendars.length > 1 ? 's' : '') + ' successfully imported!'});
 					setTimeout(() => {
-						this.setState({progressVisible: false});
+						this.setState({progressVisible: false, showProgress: false});
 					}, 3000);
 				})
 				.catch(() => this.setState({endProgressText: 'Imported some of the calendar events'}));
@@ -193,15 +195,16 @@ class ImportCalendar extends React.PureComponent {
 			// Display that no events could be found in the selected calendar
 			this.setState({endProgressText: 'No events found in the selected calendar' + (selectedCalendars.length > 1 ? 's' : '')});
 			setTimeout(() => {
-				this.setState({progressVisible: false});
+				this.setState({progressVisible: false, showProgress: false});
 			}, 3000);
 		}
 
-		// Removes the modal to select the calendars and shows the progress modal
+		// Removes the modal to select the calendars, shows the progress modal, and resets some state properties
 		this.setState({
-			visible: false,
-			showProgress: true
+			showProgress: true,
+			selected: (new Map())
 		});
+		this.removeModal();
 	}
 
 	render() {
