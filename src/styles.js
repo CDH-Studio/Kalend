@@ -260,7 +260,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonSelectText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: white
+		color: white,
+		textTransform: 'uppercase'
 	},
 
 	buttonTake: {
@@ -286,7 +287,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 	buttonTakeText: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: white
+		color: white,
+		textTransform: 'uppercase'
 	},
 
 	manual: {
@@ -554,7 +556,7 @@ export const courseStyles = StyleSheet.create({
 	dayOfWeekBorder: {
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 1,
-		width: 150,
+		width: 130,
 		marginLeft: 5
 	},
 
@@ -562,7 +564,7 @@ export const courseStyles = StyleSheet.create({
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 17,
-		marginRight: 20
+		marginRight: 5
 	},
 
 	blueTitle: {
@@ -652,6 +654,14 @@ export const fixedEventStyles = StyleSheet.create({
 		marginRight: -20
 	},
 
+	blueTitleAllDay: {
+		color: dark_blue,
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		marginLeft: 11,
+		marginRight: 20
+	},
+
 	switch: {
 		width: 150,
 		alignItems: 'flex-start',
@@ -701,7 +711,7 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flex: 1,
 		justifyContent:'space-evenly',
 		paddingHorizontal: 20,
-		marginBottom: 20
+		marginVertical: 20
 	},
 
 	instruction: {
@@ -1091,7 +1101,8 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 3,
-		color: gray
+		color: gray,
+		width: 120
 	},
 
 	modalDetailsView: {
@@ -1154,6 +1165,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontSize: 20,
 		fontFamily: 'Raleway-SemiBold',
 		marginLeft: 10,
+		marginBottom: 10,
 		color: gray
 	},
 
@@ -1197,12 +1209,14 @@ export const scheduleSelectionStyle = StyleSheet.create({
 	legendRow: {
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
-		marginTop: 10
+		marginTop: 10,
+		flexWrap: 'wrap',
 	},
 
 	singleLegend: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingTop: 10
 	},
 
 	legendColor: {
@@ -1581,6 +1595,67 @@ export const settingsStyles = StyleSheet.create({
 		textAlign: 'center',
 		paddingVertical: 10,
 		color: gray
+	},
+
+	modalView: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#00000080',
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.6,
+				shadowRadius: 7  
+			},
+		}),
+	},
+
+	languageDialogContent: {
+		backgroundColor: white,
+		borderRadius: 8,
+		justifyContent: 'space-between',
+		padding: 10
+	},
+
+	languageDialogMainRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	languageDialogRightCol: {
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		paddingVertical: 10,
+		paddingRight: 10
+	},
+
+	languageDialogQuestion: {
+		fontSize: 20,
+		fontFamily: 'Raleway-SemiBold',
+		marginLeft: 10,
+		marginBottom: 10,
+		color: gray
+	},
+
+	languageDialogOptions: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+
+	languageDialogCancel: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize:16,
+		color: gray
+	},
+
+	languageDialogYes: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		color: '#ff0000',
+		marginLeft: 20
 	}
 });
 

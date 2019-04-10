@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { setNavigationScreen } from '../actions';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
+import { getStrings } from '../services/helper';
 import { calendarColors } from '../../config/config';
 
 
@@ -26,6 +27,8 @@ import { calendarColors } from '../../config/config';
  * @prop {function} action The function to be executed when delete is triggered
  */
 class EventOverview extends React.PureComponent {
+
+	strings = getStrings().EventOverview;
 
 	constructor(props) {
 		super(props);
@@ -65,7 +68,7 @@ class EventOverview extends React.PureComponent {
 			categoryIcon = 'school';
 			details = 
 				<View style={styles.modalDetailView}>
-					<Text style={styles.modalDetailsSubtitle}>Location: </Text>
+					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 				</View>;
 			detailHeight = 45;
@@ -76,17 +79,17 @@ class EventOverview extends React.PureComponent {
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Location: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Description: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Recurrence: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
@@ -98,19 +101,19 @@ class EventOverview extends React.PureComponent {
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Recurrence: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Priority Level: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.priorityLevel}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Location: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Description: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 				</View>;
@@ -205,11 +208,11 @@ class EventOverview extends React.PureComponent {
 								<View style={styles.modalInfoView}>
 									<View>
 										<View style={styles.modalInfoDate}>
-											<Text style={styles.modalInfoTitle}>Date(s): </Text>
+											<Text style={styles.modalInfoTitle}>{this.strings.dates}</Text>
 											<Text style={styles.modalInfoText}>{this.props.date}</Text>
 										</View>
 										<View style={styles.modalInfoTime}>
-											<Text style={styles.modalInfoTitle}>Time: </Text>
+											<Text style={styles.modalInfoTitle}>{this.strings.time}</Text>
 											<Text style={styles.modalInfoText}>{this.props.time}</Text>
 										</View>
 									</View>
@@ -220,7 +223,7 @@ class EventOverview extends React.PureComponent {
 								</View>
 
 								<View style={styles.modalDetailsView}>
-									<Text style={styles.modalDetailsTitle}>Details</Text>
+									<Text style={styles.modalDetailsTitle}>{this.strings.details}</Text>
 
 									<View style={{height:detailHeight}} onStartShouldSetResponder={() => true}>
 										<ScrollView>
@@ -283,15 +286,15 @@ class EventOverview extends React.PureComponent {
 										color={gray} />
 
 									<View style={styles.deleteDialogRightCol}>
-										<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
+										<Text style={styles.deleteDialogQuestion}>{this.strings.deleteEvent}</Text>
 
 										<View style={styles.deleteDialogOptions}>
 											<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false, edited: false, modalVisible: this.state.edited})}>
-												<Text style={styles.deleteDialogCancel}>Cancel</Text>
+												<Text style={styles.deleteDialogCancel}>{this.strings.cancel}</Text>
 											</TouchableOpacity>
 
 											<TouchableOpacity onPress={this.deleteEvent}>
-												<Text style={styles.deleteDialogYes}>Yes</Text>
+												<Text style={styles.deleteDialogYes}>{this.strings.yes}</Text>
 											</TouchableOpacity>
 										</View>
 									</View>

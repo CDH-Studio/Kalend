@@ -10,19 +10,25 @@ import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { dateVerification } from '../../services/helper';
+import { dateVerification, getStrings } from '../../services/helper';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const moment = require('moment');
 const viewHeight = 584;
 
 class SchoolInformation extends React.PureComponent {
-	static navigationOptions = {
-		title: 'Set School Information',
-		headerTintColor: dark_blue,
-		headerStyle: {
-			backgroundColor: white,
-		}
+
+	strings = getStrings().SchoolInformation;
+	buttonStrings = getStrings().BottomButtons;
+
+	static navigationOptions =  ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTintColor: dark_blue,
+			headerStyle: {
+				backgroundColor: white,
+			}
+		};
 	}
 
 	constructor(props) {
@@ -79,9 +85,9 @@ class SchoolInformation extends React.PureComponent {
 			if (temp) {
 				if (temp.schoolSchedule || temp.reviewEvent) {
 					if (this.state.checked === 'third') {
-						this.props.navigation.navigate(CourseRoute);
+						this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle, editTitle: getStrings().Course.editTitle});
 					} else {
-						this.props.navigation.navigate(SchoolScheduleRoute);
+						this.props.navigation.navigate(SchoolScheduleRoute, {title: getStrings().SchoolSchedule.title});
 					}
 				} else {
 					this.props.navigation.pop();
@@ -107,7 +113,7 @@ class SchoolInformation extends React.PureComponent {
 						console.log(height);
 					}}>
 						<View style={styles.instruction}>
-							<Text style={styles.text}>Please enter the information about your current semester</Text>
+							<Text style={styles.text}>{this.strings.description}</Text>
 							
 							<MaterialIcons name="info-outline"
 								size={130}
@@ -116,7 +122,7 @@ class SchoolInformation extends React.PureComponent {
 
 						<View>
 							<View style={styles.school}> 
-								<Text style={styles.subHeader}>Post-Secondary Institution</Text>
+								<Text style={styles.subHeader}>{this.strings.institution}</Text>
 
 								<View>
 									<View style={styles.radioButton}>
@@ -140,7 +146,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												Carleton University
+												{this.strings.carletonU}
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -166,7 +172,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												University of Ottawa
+												{this.strings.uOttawa}
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -183,7 +189,7 @@ class SchoolInformation extends React.PureComponent {
 												});
 												this.refs._other.focus();
 											}} />
-										<TextInput placeholder="Other"
+										<TextInput placeholder={this.strings.other}
 											ref="_other"
 											style={styles.otherInput}
 											maxLength={1024}
@@ -199,16 +205,18 @@ class SchoolInformation extends React.PureComponent {
 										schoolValidated ?
 											null
 											:
-											<Text style={styles.error}>Please select an institution</Text>
+											<Text style={styles.error}>{this.strings.noInstitution}</Text>
 									}
 								</View>
 							</View>
 
 							<View style={styles.duration}>
-								<Text style={styles.subHeader}>Semester Duration</Text>
+								<Text style={styles.subHeader}>{this.strings.duration}</Text>
 								
 								<View style={styles.date}>
-									<Text style={styles.blueTitle}>Start</Text>
+									<Text style={styles.blueTitle}>
+										{this.strings.start}
+									</Text>
 									
 									<DatePicker showIcon={false} 
 										date={startDate} 
@@ -219,6 +227,8 @@ class SchoolInformation extends React.PureComponent {
 											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
 										format="ddd., MMM DD, YYYY"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										onDateChange={(startDate) => {
 											this.setState({startDate,
 												endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)});
@@ -226,7 +236,9 @@ class SchoolInformation extends React.PureComponent {
 								</View>
 								
 								<View style={styles.date}>
-									<Text style={styles.blueTitle}>End</Text>
+									<Text style={styles.blueTitle}>
+										{this.strings.end}
+									</Text>
 
 									<DatePicker showIcon={false} 
 										date={endDate} 
@@ -237,6 +249,8 @@ class SchoolInformation extends React.PureComponent {
 											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
 										format="ddd., MMM DD, YYYY"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										onDateChange={(endDate) => {
 											this.setState({endDate,
 												startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)});
@@ -247,8 +261,9 @@ class SchoolInformation extends React.PureComponent {
 
 						<View>
 							<BottomButtons twoButtons={false} 
-								buttonText={['Done']}
-								buttonMethods={[this.saveInformation]} />
+								buttonText={[this.buttonStrings.done]}
+								buttonMethods={[this.saveInformation]}
+							/>
 						</View>
 						
 					</View>

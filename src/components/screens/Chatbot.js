@@ -7,6 +7,7 @@ import updateNavigation from '../NavigationHelper';
  * Permits the user to input or modifiy events in their calendar by talking to a chatbot
  */
 class Chatbot extends React.PureComponent {
+
 	constructor(props) {
 		super(props);
 

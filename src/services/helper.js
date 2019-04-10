@@ -1,6 +1,8 @@
 import { getEventsInstances } from './google_calendar';
 import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
+import strings from '../assets/strings';
+// import { LocaleConfig } from 'react-native-calendars';
 const moment = require('moment');
 
 export const convertToDictionary  = (data) => {
@@ -110,7 +112,7 @@ export const formatData = (data) => {
 	}
 	return new Promise( function(resolve, reject) {
 		if(events.length == 0) {
-			reject('Something went wrong while formating data (Array length == 0)');
+			reject(getStrings().ServicesError.formatDate);
 		} else {
 			resolve(events);
 		}
@@ -231,8 +233,14 @@ export const clearEveryReducer = () => {
 	];
 
 	reducersDeleteActions.map(action => store.dispatch(action()));
+};
 
-	console.log(store.getState());
+export const getStrings = () => {
+	const { language } = store.getState().SettingsReducer;
+
+	let lang = language ? language : 'en';
+
+	return strings[lang];
 };
 
 /**
@@ -241,17 +249,11 @@ export const clearEveryReducer = () => {
 * @param {String} time The time of the unchanged value
 */
 export const timeVerification = (startTime, endTime, time) => {
-	console.log('init start ' + startTime);
-	console.log('init end ' + endTime);
-	console.log('init time ' + time);
 	if (moment(time, 'h:mm A').isBefore(moment(startTime, 'h:mm A'))) {
-		console.log('new start time' + startTime);
 		return startTime;
 	} else if (moment(time, 'h:mm A').isAfter(moment(endTime, 'h:mm A'))) {
-		console.log('new end time' + startTime);
 		return endTime;
 	} else {
-		console.log('new time' + startTime);
 		return time;
 	}
 };

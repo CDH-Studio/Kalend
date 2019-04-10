@@ -1,9 +1,11 @@
-import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate } from './helper';
+import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate, getStrings } from './helper';
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents, getCalendar } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
 import firebase from 'react-native-firebase';
+
+const strings = getStrings().ServicesError;
 
 let serverUrl = 'http://52.60.127.46:8080';
 
@@ -53,12 +55,12 @@ export const analyzePicture = (base64Data) => {
 				if (res) {
 					return res.json();
 				} else {
-					reject('Could not receive response from the server, please try again');
+					reject(strings.analyzePictureServerReceive);
 				}
 			})
 			
 			.then(body => {
-				if(body.data.length == 0) reject('The data from your schedule could not be extracted, please try again');
+				if(body.data.length == 0) reject(strings.analyzePictureData);
 				formatData(body.data)
 					.then(data => {
 						return resolve(data);
@@ -68,7 +70,7 @@ export const analyzePicture = (base64Data) => {
 					});
 			})
 			.catch(err => {
-				if(err) reject('Could not connect to the server, please try again later');
+				if(err) reject(strings.analyzePictureServerConnect);
 			});
 	});
 };
@@ -416,7 +418,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	
 			// Call to google to check whether time conflicts with the specified generated startDate;
 			await getAvailabilities(obj).then(data => {
-				if(data.error) reject('Something went wrong while checking for events in Google Calendar');
+				if(data.error) reject(strings.findEmptySlots);
 				
 				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
 				if (busySchedule.length > 0) {
@@ -516,8 +518,7 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
-				console.log('course', data);
-				if(data.error) reject('There was a problem inserting Course');
+				if(data.error) reject(strings.insertFixedCourse);
 				resolve(data);
 			});
 		}));
@@ -538,7 +539,7 @@ export const insertFixedEventsToGoogle = async () => {
 		
 		promises.push(new Promise(function(resolve,reject) {
 			InsertFixedEventToCalendar(info).then(data => {
-				if (data.error)  reject('There was a problem inserting Fixed Event');
+				if (data.error) reject(strings.insertFixed);
 				resolve(data);
 			});
 		}));
