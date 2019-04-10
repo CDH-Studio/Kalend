@@ -58,7 +58,10 @@ class Dashboard extends React.PureComponent {
 			snackbarTime: 3000,
 			snackbarText: '',
 			showMonth: false,
-			month: ''
+			month: '',
+			modalVisible: false,
+			deleteDialogVisible: false,
+			shouldShowModal: false
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
 	}
@@ -281,6 +284,25 @@ class Dashboard extends React.PureComponent {
 					duration={snackbarTime}>
 					{snackbarText}
 				</Snackbar>
+
+				<ModalEvent visible={this.state.modalVisible}
+					dismiss={this.dismissModal}
+					navigateEditScreen={this.props.navigateEditScreen}
+					categoryColor={categoryColor}
+					eventTitle={this.props.eventTitle}
+					date={this.props.date}
+					time={this.props.time}
+					categoryIcon={categoryIcon}
+					detailHeight={detailHeight}
+					details={details}
+					editScreen={editScreen}
+					showDeleteModal={this.showDeleteModal} />
+
+				<DeleteModal visible={this.state.deleteDialogVisible}
+					dismiss={this.dismissDelete}
+					shouldShowModal={this.state.shouldShowModal}
+					deleteEvent={this.deleteEvent}
+					showModal={this.showModal} />
 			</View>
 		);
 	}

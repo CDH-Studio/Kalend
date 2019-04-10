@@ -4,10 +4,9 @@ import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { setNavigationScreen } from '../actions';
-import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
 import { calendarColors } from '../../config/config';
+import DeleteModal from './DeleteModal';
 
 
 class ModalEvent extends React.PureComponent {
@@ -16,26 +15,25 @@ class ModalEvent extends React.PureComponent {
 		super(props);
 
 		this.state = {
-			modalVisible: false,
-			deleteDialogVisible: false,
-			edited: false
+			modalVisible: false
 		};
+	}
+
+	componentWillReceiveProps(newProp) {
+		this.setState({modalVisible: newProp.visible});
 	}
 
 	/**
 	 * In order for the info modal to not stay open when on edit screen 
 	 */
 	navigateAndCloseModal = (editScreen) => {
-		this.setState({modalVisible: false});
+		this.props.dismiss();
 		this.props.navigateEditScreen(editScreen);
 	}
 
-	/**
-	 * To delete the event from the database and delete the component 
-	 */
-	deleteEvent = () => {
-		this.setState({deleteDialogVisible: false, modalVisible: false, edited: false});
-		this.props.action(this.props.id, this.props.category);
+	dismissModal = () => {
+		this.setState({modalVisible: false});
+		this.props.dismiss();
 	}
 
 	render() {
@@ -44,15 +42,15 @@ class ModalEvent extends React.PureComponent {
 				<Modal visible={this.state.modalVisible}
 					ref='editModal'
 					transparent={true}
-					onRequestClose={() => this.setState({modalVisible: false})}
+					onRequestClose={this.dismissModal}
 					animationType={'none'}>
 					<TouchableOpacity style={styles.modalView} 
-						onPress={() => this.setState({modalVisible: false})}
+						onPress={this.dismissModal}
 						activeOpacity={1}>
 						<TouchableWithoutFeedback>
 							<View style={styles.modalContent}>
 								<TouchableOpacity style={styles.closeModal}
-									onPress={() => this.setState({modalVisible: false})}>
+									onPress={this.dismissModal}>
 									<Feather name="x"
 										size={30}
 										color={gray} />
@@ -114,7 +112,10 @@ class ModalEvent extends React.PureComponent {
 									<View style={styles.actionIconModal}>
 										<IconButton
 											size={40}
-											onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}
+											onPress={() => {
+												this.dismissModal();
+												this.props.showDeleteModal(true);
+											}}
 											color={gray}
 											icon={({ size, color }) => (
 												<MaterialCommunityIcons
@@ -131,40 +132,7 @@ class ModalEvent extends React.PureComponent {
 					</TouchableOpacity>
 				</Modal>
 
-				<Modal visible={this.state.deleteDialogVisible}
-					transparent={true}
-					onRequestClose={() => {
-						//do nothing;
-					}}
-					animationType={'none'}>
-					<TouchableOpacity style={styles.modalView} 
-						onPress={() => this.setState({deleteDialogVisible: false, edited: false})}
-						activeOpacity={1}>
-						<TouchableWithoutFeedback>
-							<View style={styles.deleteDialogContent}>
-								<View style={styles.deleteDialogMainRow}>
-									<MaterialCommunityIcons name="trash-can-outline"
-										size={80}
-										color={gray} />
-
-									<View style={styles.deleteDialogRightCol}>
-										<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
-
-										<View style={styles.deleteDialogOptions}>
-											<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false, edited: false, modalVisible: this.state.edited})}>
-												<Text style={styles.deleteDialogCancel}>Cancel</Text>
-											</TouchableOpacity>
-
-											<TouchableOpacity onPress={this.deleteEvent}>
-												<Text style={styles.deleteDialogYes}>Yes</Text>
-											</TouchableOpacity>
-										</View>
-									</View>
-								</View>
-							</View>
-						</TouchableWithoutFeedback>
-					</TouchableOpacity>
-				</Modal>
+				<DeleteModal />
 			</View>
 		);
 	}

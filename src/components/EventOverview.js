@@ -8,6 +8,7 @@ import ModalEvent from '../components/ModalEvent';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
 import { calendarColors } from '../../config/config';
+import DeleteModal from './DeleteModal';
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
@@ -32,7 +33,7 @@ class EventOverview extends React.PureComponent {
 		this.state = {
 			modalVisible: false,
 			deleteDialogVisible: false,
-			edited: false
+			shouldShowModal: false
 		};
 	}
 	
@@ -48,8 +49,24 @@ class EventOverview extends React.PureComponent {
 	 * To delete the event from the database and delete the component 
 	 */
 	deleteEvent = () => {
-		this.setState({deleteDialogVisible: false, modalVisible: false, edited: false});
+		this.setState({deleteDialogVisible: false, modalVisible: false, shouldShowModal: false});
 		this.props.action(this.props.id, this.props.category);
+	}
+
+	showDeleteModal = (shouldShowModal) => {
+		this.setState({deleteDialogVisible: true, shouldShowModal});
+	}
+
+	showModal = () => {
+		this.setState({modalVisible: true});
+	}
+
+	dismissModal = () => {
+		this.setState({modalVisible: false});
+	}
+
+	dismissDelete = () => {
+		this.setState({deleteDialogVisible: false});
 	}
 
 	render() {
@@ -162,7 +179,7 @@ class EventOverview extends React.PureComponent {
 							)} />
 						<IconButton 
 							size={30}
-							onPress={() => this.setState({deleteDialogVisible: true})}
+							onPress={() => this.showDeleteModal(false)}
 							color={gray}
 							icon={({ size, color }) => (
 								<MaterialCommunityIcons
@@ -174,8 +191,9 @@ class EventOverview extends React.PureComponent {
 					</View>
 				</TouchableOpacity>
 
-				<ModalEvent detailsVisible={this.state.modalVisible}
-					deleteVisible={this.state.deleteDialogVisible}
+				<ModalEvent visible={this.state.modalVisible}
+					dismiss={this.dismissModal}
+					navigateEditScreen={this.props.navigateEditScreen}
 					categoryColor={categoryColor}
 					eventTitle={this.props.eventTitle}
 					date={this.props.date}
@@ -183,7 +201,14 @@ class EventOverview extends React.PureComponent {
 					categoryIcon={categoryIcon}
 					detailHeight={detailHeight}
 					details={details}
-					editScreen={editScreen} />
+					editScreen={editScreen}
+					showDeleteModal={this.showDeleteModal} />
+
+				<DeleteModal visible={this.state.deleteDialogVisible}
+					dismiss={this.dismissDelete}
+					shouldShowModal={this.state.shouldShowModal}
+					deleteEvent={this.deleteEvent}
+					showModal={this.showModal} />
 			</View>
 		);
 	}
