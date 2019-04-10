@@ -30,8 +30,8 @@ import CompareSchedule from './src/components/screens/CompareSchedule';
 import Settings from './src/components/screens/Settings';
 import SchoolInformation from './src/components/screens/SchoolInformation';
 import CleanReducers from './src/components/screens/CleanReducers';
+import CalendarPermission from './src/components/screens/CalendarPermission';
 import { blue, dark_blue, white } from './src/styles.js';
-import { ScheduleCreationRoute, ReviewEventRoute, SchoolScheduleCreationRoute } from './src/constants/screenNames.js';
 import { getStrings } from './src/services/helper';
 
 const theme = {
@@ -139,7 +139,7 @@ const DashboardNavigator = createBottomTabNavigator(
 	{
 		initialRouteName: 'Dashboard',
 		tabBarOptions: {
-			activeTintColor: blue,
+			activeTintColor: dark_blue,
 		}
 	}
 );
@@ -231,7 +231,8 @@ const DashboardOptionsNavigator = createStackNavigator(
 		SchoolInformation: { screen: SchoolInformation, navigationOptions: DashboardOptionsNavigatorOptions },
 
 		UnavailableHours: { screen: UnavailableHours, navigationOptions: DashboardOptionsNavigatorOptions },
-		UnavailableFixed: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions }
+		UnavailableFixed: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
+		CalendarPermission: { screen: CalendarPermission, navigationOptions: DashboardOptionsNavigatorOptions }
 	},
 	{
 		initialRouteName: 'DashboardNavigator',
