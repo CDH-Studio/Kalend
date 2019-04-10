@@ -44,9 +44,7 @@ class Settings extends React.PureComponent {
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000,
-			containerHeight,
 			languageDialogVisible: false,
-			showEventsColorPicker: false
 		};
 
 		// Updates the navigation location in redux
@@ -153,7 +151,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.setState({languageDialogVisible: true})}>
-							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
+							<Text style={styles.buttonText}>{this.strings.languageTitle}</Text>
 						</TouchableOpacity>
 
 						<Modal visible={this.state.languageDialogVisible}
@@ -199,13 +197,13 @@ class Settings extends React.PureComponent {
 							</TouchableOpacity>
 						</Modal>
 
-						<TouchableOpacity style={styles.button}>
+						{/* <TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute)}>
-							<Text style={styles.buttonText}>Modify who can see your calendar</Text>
+							<Text style={styles.buttonText}>{this.strings.modifySharing}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -235,11 +233,11 @@ class Settings extends React.PureComponent {
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
 								Alert.alert(
-									'Modify Calendar',
-									'To delete every events in your calendar, you can clear you calendar, or if you want to remove the Kalend calendar, you can delete it.',
+									this.strings.modifyCalendar,
+									this.strings.modifyCalendarDescription,
 									[
-										{text: 'Cancel', style: 'cancel'},
-										{text: 'Clear Calendar', onPress: async () => {
+										{text: this.strings.cancel, style: 'cancel'},
+										{text: this.strings.clearCalendar, onPress: async () => {
 											let events = await listEvents(this.props.calendarId);
 											events = events.items.reduce((acc, event) => {
 												acc.push(event.id);
@@ -252,16 +250,16 @@ class Settings extends React.PureComponent {
 
 											this.setState({
 												snackbarVisible: true,
-												snackbarText: 'Calendar has been successfully cleared',
+												snackbarText: this.strings.deleteCalendarSuccess,
 											});
 										}},
-										{text: 'Delete Calendar', onPress: () => {
+										{text: this.strings.deleteCalendar, onPress: () => {
 											Alert.alert(
-												'Warning',
-												'You will be logged out of the application if you continue',
+												this.strings.warning,
+												this.strings.warningDescription,
 												[
-													{text: 'Cancel', style: 'cancel'},
-													{text: 'Ok', onPress: async () => {
+													{text: this.strings.cancel, style: 'cancel'},
+													{text: this.strings.ok, onPress: async () => {
 														// Deletes the calendar
 														this.logout();
 													}},
@@ -273,7 +271,7 @@ class Settings extends React.PureComponent {
 									{cancelable: true}
 								);
 							}}>
-							<Text style={styles.buttonText}>{this.strings.deleteCalendar}</Text>
+							<Text style={styles.buttonText}>{this.strings.clearDeleteCalendar}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button} 
@@ -284,7 +282,7 @@ class Settings extends React.PureComponent {
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonLogOutText}>Delete Account</Text>
+							<Text style={styles.buttonLogOutText}>{this.strings.deleteAccount}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -308,7 +306,7 @@ class Settings extends React.PureComponent {
 								onPress={() => {
 									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Terms-of-Service');
 								}}>
-								<Text style={styles.privacyText}>Terms of Service</Text>
+								<Text style={styles.privacyText}>{this.strings.termsOfService}</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
