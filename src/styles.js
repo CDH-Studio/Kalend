@@ -6,7 +6,7 @@ import { containerPaddingDetails } from '../src/components/screens/ScheduleSelec
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1D84B5';
+export const blue = '#153d73';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
 export const red = '#FF0000';

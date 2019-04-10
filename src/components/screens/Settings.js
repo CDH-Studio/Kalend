@@ -76,12 +76,6 @@ class Settings extends React.PureComponent {
 			enableUrlBarHiding: true,
 			showPageTitle: true,
 			enableDefaultShare: true,
-			animations: {
-				startEnter: 'slide_in_bottom',
-				startExit: 'slide_out_bottom',
-				endEnter: 'slide_in_bottom',
-				endExit: 'slide_out_bottom',
-			},
 			forceCloseOnRedirection: true,
 		});
 	}
