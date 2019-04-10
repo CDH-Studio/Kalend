@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { DashboardNavigator, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture, storeCoursesEvents } from '../../services/service';
+import { getStrings } from '../../services/helper';
 import { schoolScheduleCreationStyles as styles, dark_blue, white } from '../../styles';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -15,6 +16,9 @@ import RNFetchBlob from 'rn-fetch-blob';
  * Displays 'Analyzing picture' with a progress bar.
  */
 class SchoolScheduleCreation extends React.PureComponent {
+
+	strings = getStrings().SchoolScheduleCreation;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -54,7 +58,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 					if (data != undefined) {
 						this.success(data);
 					} else {
-						this.error('No data');
+						this.error(this.strings.fileNoData);
 					}
 				})
 				.catch(this.error);
@@ -76,10 +80,10 @@ class SchoolScheduleCreation extends React.PureComponent {
 			.catch(err => {
 				if (err) {
 					Alert.alert(
-						'Error',
+						this.strings.error,
 						err,
 						[
-							{text: 'OK', onPress: () => this.props.navigation.pop()},
+							{text: 'Ok', onPress: () => this.props.navigation.pop()},
 						],
 						{cancelable: false}
 					);
@@ -108,7 +112,7 @@ class SchoolScheduleCreation extends React.PureComponent {
 			}
 
 			if (routes && routes[routes.length - 4].routeName == ReviewEventRoute) {
-				this.props.navigation.navigate(ReviewEventRoute);
+				this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 			} else {
 				this.props.navigation.dispatch(this.navigateAction);
 			}
@@ -122,11 +126,11 @@ class SchoolScheduleCreation extends React.PureComponent {
 	handleBackButton = () => {
 		this.setState({alertDialog: true});
 		Alert.alert(
-			'Stopping extraction',
-			'The schedule analyzing process will be stopped if you proceed, where do you want to go?',
+			this.strings.backAlertTitle,
+			this.strings.backAlertDescription,
 			[
 				{
-					text: 'Cancel',
+					text: this.strings.cancel,
 					style: 'cancel',
 					onPress: () => {
 						this.setState({alertDialog: false});
@@ -134,15 +138,15 @@ class SchoolScheduleCreation extends React.PureComponent {
 					}
 				},
 				{
-					text: 'Dashboard',
+					text: getStrings().Dashboard.name,
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
 					}
 				},
 				{
-					text: 'Create a Schedule', 
+					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.dispatch(this.navigateAction);
+						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 					},
 				},
 			],
@@ -162,8 +166,8 @@ class SchoolScheduleCreation extends React.PureComponent {
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
 				<Surface style={styles.surface}>
-					<Text style={styles.title}>Analysing your Picture</Text>
-					<Text style={styles.subtitle}>Extracting the information from your picture</Text>
+					<Text style={styles.title}>{this.strings.dialogTitle}</Text>
+					<Text style={styles.subtitle}>{this.strings.dialogDescription}</Text>
 					<Progress.Bar style={{alignSelf:'center'}} 
 						indeterminate={true} 
 						width={200} 
