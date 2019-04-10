@@ -10,10 +10,10 @@ import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue, dark_blue, gray } from '../../styles';
 import updateNavigation from '../NavigationHelper';
-import { deleteEvent, listEvents, deleteCalendar } from '../../services/google_calendar';
+import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
-import { setLanguage } from '../../actions';
+import { setLanguage, setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 
 import SafariView from 'react-native-safari-view';
@@ -238,20 +238,28 @@ class Settings extends React.PureComponent {
 									[
 										{text: this.strings.cancel, style: 'cancel'},
 										{text: this.strings.clearCalendar, onPress: async () => {
-											let events = await listEvents(this.props.calendarId);
-											events = events.items.reduce((acc, event) => {
-												acc.push(event.id);
-
-												return acc;
-											}, []);
-
-											// Deletes the calendar
-											console.log(events);
-
 											this.setState({
 												snackbarVisible: true,
-												snackbarText: this.strings.deleteCalendarSuccess,
+												snackbarTime: 4000,
+												snackbarText: this.strings.clearing,
 											});
+											let deleteData = await deleteCalendar(this.props.calendarId);
+											let createData = await createSecondaryCalendar({summary: 'Kalend'});
+
+											if ('error' in deleteData || 'error' in createData) {
+												this.setState({
+													snackbarVisible: true,
+													snackbarTime: 3000,
+													snackbarText: this.strings.clearingError,
+												});
+											} else {
+												this.props.dispatch(setCalendarID(createData.id));
+												this.setState({
+													snackbarVisible: true,
+													snackbarTime: 3000,
+													snackbarText: this.strings.deleteCalendarSuccess,
+												});
+											}
 										}},
 										{text: this.strings.deleteCalendar, onPress: () => {
 											Alert.alert(
@@ -281,7 +289,21 @@ class Settings extends React.PureComponent {
 							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.button}>
+						<TouchableOpacity style={styles.button} 
+							onPress={() => {
+								Alert.alert(
+									this.strings.warning,
+									this.strings.deleteDescription,
+									[
+										{text: this.strings.cancel, style: 'cancel'},
+										{text: this.strings.ok, onPress: async () => {
+											await deleteCalendar(this.props.calendarId);
+											this.logout();
+										}},
+									],
+									{cancelable: false}
+								);
+							}}>
 							<Text style={styles.buttonLogOutText}>{this.strings.deleteAccount}</Text>
 						</TouchableOpacity>
 

@@ -1963,7 +1963,17 @@ export const settingsStyles = StyleSheet.create({
 		fontSize: 16,
 		color: '#ff0000',
 		marginLeft: 20
-	}
+	},
+	
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15
+	},
+
 });
 
 export const cleanReducersStyles = StyleSheet.create({

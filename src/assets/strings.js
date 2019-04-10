@@ -217,6 +217,9 @@ const en = {
 		warning: 'Warning',
 		warningDescription: 'You will be logged out of the application if you continue',
 		ok: 'Ok',
+		clearing: 'Clearing your calendar ...',
+		clearingError: 'Could not clean calendar',
+		deleteDescription: 'Your Kalend calendar wil be deleted aswell as your account if you continue'
 	},
 	UnavailableHours: {
 		name: 'Unavailable Hours',
@@ -497,8 +500,11 @@ const fr = {
 		deleteCalendar: 'Supprimer le calendar',
 		deleteCalendarSuccess: 'Le calendrier a été effacé avec succès',
 		warning: 'Attention',
-		warningDescription: 'Vous serez déconnecté de l\'application si vous continuez',
+		warningDescription: 'Vous serez déconnecté de l\'application si vous poursuivez',
 		ok: 'Ok',
+		clearing: 'Réinitialisation du calendrier en cours ...',
+		clearingError: 'Réinitialiser du calendrier impossible',
+		deleteDescription: 'Votre calendrier Kalend ainsi que votre compte seront supprimés si vous poursuivez'
 	},
 	UnavailableHours: {
 		name: 'Heures non disponibles',
