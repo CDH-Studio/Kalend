@@ -17,12 +17,15 @@ let apiHelperCall = (URL, method, data) => {
 };
 
 export const storeUserInfoService = (info) => {
-	console.log('storeUserInfoService');
 	return apiHelperCall(server + 'api/logUser','POST', info);
 };
 
 export const getUserInfoService = () => {
-	return apiHelperCall(server + 'api/logUser','GET');
+	return apiHelperCall(server + 'api/getUserInfo','GET');
+};
+
+export const getUserValuesService = (info) => {
+	return apiHelperCall(server + 'api/getUserValues','POST', info);
 };
 
 export const updateUser = (info) => {

@@ -56,7 +56,6 @@ class Home extends React.PureComponent {
 		return new Promise( async (resolve, reject) =>  {
 			await getCalendarID2()
 				.then( data => {
-					console.log(' data', data);
 					if (data === undefined) {
 						createCalendar()
 							.then(id => {

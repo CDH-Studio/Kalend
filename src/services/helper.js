@@ -27,12 +27,10 @@ export const convertEventsToDictionary  = async (data) => {
 	await data.forEach(async (event) => {
 		if (event.RECURRENCE) {
 			// Get all recurring events if it has recurrence
-			console.log('called');
 			await getEventsInstances(calendarID, event.ID).then(async instances => {
 				let tempEvent = event;
 				
 				instances.items.forEach(eventRec => {
-					console.log('eventRec', eventRec);
 					let item = {};
 					item.category = tempEvent.CATEGORY;
 					item.name = eventRec.summary;

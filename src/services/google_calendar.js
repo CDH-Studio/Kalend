@@ -1,5 +1,6 @@
 import { store } from '../store';
 import { getTokens } from './google_identity';
+import { getUserValuesService  } from './api/storage_services';
 
 /**
  * Helper method for the Google Calendar API calls
@@ -9,13 +10,13 @@ import { getTokens } from './google_identity';
  * @param {Object} body The body of the call
  * @param {Object} query Query parameter object to be appended to the URL
  */
+
+	
 let apiHelperCall = async (URL, method, body, query) => {
-
-
- 	let tokenData = await getTokens();
-
+	let userID = store.getState().HomeReducer.profile.profile.user.id;
+	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN'], userID}).then(res => res.json())
 	console.log('tokenData', tokenData);
-	let accessToken = tokenData.accessToken;
+	let accessToken = tokenData.ACCESSTOKEN;
 
 	let fetchData = {
 		method,
@@ -83,7 +84,6 @@ let getCalendarList = () => {
  * @returns {Promise} A promise containing an object with the information about the newly created calendar
  */
 let createSecondaryCalendar = (data) => {
-	console.log('secondary', data);
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars', 'POST', data);
 };
 

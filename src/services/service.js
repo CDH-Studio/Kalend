@@ -492,7 +492,6 @@ export const generateCalendars = async () => {
 };
 
 export const getDataforDashboard = async () => {
-	let calendarID = store.getState().CalendarReducer.id;
 	return new Promise(async (resolve, reject) => {
 			getEvents()
 				.then(res => res.json())
