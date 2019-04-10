@@ -1,4 +1,3 @@
-//  Screen
 export const SchoolScheduleRoute = 'SchoolSchedule';
 export const FixedEventRoute = 'FixedEvent';
 export const NonFixedEventRoute = 'NonFixedEvent';
@@ -22,3 +21,4 @@ export const LoginNavigator = 'LoginNavigator';
 export const WelcomeScreen = 'WelcomeScreen';
 
 export const CleanReducersRoute = 'CleanReducers';
+export const CalendarPermissionRoute = 'CalendarPermission';

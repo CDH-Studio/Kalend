@@ -5,18 +5,23 @@ import { SchoolScheduleSelectPictureRoute, SchoolScheduleTakePictureRoute, Cours
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
 import { schoolScheduleStyles as styles, dark_blue, statusBlueColor } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { getStrings } from '../../services/helper';
 
 /**
  * Permits the user to import their school schedule by selecting or taking a picture or by manual import.
  */
 class SchoolSchedule extends React.PureComponent {
 
-	static navigationOptions =  {
-		title: 'Add School Schedule',
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-		},
+	strings = getStrings().SchoolSchedule;
+
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTransparent: true,
+			headerStyle: {
+				backgroundColor: 'rgba(0, 0, 0, 0.2)',
+			},
+		};
 	};
 
 	constructor(props) {
@@ -36,11 +41,11 @@ class SchoolSchedule extends React.PureComponent {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				if (accepted) {
-					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute);
+					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute, {title: getStrings().SchoolScheduleSelectPicture.title});
 				}
 			});
 		} else {
-			this.props.navigation.navigate('SchoolScheduleSelectPicture');
+			this.props.navigation.navigate('SchoolScheduleSelectPicture', {title: getStrings().SchoolScheduleSelectPicture.title});
 		}
 	}
 
@@ -51,11 +56,11 @@ class SchoolSchedule extends React.PureComponent {
 		if (Platform.OS !== 'ios') {
 			requestCamera().then((accepted) => {				
 				if (accepted) {
-					this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
+					this.props.navigation.navigate(SchoolScheduleTakePictureRoute, {title: getStrings().SchoolScheduleTakePicture.title});
 				}
 			});
 		} else {
-			this.props.navigation.navigate(SchoolScheduleTakePictureRoute);
+			this.props.navigation.navigate(SchoolScheduleTakePictureRoute, {title: getStrings().SchoolScheduleTakePicture.title});
 		}
 	}
 
@@ -63,7 +68,7 @@ class SchoolSchedule extends React.PureComponent {
 	 * To go to the appropriate Add Course screen according to the current route
 	 */
 	manualImport() {
-		this.props.navigation.navigate(CourseRoute);
+		this.props.navigation.navigate(CourseRoute,  {addTitle: getStrings().Course.addTitle});
 	}
 
 	render() {
@@ -78,25 +83,25 @@ class SchoolSchedule extends React.PureComponent {
 						<FontAwesome5 name="university"
 							size={130}
 							color={dark_blue} />
-						<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
+						<Text style={styles.text}>{this.strings.description}</Text>
 					</View>
 					
 					<View style={styles.button}>
 						<TouchableOpacity style={styles.buttonSelect}
 							onPress={() => this.selectAPicture()}>
-							<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
+							<Text style={styles.buttonSelectText}>{this.strings.selectPicture}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.buttonTake}
 							onPress={() => this.cameraCapture()}>
-							<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
+							<Text style={styles.buttonTakeText}>{this.strings.takePicture}</Text>
 						</TouchableOpacity>
 							
 						<Text style={styles.manual}>
-							<Text style={styles.textManual}>or import your school schedule </Text>
+							<Text style={styles.textManual}>{this.strings.manual}</Text>
 								
 							<Text style={styles.buttonManual}
-								onPress={() => this.manualImport()}>manually</Text>
+								onPress={() => this.manualImport()}>{this.strings.manually}</Text>
 
 							<Text style={styles.textManual}>.</Text>
 
