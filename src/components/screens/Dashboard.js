@@ -6,7 +6,7 @@ import { Snackbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
@@ -52,6 +52,7 @@ class Dashboard extends React.PureComponent {
 					color={white}/>
 			</TouchableOpacity>
 		),
+		header: null
 	});
 
 	constructor(props) {
@@ -176,8 +177,8 @@ class Dashboard extends React.PureComponent {
 			<View style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
-						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-						backgroundColor={'#166489'} />	
+						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+						backgroundColor={statusBarDark} />	
 
 					{/* <View style={styles.calendarBack}>
 						<Text style={styles.calendarBackText}>{currentMonthText}</Text>

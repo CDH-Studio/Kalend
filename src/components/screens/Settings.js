@@ -8,13 +8,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { CustomTabs } from 'react-native-custom-tabs';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, dark_blue, gray } from '../../styles';
+import { settingsStyles as styles, blue, dark_blue, gray, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
 import { setLanguage, setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
+import ImportCalendar from '../ImportCalendar';
 
 import SafariView from 'react-native-safari-view';
 
@@ -22,15 +23,11 @@ const viewHeight = 669.1428833007812;
 
 class Settings extends React.PureComponent {
 
+	static navigationOptions = {
+		header: null
+	}
+	
 	strings = getStrings().Settings;
-
-	static navigationOptions = ({navigation}) => ({
-		headerRight: (__DEV__ ? <IconButton
-			icon="delete"
-			onPress={() => navigation.navigate(CleanReducersRoute)}
-			size={20}
-			color={blue}/> : null)
-	});
 
 	constructor(props) {
 		super(props);
@@ -45,13 +42,14 @@ class Settings extends React.PureComponent {
 			snackbarText: '',
 			snackbarTime: 3000,
 			languageDialogVisible: false,
+			showImportCalendar: false,
 		};
 
 		// Updates the navigation location in redux
 		updateNavigation('Settings', props.navigation.state.routeName);
 	}
 
-	dismiss = () => {
+	dismissEventsColorPicker = () => {
 		this.setState({showEventsColorPicker: false});
 	}
 
@@ -94,17 +92,24 @@ class Settings extends React.PureComponent {
 		this.props.navigation.navigate(LoginNavigator);
 	}
 
+	dismissImportCalendar = () => {
+		this.setState({showImportCalendar: false});
+	}
+
 	render() {
-		const { containerHeight, showEventsColorPicker, snackbarText, snackbarTime, snackbarVisible } = this.state;
+		const { containerHeight, showEventsColorPicker, showImportCalendar, snackbarText, snackbarTime, snackbarVisible } = this.state;
 
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#166489'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={statusBarDark} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
-					dismiss={() => this.dismiss()}/>
+					dismiss={() => this.dismissEventsColorPicker()}/>
+
+				<ImportCalendar visible={showImportCalendar}
+					dismiss={() => this.dismissImportCalendar()}/>
 
 				<ScrollView>
 					<View style={[styles.content, {height: containerHeight}]}>
@@ -118,6 +123,18 @@ class Settings extends React.PureComponent {
 								{this.props.userName}
 							</Text>
 						</View>
+						
+						
+						
+						{
+							__DEV__ ?
+								<View style={styles.titleRow}> 
+									<IconButton icon="delete"
+										onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
+										size={20}
+										color={blue}/> 
+								</View>: null
+						}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
@@ -126,6 +143,13 @@ class Settings extends React.PureComponent {
 								
 							<Text style={styles.title}>{this.strings.profile}</Text>
 						</View>
+
+						<TouchableOpacity style={styles.button}
+							onPress={() => {
+								this.setState({showImportCalendar: true});
+							}}>
+							<Text style={styles.buttonText}>Import Calendar</Text>
+						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {

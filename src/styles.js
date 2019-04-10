@@ -1398,7 +1398,8 @@ export const dashboardStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		padding: 10,
-		backgroundColor: '#F6F8FA'
+		backgroundColor: '#F6F8FA',
+		paddingTop: getStatusBarHeight() + 10
 	},
 
 	fab: {
@@ -1556,7 +1557,8 @@ export const calendarShareButtons = StyleSheet.create({
 export const chatbotStyles = StyleSheet.create({
 	content: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		paddingTop: getStatusBarHeight()
 	}
 });
 
@@ -1808,7 +1810,8 @@ export const compareScheduleStyles = StyleSheet.create({
 export const settingsStyles = StyleSheet.create({
 	container: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		paddingTop: getStatusBarHeight()
 	},
 
 	content: {
@@ -1842,12 +1845,13 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	topProfileContainer: {
-		alignItems: 'center'
+		alignItems: 'center',
+		margin: 20
 	},
 
 	profileDescription: {
 		fontFamily: 'Raleway-SemiBold', 
-		color: gray, 
+		color: Platform.OS === 'ios' ? black : gray, 
 		fontSize: 17,
 		textAlign: 'center'
 	},
@@ -2229,5 +2233,105 @@ export const eventsColorPickerStyles = StyleSheet.create({
 	pagerSelectedText: {
 		color: dark_blue, 
 		fontFamily: 'Raleway-Bold'
+	}
+});
+
+export const importCalendarStyles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15
+	},
+
+	itemView: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	itemText: {
+		fontFamily: 'Raleway-Regular',
+		color: gray
+	},
+
+	title: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	},
+
+	buttons: {
+		justifyContent: 'flex-end', 
+		width: '100%', 
+		flexDirection: 'row'
+	}, 
+
+	buttonText: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+		marginLeft: 20
+	}, 
+
+	buttonCancelText: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+	}, 
+
+	flatlist: {
+		paddingVertical: 5,
+		marginVertical: 5,
+		marginLeft: -7,
+		maxHeight: 180,
+	},
+	
+	description: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		marginTop: 5
+	},
+
+	activityIndicatorContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 180,
+		paddingVertical: 5,
+		marginVertical: 5,
+	},
+
+	emptyContainer: {
+		height: 180, 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+
+	emptyTitle: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+
+	emptyDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	progressModalDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		paddingVertical: 10
+	},
+
+	progressModalFinished: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		paddingTop: 10
 	}
 });

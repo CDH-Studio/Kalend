@@ -7,7 +7,7 @@ import { Agenda } from 'react-native-calendars';
 import Modal from 'react-native-modal';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple } from '../../styles';
+import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
@@ -321,7 +321,7 @@ class CompareSchedule extends React.PureComponent {
 			<View style={styles.content}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor="#00000050" />
+					backgroundColor={statusBarDark} />
 
 				{
 					showCalendar ?
