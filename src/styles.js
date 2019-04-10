@@ -2211,3 +2211,103 @@ export const eventsColorPickerStyles = StyleSheet.create({
 		fontFamily: 'Raleway-Bold'
 	}
 });
+
+export const importCalendarStyles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15
+	},
+
+	itemView: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
+	itemText: {
+		fontFamily: 'Raleway-Regular',
+		color: gray
+	},
+
+	title: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	},
+
+	buttons: {
+		justifyContent: 'flex-end', 
+		width: '100%', 
+		flexDirection: 'row'
+	}, 
+
+	buttonText: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+		marginLeft: 20
+	}, 
+
+	buttonCancelText: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+	}, 
+
+	flatlist: {
+		paddingVertical: 5,
+		marginVertical: 5,
+		marginLeft: -7,
+		maxHeight: 180,
+	},
+	
+	description: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		marginTop: 5
+	},
+
+	activityIndicatorContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 180,
+		paddingVertical: 5,
+		marginVertical: 5,
+	},
+
+	emptyContainer: {
+		height: 180, 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+
+	emptyTitle: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+
+	emptyDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
+
+	progressModalDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		paddingVertical: 10
+	},
+
+	progressModalFinished: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		paddingTop: 10
+	}
+});

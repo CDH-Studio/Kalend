@@ -13,6 +13,7 @@ import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
 import { setLanguage } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
+import ImportCalendar from '../ImportCalendar';
 
 const viewHeight = 669.1428833007812;
 
@@ -31,21 +32,26 @@ class Settings extends React.PureComponent {
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
 		this.state = {
-			containerHeight,
-			languageDialogVisible: false,
-			showEventsColorPicker: false
+			containerHeight, 
+			showEventsColorPicker: false,
+			showImportCalendar: false,
+			languageDialogVisible: false
 		};
 
 		// Updates the navigation location in redux
 		updateNavigation('Settings', props.navigation.state.routeName);
 	}
 
-	dismiss = () => {
+	dismissEventsColorPicker = () => {
 		this.setState({showEventsColorPicker: false});
 	}
 
+	dismissImportCalendar = () => {
+		this.setState({showImportCalendar: false});
+	}
+
 	render() {
-		const { containerHeight, showEventsColorPicker } = this.state;
+		const { containerHeight, showEventsColorPicker, showImportCalendar } = this.state;
 
 		return(
 			<View style={styles.container}>
@@ -54,7 +60,10 @@ class Settings extends React.PureComponent {
 					backgroundColor={statusBarDark} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
-					dismiss={() => this.dismiss()}/>
+					dismiss={() => this.dismissEventsColorPicker()}/>
+
+				<ImportCalendar visible={showImportCalendar}
+					dismiss={() => this.dismissImportCalendar()}/>
 
 				<ScrollView>
 					<View style={[styles.content, {height: containerHeight}]}>
@@ -88,6 +97,13 @@ class Settings extends React.PureComponent {
 								
 							<Text style={styles.title}>{this.strings.profile}</Text>
 						</View>
+
+						<TouchableOpacity style={styles.button}
+							onPress={() => {
+								this.setState({showImportCalendar: true});
+							}}>
+							<Text style={styles.buttonText}>Import Calendar</Text>
+						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
