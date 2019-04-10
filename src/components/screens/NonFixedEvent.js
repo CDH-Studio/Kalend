@@ -12,9 +12,10 @@ import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
+import { dateVerification, getStrings } from '../../services/helper';
 import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor } from '../../styles';
-import { getStrings } from '../../services/helper';
 
+const moment = require('moment');
 const viewHeight = 843.4285888671875;
 
 /**
@@ -45,14 +46,8 @@ class NonFixedEvent extends React.PureComponent {
 			titleValidated: true,
 
 			specificDateRange: false,
-			startDate: new Date().toDateString(),
-			disabledStartDate: false,
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
+			startDate: moment().format('ddd., MMM DD, YYYY'),
+			endDate: moment().format('ddd., MMM DD, YYYY'),
 
 			hours: 0,
 			minutes: 0,
@@ -90,7 +85,7 @@ class NonFixedEvent extends React.PureComponent {
 	}
 
 	/**
-	 * Validates the Title, End Date and End Time fields
+	 * Validates the Title and Duration fields
 	 */
 	fieldValidation = () => {
 		let validated = true;
@@ -100,15 +95,6 @@ class NonFixedEvent extends React.PureComponent {
 			validated = false;
 		} else {
 			this.setState({titleValidated: true});
-		}
-		
-		if(this.state.specificDateRange === true) {
-			if (this.state.disabledEndDate === true) {
-				this.setState({endDateValidated: false});
-				validated = false;
-			} else {
-				this.setState({endDateValidated: true});
-			}
 		}
 		
 		if (this.state.hours === 0 && this.state.minutes === 0) {
@@ -171,13 +157,7 @@ class NonFixedEvent extends React.PureComponent {
 
 			specificDateRange: false,
 			startDate: new Date().toDateString(),
-			disabledStartDate: false,
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
 			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
 
 			hours: 0,
 			minutes: 0,
@@ -197,6 +177,7 @@ class NonFixedEvent extends React.PureComponent {
 		});
 	}
 
+	//TODO: Comment function
 	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
 		const scrollResponder = this.refs._scrollView.getScrollResponder();
 		const inputHandle = findNodeHandle(inputFieldRef);
@@ -214,7 +195,6 @@ class NonFixedEvent extends React.PureComponent {
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorTitle;
-		let errorEndDate;
 		let errorDuration;
 		let showNextButton = true;
 
@@ -222,16 +202,6 @@ class NonFixedEvent extends React.PureComponent {
 			errorTitle = <Text style={styles.errorTitle}>{this.strings.titleEmpty}</Text>;
 		} else {
 			errorTitle = null;
-		}
-
-		if (this.state.specificDateRange === true) {
-			if (!this.state.endDateValidated) {
-				errorEndDate = <Text style={styles.errorEndDate}>{this.strings.specificDateEmpty}</Text>;
-			} else {
-				errorEndDate = null;
-			}
-		} else {
-			errorEndDate = null;
 		}
 
 		if (!this.state.durationValidated) {
@@ -332,23 +302,18 @@ class NonFixedEvent extends React.PureComponent {
 													date={this.state.startDate} 
 													mode="date" 
 													style={{width:140}}
-													disabled={this.state.disabledStartDate}
 													customStyles={{
-														disabled:{backgroundColor: 'transparent'},
 														dateInput:{borderWidth: 0},
 														dateText:{
-															fontFamily: 'OpenSans-Regular',
-															color: !this.state.endDateValidated ? '#FF0000' : gray}}}
-													format="ddd., MMM DD, YYYY" 
-													minDate={this.state.minStartDate} 
-													maxDate={this.state.maxStartDate}
+															fontFamily: 'OpenSans-Regular'}
+													}}
+													format="ddd., MMM DD, YYYY"
 													confirmBtnText={this.strings.confirmButton}
 													cancelBtnText={this.strings.cancelButton}
-													onDateChange={(startDate) => this.setState({
-														startDate: startDate,
-														endDate: startDate,
-														disabledEndDate: false,
-														minEndDate: startDate, endDateValidated: true})} />
+													onDateChange={(startDate) => {
+														this.setState({startDate,
+															endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)});
+													}} />
 											</View>
 										
 											<View style={styles.questionLayout}>
@@ -358,21 +323,18 @@ class NonFixedEvent extends React.PureComponent {
 													date={this.state.endDate} 
 													mode="date" 
 													style={{width:140}}
-													disabled={this.state.disabledEndDate}
 													customStyles={{
-														disabled:{backgroundColor: 'transparent'},
 														dateInput:{borderWidth: 0},
-														dateText:{fontFamily: 'OpenSans-Regular',
-															color: !this.state.endDateValidated ? '#ff0000' : gray,
-															textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
-													format="ddd., MMM DD, YYYY" 
-													minDate={this.state.minEndDate}
+														dateText:{fontFamily: 'OpenSans-Regular'}
+													}}
+													format="ddd., MMM DD, YYYY"
 													confirmBtnText={this.strings.confirmButton}
 													cancelBtnText={this.strings.cancelButton}
-													onDateChange={(endDate) => this.setState({endDate, maxStartDate: endDate, })} />
+													onDateChange={(endDate) => {
+														this.setState({endDate,
+															startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)});
+													}} />
 											</View>
-
-											{errorEndDate}
 										</View>: null}
 
 									<View>
@@ -516,8 +478,9 @@ class NonFixedEvent extends React.PureComponent {
 					</ScrollView>
 				</KeyboardAvoidingView>
 
-				<Snackbar visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}

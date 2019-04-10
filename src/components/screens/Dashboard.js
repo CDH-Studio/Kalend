@@ -2,14 +2,14 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { FAB, Portal, Snackbar } from 'react-native-paper';
+import { Snackbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
-import { ReviewEventRoute, SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
-import { getStrings } from '../../services/helper';
+import { dashboardStyles as styles, white, dark_blue, black } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
+import { ReviewEventRoute } from '../../constants/screenNames';
+import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
@@ -58,8 +58,6 @@ class Dashboard extends React.PureComponent {
 		super(props);
 		this.state = { 
 			containerHeight: null,
-			opened: false,
-			optionsOpen: false,
 			items: {},
 			isVisible: false,
 			calendarOpened: false,
@@ -153,7 +151,7 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen, snackbarVisible, snackbarTime, snackbarText} = this.state;
+		const { snackbarVisible, snackbarTime, snackbarText } = this.state;
 		// let showCloseFab;
 		// let currentMonthText = 'jninm';
 
@@ -176,79 +174,61 @@ class Dashboard extends React.PureComponent {
 
 		return(
 			<View style={{flex:1}}>
-				<Portal.Host>
-					<View style={styles.content}>
-						<StatusBar translucent={true}
-							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-							backgroundColor={'#166489'} />	
+				<View style={styles.content}>
+					<StatusBar translucent={true}
+						barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+						backgroundColor={'#166489'} />	
 
-						{/* <View style={styles.calendarBack}>
-							<Text style={styles.calendarBackText}>{currentMonthText}</Text>
-						</View> */}
+					{/* <View style={styles.calendarBack}>
+						<Text style={styles.calendarBackText}>{currentMonthText}</Text>
+					</View> */}
 
-						<Agenda ref='agenda'
-							items={this.state.items}
-							renderItem={this.renderItem}
-							renderEmptyData={this.renderEmptyData}
-							rowHasChanged={this.rowHasChanged}
-							showOnlyDaySelected={true}
-							shouldChangeDay={this.shouldChangeDay}
-							listTitle={this.strings.eventsDayTitle}
-							theme={{agendaKnobColor: dark_blue}}
-							// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
-						/>
+					<Agenda ref='agenda'
+						items={this.state.items}
+						renderItem={this.renderItem}
+						renderEmptyData={this.renderEmptyData}
+						rowHasChanged={this.rowHasChanged}
+						showOnlyDaySelected={true}
+						shouldChangeDay={this.shouldChangeDay}
+						listTitle={this.strings.eventsDayTitle}
+						theme={{agendaKnobColor: dark_blue}}
+						// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
+					/>
 
-						{/* {showCloseFab} */}
+					{/* {showCloseFab} */}
+				</View>
 
-					
-						<FAB.Group
-							ref={ref => this.touchable = ref}
-							theme={{colors:{accent:blue}}}
-							open={optionsOpen}
-							icon={optionsOpen ? 'close' : 'add'}
-							actions={[
-								{icon: 'school',
-									label: this.strings.fabSchool,
-									onPress: () => {
-										if (store.getState().SchoolInformationReducer.info) {
-											if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
-												this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle});
-											} else {
-												this.props.navigation.navigate(SchoolScheduleRoute,  {title: getStrings().SchoolSchedule.title});
-											}
-										} else {
-											this.props.navigation.navigate(SchoolInformationRoute, {title: getStrings().SchoolInformation.title, schoolSchedule: true});
-										}
-									}
-								},
-								{icon: 'today',
-									label: this.strings.fabFixedEvent,
-									onPress: () => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle, editTitle: getStrings().FixedEvent.editTitle})},
-								{icon: 'face',
-									label: this.strings.fabNonFixedEvent,
-									onPress: () => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})},
-							]}
-							onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
-							style={styles.fab} />
-
-						{/* <View>
-							<Popover popoverStyle={styles.tooltipView}
-								isVisible={this.state.isVisible}
-								fromView={this.touchable}
-								onClose={() => this.closePopover()}>
-								<Feather name="x"
-									style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
-									size={25}
-									color={black} />
-								<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
-							</Popover>
-						</View> */}
+				<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
+					style={{position:'absolute', bottom: 13 , right:10}}>
+					<View style={{flexDirection: 'row',
+						justifyContent: 'center',
+						alignItems: 'center',
+						height: 45,
+						width: 110,
+						backgroundColor: dark_blue,
+						borderRadius: 22.5, 
+						...Platform.select({
+							ios: {
+								shadowColor: black,
+								shadowOffset: { width: 0, height: 2 },
+								shadowOpacity: 0.3,
+								shadowRadius: 3,    
+							},
+							android: {
+								elevation: 4,
+							},
+						})
+					}}>
+						<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
+						<MaterialCommunityIcons size={20}
+							name="calendar-multiple-check"
+							color={white}/>
 					</View>
-				</Portal.Host>
+				</TouchableOpacity>
 
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}

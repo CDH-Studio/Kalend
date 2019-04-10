@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {setUnavailableHours} from '../../actions';
 import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
+import { unavailableHoursStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';
 import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
@@ -35,46 +35,30 @@ class UnavailableHours extends React.PureComponent {
 			sleepWeek: false,
 			startSleepWeek: moment().format('h:mm A'),
 			endSleepWeek: moment().format('h:mm A'),
-			disabledEndSleepWeek: true,
-			endSleepWeekValidated: true,
 			sleepWeekEnd: false,
 			startSleepWeekEnd: moment().format('h:mm A'),
 			endSleepWeekEnd: moment().format('h:mm A'),
-			disabledEndSleepWeekEnd: true,
-			endSleepWeekEndValidated: true,
 
 			commutingWeek: false,
 			startCommutingWeek: moment().format('h:mm A'),
 			endCommutingWeek: moment().format('h:mm A'),
-			disabledEndCommutingWeek: true,
-			endCommutingWeekValidated: true,
 			commutingWeekEnd: false,
 			startCommutingWeekEnd: moment().format('h:mm A'),
 			endCommutingWeekEnd: moment().format('h:mm A'),
-			disabledEndCommutingWeekEnd: true,
-			endCommutingWeekEndValidated: true,
 
 			eatingWeek: false,
 			startEatingWeek: moment().format('h:mm A'),
 			endEatingWeek: moment().format('h:mm A'),
-			disabledEndEatingWeek: true,
-			endEatingWeekValidated: true,
 			eatingWeekEnd: false,
 			startEatingWeekEnd: moment().format('h:mm A'),
 			endEatingWeekEnd:moment().format('h:mm A'),
-			disabledEndEatingWeekEnd: true,
-			endEatingWeekEndValidated: true,
 
 			otherWeek: false,
 			startOtherWeek: moment().format('h:mm A'),
 			endOtherWeek: moment().format('h:mm A'),
-			disabledEndOtherWeek: true,
-			endOtherWeekValidated: true,
 			otherWeekEnd: false,
 			startOtherWeekEnd: moment().format('h:mm A'),
 			endOtherWeekEnd: moment().format('h:mm A'),
-			disabledEndOtherWeekEnd: true,
-			endOtherWeekEndValidated: true,
 		};
 		
 		updateNavigation('UnavailableHours', props.navigation.state.routeName);
@@ -87,18 +71,6 @@ class UnavailableHours extends React.PureComponent {
 	}
 
 	/**
-	 * Enables endTime and sets it to the startTime
-	 */
-	enableEndTime(disabledEndTime, startTime, endTime) {
-		if (this.state[disabledEndTime] === true) {
-			this.setState({[endTime]: this.state[startTime]});
-			return false;
-		} else {
-			//do nothing
-		}
-	}
-
-	/**
 	 * To go to the appropriate Fixed Event screen according to the current route
 	 */
 	manualImport() {
@@ -106,78 +78,15 @@ class UnavailableHours extends React.PureComponent {
 	}
 
 	/**
-	 * Validates the EndTime fields
-	 */
-	fieldValidation = () => {
-		let validated = true;
-
-		let hourTypes = [
-			'sleepWeek',
-			'sleepWeekEnd',
-			'commutingWeek',
-			'commutingWeekEnd',
-			'eatingWeek',
-			'eatingWeekEnd',
-			'otherWeek',
-			'otherWeekEnd'
-		];
-
-		hourTypes.map( type => {
-			if (this.state[type] === true) {
-				if (this.state['disabledEnd' + type.charAt(0).toUpperCase() + type.slice(1)] === true) {
-					this.setState({['end' + type.charAt(0).toUpperCase() + type.slice(1) + 'Validated']: false});
-					validated = false;
-				} else {
-					this.setState({['end' + type.charAt(0).toUpperCase() + type.slice(1) + 'Validated']: true});
-				}
-			}
-		});
-
-		return validated;
-	}
-
-
-	/**
 	 * To go to the next screen and save the required information
 	 */
 	next = () => {
-		let validated = this.fieldValidation();
-		if (!validated) {
-			return;
-		}
-
 		this.props.dispatch(setUnavailableHours(this.state));
 		
 		this.props.navigation.pop();
 	}
 	
 	render() {
-		let hourTypes = [
-			'sleepWeek',
-			'sleepWeekEnd',
-			'commutingWeek',
-			'commutingWeekEnd',
-			'eatingWeek',
-			'eatingWeekEnd',
-			'otherWeek',
-			'otherWeekEnd'
-		];
-		let error = {};
-
-		/**
-		 * In order to show components based on current route
-		 */
-		hourTypes.forEach( type => {
-			if (this.state[type] === true) {
-				let endValidated = 'end' + type.charAt(0).toUpperCase() + type.slice(1);
-				if (!this.state[endValidated + 'Validated']) {
-					error[endValidated] = <Text style={styles.errorEndTime}>{this.strings.timesEmpty}</Text>;
-				} else {
-					error[endValidated] = null;
-				}
-			}
-		});
-
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
@@ -221,23 +130,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth}
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endSleepWeekValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startSleepWeek) => {
-															this.setState({
-																endSleepWeekValidated: true, 
-																startSleepWeek
-															});
-															this.setState({disabledEndSleepWeek: this.enableEndTime('disabledEndSleepWeek', 'startSleepWeek', 'endSleepWeek')});
-														}} />
+														onDateChange={(startSleepWeek) => 
+															this.setState({startSleepWeek})
+														} />
 
 													<Text> - </Text>
 
@@ -245,13 +147,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endSleepWeek} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndSleepWeek}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endSleepWeekValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndSleepWeek ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -260,8 +158,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endSleepWeek) => this.setState({endSleepWeek})} /> />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endSleepWeek}
 										</View>
 
 										<View style={styles.colContent}>
@@ -282,23 +178,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth}
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startSleepWeekEnd) => {
-															this.setState({
-																endSleepWeekEndValidated: true, 
-																startSleepWeekEnd
-															});
-															this.setState({disabledEndSleepWeekEnd: this.enableEndTime('disabledEndSleepWeekEnd', 'startSleepWeekEnd', 'endSleepWeekEnd')});
-														}} />
+														onDateChange={(startSleepWeekEnd) => 
+															this.setState({startSleepWeekEnd})	
+														} />
 
 													<Text> - </Text>
 														
@@ -306,13 +195,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endSleepWeekEnd} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndSleepWeekEnd}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endSleepWeekEndValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndSleepWeekEnd ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -321,8 +206,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endSleepWeekEnd) => this.setState({endSleepWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endSleepWeekEnd}
 										</View>
 									</View>
 								</View>
@@ -357,23 +240,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth}
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startCommutingWeek) => {
-															this.setState({
-																endCommutingWeekValidated: true, 
-																startCommutingWeek
-															});
-															this.setState({disabledEndCommutingWeek: this.enableEndTime('disabledEndCommutingWeek', 'startCommutingWeek', 'endCommutingWeek')});
-														}} />
+														onDateChange={(startCommutingWeek) => 
+															this.setState({startCommutingWeek})
+														} />
 
 													<Text> - </Text>
 														
@@ -381,13 +257,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endCommutingWeek} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndCommutingWeek}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endCommutingWeekValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndCommutingWeek ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -396,8 +268,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endCommutingWeek) => this.setState({endCommutingWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endCommutingWeek}
 										</View>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
@@ -417,23 +287,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth}
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startCommutingWeekEnd) => {
-															this.setState({
-																endCommutingWeekEndValidated: true, 
-																startCommutingWeekEnd
-															});
-															this.setState({disabledEndCommutingWeekEnd: this.enableEndTime('disabledEndCommutingWeekEnd', 'startCommutingWeekEnd', 'endCommutingWeekEnd')});
-														}} />
+														onDateChange={(startCommutingWeekEnd) => 
+															this.setState({startCommutingWeekEnd})
+														} />
 
 													<Text> - </Text>
 														
@@ -441,13 +304,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endCommutingWeekEnd} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndCommutingWeekEnd}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endCommutingWeekEndValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndCommutingWeekEnd ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -456,8 +315,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endCommutingWeekEnd) => this.setState({endCommutingWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endCommutingWeekEnd}
 										</View>
 									</View>
 								</View>
@@ -492,22 +349,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth} 
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endEatingWeekValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startEatingWeek) => {
-															this.setState({
-																endEatingWeekValidated: true,
-																startEatingWeek});
-															this.setState({disabledEndEatingWeek: this.enableEndTime('disabledEndEatingWeek', 'startEatingWeek', 'endEatingWeek')});
-														}} />
+														onDateChange={(startEatingWeek) => 
+															this.setState({startEatingWeek})
+														} />
 
 													<Text> - </Text>
 														
@@ -515,13 +366,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endEatingWeek} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndEatingWeek}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endEatingWeekValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndEatingWeek ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -530,8 +377,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endEatingWeek) => this.setState({endEatingWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endEatingWeek}
 										</View>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
@@ -551,22 +396,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth}
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startEatingWeekEnd) => {
-															this.setState({
-																endEatingWeekEndValidated: true,
-																startEatingWeekEnd});
-															this.setState({disabledEndEatingWeekEnd: this.enableEndTime('disabledEndEatingWeekEnd', 'startEatingWeekEnd', 'endEatingWeekEnd')});
-														}} />
+														onDateChange={(startEatingWeekEnd) => 
+															this.setState({startEatingWeekEnd})
+														} />
 
 													<Text> - </Text>
 														
@@ -574,13 +413,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endEatingWeekEnd} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndEatingWeekEnd}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endEatingWeekEndValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndEatingWeekEnd ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -589,8 +424,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endEatingWeekEnd) => this.setState({endEatingWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endEatingWeekEnd}
 										</View>
 									</View>
 								</View>
@@ -625,22 +458,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth} 
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endOtherWeekValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startOtherWeek) => {
-															this.setState({
-																endOtherWeekValidated: true,
-																startOtherWeek});
-															this.setState({disabledEndOtherWeek: this.enableEndTime('disabledEndOtherWeek', 'startOtherWeek', 'endOtherWeek')});
-														}} />
+														onDateChange={(startOtherWeek) => 
+															this.setState({startOtherWeek})
+														} />
 
 													<Text> - </Text>
 														
@@ -648,13 +475,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endOtherWeek} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled={this.state.disabledEndOtherWeek}
-														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
+														customStyles={{ 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endOtherWeekValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndOtherWeek ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -663,8 +486,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endOtherWeek) => this.setState({endOtherWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endOtherWeek}
 										</View>
 										<View style={styles.colContent}>
 											<View style={styles.row}>
@@ -684,22 +505,16 @@ class UnavailableHours extends React.PureComponent {
 														style={styles.timeWidth}
 														customStyles={{
 															dateInput:{borderWidth: 0}, 
-															dateText:{
-																fontFamily: 'OpenSans-Regular',
-																color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray
-															}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(startOtherWeekEnd) => {
-															this.setState({
-																endOtherWeekEndValidated: true,
-																startOtherWeekEnd});
-															this.setState({disabledEndOtherWeekEnd: this.enableEndTime('disabledEndOtherWeekEnd', 'startOtherWeekEnd', 'endOtherWeekEnd')});
-														}} />
+														onDateChange={(startOtherWeekEnd) => 
+															this.setState({startOtherWeekEnd})
+														} />
 
 													<Text> - </Text>
 														
@@ -707,13 +522,9 @@ class UnavailableHours extends React.PureComponent {
 														date={this.state.endOtherWeekEnd} 
 														mode="time" 
 														style={styles.timeWidth}
-														disabled= {this.state.disabledEndOtherWeekEnd}
 														customStyles={{
-															disabled:{backgroundColor: 'transparent'}, 
 															dateInput:{borderWidth: 0}, 
-															dateText:{fontFamily: 'OpenSans-Regular',
-																color: !this.state.endOtherWeekEndValidated ? '#ff0000' : gray,
-																textDecorationLine: this.state.disabledEndOtherWeekEnd ? 'line-through' : 'none'}
+															dateText:{fontFamily: 'OpenSans-Regular'}
 														}}
 														format="h:mm A" 
 														confirmBtnText={this.strings.confirmButton}
@@ -722,8 +533,6 @@ class UnavailableHours extends React.PureComponent {
 														is24Hour={false}
 														onDateChange={(endOtherWeekEnd) => this.setState({endOtherWeekEnd})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
-
-											{error.endOtherWeekEnd}
 										</View>
 									</View>
 								</View>

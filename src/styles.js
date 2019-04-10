@@ -36,7 +36,7 @@ export const bottomButtonsStyles = StyleSheet.create({
 		borderRadius: 5,
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
 				shadowRadius: 3,    
@@ -56,7 +56,7 @@ export const bottomButtonsStyles = StyleSheet.create({
 		padding: 8,
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 15,
-		color: '#FFFFFF',
+		color: white,
 		textAlign: 'center'
 	},
 });
@@ -525,13 +525,6 @@ export const courseStyles = StyleSheet.create({
 		marginLeft: 45
 	},
 
-	errorEndTime: {
-		fontFamily: 'Raleway-Regular',
-		color: red,
-		fontSize: 12,
-		paddingLeft: 5
-	},
-
 	textInput: {
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -589,10 +582,6 @@ export const courseStyles = StyleSheet.create({
 		marginBottom:-8
 	},
 
-	timeSection: {
-		paddingVertical: 5
-	},
-
 	time: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -610,8 +599,7 @@ export const fixedEventStyles = StyleSheet.create({
 	content: {
 		flex: 1,
 		justifyContent: 'space-evenly',
-		paddingHorizontal: 20,
-		marginBottom: 20
+		paddingHorizontal: 20
 	},
 
 	instruction: {
@@ -625,14 +613,6 @@ export const fixedEventStyles = StyleSheet.create({
 		color: red,
 		fontSize: 12,
 		marginLeft: 45
-	},
-
-	errorEnd: {
-		fontFamily: 'Raleway-Regular',
-		color: red,
-		fontSize: 12,
-		alignSelf: 'flex-start',
-		marginLeft: 12
 	},
 
 	text: {
@@ -684,7 +664,8 @@ export const fixedEventStyles = StyleSheet.create({
 
 	switch: {
 		width: 150,
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		marginLeft: 45
 	},
 
 	empty: {
@@ -701,7 +682,7 @@ export const fixedEventStyles = StyleSheet.create({
 	allDay: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 30
+		paddingLeft: 50
 	},
 
 	rowTimeSection: {
@@ -730,14 +711,13 @@ export const nonFixedEventStyles = StyleSheet.create({
 		flex: 1,
 		justifyContent:'space-evenly',
 		paddingHorizontal: 20,
-		marginBottom: 40,
-		marginTop: 20
+		marginVertical: 20
 	},
 
 	instruction: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		alignItems: 'center'		
+		alignItems: 'center'
 	},
 
 	instructionText: {
@@ -756,14 +736,6 @@ export const nonFixedEventStyles = StyleSheet.create({
 		paddingBottom: 5
 	},
 
-	errorEndDate: {
-		fontFamily: 'Raleway-Regular',
-		color: red,
-		fontSize: 12,
-		alignSelf: 'flex-start',
-		paddingBottom: 5
-	},
-	
 	errorDuration: {
 		fontFamily: 'Raleway-Regular',
 		color: red,
@@ -885,14 +857,6 @@ export const unavailableHoursStyles = StyleSheet.create({
 		paddingVertical: 20
 	},
 
-	errorEndTime: {
-		fontFamily: 'Raleway-Regular',
-		color: red,
-		fontSize: 12,
-		width: 140,
-		textAlign: 'center'
-	},
-
 	text: {
 		width: 200,
 		paddingRight: 15,
@@ -901,7 +865,6 @@ export const unavailableHoursStyles = StyleSheet.create({
 		fontSize: 20,
 		textAlign: 'right'
 	},
-
 
 	blueTitle: {
 		color: dark_blue,
@@ -1008,10 +971,10 @@ export const eventOverviewStyles = StyleSheet.create({
 		marginVertical: 10,
 		paddingHorizontal: 10,
 		borderRadius: 8,
-		backgroundColor: '#FFFFFF',
+		backgroundColor: white,
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
 				shadowRadius: 3  
@@ -1067,7 +1030,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		backgroundColor: '#00000080',
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.6,
 				shadowRadius: 7  
@@ -1116,7 +1079,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		flexWrap: 'wrap',
 		fontSize: 18,
 		fontFamily: 'OpenSans-SemiBold',
-		color: '#ffffff'
+		color: white
 	},
 
 	modalInfoView: {
@@ -1220,7 +1183,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	deleteDialogYes: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
-		color: '#ff0000',
+		color: red,
 		marginLeft: 20
 	}
 });
@@ -1406,7 +1369,7 @@ const DashboardButton = StyleSheet.create({
 	button: {
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.4,
 				shadowRadius: 2
@@ -1438,7 +1401,8 @@ export const dashboardStyles = StyleSheet.create({
 
 	fab: {
 		position: 'absolute',
-		right: 0
+		right: 15,
+		bottom: 15
 	},
 
 	closeCalendarView: {
@@ -1459,7 +1423,7 @@ export const dashboardStyles = StyleSheet.create({
 		marginVertical: 5,
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
 				shadowRadius: 3,    
@@ -1501,7 +1465,7 @@ export const dashboardStyles = StyleSheet.create({
 		padding: 10,
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.9,
 				shadowRadius: 2
@@ -1712,7 +1676,6 @@ export const schoolInformationStyles = StyleSheet.create({
 
 	content: {
 		flex: 1,
-		marginTop: 10,
 		paddingHorizontal: 20,
 		justifyContent: 'space-around'
 	},
@@ -1733,7 +1696,7 @@ export const schoolInformationStyles = StyleSheet.create({
 	},
 
 	school: {
-		marginVertical: 20
+		marginVertical: 10
 	},
 	
 	subHeader: {
@@ -1782,8 +1745,8 @@ export const schoolInformationStyles = StyleSheet.create({
 	error: {
 		fontFamily: 'Raleway-Regular',
 		color: red,
-		marginVertical: 10,
-		marginLeft: 5
+		marginTop: 10,
+		marginLeft: 10
 	}
 
 });
@@ -1843,7 +1806,7 @@ export const eventsColorPickerStyles = StyleSheet.create({
 	modal: {
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
 				shadowRadius: 3,
@@ -1899,7 +1862,7 @@ export const eventsColorPickerStyles = StyleSheet.create({
 		height: 50,
 		...Platform.select({
 			ios: {
-				shadowColor: '#000000',
+				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.3,
 				shadowRadius: 3,

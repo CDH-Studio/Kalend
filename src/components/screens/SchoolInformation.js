@@ -10,9 +10,10 @@ import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
+import { dateVerification, getStrings } from '../../services/helper';
 import { ScrollView } from 'react-native-gesture-handler';
-import { getStrings } from '../../services/helper';
 
+const moment = require('moment');
 const viewHeight = 584;
 
 class SchoolInformation extends React.PureComponent {
@@ -39,13 +40,8 @@ class SchoolInformation extends React.PureComponent {
 		this.state = {
 			containerHeight,
 
-			startDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-	
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
+			startDate: moment().format('ddd., MMM DD, YYYY'),
+			endDate: moment().format('ddd., MMM DD, YYYY'),
 
 			schoolValidated: true,
 
@@ -53,66 +49,20 @@ class SchoolInformation extends React.PureComponent {
 			otherSchool: ''
 		};
 
-		// Updates the navigation location in redux
 		updateNavigation('SchoolInformation', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
-		// Loads the information from the state, if there are some info
 		if (this.props.SchoolInformationReducer && this.props.SchoolInformationReducer.info && this.props.SchoolInformationReducer.info.info ) {
 			this.setState({...this.props.SchoolInformationReducer.info.info});
 		}
 	}
 
 	/**
-	 * The callback function from the startDate date picker
-	 * 
-	 * @param {String} startDate The start date selected by the user
-	 */
-	startDateOnDateChange = (startDate) => {
-		if (this.state.disabledEndDate) {
-			this.setState({
-				disabledEndDate: false,
-			});
-		}
-
-		if (new Date(startDate) > new Date(this.state.endDate)) {
-			this.setState({
-				endDate: startDate,
-			});
-		}
-
-		this.setState({
-			startDate,
-			minEndDate: startDate, 
-			endDateValidated: true
-		});
-	}
-
-	/**
-	 * The callback function from the endDate date picker
-	 * 
-	 * @param {String} endDate The end date selected by the user
-	 */
-	endDateOnDateChange = (endDate) => {
-		this.setState({
-			endDate,
-			maxStartDate: endDate,
-		});
-	}
-
-	/**
 	 * Checks if the user has entered an end date
 	 */
-	validateDates = () => {
+	fieldValidation = () => {
 		let validated = true;
-
-		if (this.state.disabledEndDate === true) {
-			this.setState({endDateValidated: false});
-			validated = false;
-		} else {
-			this.setState({endDateValidated: true});
-		}
 
 		if (this.state.checked === 'none') {
 			this.setState({schoolValidated: false});
@@ -128,7 +78,7 @@ class SchoolInformation extends React.PureComponent {
 	 * Saves the information into redux and goes back to the previous screen if it's validated
 	 */
 	saveInformation = () => {
-		if (this.validateDates()) {
+		if (this.fieldValidation()) {
 			this.props.dispatch(setSchoolInformation(this.state));
 			let temp = this.props.navigation.state.params;
 
@@ -149,7 +99,7 @@ class SchoolInformation extends React.PureComponent {
 	}
 
 	render() {
-		const { containerHeight, startDate, minStartDate, maxStartDate, minEndDate, endDate, disabledEndDate, endDateValidated, checked, schoolValidated } = this.state;
+		const { containerHeight, startDate, endDate, checked, schoolValidated } = this.state;
 
 		return (
 			<View style={styles.container}>
@@ -170,7 +120,7 @@ class SchoolInformation extends React.PureComponent {
 								color={dark_blue}/>
 						</View>
 
-						<View style={styles.bottomContent}>
+						<View>
 							<View style={styles.school}> 
 								<Text style={styles.subHeader}>{this.strings.institution}</Text>
 
@@ -274,18 +224,15 @@ class SchoolInformation extends React.PureComponent {
 										style={{width:140}}
 										customStyles={{
 											dateInput:{borderWidth: 0}, 
-											dateText:{
-												fontFamily: 'OpenSans-Regular',
-												color: !endDateValidated ? red : gray
-											}
+											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
-										placeholder={startDate}
 										format="ddd., MMM DD, YYYY"
-										minDate={minStartDate}
-										maxDate={maxStartDate}
 										confirmBtnText={this.strings.confirmButton}
 										cancelBtnText={this.strings.cancelButton}
-										onDateChange={this.startDateOnDateChange} />
+										onDateChange={(startDate) => {
+											this.setState({startDate,
+												endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)});
+										}} />
 								</View>
 								
 								<View style={styles.date}>
@@ -297,32 +244,22 @@ class SchoolInformation extends React.PureComponent {
 										date={endDate} 
 										mode="date" 
 										style={{width:140}}
-										disabled = {disabledEndDate}
-										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
+										customStyles={{ 
 											dateInput:{borderWidth: 0}, 
-											dateText:{
-												fontFamily: 'OpenSans-Regular', 
-												color: !endDateValidated ? red : gray,
-												textDecorationLine: disabledEndDate ? 'line-through' : 'none'}}} 
-										placeholder={endDate} 
-										format="ddd., MMM DD, YYYY" 
-										minDate={minEndDate}
+											dateText:{fontFamily: 'OpenSans-Regular'}
+										}}
+										format="ddd., MMM DD, YYYY"
 										confirmBtnText={this.strings.confirmButton}
 										cancelBtnText={this.strings.cancelButton}
-										onDateChange={this.endDateOnDateChange} />
+										onDateChange={(endDate) => {
+											this.setState({endDate,
+												startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)});
+										}} />
 								</View>
-
-								{ 
-									endDateValidated ?
-										null
-										:
-										<Text style={styles.error}>{this.strings.noDuration}</Text>
-								}
 							</View>
 						</View>
 
-						<View style={{marginBottom:20}}>
+						<View>
 							<BottomButtons twoButtons={false} 
 								buttonText={[this.buttonStrings.done]}
 								buttonMethods={[this.saveInformation]}

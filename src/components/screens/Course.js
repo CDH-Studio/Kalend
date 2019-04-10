@@ -10,8 +10,8 @@ import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { getStartDate, getStrings } from '../../services/helper';
-import { courseStyles as styles, statusBlueColor, gray, dark_blue, blue, white } from '../../styles';
+import { getStartDate, timeVerification, getStrings } from '../../services/helper';
+import { courseStyles as styles, statusBlueColor, dark_blue, blue, white } from '../../styles';
 
 const moment = require('moment');
 
@@ -46,12 +46,11 @@ class Course extends React.PureComponent {
 
 		this.state = { 
 			containerHeight,
+			summary: '',
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
 			startTime: moment().format('h:mm A'),
 			endTime: moment().format('h:mm A'),
-			disabledEndTime: true,
-			summary: '',
 			location: ''
 		};
 
@@ -60,6 +59,8 @@ class Course extends React.PureComponent {
 
 	componentWillMount() {
 		this.resetField();
+		//In order to modify the courses taken from OCR
+		//TODO: Convert to moment.js
 		if (this.props.navigation.state.routeName !== CourseRoute) {
 			this.setState({...this.props.CourseState});
 
@@ -76,106 +77,16 @@ class Course extends React.PureComponent {
 			if ('start' in this.props.CourseState && !('startTime' in this.props.CourseState)) {
 				this.setState({startTime: this.convertTimeWithSeconds(new Date(this.props.CourseState.start.dateTime).toLocaleTimeString())});
 			}
-
-			this.setState({disabledEndTime: false});
 		}	
 	}
 
-	/**
-	 * Enables endTime and sets it to the startTime
-	 */
-	enableEndTime() {
-		if (this.state.disabledEndTime === true) {
-			this.setState({endTime: this.state.startTime});
-			return false;
-		} else {
-			//do nothing
-		}
-	}
-
-	/**
-	 * Analyzes the input times and make sure the ranges make sense
-	 * 
-	 * @param {String} startTime The start time received from the time dialog
-	 * @param {String} endTime The end time received from the time dialog
-	 */
-	beforeStartTime = (startTime, endTime) => {
-		let startCheck = true;
-
-		// Check if an end time has been specified, if not, use the state end time
-		if (endTime === undefined) {
-			endTime = this.state.endTime;
-		}
-
-		// Check if a start time has been specified, if not, use the state start time
-		// and specify that the startTime wasn't given by changing the variable startCheck
-		if (startTime === undefined) {
-			startTime = this.state.startTime;
-			startCheck = false;
-		}
-
-		// Fix the undefined bug if you haven't set the end time (since the seconds are included in the time)
-		if (endTime.split(':').length === 3) {
-			endTime = this.convertTimeWithSeconds(endTime);
-		}
-
-		// Analyzes the start time, and converts it to a date
-		let start = this.getDateObject(startTime);
-
-		// End Time
-		let end = this.getDateObject(endTime);
-
-		// Comparing start and end time
-		if (startCheck) {
-			if (start > end) {
-				return startTime;
-			} else {
-				return endTime;
-			}
-		} else {
-			if (end < start) {
-				return endTime;
-			} else {
-				return startTime;
-			}
-		}
-	}
-
+	//TODO: Remove if moment is applied in componentWillMount
 	convertTimeWithSeconds = (time) => {
 		let endTimeSplit = time.split(':');
 		let endTimeSplitSpace = time.split(' ');
 
 		time = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
 		return time;
-	}
-
-	/**
-	 * Converts a string formatted like ##:## PM or AM to a JavaScript object
-	 * 
-	 * @param {String} time The string representing the time
-	 * 
-	 * @returns {Date} The JavaScript date object equivalent of the string
-	 */
-	getDateObject = (time) => {
-		// Gets the AM/PM
-		let tempTime = time.split(' ');
-		let isPm = tempTime[1].trim().toLowerCase() === 'pm';
-
-		// Gets the hours and minutes
-		let timeContent = tempTime[0].split(':');
-		let hours = parseInt(timeContent[0]);
-		let minutes = parseInt(timeContent[1]);
-
-		// Adds 12 hours if its PM and not equal to 12
-		if (isPm && hours !== 12) {
-			hours += 12;
-		}
-
-		// Creates a JavaScript object
-		let date = new Date();
-		date.setHours(hours, minutes);
-
-		return date;
 	}
 
 	/**
@@ -208,7 +119,7 @@ class Course extends React.PureComponent {
 	}
 
 	/**
-	 * Validates the CourseCode and EndTime fields
+	 * Validates the CourseCode field
 	 */
 	fieldValidation = () => {
 		let validated = true;
@@ -218,13 +129,6 @@ class Course extends React.PureComponent {
 			validated = false;
 		} else {
 			this.setState({courseCodeValidated: true});
-		}
-		
-		if (this.state.disabledEndTime === true) {
-			this.setState({endTimeValidated: false});
-			validated = false;
-		} else {
-			this.setState({endTimeValidated: true});
 		}
 
 		return validated;
@@ -297,13 +201,7 @@ class Course extends React.PureComponent {
 		});
 	}
 
-	getNextWeekdayDate = () => {
-		let date = new Date();
-		date.setDate(date.getDate() + ((7-date.getDay())%7+this.days.indexOf(this.state.dayOfWeek)) % 7);
-
-		return date;
-	}
-
+	//TODO: Comment function
 	getDateFromTimeString = (timeString, currentDate) => {
 		let currentMoment = new moment(currentDate);
 		let timeMoment = new moment(timeString, 'h:mm A');
@@ -325,9 +223,6 @@ class Course extends React.PureComponent {
 			dayOfWeekValue: 'Monday',
 			startTime: moment().format('h:mm A'),
 			endTime: moment().format('h:mm A'),
-			minEndTime: moment().format('h:mm A'),
-			disabledEndTime: true,
-			endTimeValidated: true,
 			location: '',
 			snackbarVisible: false,
 			snackbarText: '',
@@ -336,6 +231,7 @@ class Course extends React.PureComponent {
 		});
 	}
 
+	//TODO: Comment function
 	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
 		const scrollResponder = this.refs._scrollView.getScrollResponder();
 		const inputHandle = findNodeHandle(inputFieldRef);
@@ -353,19 +249,12 @@ class Course extends React.PureComponent {
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorCourseCode;
-		let errorEndTime;
 		let showNextButton = true;
 
 		if (!this.state.courseCodeValidated) {
 			errorCourseCode = <Text style={styles.errorCourseCode}>{this.strings.courseCodeEmpty}</Text>;
 		} else {
 			errorCourseCode = null;
-		}
-
-		if (!this.state.endTimeValidated) {
-			errorEndTime = <Text style={styles.errorEndTime}>{this.strings.timeEmpty}</Text>;
-		} else {
-			errorEndTime = null;
 		}
 		
 		if (this.props.navigation.state.routeName === CourseRoute) {
@@ -446,7 +335,7 @@ class Course extends React.PureComponent {
 									}
 								</View>
 							</View>
-							<View style={styles.timeSection}>
+							<View>
 								<View style={styles.time}>
 									<Text style={styles.blueTitle}>{this.strings.startTime}</Text>
 									<DatePicker showIcon={false} 
@@ -454,10 +343,7 @@ class Course extends React.PureComponent {
 										mode="time" 
 										customStyles={{
 											dateInput:{borderWidth: 0}, 
-											dateText:{
-												fontFamily: 'OpenSans-Regular',
-												color:!this.state.endTimeValidated ? '#ff0000' : gray
-											}
+											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
 										format="h:mm A" 
 										confirmBtnText={this.strings.confirmButton}
@@ -465,34 +351,29 @@ class Course extends React.PureComponent {
 										locale={'US'}
 										is24Hour={false}
 										onDateChange={(startTime) => {
-											this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(startTime, undefined)});
-											this.setState({disabledEndTime: this.enableEndTime()});
+											this.setState({startTime,
+												endTime: timeVerification(startTime, this.state.endTime, this.state.endTime)});
 										}} />
 								</View>
 
-								<View>
-									<View style={styles.time}>
-										<Text style={styles.blueTitle}>{this.strings.endTime}</Text>
-										<DatePicker showIcon={false} 
-											date={this.state.endTime} 
-											mode="time" 
-											disabled= {this.state.disabledEndTime}
-											customStyles={{
-												disabled:{backgroundColor: 'transparent'}, 
-												dateInput:{borderWidth: 0}, 
-												dateText:{fontFamily: 'OpenSans-Regular',
-													color: !this.state.endTimeValidated ? '#ff0000' : gray,
-													textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}, 
-											}}
-											format="h:mm A" 
-											confirmBtnText={this.strings.confirmButton}
-											cancelBtnText={this.strings.cancelButton}
-											locale={'US'}
-											is24Hour={false}
-											onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, endTime)})}/>
-									</View>
-
-									{errorEndTime}
+								<View style={styles.time}>
+									<Text style={styles.blueTitle}>{this.strings.endTime}</Text>
+									<DatePicker showIcon={false} 
+										date={this.state.endTime} 
+										mode="time"
+										customStyles={{
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular'}, 
+										}}
+										format="h:mm A"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										locale={'US'}
+										is24Hour={false}
+										onDateChange={(endTime) => {
+											this.setState({endTime,
+												startTime: timeVerification(this.state.startTime, endTime, this.state.startTime)});
+										}} />
 								</View>
 							</View>
 
