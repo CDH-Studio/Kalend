@@ -10,17 +10,25 @@ import { setSchoolInformation } from '../../actions';
 import { RadioButton } from 'react-native-paper';
 import { SchoolScheduleRoute, CourseRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
+import { dateVerification, getStrings } from '../../services/helper';
 import { ScrollView } from 'react-native-gesture-handler';
 
+const moment = require('moment');
 const viewHeight = 584;
 
 class SchoolInformation extends React.PureComponent {
-	static navigationOptions = {
-		title: 'Set School Information',
-		headerTintColor: dark_blue,
-		headerStyle: {
-			backgroundColor: white,
-		}
+
+	strings = getStrings().SchoolInformation;
+	buttonStrings = getStrings().BottomButtons;
+
+	static navigationOptions =  ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTintColor: dark_blue,
+			headerStyle: {
+				backgroundColor: white,
+			}
+		};
 	}
 
 	constructor(props) {
@@ -32,13 +40,8 @@ class SchoolInformation extends React.PureComponent {
 		this.state = {
 			containerHeight,
 
-			startDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-	
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
+			startDate: moment().format('ddd., MMM DD, YYYY'),
+			endDate: moment().format('ddd., MMM DD, YYYY'),
 
 			schoolValidated: true,
 
@@ -46,66 +49,20 @@ class SchoolInformation extends React.PureComponent {
 			otherSchool: ''
 		};
 
-		// Updates the navigation location in redux
 		updateNavigation('SchoolInformation', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
-		// Loads the information from the state, if there are some info
 		if (this.props.SchoolInformationReducer && this.props.SchoolInformationReducer.info && this.props.SchoolInformationReducer.info.info ) {
 			this.setState({...this.props.SchoolInformationReducer.info.info});
 		}
 	}
 
 	/**
-	 * The callback function from the startDate date picker
-	 * 
-	 * @param {String} startDate The start date selected by the user
-	 */
-	startDateOnDateChange = (startDate) => {
-		if (this.state.disabledEndDate) {
-			this.setState({
-				disabledEndDate: false,
-			});
-		}
-
-		if (new Date(startDate) > new Date(this.state.endDate)) {
-			this.setState({
-				endDate: startDate,
-			});
-		}
-
-		this.setState({
-			startDate,
-			minEndDate: startDate, 
-			endDateValidated: true
-		});
-	}
-
-	/**
-	 * The callback function from the endDate date picker
-	 * 
-	 * @param {String} endDate The end date selected by the user
-	 */
-	endDateOnDateChange = (endDate) => {
-		this.setState({
-			endDate,
-			maxStartDate: endDate,
-		});
-	}
-
-	/**
 	 * Checks if the user has entered an end date
 	 */
-	validateDates = () => {
+	fieldValidation = () => {
 		let validated = true;
-
-		if (this.state.disabledEndDate === true) {
-			this.setState({endDateValidated: false});
-			validated = false;
-		} else {
-			this.setState({endDateValidated: true});
-		}
 
 		if (this.state.checked === 'none') {
 			this.setState({schoolValidated: false});
@@ -121,16 +78,16 @@ class SchoolInformation extends React.PureComponent {
 	 * Saves the information into redux and goes back to the previous screen if it's validated
 	 */
 	saveInformation = () => {
-		if (this.validateDates()) {
+		if (this.fieldValidation()) {
 			this.props.dispatch(setSchoolInformation(this.state));
 			let temp = this.props.navigation.state.params;
 
 			if (temp) {
 				if (temp.schoolSchedule || temp.reviewEvent) {
 					if (this.state.checked === 'third') {
-						this.props.navigation.navigate(CourseRoute);
+						this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle, editTitle: getStrings().Course.editTitle});
 					} else {
-						this.props.navigation.navigate(SchoolScheduleRoute);
+						this.props.navigation.navigate(SchoolScheduleRoute, {title: getStrings().SchoolSchedule.title});
 					}
 				} else {
 					this.props.navigation.pop();
@@ -142,7 +99,7 @@ class SchoolInformation extends React.PureComponent {
 	}
 
 	render() {
-		const { containerHeight, startDate, minStartDate, maxStartDate, minEndDate, endDate, disabledEndDate, endDateValidated, checked, schoolValidated } = this.state;
+		const { containerHeight, startDate, endDate, checked, schoolValidated } = this.state;
 
 		return (
 			<View style={styles.container}>
@@ -156,16 +113,16 @@ class SchoolInformation extends React.PureComponent {
 						console.log(height);
 					}}>
 						<View style={styles.instruction}>
-							<Text style={styles.text}>Please enter the information about your current semester</Text>
+							<Text style={styles.text}>{this.strings.description}</Text>
 							
 							<MaterialIcons name="info-outline"
 								size={130}
 								color={dark_blue}/>
 						</View>
 
-						<View style={styles.bottomContent}>
+						<View>
 							<View style={styles.school}> 
-								<Text style={styles.subHeader}>Post-Secondary Institution</Text>
+								<Text style={styles.subHeader}>{this.strings.institution}</Text>
 
 								<View>
 									<View style={styles.radioButton}>
@@ -189,7 +146,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												Carleton University
+												{this.strings.carletonU}
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -215,7 +172,7 @@ class SchoolInformation extends React.PureComponent {
 											this.refs._other.blur();
 										}}>
 											<Text style={[styles.smallText, {color: schoolValidated ? null : red}]}>
-												University of Ottawa
+												{this.strings.uOttawa}
 											</Text>
 										</TouchableOpacity>
 									</View>
@@ -232,7 +189,7 @@ class SchoolInformation extends React.PureComponent {
 												});
 												this.refs._other.focus();
 											}} />
-										<TextInput placeholder="Other"
+										<TextInput placeholder={this.strings.other}
 											ref="_other"
 											style={styles.otherInput}
 											maxLength={1024}
@@ -248,17 +205,17 @@ class SchoolInformation extends React.PureComponent {
 										schoolValidated ?
 											null
 											:
-											<Text style={styles.error}>Please select an institution</Text>
+											<Text style={styles.error}>{this.strings.noInstitution}</Text>
 									}
 								</View>
 							</View>
 
 							<View style={styles.duration}>
-								<Text style={styles.subHeader}>Semester Duration</Text>
+								<Text style={styles.subHeader}>{this.strings.duration}</Text>
 								
 								<View style={styles.date}>
 									<Text style={styles.blueTitle}>
-										Start
+										{this.strings.start}
 									</Text>
 									
 									<DatePicker showIcon={false} 
@@ -267,57 +224,44 @@ class SchoolInformation extends React.PureComponent {
 										style={{width:140}}
 										customStyles={{
 											dateInput:{borderWidth: 0}, 
-											dateText:{
-												fontFamily: 'OpenSans-Regular',
-												color: !endDateValidated ? red : gray
-											}
+											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
-										placeholder={startDate}
 										format="ddd., MMM DD, YYYY"
-										minDate={minStartDate}
-										maxDate={maxStartDate}
-										confirmBtnText="Confirm"
-										cancelBtnText="Cancel"
-										onDateChange={this.startDateOnDateChange} />
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										onDateChange={(startDate) => {
+											this.setState({startDate,
+												endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)});
+										}} />
 								</View>
 								
 								<View style={styles.date}>
 									<Text style={styles.blueTitle}>
-										End
+										{this.strings.end}
 									</Text>
 
 									<DatePicker showIcon={false} 
 										date={endDate} 
 										mode="date" 
 										style={{width:140}}
-										disabled = {disabledEndDate}
-										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
+										customStyles={{ 
 											dateInput:{borderWidth: 0}, 
-											dateText:{
-												fontFamily: 'OpenSans-Regular', 
-												color: !endDateValidated ? red : gray,
-												textDecorationLine: disabledEndDate ? 'line-through' : 'none'}}} 
-										placeholder={endDate} 
-										format="ddd., MMM DD, YYYY" 
-										minDate={minEndDate}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
-										onDateChange={this.endDateOnDateChange} />
+											dateText:{fontFamily: 'OpenSans-Regular'}
+										}}
+										format="ddd., MMM DD, YYYY"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										onDateChange={(endDate) => {
+											this.setState({endDate,
+												startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)});
+										}} />
 								</View>
-
-								{ 
-									endDateValidated ?
-										null
-										:
-										<Text style={styles.error}>Please select a Start and End date</Text>
-								}
 							</View>
 						</View>
 
-						<View style={{marginBottom:20}}>
+						<View>
 							<BottomButtons twoButtons={false} 
-								buttonText={['Done']}
+								buttonText={[this.buttonStrings.done]}
 								buttonMethods={[this.saveInformation]}
 							/>
 						</View>

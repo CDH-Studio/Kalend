@@ -1,17 +1,19 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert, Modal, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { IconButton, Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CustomTabs } from 'react-native-custom-tabs';
 import { Header } from 'react-navigation';
-import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, dark_blue } from '../../styles';
+import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
+import { settingsStyles as styles, blue, dark_blue, gray } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteEvent, listEvents } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
-import { clearEveryReducer } from '../../services/helper';
+import { clearEveryReducer, getStrings } from '../../services/helper';
+import { setLanguage } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 
 import SafariView from 'react-native-safari-view';
@@ -19,6 +21,8 @@ import SafariView from 'react-native-safari-view';
 const viewHeight = 669.1428833007812;
 
 class Settings extends React.PureComponent {
+
+	strings = getStrings().Settings;
 
 	static navigationOptions = ({navigation}) => ({
 		headerRight: (__DEV__ ? <IconButton
@@ -39,7 +43,10 @@ class Settings extends React.PureComponent {
 			showEventsColorPicker: false,
 			snackbarVisible: false,
 			snackbarText: '',
-			snackbarTime: 3000
+			snackbarTime: 3000,
+			containerHeight,
+			languageDialogVisible: false,
+			showEventsColorPicker: false
 		};
 
 		// Updates the navigation location in redux
@@ -119,21 +126,21 @@ class Settings extends React.PureComponent {
 								size={30}
 								color={blue} />
 								
-							<Text style={styles.title}>Profile</Text>
+							<Text style={styles.title}>{this.strings.profile}</Text>
 						</View>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.props.navigation.navigate(UnavailableRoute);
+								this.props.navigation.navigate(UnavailableRoute, {title: getStrings().UnavailableHours.title});
 							}}>
-							<Text style={styles.buttonText}>Set Unavailable Hours</Text>
+							<Text style={styles.buttonText}>{this.strings.unavailableHours}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.props.navigation.navigate(SchoolInformationRoute);
+								this.props.navigation.navigate(SchoolInformationRoute, {title: getStrings().SchoolInformation.title});
 							}}>
-							<Text style={styles.buttonText}>Set School Information</Text>
+							<Text style={styles.buttonText}>{this.strings.schoolInformation}</Text>
 						</TouchableOpacity>
 
 						<View style={styles.titleRow}>
@@ -141,12 +148,69 @@ class Settings extends React.PureComponent {
 								size={30}
 								color={blue} />
 
-							<Text style={styles.title}>Preferences</Text>
+							<Text style={styles.title}>{this.strings.preferences}</Text>
 						</View>
 
 						<TouchableOpacity style={styles.button}
+							onPress={() => this.setState({languageDialogVisible: true})}>
+							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
+						</TouchableOpacity>
+
+						<Modal visible={this.state.languageDialogVisible}
+							transparent={true}
+							onRequestClose={() => {
+								//do nothing;
+							}}
+							animationType={'none'}>
+							<TouchableOpacity style={styles.modalView} 
+								onPress={() => this.setState({languageDialogVisible: false})}
+								activeOpacity={1}>
+								<TouchableWithoutFeedback>
+									<View style={styles.languageDialogContent}>
+										<View style={styles.languageDialogMainRow}>
+											<MaterialIcons name="language"
+												size={80}
+												color={gray} />
+
+											<View style={styles.languagerDialogRightCol}>
+												<Text style={styles.languageDialogQuestion}>{this.strings.changeLanguage}</Text>
+
+												<View style={styles.languageDialogOptions}>
+													<TouchableOpacity onPress={() => this.setState({languageDialogVisible: false})}>
+														<Text style={styles.languageDialogCancel}>{this.strings.cancel}</Text>
+													</TouchableOpacity>
+
+													<TouchableOpacity onPress={() => {
+														this.props.dispatch(setLanguage(this.props.language === 'en' ? 'fr' : 'en'));
+
+														this.setState({languageDialogVisible: false});
+
+														setTimeout(() => { 
+															RNRestart.Restart();
+														}, 50);
+													}}>
+														<Text style={styles.languageDialogYes}>{this.strings.yes}</Text>
+													</TouchableOpacity>
+												</View>
+											</View>
+										</View>
+									</View>
+								</TouchableWithoutFeedback>
+							</TouchableOpacity>
+						</Modal>
+
+						<TouchableOpacity style={styles.button}>
+							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity style={styles.button}
+							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute)}>
+							<Text style={styles.buttonText}>Modify who can see your calendar</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity style={styles.button}
 							onPress={() => this.setState({showEventsColorPicker: true})}>
-							<Text style={styles.buttonText}>Theme</Text>
+							<Text style={styles.buttonText}>{this.strings.theme}</Text>
 						</TouchableOpacity>
 
 						<View style={styles.titleRow}>
@@ -154,18 +218,18 @@ class Settings extends React.PureComponent {
 								size={30}
 								color={blue} />
 
-							<Text style={styles.title}>General</Text>
+							<Text style={styles.title}>{this.strings.general}</Text>
 						</View>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
 								this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/FAQ');
 							}}>
-							<Text style={styles.buttonText}>FAQ</Text>
+							<Text style={styles.buttonText}>{this.strings.help}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Reload Tutorial</Text>
+							<Text style={styles.buttonText}>{this.strings.tutorial}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -209,14 +273,14 @@ class Settings extends React.PureComponent {
 									{cancelable: true}
 								);
 							}}>
-							<Text style={styles.buttonText}>Clear/Delete Calendar</Text>
+							<Text style={styles.buttonText}>{this.strings.deleteCalendar}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button} 
 							onPress={()=>{
 								this.showWebsite('https://cdhstudio.ca/');
 							}}>
-							<Text style={styles.buttonText}>CDH Studio</Text>
+							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
@@ -225,17 +289,17 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={this.logout}>
-							<Text style={styles.buttonLogOutText}>Log out</Text>
+							<Text style={styles.buttonLogOutText}>{this.strings.logout}</Text>
 						</TouchableOpacity>
 
-						<Text style={styles.version}>Version 0.2.0</Text>
+						<Text style={styles.version}>{this.strings.version}</Text>
 
 						<View style={styles.privacyContainer}>
 							<TouchableOpacity style={styles.privacy}
 								onPress={() => {
 									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
 								}}>
-								<Text style={styles.privacyText}>Privacy Policy</Text>
+								<Text style={styles.privacyText}>{this.strings.privacyPolicy}</Text>
 							</TouchableOpacity>
 
 							<Text style={styles.privacyText}>   |   </Text>
@@ -263,14 +327,15 @@ class Settings extends React.PureComponent {
 }
 
 let mapStateToProps = (state) => {
-	const { HomeReducer, CalendarReducer } = state;
+	const { HomeReducer, CalendarReducer, SettingsReducer } = state;
 
 	let hasUserInfo = HomeReducer.profile != null;
 
 	return {
 		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
 		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user',
-		calendarId: CalendarReducer.id
+		calendarId: CalendarReducer.id,
+		language: SettingsReducer.language
 	};
 };
 
