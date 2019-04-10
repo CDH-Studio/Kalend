@@ -4,6 +4,7 @@ import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import {setUnavailableHours} from '../../actions';
+import { storeUserHours } from '../../services/api/storage_services'
 import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { unavailableHoursStyles as styles, white, blue, gray, statusBlueColor, dark_blue } from '../../styles';
@@ -139,12 +140,29 @@ class UnavailableHours extends React.PureComponent {
 		if (!validated) {
 			return;
 		}
+		let data = this.formatDataForServer();
 
 		this.props.dispatch(setUnavailableHours(this.state));
+		storeUserHours(data).then(success => {
+			if(success) this.props.navigation.pop();
+		});
 		
-		this.props.navigation.pop();
 	}
 	
+	formatDataForServer = () => {
+		let data = []
+		if (this.state.commutingWeek) data.push({'START': this.state.startCommuteWeek, 'END': this.state.endCommuteWeek, 'WEEK': true, 'CATEGORY': 'COMMUTE'});
+		if (this.state.commutingWeekEnd) data.push({'START': this.state.startCommuteWeekEnd, 'END': this.state.endCommuteWeekEnd, 'WEEK': false, 'CATEGORY': 'COMMUTE'});
+		if (this.state.otherWeek) data.push({'START': this.state.startOtherWeek, 'END': this.state.endOtherWeek, 'WEEK': true, 'CATEGORY': 'OTHER'});
+		if (this.state.otherWeekEnd) data.push({'START': this.state.startOtherWeekEND, 'END': this.state.endOtherWeekEND, 'WEEK': false, 'CATEGORY': 'OTHER'});
+		if (this.state.sleepWeek) data.push({'START': this.state.startSleepWeek, 'END':this.state.endSleepWeek, 'WEEK': true, 'CATEGORY': 'SLEEP'});
+		if (this.state.sleepWeekEnd) data.push({'START': this.state.startSleepWeekEnd, 'END': this.state.endSleepWeekEnd, 'WEEK': false, 'CATEGORY': 'SLEEP'});
+		if (this.state.eatingWeek) data.push({'START': this.state.startEatingWeek, 'END': this.state.startEatingWeek, 'WEEK': true, 'CATEGORY': 'EATING'});
+		if (this.state.eatingWeekEnd) data.push({'START': this.state.startEatingWeekEnd, 'END': this.state.endEatingWeekEnd, 'WEEK': false, 'CATEGORY': 'EATING'});
+			
+		return data;
+	}
+
 	render() {
 		let hourTypes = [
 			'sleepWeek',
