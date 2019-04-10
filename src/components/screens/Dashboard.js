@@ -6,7 +6,7 @@ import { Snackbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, white, dark_blue, black, statusBarDark } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
