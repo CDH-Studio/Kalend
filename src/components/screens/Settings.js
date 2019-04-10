@@ -7,7 +7,7 @@ import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, gray } from '../../styles';
+import { settingsStyles as styles, blue, gray, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
@@ -18,15 +18,11 @@ const viewHeight = 669.1428833007812;
 
 class Settings extends React.PureComponent {
 
+	static navigationOptions = {
+		header: null
+	}
+	
 	strings = getStrings().Settings;
-
-	static navigationOptions = ({navigation}) => ({
-		headerRight: (__DEV__ ? <IconButton
-			icon="delete"
-			onPress={() => navigation.navigate(CleanReducersRoute)}
-			size={20}
-			color={blue}/> : null)
-	});
 
 	constructor(props) {
 		super(props);
@@ -54,8 +50,8 @@ class Settings extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-					backgroundColor={'#166489'} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={statusBarDark} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
 					dismiss={() => this.dismiss()}/>
@@ -72,6 +68,18 @@ class Settings extends React.PureComponent {
 								{this.props.userName}
 							</Text>
 						</View>
+						
+						
+						
+						{
+							__DEV__ ?
+								<View style={styles.titleRow}> 
+									<IconButton icon="delete"
+										onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
+										size={20}
+										color={blue}/> 
+								</View>: null
+						}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
