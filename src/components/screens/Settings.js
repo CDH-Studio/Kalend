@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert, Modal, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { IconButton, Snackbar } from 'react-native-paper';
+import { Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -116,23 +116,16 @@ class Settings extends React.PureComponent {
 						<View style={styles.topProfileContainer}>
 							<View style={styles.profileIconContainer}>
 								<Image style={styles.profileImage}
-									source={{uri: this.props.profileImage}} />
+									source={{uri: this.props.profileImage}}/>
 							</View>
 
-							<Text style={styles.profileDescription}>
+							<Text style={styles.profileDescription}
+								onPress={() => {
+									if (__DEV__) this.props.navigation.navigate(CleanReducersRoute);
+								}} >
 								{this.props.userName}
 							</Text>
 						</View>
-						
-						{
-							__DEV__ ?
-								<View style={styles.titleRow}> 
-									<IconButton icon="delete"
-										onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
-										size={20}
-										color={blue}/> 
-								</View>: null
-						}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
