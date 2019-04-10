@@ -31,22 +31,22 @@ class Home extends React.PureComponent {
 	 */
 	setUser = (userInfo) => {
 		this.props.logonUser(userInfo);
-		this.setCalendar().then(id => {
-			userInfo.calendarID = id;
-			storeUserInfoService(userInfo)
-				.then(res => res.json())
-				.then((success) => {
-					if (success) {
-						this.props.logonUser(userInfo);
-						this.props.navigation.navigate(DashboardNavigator);
-					} else {
-						alert('There was an error setting Users data');
-					}
-				})
-				.catch((err) => {
-					console.log('err', err);
-				});
-		});
+		storeUserInfoService(userInfo)
+			.then(res => res.json())
+			.then((success) => {
+				if (success) {
+					this.props.logonUser(userInfo);
+					this.setCalendar().then(id => {
+						updateUser({values:[id], columns:['CALENDARID']});
+						this.props.navigation.navigate(DashboardNavigator);	
+					});
+				} else {
+					alert('There was an error setting Users data');
+				}
+			})
+			.catch((err) => {
+				console.log('err', err);
+			});
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Home extends React.PureComponent {
 		return new Promise( async (resolve, reject) =>  {
 			await getCalendarID2()
 				.then( data => {
-					if (data === undefined) {
+					if (data.calendarID === undefined) {
 						createCalendar()
 							.then(id => {
 								this.props.setCalendarID(id);

@@ -1,6 +1,7 @@
 import { getEventsInstances } from './google_calendar';
 import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
+
 const moment = require('moment');
 
 export const convertToDictionary  = (data) => {
@@ -15,21 +16,18 @@ export const convertToDictionary  = (data) => {
 	return dict; 
 };
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
 export const convertEventsToDictionary  = async (data) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let dict = {};
 
 	if (data == undefined) return;
 
-	await data.forEach(async (event) => {
+	data.forEach(async (event) => {
 		if (event.RECURRENCE) {
 			// Get all recurring events if it has recurrence
 			await getEventsInstances(calendarID, event.ID).then(async instances => {
 				let tempEvent = event;
-				
+
 				instances.items.forEach(eventRec => {
 					let item = {};
 					item.category = tempEvent.CATEGORY;

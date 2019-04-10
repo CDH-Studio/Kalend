@@ -496,12 +496,13 @@ export const getDataforDashboard = async () => {
 			getEvents()
 				.then(res => res.json())
 				.then((events) => {
-				if(events.length != 0) {
-					convertEventsToDictionary(events).then(dict => {
-						if(dict == undefined) reject('There was an error in converting data to dict');
-						resolve(dict);
-					});
-				}
+					
+					if(events.length != 0) {
+						convertEventsToDictionary(events).then(dict => {
+							if(dict == undefined) reject('There was an error in converting data to dict');
+							resolve(dict);
+						});
+					}
 			});
 	});
 };

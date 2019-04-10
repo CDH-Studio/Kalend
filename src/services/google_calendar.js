@@ -13,9 +13,7 @@ import { getUserValuesService  } from './api/storage_services';
 
 	
 let apiHelperCall = async (URL, method, body, query) => {
-	let userID = store.getState().HomeReducer.profile.profile.user.id;
-	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN'], userID}).then(res => res.json())
-	console.log('tokenData', tokenData);
+	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN']}).then(res => res.json())
 	let accessToken = tokenData.ACCESSTOKEN;
 
 	let fetchData = {
