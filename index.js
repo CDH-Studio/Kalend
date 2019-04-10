@@ -32,6 +32,7 @@ import SchoolInformation from './src/components/screens/SchoolInformation';
 import CleanReducers from './src/components/screens/CleanReducers';
 import CalendarPermission from './src/components/screens/CalendarPermission';
 import { blue, dark_blue, white } from './src/styles.js';
+import { getStrings } from './src/services/helper';
 
 const theme = {
 	...DefaultTheme,
@@ -59,6 +60,7 @@ const dashboardInnerScreenOptions = {
 		backgroundColor: blue,
 		marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
 	},
+	headerBackTitle: null
 };
 
 const DashboardNavigator = createBottomTabNavigator(
@@ -68,16 +70,18 @@ const DashboardNavigator = createBottomTabNavigator(
 				Dashboard: {
 					screen: Dashboard,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: 'Home'
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
-			navigationOptions: {
-				tabBarIcon: ({ focused, tintColor }) => {
-					const iconName = `home-variant${focused ? '' : '-outline'}`;
-					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
-				},
+			navigationOptions: ({navigation}) => {
+				return {
+					title: store.getState().BottomNavReducer.dashboardTitle,
+					tabBarIcon: ({ focused, tintColor }) => {
+						const iconName = `home-variant${focused ? '' : '-outline'}`;
+						return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
+					},
+				};
 			}
 		},
 		Chatbot: {
@@ -85,52 +89,51 @@ const DashboardNavigator = createBottomTabNavigator(
 				Chatbot: {
 					screen: Chatbot,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: 'Chatbot'
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
-			navigationOptions: {
+			navigationOptions: ({navigation}) => ({
+				title: store.getState().BottomNavReducer.chatbotTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `chat-bubble${focused ? '' : '-outline'}`;
 					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
 				},
-			}
+			})
 		},
 		CompareSchedule: {
 			screen: createStackNavigator({
 				CompareSchedule: {
 					screen: CompareSchedule,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: 'Compare Schedules'
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
-			navigationOptions: {
-				title: 'Compare',
+			navigationOptions: ({navigation}) => ({
+				title: store.getState().BottomNavReducer.compareTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `people${focused ? '' : '-outline'}`;
 					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
 				},
-			}
+			})
 		},
 		Settings: {
 			screen: createStackNavigator({
 				Settings: {
 					screen: Settings,
 					navigationOptions: {
-						...dashboardInnerScreenOptions,
-						title: 'Settings'
+						...dashboardInnerScreenOptions
 					}
 				}
 			}),
-			navigationOptions: {
+			navigationOptions: ({navigation}) => ({
+				title: store.getState().BottomNavReducer.settingsTitle,
 				tabBarIcon: ({ focused, tintColor }) => {
 					const iconName = `settings${focused ? '' : '-outline'}`;
 					return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
 				},
-			}
+			})
 		}
 	},
 	{
@@ -142,7 +145,8 @@ const DashboardNavigator = createBottomTabNavigator(
 );
 
 DashboardNavigator.navigationOptions = {
-	header: null
+	header: null,
+	headerBackTitle: null,
 };
 
 const DashboardOptionsNavigatorOptions = {
@@ -152,7 +156,8 @@ const DashboardOptionsNavigatorOptions = {
 	},
 	headerStyle: {
 		marginTop: StatusBar.currentHeight
-	}
+	},
+	headerBackTitle: null,
 };
 
 const DashboardOptionsNavigator = createStackNavigator(
@@ -254,7 +259,7 @@ DashboardOptionsNavigator.router.getStateForAction = (action, state) => {
 			state.routes[0],
 			{key: '2',
 				routeName: 'ReviewEvent',
-				params:{}}];
+				params:{title: getStrings().ReviewEvent.title}}];
 
 		return {
 			...state,

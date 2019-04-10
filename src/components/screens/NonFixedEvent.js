@@ -12,7 +12,7 @@ import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { dateVerification } from '../../services/helper';
+import { dateVerification, getStrings } from '../../services/helper';
 import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor } from '../../styles';
 
 const moment = require('moment');
@@ -23,8 +23,11 @@ const viewHeight = 843.4285888671875;
  */
 class NonFixedEvent extends React.PureComponent {
 
+	strings = getStrings().NonFixedEvent;
+	buttonStrings = getStrings().BottomButtons;
+
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === NonFixedEventRoute ? 'Add Non-Fixed Event': 'Edit Non-Fixed Events',
+		title: navigation.state.routeName === NonFixedEventRoute ? navigation.state.params.addTitle : navigation.state.params.editTitle,
 		headerStyle: {
 			backgroundColor: white
 		}
@@ -114,10 +117,10 @@ class NonFixedEvent extends React.PureComponent {
 
 		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
 			this.props.dispatch(addNonFixedEvent(this.state));
-			this.props.navigation.navigate(ReviewEventRoute);
+			this.props.navigation.navigate(ReviewEventRoute,  {title: getStrings().ReviewEvent.title});
 		} else {
 			this.props.dispatch(updateNonFixedEvents(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate(ReviewEventRoute, {changed:true});
+			this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title, changed:true});
 		}
 	}
 
@@ -127,7 +130,7 @@ class NonFixedEvent extends React.PureComponent {
 	addAnotherEvent = () => {
 		if (!this.fieldValidation()) {
 			this.setState({
-				snackbarText: 'Invalid fields, please review to add event',
+				snackbarText: this.strings.snackbarFailure,
 				snackbarVisible: true,
 				snackbarTime: 5000
 			});
@@ -138,7 +141,7 @@ class NonFixedEvent extends React.PureComponent {
 		this.resetFields();
 		this.refs._scrollView.scrollTo({x: 0});
 		this.setState({
-			snackbarText: 'Event successfully added',
+			snackbarText: this.strings.snackbarSuccess,
 			snackbarVisible: true,
 			snackbarTime: 3000
 		});
@@ -196,13 +199,13 @@ class NonFixedEvent extends React.PureComponent {
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
-			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+			errorTitle = <Text style={styles.errorTitle}>{this.strings.titleEmpty}</Text>;
 		} else {
 			errorTitle = null;
 		}
 
 		if (!this.state.durationValidated) {
-			errorDuration = <Text style={styles.errorDuration}>Please add a Duration.</Text>;
+			errorDuration = <Text style={styles.errorDuration}>{this.strings.durationEmpty}</Text>;
 		} else {
 			errorDuration = null;
 		}
@@ -211,10 +214,10 @@ class NonFixedEvent extends React.PureComponent {
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === NonFixedEventRoute) {
-			addEventButtonText = 'Add';
+			addEventButtonText = this.buttonStrings.add;
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			addEventButtonText = 'Done';
+			addEventButtonText = this.buttonStrings.done;
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
 		}
@@ -235,7 +238,7 @@ class NonFixedEvent extends React.PureComponent {
 									size={130}
 									color={dark_blue} />
 
-								<Text style={styles.instructionText}>Add the events you would like Kalend to plan for you</Text>
+								<Text style={styles.instructionText}>{this.strings.description}</Text>
 							</View>
 
 							<View>
@@ -247,7 +250,7 @@ class NonFixedEvent extends React.PureComponent {
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
-											placeholder="Title" 
+											placeholder={this.strings.titlePlaceholder} 
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.refs.locationInput.focus()}
 											blurOnSubmit={false}
@@ -260,18 +263,18 @@ class NonFixedEvent extends React.PureComponent {
 							</View>
 						
 							<View>
-								<Text style={styles.sectionTitle}>Availability</Text>
+								<Text style={styles.sectionTitle}>{this.strings.availability}</Text>
 
 								<View style={styles.timeSection}>
 									<View style={styles.dateRange}>
-										<Text style={styles.blueTitle}>Dates</Text>
+										<Text style={styles.blueTitle}>{this.strings.dates}</Text>
 										<View style={styles.dateRangeCol}>
 											<RadioButton.Group
 												onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
 												value={this.state.specificDateRange}>
 
 												<View style={styles.date}>
-													<Text style={styles.optionDate}>Week</Text>
+													<Text style={styles.optionDate}>{this.strings.week}</Text>
 
 													<RadioButton.Android value={false}
 														uncheckedColor={'lightgray'}
@@ -279,7 +282,7 @@ class NonFixedEvent extends React.PureComponent {
 												</View>
 
 												<View style={styles.date}>
-													<Text style={[styles.optionDate, {width: 200}]}>Specific Date Range</Text>
+													<Text style={[styles.optionDate, {width: 200}]}>{this.strings.specificDate}</Text>
 
 													<RadioButton.Android value={true}
 														uncheckedColor={'lightgray'}
@@ -293,7 +296,7 @@ class NonFixedEvent extends React.PureComponent {
 									{this.state.specificDateRange ? /*To hide/show the date*/
 										<View>
 											<View style={styles.questionLayout}>
-												<Text style={styles.blueTitle}>Start Date</Text>
+												<Text style={styles.blueTitle}>{this.strings.startDate}</Text>
 
 												<DatePicker showIcon={false} 
 													date={this.state.startDate} 
@@ -305,6 +308,8 @@ class NonFixedEvent extends React.PureComponent {
 															fontFamily: 'OpenSans-Regular'}
 													}}
 													format="ddd., MMM DD, YYYY"
+													confirmBtnText={this.strings.confirmButton}
+													cancelBtnText={this.strings.cancelButton}
 													onDateChange={(startDate) => {
 														this.setState({startDate,
 															endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)});
@@ -312,7 +317,7 @@ class NonFixedEvent extends React.PureComponent {
 											</View>
 										
 											<View style={styles.questionLayout}>
-												<Text style={styles.blueTitle}>End Date</Text>
+												<Text style={styles.blueTitle}>{this.strings.endDate}</Text>
 
 												<DatePicker showIcon={false} 
 													date={this.state.endDate} 
@@ -323,6 +328,8 @@ class NonFixedEvent extends React.PureComponent {
 														dateText:{fontFamily: 'OpenSans-Regular'}
 													}}
 													format="ddd., MMM DD, YYYY"
+													confirmBtnText={this.strings.confirmButton}
+													cancelBtnText={this.strings.cancelButton}
 													onDateChange={(endDate) => {
 														this.setState({endDate,
 															startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)});
@@ -332,7 +339,7 @@ class NonFixedEvent extends React.PureComponent {
 
 									<View>
 										<View style={styles.duration}>
-											<Text style={[styles.blueTitle, {paddingTop: 14}]}>Duration</Text>
+											<Text style={[styles.blueTitle, {paddingTop: 14}]}>{this.strings.duration}</Text>
 
 											<View style={styles.timePicker}>
 												<NumericInput initValue = {this.state.hours}
@@ -345,7 +352,7 @@ class NonFixedEvent extends React.PureComponent {
 													borderColor={'lightgray'}
 													textColor={!this.state.durationValidated ? '#ff0000' : gray}
 													iconStyle={{color: '#ffffff'}} />
-												<Text style={styles.optionsText}>hour(s)</Text>
+												<Text style={styles.optionsText}>{this.strings.hours}</Text>
 											</View>
 
 											<View style={styles.timePicker}>
@@ -359,7 +366,7 @@ class NonFixedEvent extends React.PureComponent {
 													borderColor={'lightgray'}
 													textColor={!this.state.durationValidated ? '#ff0000' : gray}
 													iconStyle={{color: '#ffffff'}}  />
-												<Text style={styles.optionsText}>minute(s)</Text>
+												<Text style={styles.optionsText}>{this.strings.minutes}</Text>
 											</View>
 										</View>
 
@@ -367,7 +374,7 @@ class NonFixedEvent extends React.PureComponent {
 									</View>
 
 									<View style={styles.switch}>
-										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? 'Split duration over date range?' : 'Split duration over week?'}</Text>
+										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? this.strings.splitDurationDate : this.strings.splitDurationWeek}</Text>
 
 										<Switch trackColor={{false: 'lightgray', true: blue}}
 											ios_backgroundColor={'lightgray'}
@@ -377,7 +384,7 @@ class NonFixedEvent extends React.PureComponent {
 									</View>
 
 									<View style={styles.questionLayout}>
-										<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? 'Number of Times It Will Happen in Date Range' : 'Number of Times It Will Happen in Week'}</Text>
+										<Text style={[styles.blueTitle, {width: 200}]}>{this.state.specificDateRange ? this.strings.numberTimeDate : this.strings.numberTimeWeek}</Text>
 
 										<NumericInput initValue={this.state.occurrence}
 											value={this.state.occurrence}
@@ -393,7 +400,7 @@ class NonFixedEvent extends React.PureComponent {
 								
 									{!this.state.specificDateRange ? 
 										<View style={styles.switch}>
-											<Text style={[styles.blueTitle, {width: 200}]}>Every Week?</Text>
+											<Text style={[styles.blueTitle, {width: 200}]}>{this.strings.everyWeek}</Text>
 
 											<Switch trackColor={{false: 'lightgray', true: blue}}
 												ios_backgroundColor={'lightgray'}
@@ -405,7 +412,7 @@ class NonFixedEvent extends React.PureComponent {
 							</View>
 
 							<View>
-								<Text style={styles.sectionTitle}>Priority Level</Text>
+								<Text style={styles.sectionTitle}>{this.strings.priorityLevel}</Text>
 
 								<Slider value={this.state.priority}
 									minimumValue={0}
@@ -416,15 +423,15 @@ class NonFixedEvent extends React.PureComponent {
 									onValueChange={(priority) => this.setState({priority: priority})} />
 
 								<View style={styles.questionLayout}>
-									<Text style={styles.optionsText}>Low</Text>
+									<Text style={styles.optionsText}>{this.strings.low}</Text>
 
-									<Text style={styles.optionsText}>Normal</Text>
+									<Text style={styles.optionsText}>{this.strings.normal}</Text>
 
-									<Text style={styles.optionsText}>High</Text>
+									<Text style={styles.optionsText}>{this.strings.high}</Text>
 								</View>
 							</View>
 							<View>
-								<Text style={styles.sectionTitle}>Details</Text>
+								<Text style={styles.sectionTitle}>{this.strings.details}</Text>
 
 								<View style={styles.textInput}>
 									<MaterialIcons name="location-on"
@@ -435,7 +442,7 @@ class NonFixedEvent extends React.PureComponent {
 										<TextInput style={styles.textInputText} 
 											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
-											placeholder="Location"
+											placeholder={this.strings.locationPlaceholder}
 											ref="locationInput"
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.refs.descriptionInput.focus()}
@@ -454,7 +461,7 @@ class NonFixedEvent extends React.PureComponent {
 										<TextInput style={styles.textInputText} 
 											onFocus={() => this.scrollToInput(this.refs.locationInput, 300)}
 											maxLength={1024}
-											placeholder="Description"
+											placeholder={this.strings.descriptionPlaceholder}
 											ref="descriptionInput"
 											returnKeyType = {'done'}
 											onChangeText={(description) => this.setState({description})}
@@ -465,11 +472,12 @@ class NonFixedEvent extends React.PureComponent {
 
 
 							<BottomButtons twoButtons={showNextButton}
-								buttonText={[addEventButtonText, 'Done']}
+								buttonText={[addEventButtonText, this.buttonStrings.done]}
 								buttonMethods={[addEventButtonFunction, this.skip]} />
 						</View>
 					</ScrollView>
 				</KeyboardAvoidingView>
+
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({snackbarVisible: false})} 

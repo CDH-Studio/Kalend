@@ -1281,7 +1281,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-base-64@0.1.0:
+base-64@0.1.0, base-64@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
   integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
@@ -5486,7 +5486,7 @@ react-native-app-intro-slider@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-1.0.1.tgz#712bf3dc1d66b3432bf4092971db4dfc01b916bd"
   integrity sha512-5Gzg5FG2uP/RHkSDFB5+2df4vQ2FpyUJ5PGYd23lLEISsEOJe0Zredh1hHMJj+fB5D9B7ZoL0IlR+SNn8iFxHg==
 
-"react-native-calendars@git+https://github.com/MarieEveLegault/react-native-calendar-kalend.git":
+"react-native-calendars@https://github.com/MarieEveLegault/react-native-calendar-kalend.git":
   version "1.19.3"
   resolved "git+https://github.com/MarieEveLegault/react-native-calendar-kalend.git#6c3333d32964b39be9bd521c403956c85e543351"
   dependencies:
@@ -5516,6 +5516,14 @@ react-native-firebase@^5.2.2:
   dependencies:
     opencollective-postinstall "^2.0.0"
     prop-types "^15.6.2"
+
+react-native-fs@^2.13.3:
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.13.3.tgz#a422f0ecd8a093a7e99d8d51ff51440e090a18a8"
+  integrity sha512-B62LSSAEYQGItg7KVTzTVVCxezOYFBYp4DMVFbdoZUd1mZVFdqR2sy1HY1mye1VI/Lf3IbxSyZEQ0GmrrdwLjg==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^2.1.1"
 
 react-native-gesture-handler@^1.1.0:
   version "1.1.0"
@@ -5587,6 +5595,11 @@ react-native-progress@^3.5.0:
   integrity sha512-zzTe595xaaskyfR5OzaGrU4O0R+YkgdEw+EspgGD7wh8Hu0fs6ue3xLW+HEbTjOCn62pCRivwi3NxbpWNBCC7Q==
   dependencies:
     prop-types "^15.7.2"
+
+react-native-restart@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-restart/-/react-native-restart-0.0.9.tgz#252611ef4e28a791b02ab4dabd1a7e9ae5fec6b3"
+  integrity sha512-kE+bSLFwr0EvHGXOGLDyM+lNAPgt4Cy67v1jdHK9kjgc4osrJVs8WwmWJvQwjDuGNXl14aLD/Ud5JhB4KRlrsQ==
 
 react-native-safe-area-view@^0.10.0:
   version "0.10.0"
@@ -6955,6 +6968,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
+  integrity sha1-H6DZJw6b6FDZsFAn9jUZv0ZFfZY=
 
 util-deprecate@~1.0.1:
   version "1.0.2"

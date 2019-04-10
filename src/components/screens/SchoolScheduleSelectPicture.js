@@ -8,6 +8,7 @@ import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import { selectPictureStyles as styles, white, blue } from '../../styles';
+import { getStrings } from '../../services/helper';
 import CameraRoll from '@react-native-community/cameraroll';
 
 // Enables the LayoutAnimation on Android
@@ -21,9 +22,11 @@ const imagesPerLoad = 99;
  */
 class SchoolScheduleSelectPicture extends React.PureComponent {
 
-	static navigationOptions = {
-		title: 'Select Picture',
-		headerTransparent: true,
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTransparent: true,
+		};
 	};
 
 	constructor(props) {
@@ -187,7 +190,7 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 	
-		this.props.navigation.navigate(SchoolScheduleCreationRoute);
+		this.props.navigation.navigate(SchoolScheduleCreationRoute, {title: getStrings().SchoolScheduleCreation.title});
 	}
 
 	render() {
