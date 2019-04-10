@@ -1,16 +1,20 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Linking } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { CustomTabs } from 'react-native-custom-tabs';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue } from '../../styles';
+import { settingsStyles as styles, blue, dark_blue } from '../../styles';
 import updateNavigation from '../NavigationHelper';
+import { deleteEvent, listEvents } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer } from '../../services/helper';
 import EventsColorPicker from '../EventsColorPicker';
+
+import SafariView from 'react-native-safari-view';
 
 const viewHeight = 669.1428833007812;
 
@@ -32,7 +36,10 @@ class Settings extends React.PureComponent {
 
 		this.state = {
 			containerHeight, 
-			showEventsColorPicker: false
+			showEventsColorPicker: false,
+			snackbarVisible: false,
+			snackbarText: '',
+			snackbarTime: 3000
 		};
 
 		// Updates the navigation location in redux
@@ -43,8 +50,47 @@ class Settings extends React.PureComponent {
 		this.setState({showEventsColorPicker: false});
 	}
 
+	showWebsite = (url) => {
+		if (Platform.OS === 'ios') {
+			this.openSafari(url);
+		} else {
+			this.openChrome(url);
+		}
+	}
+
+	openSafari = (url) => {
+		SafariView.isAvailable()
+			.then(SafariView.show({url,
+				tintColor: dark_blue,
+				barTintColor: '#fff',
+				fromBottom: true }))
+			.catch(() => this.openChrome(url));
+	}
+
+	openChrome = (url) => {
+		CustomTabs.openURL(url, {
+			toolbarColor: dark_blue,
+			enableUrlBarHiding: true,
+			showPageTitle: true,
+			enableDefaultShare: true,
+			animations: {
+				startEnter: 'slide_in_bottom',
+				startExit: 'slide_out_bottom',
+				endEnter: 'slide_in_bottom',
+				endExit: 'slide_out_bottom',
+			},
+			forceCloseOnRedirection: true,
+		});
+	}
+
+	logout = () => {
+		googleSignOut();
+		clearEveryReducer();
+		this.props.navigation.navigate(LoginNavigator);
+	}
+
 	render() {
-		const { containerHeight, showEventsColorPicker } = this.state;
+		const { containerHeight, showEventsColorPicker, snackbarText, snackbarTime, snackbarVisible } = this.state;
 
 		return(
 			<View style={styles.container}>
@@ -98,10 +144,6 @@ class Settings extends React.PureComponent {
 							<Text style={styles.title}>Preferences</Text>
 						</View>
 
-						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Notifications</Text>
-						</TouchableOpacity>
-
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.setState({showEventsColorPicker: true})}>
 							<Text style={styles.buttonText}>Theme</Text>
@@ -115,57 +157,120 @@ class Settings extends React.PureComponent {
 							<Text style={styles.title}>General</Text>
 						</View>
 
-						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Help</Text>
+						<TouchableOpacity style={styles.button}
+							onPress={() => {
+								this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/FAQ');
+							}}>
+							<Text style={styles.buttonText}>FAQ</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>Reload Tutorial</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Reset/Delete Calendar</Text>
+						<TouchableOpacity style={styles.button}
+							onPress={() => {
+								Alert.alert(
+									'Modify Calendar',
+									'To delete every events in your calendar, you can clear you calendar, or if you want to remove the Kalend calendar, you can delete it.',
+									[
+										{text: 'Cancel', style: 'cancel'},
+										{text: 'Clear Calendar', onPress: async () => {
+											let events = await listEvents(this.props.calendarId);
+											events = events.items.reduce((acc, event) => {
+												acc.push(event.id);
+
+												return acc;
+											}, []);
+
+											// Deletes the calendar
+											console.log(events);
+
+											this.setState({
+												snackbarVisible: true,
+												snackbarText: 'Calendar has been successfully cleared',
+											});
+										}},
+										{text: 'Delete Calendar', onPress: () => {
+											Alert.alert(
+												'Warning',
+												'You will be logged out of the application if you continue',
+												[
+													{text: 'Cancel', style: 'cancel'},
+													{text: 'Ok', onPress: async () => {
+														// Deletes the calendar
+														this.logout();
+													}},
+												],
+												{cancelable: false}
+											);
+										}}
+									],
+									{cancelable: true}
+								);
+							}}>
+							<Text style={styles.buttonText}>Clear/Delete Calendar</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Clear Cache/Data</Text>
-						</TouchableOpacity>
-						
-						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>Privacy Policy</Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity style={styles.button} onPress={ ()=>{
-							Linking.openURL('https://cdhstudio.ca/');
-						}}>
+						<TouchableOpacity style={styles.button} 
+							onPress={()=>{
+								this.showWebsite('https://cdhstudio.ca/');
+							}}>
 							<Text style={styles.buttonText}>CDH Studio</Text>
 						</TouchableOpacity>
 
+						<TouchableOpacity style={styles.button}>
+							<Text style={styles.buttonLogOutText}>Delete Account</Text>
+						</TouchableOpacity>
+
 						<TouchableOpacity style={styles.button}
-							onPress={() => {
-								googleSignOut();
-								clearEveryReducer();
-								this.props.navigation.navigate(LoginNavigator);
-							}}>
+							onPress={this.logout}>
 							<Text style={styles.buttonLogOutText}>Log out</Text>
 						</TouchableOpacity>
 
 						<Text style={styles.version}>Version 0.2.0</Text>
+
+						<View style={styles.privacyContainer}>
+							<TouchableOpacity style={styles.privacy}
+								onPress={() => {
+									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
+								}}>
+								<Text style={styles.privacyText}>Privacy Policy</Text>
+							</TouchableOpacity>
+
+							<Text style={styles.privacyText}>   |   </Text>
+
+							<TouchableOpacity style={styles.privacy}
+								onPress={() => {
+									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Terms-of-Service');
+								}}>
+								<Text style={styles.privacyText}>Terms of Service</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				</ScrollView>
+
+				<Snackbar
+					visible={snackbarVisible}
+					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					style={styles.snackbar}
+					duration={snackbarTime}>
+					{snackbarText}
+				</Snackbar>
 			</View>
 		);
 	}
 }
 
 let mapStateToProps = (state) => {
-	const { HomeReducer } = state;
+	const { HomeReducer, CalendarReducer } = state;
 
 	let hasUserInfo = HomeReducer.profile != null;
 
 	return {
 		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
-		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user'
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user',
+		calendarId: CalendarReducer.id
 	};
 };
 

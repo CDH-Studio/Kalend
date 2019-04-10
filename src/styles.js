@@ -1615,8 +1615,22 @@ export const settingsStyles = StyleSheet.create({
 	version: {
 		fontFamily: 'OpenSans-SemiBold',
 		textAlign: 'center',
-		paddingVertical: 10,
+		paddingTop: 20,
 		color: gray
+	},
+
+	privacyContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginLeft: 15,
+		paddingBottom: 30,
+	},
+
+	privacyText: {
+		color: gray,
+		fontFamily: 'Raleway-Regular',
+		fontSize: 13
 	}
 });
 
