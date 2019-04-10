@@ -39,70 +39,6 @@ class ModalEvent extends React.PureComponent {
 	}
 
 	render() {
-		let categoryColor;
-		let categoryIcon;
-		let details;
-		let editScreen;
-		let detailHeight;
-
-		if (this.props.category === 'SchoolSchedule') {
-			categoryColor = this.props.courseColor;
-			categoryIcon = 'school';
-			details = 
-				<View style={styles.modalDetailView}>
-					<Text style={styles.modalDetailsSubtitle}>Location: </Text>
-					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
-				</View>;
-			detailHeight = 45;
-			editScreen = 'Course';
-		} else if (this.props.category === 'FixedEvent') {
-			categoryColor = this.props.fixedEventsColor;
-			categoryIcon = 'calendar-today';
-			details = 
-				<View>
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Location: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
-					</View>
-
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Description: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
-					</View>
-
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Recurrence: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
-					</View>
-				</View>;
-			detailHeight = 80;
-			editScreen = 'FixedEvent';
-		} else {
-			categoryColor = this.props.nonFixedEventsColor;
-			categoryIcon = 'face';
-			details = 
-				<View>
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Recurrence: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
-					</View>
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Priority Level: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.priorityLevel}</Text>
-					</View>
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Location: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
-					</View>
-					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Description: </Text>
-						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
-					</View>
-				</View>;
-			detailHeight = 100;
-			editScreen = 'NonFixedEvent';
-		}
-
 		return(
 			<View>
 				<Modal visible={this.state.modalVisible}
@@ -125,7 +61,7 @@ class ModalEvent extends React.PureComponent {
 								<View style={{height:70}}>
 									<ScrollView>
 										<TouchableOpacity activeOpacity={1}>
-											<Text style={[styles.modalTitle, {backgroundColor: categoryColor}]}>{this.props.eventTitle}</Text>
+											<Text style={[styles.modalTitle, {backgroundColor: this.props.categoryColor}]}>{this.props.eventTitle}</Text>
 										</TouchableOpacity>
 									</ScrollView>
 								</View>
@@ -143,7 +79,7 @@ class ModalEvent extends React.PureComponent {
 										</View>
 									</View>
 									
-									<MaterialCommunityIcons name={categoryIcon}
+									<MaterialCommunityIcons name={this.props.categoryIcon}
 										size={80}
 										color={gray} />
 								</View>
@@ -151,10 +87,10 @@ class ModalEvent extends React.PureComponent {
 								<View style={styles.modalDetailsView}>
 									<Text style={styles.modalDetailsTitle}>Details</Text>
 
-									<View style={{height:detailHeight}} onStartShouldSetResponder={() => true}>
+									<View style={{height:this.props.detailHeight}} onStartShouldSetResponder={() => true}>
 										<ScrollView>
 											<TouchableOpacity activeOpacity={1}>
-												{details}
+												{this.props.details}
 											</TouchableOpacity>
 										</ScrollView>
 									</View>
@@ -164,7 +100,7 @@ class ModalEvent extends React.PureComponent {
 									<View style={styles.actionIconModal}>
 										<IconButton
 											size={40}
-											onPress={() => this.navigateAndCloseModal(editScreen)}
+											onPress={() => this.navigateAndCloseModal(this.props.editScreen)}
 											color={gray}
 											icon={({ size, color }) => (
 												<MaterialCommunityIcons
