@@ -219,7 +219,8 @@ const en = {
 		ok: 'Ok',
 		clearing: 'Clearing your calendar ...',
 		clearingError: 'Could not clean calendar',
-		deleteDescription: 'Your Kalend calendar wil be deleted aswell as your account if you continue'
+		deleteDescription: 'Your Kalend calendar wil be deleted aswell as your account if you continue',
+		import: 'Import Calendar'
 	},
 	UnavailableHours: {
 		name: 'Unavailable Hours',
@@ -277,6 +278,34 @@ const en = {
 		next: 'Next',
 		done: 'Done',
 	},
+	ColorPicker: {
+		title: 'Select Color for Events',
+		tabTitles: ['Courses', 'Fixed Events', 'Non-Fixed Events'],
+		save: 'Save'
+	},
+	CalendarPermission: {
+		title: 'Calendar Permissions',
+		mainTitle: 'Modify who can see your calendar',
+		deleteSuccess: 'Successfully removed the selected people',
+		emptyTitle: 'No people found',
+		emptyDescription: 'Tap to refresh the sharing info',
+		delete: 'Delete'
+	},
+	ImportCalendar: {
+		title: 'Select Calendars to Import',
+		fetching: 'Fetching your calendar information',
+		found: 'Found',
+		calendar: 'calendar',
+		emptyTitle: 'No calendars found',
+		emptyDescription: 'Tap to refresh the calendar info',
+		cancel: 'Cancel',
+		import: 'Import',
+		progressTitle: 'Importing Selected Calendar',
+		progressDescription: ['Number of events imported', 'out of'],
+		noEvents: 'No events found in the selected calendar',
+		importError: 'Imported some of the calendar events',
+		importSuccess: ' successfully imported!'
+	}
 };
 
 const fr = {
@@ -504,7 +533,8 @@ const fr = {
 		ok: 'Ok',
 		clearing: 'Réinitialisation du calendrier en cours ...',
 		clearingError: 'Réinitialiser du calendrier impossible',
-		deleteDescription: 'Votre calendrier Kalend ainsi que votre compte seront supprimés si vous poursuivez'
+		deleteDescription: 'Votre calendrier Kalend ainsi que votre compte seront supprimés si vous poursuivez',
+		import: 'Importer un calendrier'
 	},
 	UnavailableHours: {
 		name: 'Heures non disponibles',
@@ -562,6 +592,34 @@ const fr = {
 		next: 'Suivant',
 		done: 'Terminé',
 	},
+	ColorPicker: {
+		title: 'Choisir la couleur pour les événements',
+		tabTitles: ['Cours', 'Événements fixes', 'Événements non fixes'],
+		save: 'Enregistrer'
+	},
+	CalendarPermission: {
+		title: 'Permissions du calendrier',
+		mainTitle: 'Modifier qui peut voir votre calendrier',
+		deleteSuccess: 'Supprimé avec succès les personnes sélectionnées',
+		emptyTitle: 'Aucune personne trouvée',
+		emptyDescription: 'Appuyez pour actualiser les informations de partage',
+		delete: 'Supprimer'
+	},
+	ImportCalendar: {
+		title: 'Sélectionner des calendriers pour importer',
+		fetching: 'Récupération des informations de votre calendrier',
+		found: 'Trouver',
+		calendar: 'calendrier',
+		emptyTitle: 'Aucun calendrier trouvé',
+		emptyDescription: 'Appuyez pour actualiser les informations du calendrier',
+		cancel: 'Annuler',
+		import: 'Importer',
+		progressTitle: 'Importation du calendrier en cours',
+		progressDescription: ['Nombre d\'événements importés', 'de'],
+		noEvents: 'Aucun événement trouvé dans votre sélection de calendrier',
+		importError: 'Importé certains des événements du calendrier',
+		importSuccess: ' importer avec succès!'
+	}
 };
 
 export default {

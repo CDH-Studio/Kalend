@@ -8,8 +8,11 @@ import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
 import { setCourseColor, setFixedColor, setNonFixedColor } from '../actions';
 import { eventsColorPickerStyles as styles } from '../styles';
 import { calendarColors } from '../../config/config';
+import { getStrings } from '../services/helper';
 
 class EventsColorPicker extends React.Component {
+
+	strings = getStrings().ColorPicker;
 
 	constructor(props) {
 		super(props);
@@ -38,7 +41,7 @@ class EventsColorPicker extends React.Component {
 	 * Renders the tabs in the modal
 	 */
 	renderTitleIndicator() {
-		return <PagerTitleIndicator titles={['Courses', 'Fixed Events', 'Non-Fixed Events']}
+		return <PagerTitleIndicator titles={this.strings.tabTitles}
 			trackScroll={true}
 			style={styles.pager}
 			itemTextStyle={styles.pagerText}
@@ -115,7 +118,7 @@ class EventsColorPicker extends React.Component {
 					onBackdropPress={this.removeModal}
 					useNativeDriver>
 					<View style={styles.modalContent}>
-						<Text style={styles.modalTitle}>Select Color for Events</Text>
+						<Text style={styles.modalTitle}>{this.strings.title}</Text>
 
 						<IndicatorViewPager style={styles.viewPager}
 							indicator={this.renderTitleIndicator()} >
@@ -126,7 +129,7 @@ class EventsColorPicker extends React.Component {
 
 						<View style={styles.button}>
 							<TouchableOpacity onPress={this.removeModal}>
-								<Text style={styles.buttonText}>Save</Text>
+								<Text style={styles.buttonText}>{this.strings.save}</Text>
 							</TouchableOpacity>
 						</View>
 					</View>

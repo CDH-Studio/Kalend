@@ -7,6 +7,7 @@ import * as Progress from 'react-native-progress';
 import { importCalendarStyles as styles, dark_blue, gray } from '../styles';
 import { getCalendarList, listEvents, insertEvent } from '../services/google_calendar';
 import { Checkbox } from 'react-native-paper';
+import { getStrings } from '../services/helper';
 
 /**
  * Modal view to import events from other calendars to the Kalend calendar
@@ -15,6 +16,8 @@ import { Checkbox } from 'react-native-paper';
  * @prop {Function} dismiss Updates the state in the parent component
  */
 class ImportCalendar extends React.PureComponent {
+
+	strings = getStrings().ImportCalendar;
 
 	constructor(props) {
 		super(props);
@@ -44,8 +47,6 @@ class ImportCalendar extends React.PureComponent {
 		this.setState({
 			visible: newProps.visible,
 		});
-
-		console.log(this.state);
 	}
 
 	/**
@@ -65,7 +66,7 @@ class ImportCalendar extends React.PureComponent {
 		let data = await getCalendarList();
 
 		// Only shows calendar in which the user is owner of and removes the Kalend calendar from the list
-		data = data.items.filter(i => i.accessRole === 'owner' && i.id !== this.props.calendarId);
+		data = data.items.filter(i => i.accessRole === 'owner' && i.id !== this.props.calendarId && i.summary !== 'Kalend');
 
 		// Cleans the data
 		data = data.reduce((acc, i) => {
@@ -185,15 +186,15 @@ class ImportCalendar extends React.PureComponent {
 
 			Promise.all(promises)
 				.then(() => {
-					this.setState({endProgressText: 'Calendar' + (selectedCalendars.length > 1 ? 's' : '') + ' successfully imported!'});
+					this.setState({endProgressText: this.strings.calendar[0].toUpperCase() + this.strings.calendar.slice(1) + (selectedCalendars.length > 1 ? 's' : '') + this.strings.importSuccess});
 					setTimeout(() => {
 						this.setState({progressVisible: false, showProgress: false});
 					}, 3000);
 				})
-				.catch(() => this.setState({endProgressText: 'Imported some of the calendar events'}));
+				.catch(() => this.setState({endProgressText: this.strings.importError}));
 		} else {
 			// Display that no events could be found in the selected calendar
-			this.setState({endProgressText: 'No events found in the selected calendar' + (selectedCalendars.length > 1 ? 's' : '')});
+			this.setState({endProgressText: this.strings.noEvents + (selectedCalendars.length > 1 ? 's' : '')});
 			setTimeout(() => {
 				this.setState({progressVisible: false, showProgress: false});
 			}, 3000);
@@ -221,13 +222,13 @@ class ImportCalendar extends React.PureComponent {
 						}
 					}}>
 					<View style={styles.modalContent}>
-						<Text style={styles.title}>Select Calendars to Import</Text>
+						<Text style={styles.title}>{this.strings.title}</Text>
 
 						<Text style={styles.description}>
 							{
 								loading ? 
-									'Fetching your calendar information' :
-									'Found ' + data.length + ' calendar' + (data.length > 1 ? 's' : '')
+									this.strings.fetching :
+									this.strings.found + ' ' + data.length + ' ' + this.strings.calendar + (data.length > 1 ? 's' : '')
 							}
 						</Text>
 
@@ -251,8 +252,8 @@ class ImportCalendar extends React.PureComponent {
 												<MaterialCommunityIcons size={50}
 													name='calendar-search'
 													color={gray}/>
-												<Text style={styles.emptyTitle}>No calendars found</Text> 
-												<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
+												<Text style={styles.emptyTitle}>{this.strings.emptyTitle}</Text> 
+												<Text style={styles.emptyDescription}>{this.strings.emptyDescription}</Text> 
 											</View>
 										</TouchableOpacity>
 									)}
@@ -267,11 +268,11 @@ class ImportCalendar extends React.PureComponent {
 
 						<View style={styles.buttons}>
 							<TouchableOpacity onPress={this.removeModal}>
-								<Text style={styles.buttonCancelText}>Cancel</Text>
+								<Text style={styles.buttonCancelText}>{this.strings.cancel}</Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity onPress={this.importEvents}>
-								<Text style={styles.buttonText}>Import</Text>
+								<Text style={styles.buttonText}>{this.strings.import}</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -280,13 +281,13 @@ class ImportCalendar extends React.PureComponent {
 				<Modal isVisible={progressVisible}
 					useNativeDriver>
 					<View style={styles.modalContent}>
-						<Text style={styles.title}>Importing Selected Calendar</Text>
+						<Text style={styles.title}>{this.strings.progressTitle}</Text>
 						{
 							(totalEvents !== 0 || noEvents) && totalEvents === doneEvents ? 
 								<Text style={styles.progressModalFinished}>{endProgressText}</Text>
 								:
 								<View>
-									<Text style={styles.progressModalDescription}>Number of events imported {doneEvents} out of {totalEvents}</Text>
+									<Text style={styles.progressModalDescription}>{this.strings.progressDescription[0]} {doneEvents} {this.strings.progressDescription[1]} {totalEvents}</Text>
 								
 									<Progress.Bar style={{alignSelf:'center'}} 
 										indeterminate={false} 

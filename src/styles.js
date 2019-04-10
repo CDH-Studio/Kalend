@@ -1891,14 +1891,14 @@ export const settingsStyles = StyleSheet.create({
 		fontFamily: 'OpenSans-SemiBold',
 		textAlign: 'center',
 		paddingTop: 20,
-		color: gray
+		color: gray,
+		paddingBottom: 5
 	},
 
 	privacyContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginLeft: 15,
 		paddingBottom: 30,
 	},
 

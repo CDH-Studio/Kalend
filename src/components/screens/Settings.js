@@ -124,8 +124,6 @@ class Settings extends React.PureComponent {
 							</Text>
 						</View>
 						
-						
-						
 						{
 							__DEV__ ?
 								<View style={styles.titleRow}> 
@@ -148,7 +146,7 @@ class Settings extends React.PureComponent {
 							onPress={() => {
 								this.setState({showImportCalendar: true});
 							}}>
-							<Text style={styles.buttonText}>Import Calendar</Text>
+							<Text style={styles.buttonText}>{this.strings.import}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -226,7 +224,7 @@ class Settings extends React.PureComponent {
 						</TouchableOpacity> */}
 
 						<TouchableOpacity style={styles.button}
-							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute)}>
+							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute, {title: getStrings().CalendarPermission.title})}>
 							<Text style={styles.buttonText}>{this.strings.modifySharing}</Text>
 						</TouchableOpacity>
 
@@ -338,7 +336,7 @@ class Settings extends React.PureComponent {
 
 						<Text style={styles.version}>{this.strings.version}</Text>
 
-						<View style={styles.privacyContainer}>
+						<View style={[styles.privacyContainer, {marginLeft: this.props.language === 'en' ? 15 : 0}]}>
 							<TouchableOpacity style={styles.privacy}
 								onPress={() => {
 									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
