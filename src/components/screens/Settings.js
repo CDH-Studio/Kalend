@@ -10,7 +10,7 @@ import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
 import { settingsStyles as styles, blue, dark_blue, gray } from '../../styles';
 import updateNavigation from '../NavigationHelper';
-import { deleteEvent, listEvents } from '../../services/google_calendar';
+import { deleteEvent, listEvents, deleteCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
 import { setLanguage } from '../../actions';
@@ -226,9 +226,9 @@ class Settings extends React.PureComponent {
 							<Text style={styles.buttonText}>{this.strings.help}</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.button}>
+						{/* <TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.tutorial}</Text>
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
@@ -260,7 +260,7 @@ class Settings extends React.PureComponent {
 												[
 													{text: this.strings.cancel, style: 'cancel'},
 													{text: this.strings.ok, onPress: async () => {
-														// Deletes the calendar
+														await deleteCalendar(this.props.calendarId);
 														this.logout();
 													}},
 												],
