@@ -1821,16 +1821,14 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	profileImage: {
-		width: 80, 
-		height: 80, 
-		borderRadius: 40,
+		width: 100, 
+		height: 100, 
+		borderRadius: 50,
 		marginTop: 20,
 		marginBottom: 10,
 	},
 
 	profileIconContainer: {
-		elevation: 3,
-		zIndex:999, 
 		...Platform.select({
 			ios: {
 				shadowColor: black,
@@ -1839,7 +1837,7 @@ export const settingsStyles = StyleSheet.create({
 				shadowRadius: 3
 			},
 			android: {
-				elevation: 3
+				elevation: 5
 			},
 		}),
 	},
