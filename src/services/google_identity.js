@@ -55,6 +55,6 @@ let googleGetCurrentUserInfo = async () => {
 
 let getTokens =  async () => {
 	return await GoogleSignin.getTokens();
-}
+};
 
 module.exports = { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo, getTokens };

@@ -4,7 +4,7 @@ import DatePicker from 'react-native-datepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import {setUnavailableHours} from '../../actions';
-import { storeUserHours } from '../../services/api/storage_services'
+import { storeUserHours } from '../../services/api/storage_services';
 import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { unavailableHoursStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';

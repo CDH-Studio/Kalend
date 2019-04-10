@@ -1,5 +1,3 @@
-import { store } from '../store';
-import { getTokens } from './google_identity';
 import { getUserValuesService  } from './api/storage_services';
 
 /**
@@ -13,7 +11,7 @@ import { getUserValuesService  } from './api/storage_services';
 
 	
 let apiHelperCall = async (URL, method, body, query) => {
-	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN']}).then(res => res.json())
+	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN']}).then(res => res.json());
 	let accessToken = tokenData.ACCESSTOKEN;
 
 	let fetchData = {

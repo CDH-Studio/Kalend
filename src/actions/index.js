@@ -255,7 +255,7 @@ export function setSelectedCalendar(index) {
 	const action = {
 		type: SET_SELECTED_CALENDAR,
 		index
-};
+	};
 
 	return action;
 }
