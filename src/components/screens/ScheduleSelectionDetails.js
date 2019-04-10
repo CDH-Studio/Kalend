@@ -223,7 +223,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		if (data.schoolEvents.length != 0) {
 			data.schoolEvents.forEach(event => {
 				event.type = 'school';
-				temp_days[event.dayOfWeek].push(event);
+				temp_days[event.dayOfWeekValue].push(event);
 			});
 		}
 
