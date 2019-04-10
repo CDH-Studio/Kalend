@@ -5,8 +5,10 @@ import {
 	SET_SCHOOL_INFORMATION,
 	SET_SELECTED_CALENDAR,
 	UPDATE_NFE, 
+	SET_LANGUAGE,
+	SET_BOTTOM_STRINGS,
+	SET_IMG, 
 	SET_DASHBOARD_DATA,
-	SET_IMG,
 	SET_NONFIXED_COLOR,
 	SET_COURSE_COLOR,
 	SET_FIXED_COLOR,
@@ -15,10 +17,10 @@ import {
 	SIGNED_IN, 
 	SIGNED_OUT, 
 	ADD_FE, 
-	ADD_NFE, 
-	ADD_COURSE, 
 	ADD_GENERATED_NFE,
 	ADD_GENERATED_CALENDAR,
+	ADD_NFE, 
+	ADD_COURSE, 
 	ADD_COLORS,
 	DELETE_NFE, 
 	DELETE_FE, 
@@ -36,8 +38,10 @@ import {
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
+	CLEAR_OPENED,
+	CLEAR_SETTINGS,
+	CLEAR_BOTTOM_STRINGS,
 	CLEAR_DASHBOARD_DATA,
-	CLEAR_OPENED
 } from '../constants';
 
 export *  from './allEvents';
@@ -251,13 +255,33 @@ export function setSelectedCalendar(index) {
 	const action = {
 		type: SET_SELECTED_CALENDAR,
 		index
-	}
+};
+
 	return action;
 }
+
+export function setLanguage (language) {
+	const action = {
+		type: SET_LANGUAGE,
+		language
+	};
+
+	return action;
+}
+
 export function setDashboardData (data) {
 	const action = {
 		type: SET_DASHBOARD_DATA,
 		data
+	};
+
+	return action;
+}
+
+export function setBottomString (params) {
+	const action = {
+		type: SET_BOTTOM_STRINGS,
+		params
 	};
 
 	return action;
@@ -391,6 +415,22 @@ export function clearState () {
 export function clearUnavailableHours () {
 	const action = {
 		type: CLEAR_UNAVAILABLE_HOURS
+	};
+
+	return action;
+}
+
+export function clearLanguage () {
+	const action = {
+		type: CLEAR_SETTINGS
+	};
+
+	return action;
+}
+
+export function clearBottomString () {
+	const action = {
+		type: CLEAR_BOTTOM_STRINGS
 	};
 
 	return action;

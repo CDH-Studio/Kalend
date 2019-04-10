@@ -9,6 +9,7 @@ import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
 import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 export const containerPadding = 10;
 export const lineThickness = 1;
@@ -107,15 +108,21 @@ class ScheduleEvent extends React.PureComponent {
  * @prop {Integer} id The number of the schedule
  */
 class Schedule extends React.PureComponent {
+	strings = getStrings().ScheduleSelection;
 
 	constructor(props) {
 		super(props);
 
 		// Gets the ordinal word thanks to an existing library and the schedule index
-		let ordinal = converter.toWordsOrdinal(this.props.id+1);
+		let ordinal;
+		if ('ordinal' in this.strings) {
+			ordinal = this.strings.ordinal[this.props.id];
+		} else {
+			ordinal = converter.toWordsOrdinal(this.props.id+1);
+		}
 
 		this.state = {
-			weekLetters: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+			weekLetters: this.strings.weekLetters,
 			ordinal: ordinal.charAt(0).toUpperCase() + ordinal.slice(1),
 			showShadow: true,
 			hours: [0, 4, 8, 12, 4, 8, 0],
@@ -237,13 +244,13 @@ class Schedule extends React.PureComponent {
 		return (
 			<View style={styles.scheduleContainer}>
 				<Text style={styles.title}>
-					{ordinal} schedule
+					{ordinal + ' ' + this.strings.schedule}
 				</Text>
 				
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' Schedule', id, {
+					this.props.nextScreen(ordinal + ' ' + this.strings.schedule, id, {
 						fixed: this.props.fixed,
 						school: this.props.school,
 						ai: this.state.ai,
@@ -366,13 +373,15 @@ class Schedule extends React.PureComponent {
  * The component which encloses all of the schedules which has been generated
  */
 class ScheduleSelection extends React.PureComponent {
+	strings = getStrings().ScheduleSelection;
+
 	static navigationOptions = ({ navigation }) => ({
-		title: 'Schedule Selection',
+		title: navigation.state.params.title,
 		headerStyle: {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
 		},
 		gesturesEnabled: false,
-		headerLeft: <HeaderBackButton title='Back' tintColor={dark_blue} onPress={() => {
+		headerLeft: <HeaderBackButton tintColor={dark_blue} onPress={() => {
 			navigation.getParam('onBackPress')(); 
 		}} />,
 	});
@@ -416,15 +425,15 @@ class ScheduleSelection extends React.PureComponent {
 
 	handleBackButton = () => {
 		Alert.alert(
-			'Discarding changes',
-			'The created schedules will be deleted if you proceed, where do you want to go?',
+			this.strings.backAlertTitle,
+			this.strings.backAlertDescription,
 			[
 				{
-					text: 'Cancel',
+					text: this.strings.cancel,
 					style: 'cancel',
 				},
 				{
-					text: 'Dashboard',
+					text: getStrings().Dashboard.name,
 					onPress: () => {
 						this.props.navigation.navigate(DashboardNavigator);
 						this.props.dispatch(clearGeneratedCalendars());
@@ -432,9 +441,9 @@ class ScheduleSelection extends React.PureComponent {
 					}
 				},
 				{
-					text: 'Review Events', 
+					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute);
+						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
 						this.props.dispatch(clearGeneratedCalendars());
 						this.props.dispatch(clearGeneratedNonFixedEvents());
 					},
@@ -458,7 +467,7 @@ class ScheduleSelection extends React.PureComponent {
 	 */
 	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data, delete: this.deleteCalendar});
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title: getStrings().ScheduleSelectionDetails.title, data, delete: this.deleteCalendar});
 	}
 	
 	/**
@@ -501,19 +510,19 @@ class ScheduleSelection extends React.PureComponent {
 
 				<ScrollView >
 					<View style={styles.content}>
-						<Text style={styles.description}>Below you will find schedules of the current week created by the application. Please select the one you prefer.</Text>
+						<Text style={styles.description}>{this.strings.description}</Text>
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.insideCourseColor}]}></View>
-								<Text style={styles.legendText}>Courses</Text>
+								<Text style={styles.legendText}>{this.strings.courses}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.insideFixedEventsColor}]}></View>
-								<Text style={styles.legendText}>Fixed Events</Text>
+								<Text style={styles.legendText}>{this.strings.fixedEvents}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.insideNonFixedEventsColor}]}></View>
-								<Text style={styles.legendText}>Non-Fixed Events</Text>
+								<Text style={styles.legendText}>{this.strings.nonFixedEvents}</Text>
 							</View>
 						</View>
 						{

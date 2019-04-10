@@ -6,6 +6,7 @@ import { calendarColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
 import { storeGeneratedCalendars } from '../../services/api/storage_services';
+import { getStrings } from '../../services/helper';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse, addEvents, clearAllEvents} from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
@@ -13,16 +14,6 @@ import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueCo
 const moment = require('moment');
 
 export const containerPaddingDetails = 10;
-
-const days = [
-	'Sunday',
-	'Monday',
-	'Tuesday',
-	'Wednesday',
-	'Thursday',
-	'Friday',
-	'Saturday'
-];
 
 /**
  * An event in the list of events
@@ -155,14 +146,15 @@ class ScheduleDay extends React.PureComponent {
  */
 class ScheduleSelectionDetails extends React.PureComponent {
 
+	strings = getStrings().ScheduleSelectionDetails;
+
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
 		headerStyle: {
 			backgroundColor: white
 		},
 		headerRight: (
-			<IconButton
-				onPress={navigation.getParam('goBack')}
+			<IconButton onPress={navigation.getParam('goBack')}
 				icon='delete'
 				color={dark_blue}
 				size={25}
@@ -176,8 +168,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			showFAB: true,
 			currentY: 0,
 			daysTemp: {
-				'Monday': []
-
+				[this.strings.days[1]]: []
 			}
 		};
 		
@@ -194,7 +185,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		this.goBack();
 	}
 
-	
 	componentWillMount() {
 		this.seperateEventsIntoDays(this.props.navigation.state.params.data);
 		this.setState({data: this.props.navigation.state.params.data});
@@ -212,19 +202,23 @@ class ScheduleSelectionDetails extends React.PureComponent {
 
 	seperateEventsIntoDays = (data) =>{
 		const temp_days = {
-			'Sunday': [],
-			'Monday': [],
-			'Tuesday': [],
-			'Wednesday': [],
-			'Thursday': [],
-			'Friday': [],
-			'Saturday': []
+			[this.strings.days[0]]: [],
+			[this.strings.days[1]]: [],
+			[this.strings.days[2]]: [],
+			[this.strings.days[3]]: [],
+			[this.strings.days[4]]: [],
+			[this.strings.days[5]]: [],
+			[this.strings.days[6]]: []
 		};
 
 		if (data.schoolEvents.length != 0) {
 			data.schoolEvents.forEach(event => {
 				event.type = 'school';
-				temp_days[event.dayOfWeek].push(event);
+				if ('daysEn' in this.strings) {
+					temp_days[this.strings.days[this.strings.daysEn.indexOf(event.dayOfWeek)]].push(event);
+				} else {
+					temp_days[event.dayOfWeek].push(event);
+				}
 			});
 		}
 
@@ -232,7 +226,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			data.fixedEvents.forEach(event => {
 				event.type = 'fixed';
 				let day = new Date(event.startDate).getDay();
-				temp_days[days[day]].push(event);
+				temp_days[this.strings.days[day]].push(event);
 			});
 		}
 
@@ -240,7 +234,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			data.aiEvents.forEach(event => {
 				event.type = 'nonFixed';
 				let day = new Date(event.start.dateTime).getDay();
-				temp_days[days[day]].push(event);
+				temp_days[this.strings.days[day]].push(event);
 			});
 		}
 		
@@ -327,7 +321,6 @@ class ScheduleSelectionDetails extends React.PureComponent {
 					<View style={styles.content}>
 						{
 							objectArray.map((day, key) => {
-							
 								return (<ScheduleDay key={key} 
 									colors={{
 										courseColor: this.props.courseColor,
@@ -341,8 +334,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 					</View>
 				</ScrollView>
 				
-				<FAB
-					style={styles.fab}
+				<FAB style={styles.fab}
 					theme={{colors:{accent:blue}}}
 					icon="check"
 					visible={showFAB}

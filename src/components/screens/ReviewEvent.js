@@ -12,24 +12,29 @@ import { bindActionCreators } from 'redux';
 import { storeGeneratedCalendars } from '../../services/api/storage_services';
 import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
 import { insertFixedEventsToGoogle } from '../../services/service';
-
-const priorityLevels = {
-	0: 'Low',
-	0.5: 'Normal',
-	1: 'High'
-};
+import { getStrings } from '../../services/helper';
 
 /**
  * Permits users to verify and edit the events they added
  */
 class ReviewEvent extends React.PureComponent {
 
-	static navigationOptions = {
-		title: 'Create a Schedule',
-		headerStyle: {
-			backgroundColor: white,
-		}
+	strings = getStrings().ReviewEvent;
+	priorityLevels = {
+		0: this.strings.low,
+		0.5: this.strings.normal,
+		1: this.strings.high
 	};
+
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerStyle: {
+				backgroundColor: white,
+			}
+		};
+	};
+		
 
 	constructor(props) {
 		super(props);
@@ -70,9 +75,22 @@ class ReviewEvent extends React.PureComponent {
 					hours = data.startTime + ' - ' + data.endTime;
 				}
 
+				let dayOfWeek;
+				let fr = 'daysEn' in this.strings;
+
+				if (data.day) {
+					dayOfWeek = data.day;
+				} else {
+					dayOfWeek = data.dayOfWeek;
+				}
+
+				if (fr) {
+					dayOfWeek = this.strings.days[this.strings.daysEn.indexOf(dayOfWeek)];
+				}
+
 				schoolScheduleData.push({
 					courseCode: data.summary || data.courseCode,
-					dayOfWeek: data.day || data.dayOfWeekValue,
+					dayOfWeek,
 					hours,
 					location: data.location
 				});
@@ -85,7 +103,7 @@ class ReviewEvent extends React.PureComponent {
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
 					recurrence: data.recurrenceValue,
-					hours: data.allDay ? 'All-Day' : (data.startTime + ' - ' + data.endTime),
+					hours: data.allDay ? this.strings.allDay : (data.startTime + ' - ' + data.endTime),
 					location: data.location,
 					description: data.description
 				});
@@ -97,10 +115,10 @@ class ReviewEvent extends React.PureComponent {
 				nonFixedEventData.push({
 					title: data.title,
 					location: data.location,
-					priorityLevel: priorityLevels[data.priority],
-					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): 'Week',
+					priorityLevel: this.priorityLevels[data.priority],
+					dates: data.specificDateRange ? (`${data.startDate} - ${data.endDate}`): this.strings.week,
 					description: data.description,
-					occurence: `${data.occurrence} times/week`,
+					occurence: `${data.occurrence} ${this.strings.timeWeek}`,
 					duration: `${data.hours}h ${data.minutes}m`
 				});
 			});
@@ -151,7 +169,21 @@ class ReviewEvent extends React.PureComponent {
 	 * Goes to the appropriate Edit Screen
 	 */
 	navigateEditScreen = (editScreen) => {
-		this.props.navigation.navigate('Edit' + editScreen);
+		let param = {};
+
+		switch(editScreen) {
+			case 'Course':
+				param.editTitle = getStrings().Course.editTitle;
+				break;
+			case 'FixedEvent':
+				param.editTitle = getStrings().FixedEvent.editTitle;
+				break;
+			case 'NonFixedEvent':
+				param.editTitle = getStrings().NonFixedEvent.editTitle;
+				break;
+		}
+
+		this.props.navigation.navigate('Edit' + editScreen, param);
 	}
 
 	/**
@@ -163,10 +195,10 @@ class ReviewEvent extends React.PureComponent {
 
 		if (this.state.schoolScheduleData.length == 0 && this.state.nonFixedEventData.length == 0 && this.state.fixedEventData.length == 0 ) {
 			Alert.alert(
-				'Error',
-				'You need to create events in order to generate a Calendar',
+				this.strings.error,
+				this.strings.noEvent,
 				[
-					{text: 'OK'},
+					{text: this.strings.ok},
 				],
 				{cancelable: false}
 			);
@@ -185,17 +217,17 @@ class ReviewEvent extends React.PureComponent {
 						}
 					});
 				} else {
-					this.props.navigation.navigate(ScheduleCreationRoute);	
+					this.props.navigation.navigate(ScheduleCreationRoute, {title: getStrings().ScheduleCreation.title});	
 				}			
 			})
 			.catch(err => {
 				console.log('err', err);
 				if (err) {
 					Alert.alert(
-						'Error',
+						this.strings.error,
 						err,
 						[
-							{text: 'OK'},
+							{text: this.strings.ok},
 						],
 						{cancelable: false}
 					);
@@ -214,16 +246,16 @@ class ReviewEvent extends React.PureComponent {
 					<View style={styles.content}>
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>School Schedule</Text>
+								<Text style={styles.sectionTitle}>{this.strings.courseTitle}</Text>
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {
-											this.props.navigation.navigate(CourseRoute);
+											this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle});
 										} else {
-											this.props.navigation.navigate(SchoolScheduleRoute);
+											this.props.navigation.navigate(SchoolScheduleRoute, {title: getStrings().SchoolSchedule.title});
 										}
 									} else {
-										this.props.navigation.navigate(SchoolInformationRoute, {reviewEvent: true});
+										this.props.navigation.navigate(SchoolInformationRoute, {title: getStrings().SchoolInformation.title, reviewEvent: true});
 									}
 								}}>
 									<MaterialCommunityIcons name="plus-circle" 
@@ -234,7 +266,7 @@ class ReviewEvent extends React.PureComponent {
 
 							{
 								this.state.schoolScheduleData.length === 0 ?
-									<Text style={styles.textNoData}>No School Schedule or Courses added</Text> : 
+									<Text style={styles.textNoData}>{this.strings.noCourse}</Text> : 
 									this.state.schoolScheduleData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -251,8 +283,8 @@ class ReviewEvent extends React.PureComponent {
 
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>Fixed Events</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute)}>
+								<Text style={styles.sectionTitle}>{this.strings.fixedTitle}</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -261,7 +293,7 @@ class ReviewEvent extends React.PureComponent {
 
 							{
 								this.state.fixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No Fixed events added</Text> : 
+									<Text style={styles.textNoData}>{this.strings.noFixed}</Text> : 
 									this.state.fixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key}
@@ -280,8 +312,8 @@ class ReviewEvent extends React.PureComponent {
 
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
-								<Text style={styles.sectionTitle}>Non-Fixed Events</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute)}>
+								<Text style={styles.sectionTitle}>{this.strings.nonFixedTitle}</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -290,7 +322,7 @@ class ReviewEvent extends React.PureComponent {
 
 							{
 								this.state.nonFixedEventData.length === 0 ?
-									<Text style={styles.textNoData}>No Non-Fixed events added</Text> : 
+									<Text style={styles.textNoData}>{this.strings.noNonFixed}</Text> : 
 									this.state.nonFixedEventData.map((i,key) => {
 										return <EventOverview key={key}
 											id={key} 
