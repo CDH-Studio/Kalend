@@ -218,7 +218,18 @@ const DashboardOptionsNavigator = createStackNavigator(
 				}
 			}
 		},
-		ScheduleSelection: { screen: ScheduleSelection, navigationOptions: DashboardOptionsNavigatorOptions },
+		ScheduleSelection: { 
+			screen: ScheduleSelection, 
+			navigationOptions: {
+				...DashboardOptionsNavigatorOptions,
+				headerTransparent: true,
+				headerTintColor: white,
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
+			}
+		},
 		ScheduleSelectionDetails: { screen: ScheduleSelectionDetails, navigationOptions: DashboardOptionsNavigatorOptions },
 
 		CleanReducers: {

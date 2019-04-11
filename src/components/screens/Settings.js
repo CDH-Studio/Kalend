@@ -1,21 +1,21 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert, Modal, TouchableWithoutFeedback } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CustomTabs } from 'react-native-custom-tabs';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, dark_blue, gray, statusBarDark } from '../../styles';
+import { settingsStyles as styles, blue, dark_blue, statusBarDark, statusBarPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
-import { setLanguage, setCalendarID } from '../../actions';
+import { setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 import SafariView from 'react-native-safari-view';
 
@@ -51,6 +51,7 @@ class Settings extends React.PureComponent {
 
 	dismissEventsColorPicker = () => {
 		this.setState({showEventsColorPicker: false});
+		this.restoreStatusBar();
 	}
 
 	showWebsite = (url) => {
@@ -88,22 +89,59 @@ class Settings extends React.PureComponent {
 
 	dismissImportCalendar = () => {
 		this.setState({showImportCalendar: false});
+		this.restoreStatusBar();
+	}
+
+	dismissLanguage = () => {
+		this.setState({languageDialogVisible: false});
+		this.restoreStatusBar();
+	}
+
+	showEventsColorPicker = () => {
+		this.setState({showEventsColorPicker: true});
+		this.darkenStatusBar();
+	}
+
+	showImportCalendar = () => {
+		this.setState({showImportCalendar: true});
+		this.darkenStatusBar();
+	}
+
+	showLanguage = () => {
+		this.setState({languageDialogVisible: true});
+		this.darkenStatusBar();
+	}
+
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
 	}
 
 	render() {
-		const { containerHeight, showEventsColorPicker, showImportCalendar, snackbarText, snackbarTime, snackbarVisible } = this.state;
+		const { containerHeight, showEventsColorPicker, showImportCalendar, snackbarText, snackbarTime, snackbarVisible, languageDialogVisible } = this.state;
 
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					animated
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBarDark} />
 				
 				<EventsColorPicker visible={showEventsColorPicker}
-					dismiss={() => this.dismissEventsColorPicker()}/>
+					dismiss={this.dismissEventsColorPicker} />
 
 				<ImportCalendar visible={showImportCalendar}
-					dismiss={() => this.dismissImportCalendar()}/>
+					dismiss={this.dismissImportCalendar} />
+
+				<LanguageSwitcher visible={languageDialogVisible}
+					dismiss={this.dismissLanguage} />
 
 				<ScrollView>
 					<View style={[styles.content, {height: containerHeight}]}>
@@ -120,6 +158,16 @@ class Settings extends React.PureComponent {
 								{this.props.userName}
 							</Text>
 						</View>
+						
+						{
+							__DEV__ ?
+								<View style={styles.titleRow}> 
+									<IconButton icon="delete"
+										onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
+										size={20}
+										color={blue}/> 
+								</View>: null
+						}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
@@ -130,10 +178,8 @@ class Settings extends React.PureComponent {
 						</View>
 
 						<TouchableOpacity style={styles.button}
-							onPress={() => {
-								this.setState({showImportCalendar: true});
-							}}>
-							<Text style={styles.buttonText}>{this.strings.import}</Text>
+							onPress={this.showImportCalendar}>
+							<Text style={styles.buttonText}>Import Calendar</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -159,54 +205,11 @@ class Settings extends React.PureComponent {
 						</View>
 
 						<TouchableOpacity style={styles.button}
-							onPress={() => this.setState({languageDialogVisible: true})}>
-							<Text style={styles.buttonText}>{this.strings.languageTitle}</Text>
+							onPress={this.showLanguage}>
+							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
 						</TouchableOpacity>
-
-						<Modal visible={this.state.languageDialogVisible}
-							transparent={true}
-							onRequestClose={() => {
-								//do nothing;
-							}}
-							animationType={'none'}>
-							<TouchableOpacity style={styles.modalView} 
-								onPress={() => this.setState({languageDialogVisible: false})}
-								activeOpacity={1}>
-								<TouchableWithoutFeedback>
-									<View style={styles.languageDialogContent}>
-										<View style={styles.languageDialogMainRow}>
-											<MaterialIcons name="language"
-												size={80}
-												color={gray} />
-
-											<View style={styles.languagerDialogRightCol}>
-												<Text style={styles.languageDialogQuestion}>{this.strings.changeLanguage}</Text>
-
-												<View style={styles.languageDialogOptions}>
-													<TouchableOpacity onPress={() => this.setState({languageDialogVisible: false})}>
-														<Text style={styles.languageDialogCancel}>{this.strings.cancel}</Text>
-													</TouchableOpacity>
-
-													<TouchableOpacity onPress={() => {
-														this.props.dispatch(setLanguage(this.props.language === 'en' ? 'fr' : 'en'));
-
-														this.setState({languageDialogVisible: false});
-
-														setTimeout(() => { 
-															RNRestart.Restart();
-														}, 50);
-													}}>
-														<Text style={styles.languageDialogYes}>{this.strings.yes}</Text>
-													</TouchableOpacity>
-												</View>
-											</View>
-										</View>
-									</View>
-								</TouchableWithoutFeedback>
-							</TouchableOpacity>
-						</Modal>
-
-						{/* <TouchableOpacity style={styles.button}>
+						
+						<TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
 						</TouchableOpacity> */}
 
@@ -216,7 +219,7 @@ class Settings extends React.PureComponent {
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
-							onPress={() => this.setState({showEventsColorPicker: true})}>
+							onPress={this.showEventsColorPicker}>
 							<Text style={styles.buttonText}>{this.strings.theme}</Text>
 						</TouchableOpacity>
 
