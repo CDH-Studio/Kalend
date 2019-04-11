@@ -250,7 +250,7 @@ class Schedule extends React.PureComponent {
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' ' + this.strings.schedule, id, {
+					this.props.nextScreen(ordinal + ' ' + (this.props.language === 'en' ? (this.strings.schedule[0].toUpperCase() + this.strings.schedule.slice(1)) : this.strings.schedule), id, {
 						fixed: this.props.fixed,
 						school: this.props.school,
 						ai: this.state.ai,
@@ -464,7 +464,7 @@ class ScheduleSelection extends React.PureComponent {
 	 */
 	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title: getStrings().ScheduleSelectionDetails.title, data, delete: this.deleteCalendar});
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data, delete: this.deleteCalendar});
 	}
 	
 	/**
@@ -494,7 +494,8 @@ class ScheduleSelection extends React.PureComponent {
 			fixedEvents={this.state.data.fixedEvents}
 			schoolEvents={this.state.data.schoolEvents}
 			id={index}
-			numOfLines={6} />;
+			numOfLines={6}
+			language={this.props.language} />;
 	};
 
 	render() {
@@ -594,7 +595,8 @@ let mapStateToProps = (state) => {
 		courseColor,
 		insideNonFixedEventsColor,
 		insideFixedEventsColor,
-		insideCourseColor
+		insideCourseColor,
+		language: state.SettingsReducer.language
 	};
 };
 
