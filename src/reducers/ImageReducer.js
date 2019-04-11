@@ -1,6 +1,6 @@
 import {SET_IMG, CLEAR_IMG} from '../constants';
 
-export default function ImageReducer(state = [], action) {
+export default function ImageReducer(action, state = []) {
 	switch (action.type) {
 
 		case SET_IMG:

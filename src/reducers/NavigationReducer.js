@@ -9,7 +9,7 @@ let nav = {
 	successfullyInsertedEvents: null
 };
 
-export default function NavigationReducer(state = nav, action) {
+export default function NavigationReducer(action, state = nav) {
 	switch (action.type) {
 		case SET_NAV_SCREEN:
 			return {

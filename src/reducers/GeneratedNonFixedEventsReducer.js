@@ -1,6 +1,6 @@
 import {ADD_GENERATED_NFE, CLEAR_GENERATED_NFE} from '../constants';
 
-export default function GeneratedNonFixedEventsReducer(state = [], action) {
+export default function GeneratedNonFixedEventsReducer(action, state = []) {
 	const { event } = action;
 	switch (action.type) {
 

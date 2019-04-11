@@ -4,7 +4,7 @@ let data = {
 	info: null
 };
 
-export default function UnavailableReducer(state = data, action) {
+export default function UnavailableReducer(action, state = data) {
 	const info = action;
 
 	switch (action.type) {
