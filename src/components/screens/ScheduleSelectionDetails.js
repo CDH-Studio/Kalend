@@ -9,7 +9,7 @@ import { storeGeneratedCalendars } from '../../services/api/storage_services';
 import { getStrings } from '../../services/helper';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse, addEvents, clearAllEvents} from '../../actions';
-import { scheduleSelectionDetailsStyle as styles, white, dark_blue, statusBlueColor, blue } from '../../styles';
+import { scheduleSelectionDetailsStyle as styles, white, dark_blue, blue } from '../../styles';
 
 const moment = require('moment');
 
@@ -315,7 +315,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={'rgba(0, 0, 0, 0.5)'} />
 
 				<ScrollView>
 					<View style={styles.content}>

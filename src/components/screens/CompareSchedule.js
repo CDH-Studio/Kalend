@@ -369,7 +369,7 @@ class CompareSchedule extends React.PureComponent {
 							<TouchableRipple onPress={this.removePeople}
 								style={styles.sideButton}
 								rippleColor={whiteRipple}
-								overlayColor={whiteRipple}>
+								underlayColor={whiteRipple}>
 								<Text style={styles.sideButtonText}>Delete</Text>
 							</TouchableRipple>}
 

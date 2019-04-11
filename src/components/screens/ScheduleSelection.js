@@ -8,7 +8,7 @@ import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } f
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
-import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
+import { scheduleSelectionStyle as styles, black, white } from '../../styles';
 import { getStrings } from '../../services/helper';
 
 export const containerPadding = 10;
@@ -250,7 +250,7 @@ class Schedule extends React.PureComponent {
 				{/* The onPressIn and onPressOut helps eliminating the weird
 					effect when shadows are on and you touch a schedule */}
 				<TouchableOpacity onPress={() => {
-					this.props.nextScreen(ordinal + ' ' + this.strings.schedule, id, {
+					this.props.nextScreen(ordinal + ' ' + (this.props.language === 'en' ? (this.strings.schedule[0].toUpperCase() + this.strings.schedule.slice(1)) : this.strings.schedule), id, {
 						fixed: this.props.fixed,
 						school: this.props.school,
 						ai: this.state.ai,
@@ -376,12 +376,9 @@ class ScheduleSelection extends React.PureComponent {
 	strings = getStrings().ScheduleSelection;
 
 	static navigationOptions = ({ navigation }) => ({
-		title: navigation.state.params.title,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-		},
+		title: getStrings().ScheduleSelection.title,
 		gesturesEnabled: false,
-		headerLeft: <HeaderBackButton tintColor={dark_blue} onPress={() => {
+		headerLeft: <HeaderBackButton tintColor={white} onPress={() => {
 			navigation.getParam('onBackPress')(); 
 		}} />,
 	});
@@ -467,7 +464,7 @@ class ScheduleSelection extends React.PureComponent {
 	 */
 	nextScreen = (title, index, data) => {
 		this.setIndex(index);
-		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title: getStrings().ScheduleSelectionDetails.title, data, delete: this.deleteCalendar});
+		this.props.navigation.navigate(ScheduleSelectionDetailsRoute, {title, data, delete: this.deleteCalendar});
 	}
 	
 	/**
@@ -497,7 +494,8 @@ class ScheduleSelection extends React.PureComponent {
 			fixedEvents={this.state.data.fixedEvents}
 			schoolEvents={this.state.data.schoolEvents}
 			id={index}
-			numOfLines={6} />;
+			numOfLines={6}
+			language={this.props.language} />;
 	};
 
 	render() {
@@ -505,8 +503,8 @@ class ScheduleSelection extends React.PureComponent {
 
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+					backgroundColor={'rgba(0, 0, 0, 0.5)'} />
 
 				<ScrollView >
 					<View style={styles.content}>
@@ -597,7 +595,8 @@ let mapStateToProps = (state) => {
 		courseColor,
 		insideNonFixedEventsColor,
 		insideFixedEventsColor,
-		insideCourseColor
+		insideCourseColor,
+		language: state.SettingsReducer.language
 	};
 };
 
