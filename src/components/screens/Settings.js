@@ -246,6 +246,20 @@ class Settings extends React.PureComponent {
 									this.strings.modifyCalendarDescription,
 									[
 										{text: this.strings.cancel, style: 'cancel'},
+										{text: this.strings.deleteCalendar, onPress: () => {
+											Alert.alert(
+												this.strings.warning,
+												this.strings.warningDescription,
+												[
+													{text: this.strings.cancel, style: 'cancel'},
+													{text: this.strings.ok, onPress: async () => {
+														await deleteCalendar(this.props.calendarId);
+														this.logout();
+													}},
+												],
+												{cancelable: false}
+											);
+										}},
 										{text: this.strings.clearCalendar, onPress: async () => {
 											this.setState({
 												snackbarVisible: true,
@@ -270,20 +284,6 @@ class Settings extends React.PureComponent {
 												});
 											}
 										}},
-										{text: this.strings.deleteCalendar, onPress: () => {
-											Alert.alert(
-												this.strings.warning,
-												this.strings.warningDescription,
-												[
-													{text: this.strings.cancel, style: 'cancel'},
-													{text: this.strings.ok, onPress: async () => {
-														await deleteCalendar(this.props.calendarId);
-														this.logout();
-													}},
-												],
-												{cancelable: false}
-											);
-										}}
 									],
 									{cancelable: true}
 								);

@@ -684,7 +684,7 @@ export const fixedEventStyles = StyleSheet.create({
 	allDay: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 50
+		paddingLeft: 30
 	},
 
 	rowTimeSection: {
@@ -1608,6 +1608,10 @@ export const calendarPermissionStyles = StyleSheet.create({
 		...calendarShareButtons.buttons,
 		justifyContent: 'flex-end',
 		marginHorizontal: 0
+	},
+	
+	snackbar: {
+		width: '100%'
 	}
 });
 
@@ -1996,7 +2000,8 @@ export const schoolInformationStyles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 20,
-		justifyContent: 'space-around'
+		marginVertical: -15,
+		justifyContent: 'space-evenly'
 	},
 	
 	instruction: {
@@ -2322,7 +2327,7 @@ export const importCalendarStyles = StyleSheet.create({
 	},
 
 	progressModalDescription: {
-		fontFamily: 'Raleway-Regular', 
+		fontFamily: 'OpenSans-Regular', 
 		color: gray, 
 		paddingVertical: 10
 	},

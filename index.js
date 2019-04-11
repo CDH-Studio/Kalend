@@ -139,7 +139,7 @@ const DashboardNavigator = createMaterialBottomTabNavigator(
 	},
 	{
 		initialRouteName: 'Dashboard',
-		barStyle: { backgroundColor: dark_blue, ppaddingVertical:5 },
+		barStyle: { backgroundColor: dark_blue },
 	}
 );
 
