@@ -1396,6 +1396,12 @@ const DashboardButton = StyleSheet.create({
 export const dashboardStyles = StyleSheet.create({
 	content: {
 		width: '100%',
+		height: '100%',
+		paddingTop: getStatusBarHeight()
+	},
+
+	calendar: {
+		width: '100%',
 		height: '100%'
 	},
 

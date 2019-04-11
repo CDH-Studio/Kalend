@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Snackbar } from 'react-native-paper';
+import { Snackbar, FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
@@ -220,7 +220,7 @@ class Dashboard extends React.PureComponent {
 
 					{showMonthView}
 					
-					<View style={styles.content}>
+					<View style={styles.calendar}>
 						<Agenda ref='agenda'
 							items={this.state.items}
 							renderItem={this.renderItem}
@@ -285,7 +285,7 @@ class Dashboard extends React.PureComponent {
 					{snackbarText}
 				</Snackbar>
 
-				<ModalEvent visible={this.state.modalVisible}
+				{/* <ModalEvent visible={this.state.modalVisible}
 					dismiss={this.dismissModal}
 					navigateEditScreen={this.props.navigateEditScreen}
 					categoryColor={categoryColor}
@@ -296,13 +296,7 @@ class Dashboard extends React.PureComponent {
 					detailHeight={detailHeight}
 					details={details}
 					editScreen={editScreen}
-					showDeleteModal={this.showDeleteModal} />
-
-				<DeleteModal visible={this.state.deleteDialogVisible}
-					dismiss={this.dismissDelete}
-					shouldShowModal={this.state.shouldShowModal}
-					deleteEvent={this.deleteEvent}
-					showModal={this.showModal} />
+					showDeleteModal={this.showDeleteModal} /> */}
 			</View>
 		);
 	}
