@@ -93,7 +93,7 @@ class Dashboard extends React.PureComponent {
 		}
 		
 		return (
-			<View style={[styles.item, {backgroundColor:{category}}]}>
+			<View style={[styles.item, {backgroundColor: category}]}>
 				<Text style={styles.itemText}>{item.name}</Text>
 				<Text style={styles.itemText}>{item.time}</Text>
 			</View>
@@ -245,7 +245,7 @@ class Dashboard extends React.PureComponent {
 					</View>
 
 					<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-						style={{position:'absolute', bottom: 13 , right:10}}>
+						style={{position:'absolute', bottom: 13 , right:10, display: calendarOpened ? 'none' : 'flex'}}>
 						<View style={{flexDirection: 'row',
 							justifyContent: 'center',
 							alignItems: 'center',
