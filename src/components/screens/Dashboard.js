@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules, LayoutAnimation } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Snackbar, FAB } from 'react-native-paper';
@@ -14,6 +14,10 @@ import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
 const moment = require('moment');
+
+// Enables the LayoutAnimation on Android
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
 LocaleConfig.locales['fr'] = {
@@ -237,6 +241,7 @@ class Dashboard extends React.PureComponent {
 							shouldChangeDay={this.shouldChangeDay}
 							theme={{agendaKnobColor: dark_blue}}
 							onCalendarToggled={(calendarOpened) => {
+								LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
 								this.setState({calendarOpened}, () => {
 									this.forceUpdate();
 								});
@@ -244,35 +249,39 @@ class Dashboard extends React.PureComponent {
 						/>
 					</View>
 
-					<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-						style={{position:'absolute', bottom: 13 , right:10, display: calendarOpened ? 'none' : 'flex'}}>
-						<View style={{flexDirection: 'row',
-							justifyContent: 'center',
-							alignItems: 'center',
-							height: 45,
-							width: 110,
-							backgroundColor: dark_blue,
-							borderRadius: 22.5, 
-							...Platform.select({
-								ios: {
-									shadowColor: black,
-									shadowOffset: { width: 0, height: 2 },
-									shadowOpacity: 0.3,
-									shadowRadius: 3,    
-								},
-								android: {
-									elevation: 4,
-								},
-							})
-						}}>
+					{ 
+						calendarOpened ?
+							null :
+							<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
+								style={{position:'absolute', bottom: 13 , right:10}}>
+								<View style={{flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+									height: 45,
+									width: 110,
+									backgroundColor: dark_blue,
+									borderRadius: 22.5, 
+									...Platform.select({
+										ios: {
+											shadowColor: black,
+											shadowOffset: { width: 0, height: 2 },
+											shadowOpacity: 0.3,
+											shadowRadius: 3,    
+										},
+										android: {
+											elevation: 4,
+										},
+									})
+								}}>
 
-							<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
+									<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
 
-							<MaterialCommunityIcons size={20}
-								name="calendar-multiple-check"
-								color={white}/>
-						</View>
-					</TouchableOpacity>
+									<MaterialCommunityIcons size={20}
+										name="calendar-multiple-check"
+										color={white}/>
+								</View>
+							</TouchableOpacity>
+					}
 				</View>
 
 				{showCloseFab}
