@@ -1024,12 +1024,20 @@ export const eventOverviewStyles = StyleSheet.create({
 		color: gray
 	},
 
-	modalView: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#00000080',
+	// modalView: {
+	// 	flex: 1,
+	// 	flexDirection: 'column',
+	// 	justifyContent: 'center',
+	// 	alignItems: 'center',
+	// 	backgroundColor: '#00000080',
+	// },
+
+	modalContent: {
+		justifyContent: 'space-between',
+		backgroundColor: white,
+		borderRadius: 8,
+		marginHorizontal: 20,
+		width: '90%',
 		...Platform.select({
 			ios: {
 				shadowColor: black,
@@ -1038,14 +1046,6 @@ export const eventOverviewStyles = StyleSheet.create({
 				shadowRadius: 7  
 			},
 		}),
-	},
-
-	modalContent: {
-		justifyContent: 'space-between',
-		backgroundColor: white,
-		borderRadius: 8,
-		marginHorizontal: 20,
-		width: '90%'
 	},
 
 	closeModal: {
@@ -1096,14 +1096,14 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
 		paddingVertical: 3,
-		color: gray
+		color: white
 	},
 
 	modalInfoText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 3,
-		color: gray,
+		color: white,
 		width: 120
 	},
 
@@ -1117,28 +1117,27 @@ export const eventOverviewStyles = StyleSheet.create({
 		textDecorationLine: 'underline',
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: gray
+		color: white
 	},
 	
 	modalDetailsSubtitle: {
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: gray
+		color: white
 	},
 
 	modalDetailsText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 1,
-		color: gray
+		color: white
 	},
 
 	actionsModal: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginVertical: 10,
-		backgroundColor: white,
 	},
 
 	actionIconModal: {
@@ -1168,7 +1167,7 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		marginLeft: 10,
 		marginBottom: 10,
-		color: gray
+		color: white
 	},
 
 	deleteDialogOptions: {
@@ -1179,7 +1178,7 @@ export const eventOverviewStyles = StyleSheet.create({
 	deleteDialogCancel: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize:16,
-		color: gray
+		color: white
 	},
 
 	deleteDialogYes: {

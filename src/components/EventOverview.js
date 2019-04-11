@@ -8,7 +8,7 @@ import ModalEvent from '../components/ModalEvent';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
 import { getStrings } from '../services/helper';
-import { calendarColors } from '../../config/config';
+import { calendarColors, calendarInsideColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
 /**
@@ -74,6 +74,7 @@ class EventOverview extends React.PureComponent {
 
 	render() {
 		let categoryColor;
+		let lightCategoryColor;
 		let categoryIcon;
 		let details;
 		let editScreen;
@@ -81,6 +82,7 @@ class EventOverview extends React.PureComponent {
 
 		if (this.props.category === 'SchoolSchedule') {
 			categoryColor = this.props.courseColor;
+			lightCategoryColor = this.props.insideCourseColor;
 			categoryIcon = 'school';
 			details = 
 				<View style={styles.modalDetailView}>
@@ -91,6 +93,7 @@ class EventOverview extends React.PureComponent {
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = this.props.fixedEventsColor;
+			lightCategoryColor = this.props.insideFixedEventsColor;
 			categoryIcon = 'calendar-today';
 			details = 
 				<View>
@@ -113,6 +116,7 @@ class EventOverview extends React.PureComponent {
 			editScreen = 'FixedEvent';
 		} else {
 			categoryColor = this.props.nonFixedEventsColor;
+			lightCategoryColor = this.props.insideNonFixedEventsColor;
 			categoryIcon = 'face';
 			details = 
 				<View>
@@ -198,6 +202,7 @@ class EventOverview extends React.PureComponent {
 					dismiss={this.dismissModal}
 					navigateEditScreen={this.props.navigateEditScreen}
 					categoryColor={categoryColor}
+					lightCategoryColor={lightCategoryColor}
 					eventTitle={this.props.eventTitle}
 					date={this.props.date}
 					time={this.props.time}
@@ -219,7 +224,10 @@ class EventOverview extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
-	
+	let insideFixedEventsColor = fixedEventsColor;
+	let insideNonFixedEventsColor = nonFixedEventsColor;
+	let insideCourseColor = courseColor;
+
 	for (let i = 0; i < calendarColors.length; i++) {
 		let key = Object.keys(calendarColors[i])[0];
 		let value = Object.values(calendarColors[i])[0];
@@ -227,14 +235,17 @@ let mapStateToProps = (state) => {
 		switch(key) {
 			case fixedEventsColor:
 				fixedEventsColor = value;
+				insideFixedEventsColor = Object.values(calendarInsideColors[i])[0];
 				break;
 			
 			case nonFixedEventsColor:
 				nonFixedEventsColor = value;
+				insideNonFixedEventsColor = Object.values(calendarInsideColors[i])[0];
 				break;
 				
 			case courseColor:
 				courseColor = value;
+				insideCourseColor = Object.values(calendarInsideColors[i])[0];
 				break;
 		}
 	}
@@ -250,11 +261,26 @@ let mapStateToProps = (state) => {
 	if (!courseColor) {
 		courseColor = state.CalendarReducer.calendarColor;
 	}
+	
+	if (!insideFixedEventsColor) {
+		insideFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideNonFixedEventsColor) {
+		insideNonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideCourseColor) {
+		insideCourseColor = state.CalendarReducer.calendarColor;
+	}
 
 	return {
 		fixedEventsColor,
 		nonFixedEventsColor,
-		courseColor
+		courseColor,
+		insideNonFixedEventsColor,
+		insideFixedEventsColor,
+		insideCourseColor
 	};
 };
 

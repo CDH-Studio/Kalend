@@ -159,7 +159,7 @@ class Schedule extends React.PureComponent {
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
 		let latestHour = 12;
-		Object.entries(data).map((i) => {
+		Object.entries(data).forEach((i) => {
 			i[1].map((i) => {
 				let start = i.start;
 				let end = i.start + Math.ceil(i.chunks);

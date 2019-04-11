@@ -131,7 +131,7 @@ class ReviewEvent extends React.PureComponent {
 	
 	deleteEvent = (id, category) => {
 		let dataToDispatch;
-		let newEvents;
+		let newEvents = [];
 		let objectToChange;
 
 		switch (category) {

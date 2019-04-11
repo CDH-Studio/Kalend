@@ -221,7 +221,7 @@ class CompareSchedule extends React.PureComponent {
 
 						// Split dates
 						for (let i = 0; i < ranges.length - 1; i++) {
-							Object.keys(dates).map(date => {
+							Object.keys(dates).forEach(date => {
 								if (ranges[i].contains(moment(date))) {
 									ranges[i] = moment.range(
 										ranges[i].start,
