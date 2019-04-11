@@ -8,7 +8,7 @@ import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } f
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
 import { eventsToScheduleSelectionData } from '../../services/service';
-import { scheduleSelectionStyle as styles, black, dark_blue } from '../../styles';
+import { scheduleSelectionStyle as styles, black, white } from '../../styles';
 import { getStrings } from '../../services/helper';
 
 export const containerPadding = 10;
@@ -376,12 +376,9 @@ class ScheduleSelection extends React.PureComponent {
 	strings = getStrings().ScheduleSelection;
 
 	static navigationOptions = ({ navigation }) => ({
-		title: navigation.state.params.title,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-		},
+		title: getStrings().ScheduleSelection.title,
 		gesturesEnabled: false,
-		headerLeft: <HeaderBackButton tintColor={dark_blue} onPress={() => {
+		headerLeft: <HeaderBackButton tintColor={white} onPress={() => {
 			navigation.getParam('onBackPress')(); 
 		}} />,
 	});
@@ -505,8 +502,8 @@ class ScheduleSelection extends React.PureComponent {
 
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
-					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+					backgroundColor={'rgba(0, 0, 0, 0.5)'} />
 
 				<ScrollView >
 					<View style={styles.content}>

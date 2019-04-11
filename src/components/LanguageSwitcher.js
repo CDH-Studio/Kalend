@@ -4,7 +4,7 @@ import RNRestart from 'react-native-restart';
 import Modal from 'react-native-modal';
 import { setLanguage } from '../actions';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { languageSwitcherStyles as styles, gray, darkRed, dark_blue } from '../styles';
+import { languageSwitcherStyles as styles, dark_blue } from '../styles';
 import { getStrings } from '../services/helper';
 
 class LanguageSwitcher extends React.PureComponent {

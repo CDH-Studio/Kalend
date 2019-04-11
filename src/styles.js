@@ -220,7 +220,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingHorizontal: 10
+		paddingHorizontal: 20
 	},
 
 	instruction: {
@@ -1194,13 +1194,14 @@ export const eventOverviewStyles = StyleSheet.create({
 export const scheduleSelectionStyle = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: dark_blue
+		backgroundColor: dark_blue,
 	},
 
 	content: {
 		paddingHorizontal: containerPadding,
 		marginTop: 10,
 		paddingBottom: 10,
+		paddingTop: getStatusBarHeight() + Header.HEIGHT
 	},
 
 	description: {
@@ -1322,7 +1323,7 @@ export const scheduleSelectionDetailsStyle = StyleSheet.create({
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 20,
 		marginVertical: 7,
-		color: gray
+		color: dark_blue
 	},
 
 	eventContainer: {
