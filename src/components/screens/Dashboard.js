@@ -6,12 +6,14 @@ import { Snackbar, FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { calendarColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
+import ModalEvent from '../ModalEvent';
+import DeleteModal from '../DeleteModal';
 
 const moment = require('moment');
 
@@ -76,7 +78,8 @@ class Dashboard extends React.PureComponent {
 			month: '',
 			modalVisible: false,
 			deleteDialogVisible: false,
-			shouldShowModal: false
+			shouldShowModal: false,
+			modalInfo: {}
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
 
@@ -188,6 +191,109 @@ class Dashboard extends React.PureComponent {
 		this.setState({isVisible: false});
 	}
 
+	dismissModal = () => {
+		this.setState({modalVisible: false});
+	}
+
+	/**
+	 * Goes to the appropriate Edit Screen
+	 */
+	navigateEditScreen = (editScreen) => {
+		let param = {};
+
+		switch(editScreen) {
+			case 'Course':
+				param.editTitle = getStrings().Course.editTitle;
+				break;
+			case 'FixedEvent':
+				param.editTitle = getStrings().FixedEvent.editTitle;
+				break;
+			case 'NonFixedEvent':
+				param.editTitle = getStrings().NonFixedEvent.editTitle;
+				break;
+		}
+
+		this.props.navigation.navigate('Edit' + editScreen, param);
+	}
+
+	showDeleteModal = () => {
+		this.setState({deleteDialogVisible: true, shouldShowModal: true});
+	}
+
+	dismissDeleteModal = () => {
+
+	}
+
+	changeInfo = () => {
+		let categoryColor;
+		let lightCategoryColor;
+		let categoryIcon;
+		let details;
+		let editScreen;
+		let detailHeight;
+
+		if (this.props.category === 'SchoolSchedule') {
+			categoryColor = this.props.courseColor;
+			lightCategoryColor = this.props.insideCourseColor;
+			categoryIcon = 'school';
+			details = 
+				<View style={styles.modalDetailView}>
+					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
+					<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
+				</View>;
+			detailHeight = 45;
+			editScreen = 'Course';
+		} else if (this.props.category === 'FixedEvent') {
+			categoryColor = this.props.fixedEventsColor;
+			lightCategoryColor = this.props.insideFixedEventsColor;
+			categoryIcon = 'calendar-today';
+			details = 
+				<View>
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
+					</View>
+
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
+					</View>
+
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
+					</View>
+				</View>;
+			detailHeight = 80;
+			editScreen = 'FixedEvent';
+		} else {
+			categoryColor = this.props.nonFixedEventsColor;
+			lightCategoryColor = this.props.insideNonFixedEventsColor;
+			categoryIcon = 'face';
+			details = 
+				<View>
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
+					</View>
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
+					</View>
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
+					</View>
+					<View style={styles.modalDetailView}>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
+					</View>
+				</View>;
+			detailHeight = 100;
+			editScreen = 'NonFixedEvent';
+		}
+	}
+
 	render() {
 		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
 		let showCloseFab;
@@ -205,7 +311,6 @@ class Dashboard extends React.PureComponent {
 			</View>;
 	
 			showMonthView = null;
-
 		} else {
 			showCloseFab = null;
 
@@ -294,18 +399,24 @@ class Dashboard extends React.PureComponent {
 					{snackbarText}
 				</Snackbar>
 
-				{/* <ModalEvent visible={this.state.modalVisible}
+				<ModalEvent visible={this.state.modalVisible}
 					dismiss={this.dismissModal}
-					navigateEditScreen={this.props.navigateEditScreen}
-					categoryColor={categoryColor}
-					eventTitle={this.props.eventTitle}
-					date={this.props.date}
-					time={this.props.time}
-					categoryIcon={categoryIcon}
-					detailHeight={detailHeight}
-					details={details}
-					editScreen={editScreen}
-					showDeleteModal={this.showDeleteModal} /> */}
+					navigateEditScreen={this.navigateEditScreen}
+					showDeleteModal={this.showDeleteModal}
+					categoryColor={this.state.modalInfo.categoryColor}
+					eventTitle={this.state.modalInfo.eventTitle}
+					date={this.state.modalInfo.date}
+					time={this.state.modalInfo.time}
+					categoryIcon={this.state.modalInfo.categoryIcon}
+					detailHeight={this.state.modalInfo.detailHeight}
+					details={this.state.modalInfo.details}
+					editScreen={this.state.modalInfo.editScreen} />
+
+				<DeleteModal visible={this.state.deleteDialogVisible}
+					dismiss={this.dismissDelete}
+					shouldShowModal={this.state.shouldShowModal}
+					deleteEvent={this.deleteEvent}
+					showModal={this.showModal} />
 			</View>
 		);
 	}

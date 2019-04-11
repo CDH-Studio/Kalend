@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { setNavigationScreen } from '../actions';
 import ModalEvent from '../components/ModalEvent';
 import { store } from '../store';
-import { eventOverviewStyles as styles, gray } from '../styles';
+import { eventOverviewStyles as styles, gray, semiTransparentWhite } from '../styles';
 import { getStrings } from '../services/helper';
 import { calendarColors, calendarInsideColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
@@ -87,7 +87,7 @@ class EventOverview extends React.PureComponent {
 			details = 
 				<View style={styles.modalDetailView}>
 					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
+					<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 				</View>;
 			detailHeight = 45;
 			editScreen = 'Course';
@@ -99,17 +99,17 @@ class EventOverview extends React.PureComponent {
 				<View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
 			detailHeight = 80;
@@ -122,19 +122,19 @@ class EventOverview extends React.PureComponent {
 				<View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.priorityLevel}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
 					</View>
 				</View>;
 			detailHeight = 100;

@@ -15,6 +15,7 @@ export const statusBarDark = '#00000050';
 export const gray = '#565454';
 export const whiteRipple = '#DDDDDD';
 export const blueRipple = dark_blue + '50';
+export const semiTransparentWhite = '#ffffffa0';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {

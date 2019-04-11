@@ -5,7 +5,7 @@ import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { eventOverviewStyles as styles, white } from '../styles';
+import { eventOverviewStyles as styles, white, semiTransparentWhite } from '../styles';
 import { calendarColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
@@ -38,8 +38,6 @@ class ModalEvent extends React.PureComponent {
 	}
 
 	render() {
-		let semiTransparentWhite = '#ffffffa0';
-
 		return(
 			<View>
 				<Modal isVisible={this.state.modalVisible}
@@ -86,8 +84,6 @@ class ModalEvent extends React.PureComponent {
 						</View>
 
 						<View style={styles.modalDetailsView}>
-							<Text style={styles.modalDetailsTitle}>Details</Text>
-
 							<View style={{height:this.props.detailHeight}} onStartShouldSetResponder={() => true}>
 								<ScrollView>
 									<TouchableOpacity activeOpacity={1}>
