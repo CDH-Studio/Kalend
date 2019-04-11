@@ -12,6 +12,7 @@ export const dark_blue = '#153d73';
 export const red = '#FF0000';
 export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
+export const statusBarPopover = '#000000D0';
 export const gray = '#565454';
 export const whiteRipple = '#DDDDDD';
 export const blueRipple = dark_blue + '50';
@@ -1472,14 +1473,20 @@ export const dashboardStyles = StyleSheet.create({
 		fontFamily: 'Raleway-Regular'
 	},
 
+	tooltipContainer: {
+	},
+
 	tooltipView: {
 		padding: 10,
 		...Platform.select({
 			ios: {
 				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.9,
-				shadowRadius: 2
+				shadowOffset: {
+					width: 0,
+					height: 3,
+				},
+				shadowOpacity: 0.29,
+				shadowRadius: 4.65,
 			},
 			android: {
 				elevation: 4
@@ -1830,7 +1837,7 @@ export const settingsStyles = StyleSheet.create({
 
 	profileIconContainer: {
 		elevation: 3,
-		zIndex:999, 
+		zIndex: 999, 
 		...Platform.select({
 			ios: {
 				shadowColor: black,
@@ -2100,26 +2107,23 @@ export const eventsColorPickerStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 
-	modal: {
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,
-			},
-			android: {
-				elevation: 4,
-			},
-		}),
-	},
-
 	modalContent: {
 		flexDirection: 'column', 
 		justifyContent: 'center', 
 		alignContent: 'center', 
 		borderRadius: 5, 
 		backgroundColor: white, 
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	modalTitle: {
@@ -2212,6 +2216,70 @@ export const eventsColorPickerStyles = StyleSheet.create({
 	}
 });
 
+export const languageSwitcherStyles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15,
+		marginHorizontal: '7.5%',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
+	},
+
+	languageDialogMainRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+
+	languageDialogRightCol: {
+		paddingRight: 5,
+		paddingVertical: 3,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
+
+	languageDialogQuestion: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	},
+
+	languageDialogOptions: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+
+	languageDialogCancel: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+	},
+
+	languageDialogYes: {
+		fontFamily: 'Raleway-Bold', 
+		color: dark_blue, 
+		fontSize: 16, 
+		marginLeft: 20
+	}
+});
+
 export const importCalendarStyles = StyleSheet.create({
 	container: {
 		justifyContent: 'center',
@@ -2224,7 +2292,18 @@ export const importCalendarStyles = StyleSheet.create({
 		alignContent: 'center', 
 		borderRadius: 5, 
 		backgroundColor: white, 
-		padding: 15
+		padding: 15,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
 	},
 
 	itemView: {
