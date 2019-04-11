@@ -1,6 +1,6 @@
 import { ADD_FE, CLEAR_FE, DELETE_FE, UPDATE_FE } from '../constants';
 
-export default function FixedEventsReducer(action, state = []) {
+export default function FixedEventsReducer(state = [], action) {
 	const { event, index } = action;
 
 	switch (action.type) {

@@ -4,7 +4,7 @@ let user = {
 	profile: null
 };
 
-export default function HomeReducer(action, state = user) {
+export default function HomeReducer(state = user, action) {
 	const profile = action;
 
 	switch (action.type) {

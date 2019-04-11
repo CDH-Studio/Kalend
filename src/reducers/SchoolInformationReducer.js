@@ -4,7 +4,7 @@ let data = {
 	info: null
 };
 
-export default function SchoolInformationReducer(action, state = data) {
+export default function SchoolInformationReducer(state = data, action) {
 	const info = action;
 
 	switch (action.type) {

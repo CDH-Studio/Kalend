@@ -1,6 +1,6 @@
 import { SET_DASHBOARD_DATA, CLEAR_DASHBOARD_DATA} from '../constants';
 
-export default function DashboardReducer(action, state = {}) {
+export default function DashboardReducer(state = {}, action) {
 	const { data } = action;
 
 	switch (action.type) {

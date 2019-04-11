@@ -1,6 +1,6 @@
 import { SET_SELECTED_SCHEDULE, CLEAR_SELECTED_SCHEDULE, CLEAR_SCHEDULE } from '../constants';
 
-export default function ScheduleSelectionReducer(action, state = []) {
+export default function ScheduleSelectionReducer(state = [], action) {
 	switch (action.type) {
 
 		case SET_SELECTED_SCHEDULE:

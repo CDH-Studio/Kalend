@@ -6,7 +6,7 @@ let calendar = {
 	courseColor: '2'
 };
 
-export default function CalendarReducer(action, state = calendar) {
+export default function CalendarReducer(state = calendar, action) {
 	const { id, colors, fixedEventsColor, nonFixedEventsColor, courseColor, calendarColor } = action;
 
 	switch (action.type) {

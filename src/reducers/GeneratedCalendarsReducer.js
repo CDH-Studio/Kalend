@@ -1,6 +1,6 @@
 import {ADD_GENERATED_CALENDAR, CLEAR_GENERATED_CALENDAR, DELETE_GENERATED_CALENDAR} from '../constants';
 
-export default function GeneratedCalendarsReducer(action, state = []) {
+export default function GeneratedCalendarsReducer(state = [], action) {
 	const { calendar, index } = action;
 	switch (action.type) {
 

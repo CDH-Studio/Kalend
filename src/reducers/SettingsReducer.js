@@ -1,6 +1,6 @@
 import { SET_LANGUAGE, CLEAR_SETTINGS } from '../constants';
 
-export default function SettingsReducer(action, state = []) {
+export default function SettingsReducer(state = [], action) {
 	const { language } = action;
 
 	switch (action.type) {

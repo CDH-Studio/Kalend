@@ -1,6 +1,6 @@
 import { ADD_NFE, CLEAR_NFE, DELETE_NFE, UPDATE_NFE } from '../constants';
 
-export default function NonFixedEventsReducer(action, state = []) {
+export default function NonFixedEventsReducer(state = [], action) {
 	const { event, index } = action;
 	
 	switch (action.type) {
