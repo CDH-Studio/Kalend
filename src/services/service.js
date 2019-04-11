@@ -495,10 +495,9 @@ export const generateCalendars = async () => {
 
 export const getDataforDashboard = async () => {
 	return new Promise(async (resolve, reject) => {
-		getEvents()
+		await getEvents()
 			.then(res => res.json())
 			.then((events) => {
-					
 				if(events.length != 0) {
 					convertEventsToDictionary(events).then(dict => {
 						if(dict == undefined) reject('There was an error in converting data to dict');
@@ -514,6 +513,7 @@ export const sortEventsInDictonary = (dict) => {
 		let sortedValue = selectionSort(value);
 		dict[key] = sortedValue;
 	}
+
 	return dict;
 };
 

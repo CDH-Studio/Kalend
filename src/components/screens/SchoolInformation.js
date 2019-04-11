@@ -80,7 +80,7 @@ class SchoolInformation extends React.PureComponent {
 	 * Saves the information into redux and goes back to the previous screen if it's validated
 	 */
 	saveInformation = () => {
-		if (this.validateDates()) {
+		if (this.fieldValidation()) {
 			let {startDate, endDate, value, checked} = this.state;
 			value = (checked == 'third') ? 0: value;
 

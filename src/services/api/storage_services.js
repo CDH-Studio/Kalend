@@ -55,3 +55,7 @@ export const storeGeneratedCalendars = (info) => {
 export const getEvents = () => {
 	return apiHelperCall(server + 'api/getEvents', 'GET');
 };
+
+export const logOutUser = () => {
+	return apiHelperCall(server + 'api/logOut', 'GET');
+};

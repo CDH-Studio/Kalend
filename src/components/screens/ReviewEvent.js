@@ -204,9 +204,10 @@ class ReviewEvent extends React.PureComponent {
 			);
 			return;
 		}
-
+		
 		insertFixedEventsToGoogle()
 			.then((promises) => {
+			
 				if (this.state.nonFixedEventData.length == 0) {
 					storeGeneratedCalendars(promises).then(success => {
 						if(success) {

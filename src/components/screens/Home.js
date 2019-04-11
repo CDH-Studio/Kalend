@@ -103,7 +103,7 @@ class Home extends React.PureComponent {
 							this.setUser(userInfo);
 						}
 						googleSignIn().then((userInfo) => {
-							if (userInfo !== null) {
+							if (userInfo) {
 								this.setUser(userInfo);
 							}
 							this.state.clicked = false;

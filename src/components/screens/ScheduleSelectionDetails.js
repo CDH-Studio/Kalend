@@ -215,9 +215,9 @@ class ScheduleSelectionDetails extends React.PureComponent {
 			data.schoolEvents.forEach(event => {
 				event.type = 'school';
 				if ('daysEn' in this.strings) {
-					temp_days[this.strings.days[this.strings.daysEn.indexOf(event.dayOfWeek)]].push(event);
+					temp_days[this.strings.days[this.strings.daysEn.indexOf(event.dayOfWeekValue)]].push(event);
 				} else {
-					temp_days[event.dayOfWeek].push(event);
+					temp_days[event.dayOfWeekValue].push(event);
 				}
 			});
 		}
