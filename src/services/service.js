@@ -1,5 +1,5 @@
 import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate, getStrings } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, getCalendar, insertAccessRule, getAccessRules, removeAccessRules, deleteCalendar } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, getCalendar, insertAccessRule, getAccessRules, removeAccessRules, deleteCalendar, deleteEvent } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
 import { getEvents } from './api/storage_services';
@@ -686,4 +686,22 @@ export const getAvailabilitiesCalendars = (calendarIds, startTime, endTime) => {
 			resolve(data);
 		});
 	});
+};
+
+/**
+  * 
+  * Function called in compare schedule, to remove someone else from your shared calendars
+  * 
+  * @param {Strings} calendarId The ID of the Calendar
+  * @param {String} events IDs of the events pushed to google Calendar
+  */
+ export const deleteCreatedGoogleEvents = () => {
+	let events = store.getState().AllEventsReducer
+	let calendarID = store.getState().CalendarReducer.id;
+	let promises = [];
+	events.forEach(event => {
+		promises.push(deleteEvent(calendarID, event.id));
+	});
+
+	return Promise.all(promises);
 };

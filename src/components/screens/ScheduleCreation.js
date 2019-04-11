@@ -3,7 +3,7 @@ import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-nativ
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { HeaderBackButton } from 'react-navigation';
-import { generateCalendars, setUserInfo } from '../../services/service';
+import { generateCalendars, setUserInfo, deleteCreatedGoogleEvents } from '../../services/service';
 import { connect } from 'react-redux';
 import { addEvents } from '../../actions';
 import { bindActionCreators } from 'redux';
@@ -70,13 +70,16 @@ class ScheduleCreation extends React.PureComponent {
 				{
 					text: getStrings().Dashboard.name,
 					onPress: () => {
-						this.props.navigation.navigate(DashboardNavigator);
+						deleteCreatedGoogleEvents()
+							.then(() => this.props.navigation.navigate(DashboardNavigator))
+						
 					}
 				},
 				{
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
+						deleteCreatedGoogleEvents()
+							.then(() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title}))
 					},
 				},
 			],
