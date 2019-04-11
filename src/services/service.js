@@ -695,8 +695,8 @@ export const getAvailabilitiesCalendars = (calendarIds, startTime, endTime) => {
   * @param {Strings} calendarId The ID of the Calendar
   * @param {String} events IDs of the events pushed to google Calendar
   */
- export const deleteCreatedGoogleEvents = () => {
-	let events = store.getState().AllEventsReducer
+export const deleteCreatedGoogleEvents = () => {
+	let events = store.getState().AllEventsReducer;
 	let calendarID = store.getState().CalendarReducer.id;
 	let promises = [];
 	events.forEach(event => {

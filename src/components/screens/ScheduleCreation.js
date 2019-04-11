@@ -71,7 +71,7 @@ class ScheduleCreation extends React.PureComponent {
 					text: getStrings().Dashboard.name,
 					onPress: () => {
 						deleteCreatedGoogleEvents()
-							.then(() => this.props.navigation.navigate(DashboardNavigator))
+							.then(() => this.props.navigation.navigate(DashboardNavigator));
 						
 					}
 				},
@@ -79,7 +79,7 @@ class ScheduleCreation extends React.PureComponent {
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
 						deleteCreatedGoogleEvents()
-							.then(() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title}))
+							.then(() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title}));
 					},
 				},
 			],
