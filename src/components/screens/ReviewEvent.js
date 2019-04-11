@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform,Alert } from 'react-native';
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform, Alert } from 'react-native';
 import { FAB } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';

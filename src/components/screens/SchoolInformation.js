@@ -15,7 +15,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { storeSchoolInfoService } from '../../services/api/storage_services';
 
 const moment = require('moment');
-const viewHeight = 584;
+const viewHeight = 495.75;
 
 class SchoolInformation extends React.PureComponent {
 
