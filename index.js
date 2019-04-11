@@ -25,7 +25,6 @@ import Course from './src/components/screens/Course';
 import UnavailableHours from './src/components/screens/UnavailableHours';
 import ReviewEvent from './src/components/screens/ReviewEvent';
 import Dashboard from './src/components/screens/Dashboard';
-import Chatbot from './src/components/screens/Chatbot';
 import CompareSchedule from './src/components/screens/CompareSchedule';
 import Settings from './src/components/screens/Settings';
 import SchoolInformation from './src/components/screens/SchoolInformation';
@@ -83,23 +82,6 @@ const DashboardNavigator = createBottomTabNavigator(
 					},
 				};
 			}
-		},
-		Chatbot: {
-			screen: createStackNavigator({
-				Chatbot: {
-					screen: Chatbot,
-					navigationOptions: {
-						...dashboardInnerScreenOptions
-					}
-				}
-			}),
-			navigationOptions: ({navigation}) => ({
-				title: store.getState().BottomNavReducer.chatbotTitle,
-				tabBarIcon: ({ focused, tintColor }) => {
-					const iconName = `chat-bubble${focused ? '' : '-outline'}`;
-					return <MaterialIcons name={iconName} size={25} color={tintColor} />;
-				},
-			})
 		},
 		CompareSchedule: {
 			screen: createStackNavigator({

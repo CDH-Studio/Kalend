@@ -1559,14 +1559,6 @@ export const calendarShareButtons = StyleSheet.create({
 	},
 });
 
-export const chatbotStyles = StyleSheet.create({
-	content: {
-		width: '100%',
-		height: '100%',
-		paddingTop: getStatusBarHeight()
-	}
-});
-
 export const calendarPermissionStyles = StyleSheet.create({
 	...calendarShareButtons,
 
