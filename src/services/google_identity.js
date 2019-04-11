@@ -1,5 +1,5 @@
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { logOutUser } from '../services/api/storage_services'
+import { logOutUser } from '../services/api/storage_services';
 import { webClientId, googleIdentityScope } from '../../config/config';
 
 GoogleSignin.configure({

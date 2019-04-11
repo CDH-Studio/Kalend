@@ -133,9 +133,9 @@ class Dashboard extends React.PureComponent {
 	setDashboardDataService = () => {
 		getDataforDashboard()
 			.then(items => {
-					let dict =  sortEventsInDictonary(items);
-					this.props.dispatch(setDashboardData(dict));
-					this.setState({items: dict});
+				let dict =  sortEventsInDictonary(items);
+				this.props.dispatch(setDashboardData(dict));
+				this.setState({items: dict});
 			})
 			.catch(err => {
 				console.log('err', err);
