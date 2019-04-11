@@ -10,9 +10,10 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
-import { FixedEventRoute } from '../../constants/screenNames';
+import { FixedEventRoute, UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { fixedEventStyles as styles, blue, dark_blue, gray, statusBlueColor, white } from '../../styles';
+import { timeVerification, dateVerification, getStrings } from '../../services/helper';
+import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white } from '../../styles';
 
 const moment = require('moment');
 
@@ -24,8 +25,11 @@ const containerWidth = Dimensions.get('window').width;
  */
 class FixedEvent extends React.PureComponent {
 
+	strings = getStrings().FixedEvent;
+	buttonStrings = getStrings().BottomButtons;
+
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === FixedEventRoute ? 'Add Fixed Events' : 'Edit Fixed Event',
+		title: navigation.state.routeName === FixedEventRoute || navigation.state.routeName === UnavailableFixedRoute ? navigation.state.params.addTitle : navigation.state.params.editTitle,
 		headerStyle: {
 			backgroundColor: white
 		}
@@ -45,24 +49,14 @@ class FixedEvent extends React.PureComponent {
 
 			allDay: false,
 
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
+			startDate: moment().format('ddd., MMM DD, YYYY'),
+			endDate: moment().format('ddd., MMM DD, YYYY'),
 
 			startTime: moment().format('h:mm A'),
-			disabledStartTime : false,
-
 			endTime: moment().format('h:mm A'),
-			disabledEndTime : true,
-			endTimeValidated: true,
 
 			location: '',
-			recurrenceValue: 'None',
+			recurrenceValue: this.strings.recurrence[0],
 			recurrence: 'NONE',
 			description: '',
 
@@ -83,6 +77,7 @@ class FixedEvent extends React.PureComponent {
 		this.setContainerHeight();
 	}
 
+	//TODO: Do we need it?
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - statusBarHeight;
@@ -99,170 +94,31 @@ class FixedEvent extends React.PureComponent {
 	}
 
 	/**
+	 * Checks if its the same dates after a date change and set the times if needed
+	 */
+	dateTimeStateVerification() {
+		if (moment(this.state.startDate, 'ddd., MMM DD, YYYY').isSame(moment(this.state.endDate, 'ddd., MMM DD, YYYY'))) {
+			if (moment(this.state.endTime, 'h:mm A').isAfter(moment(this.state.startTime, 'h:mm A'))) {
+				//do nothing
+			} else {
+				this.setState({endTime: this.state.startTime});
+			}
+		} else {
+			//do nothing
+		}
+	}
+
+	/**
 	 * Analyzes the input times and make sure the ranges make sense
 	 * 
-	 * @param {String} startTime The start time received from the time dialog
-	 * @param {String} endTime The end time received from the time dialog
+	 * @param {String} time The time of the unchanged value
 	 */
-	beforeStartTime(startTime, endTime) {
-		let startCheck = true;
-
-		// Check if an end time has been specified, if not, use the state end time
-		if (endTime === undefined) {
-			endTime = this.state.endTime;
-		}
-
-		// Check if an start time has been specified, if not, use the state start time
-		// and specify that the startTime wasn't given by changing the variable startCheck
-		if (startTime === undefined) {
-			startTime = this.state.startTime;
-			startCheck = false;
-		}
-
-		// Fix the undefined bug if you haven't set the end time (since the seconds are included in the time)
-		if (endTime.split(':').length === 3) {
-			let endTimeSplit = endTime.split(':');
-			let endTimeSplitSpace = endTime.split(' ');
-
-			endTime = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
-		}
-
-		// Analyzes the start time, and converts it to a date
-		let start = this.getDateObject(startTime);
-
-		// End Time
-		let end = this.getDateObject(endTime);
-
-		// Comparing start and end time
-		if (startCheck) {
-			if (start > end) {
-				return startTime;
-			} else {
-				return endTime;
-			}
+	dateTimeVerification(time) {
+		if (moment(this.state.startDate, 'ddd., MMM DD, YYYY').isSame(moment(this.state.endDate, 'ddd., MMM DD, YYYY'))) {
+			return timeVerification(this.state.startTime, this.state.endTime, time);
 		} else {
-			if (end < start) {
-				return endTime;
-			} else {
-				return startTime;
-			}
+			return time;
 		}
-	}
-
-	/**
-	 * Converts a string formatted like ##:## PM or AM to a JavaScript object
-	 * 
-	 * @param {String} time The string representing the time
-	 * 
-	 * @returns {Date} The JavaScript date object equivalent of the string
-	 */
-	getDateObject = (time) => {
-		// Gets the AM/PM
-		let tempTime = time.split(' ');
-		let isPm = tempTime[1].trim().toLowerCase() === 'pm';
-
-		// Gets the hours and minutes
-		let timeContent = tempTime[0].split(':');
-		let hours = parseInt(timeContent[0]);
-		let minutes = parseInt(timeContent[1]);
-
-		// Adds 12 hours if its PM and not equal to 12
-		if (isPm && hours !== 12) {
-			hours += 12;
-		}
-
-		// Creates a JavaScript object
-		let date = new Date();
-		date.setHours(hours, minutes);
-
-		return date;
-	}
-
-	/**
-	 * The onDateChange of the start time dialog which modifies the appropriate state variables
-	 * 
-	 * @param {String} startTime The time output of the time dialog
-	 */
-	startTimeOnDateChange = (startTime) => {
-		let firstDate = new Date(this.state.startDate).getTime();
-		let endDate = new Date(this.state.endDate).getTime();
-
-		let endTime;
-		if (this.state.disabledEndTime) {
-			endTime = startTime;
-		} else if (firstDate === endDate) {
-			endTime = this.beforeStartTime(startTime, undefined);
-		} else {
-			endTime = this.state.endTime;
-		}
-
-		this.setState({
-			startTime, 
-			endTime, 
-			amPmStart: '', 
-			amPmEnd: ''
-		});
-	} 
-
-	/**
-	 * The onDateChange of the end time dialog which modifies the appropriate state variables
-	 * 
-	 * @param {String} endTime The time output of the time dialog
-	 */
-	endTimeOnDateChange = (endTime) => {
-		let firstDate = new Date(this.state.startDate).getTime();
-		let endDate = new Date(this.state.endDate).getTime();
-
-		let startTime;
-		if (firstDate === endDate) {
-			startTime = this.beforeStartTime(undefined, endTime);
-		} else {
-			startTime = this.state.startTime;
-		} 
-
-		this.setState({
-			startTime,
-			endTime, 
-			amPmEnd: '',
-			endTimeValidated: true
-		});
-	}
-
-	/**
-	 * The onDateChange of the start date dialog which modifies the appropriate state variables
-	 * 
-	 * @param {String} startDate The date output of the date dialog
-	 */
-	startDateOnDateChange = (startDate) => {
-		if (this.state.startDate !== this.state.endDate && startDate === this.state.endDate) {
-			this.setState({endTime: this.beforeStartTime(this.state.startTime)});
-		}
-
-		this.setState({
-			startDate: startDate, 
-			disabledEndDate: false, 
-			minEndDate: startDate, 
-			endDate: (this.state.disabledEndDate || new Date(startDate) > new Date(this.state.endDate)) ? startDate : this.state.endDate,
-			endDateValidated: true
-		});
-	}
-
-	/**
-	 * The onDateChange of the end date dialog which modifies the appropriate state variables
-	 * 
-	 * @param {String} endDate The date output of the date dialog
-	 */
-	endDateOnDateChange = (endDate) => { 
-		if (this.state.startDate !== this.state.endDate && endDate === this.state.startDate) {
-			this.setState({endTime: this.beforeStartTime(this.state.startTime)});
-		}
-
-		this.setState({
-			endDate: endDate, 
-			maxStartDate: endDate,
-			disabledEndTime: false,
-			endTimeValidated: true
-		});
 	}
 
 	/**
@@ -271,7 +127,7 @@ class FixedEvent extends React.PureComponent {
 	recurrenceOnClick = () => {
 		return ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['None', 'Everyday', 'Weekly', 'Monthly', 'Cancel'],
+				options: [...this.strings.recurrence, this.strings.cancel],
 				cancelButtonIndex: 4,
 				tintColor: blue
 			},
@@ -309,22 +165,6 @@ class FixedEvent extends React.PureComponent {
 		} else {
 			this.setState({titleValidated: true});
 		}
-		
-		if (this.state.disabledEndDate === true) {
-			this.setState({endDateValidated: false});
-			validated = false;
-		} else {
-			this.setState({endDateValidated: true});
-		}
-		
-		if(this.state.allDay === false) {
-			if (this.state.disabledEndTime === true) {
-				this.setState({endTimeValidated: false});
-				validated = false;
-			} else {
-				this.setState({endTimeValidated: true});
-			}
-		}
 
 		return validated;
 	}
@@ -352,7 +192,7 @@ class FixedEvent extends React.PureComponent {
 	addAnotherEvent = () => {
 		if (!this.fieldValidation()) {
 			this.setState({
-				snackbarText: 'Invalid fields, please review to add event',
+				snackbarText: this.strings.snackbarFailure,
 				snackbarVisible: true,
 				snackbarTime: 5000
 			});
@@ -363,7 +203,7 @@ class FixedEvent extends React.PureComponent {
 		this.setState(this.resetField());
 		this.refs._scrollView.scrollTo({x: 0});
 		this.setState({
-			snackbarText: 'Event successfully added',
+			snackbarText: this.strings.snackbarSuccess,
 			snackbarVisible: true,
 			snackbarTime: 3000
 		});
@@ -379,25 +219,14 @@ class FixedEvent extends React.PureComponent {
 
 			allDay: false,
 
-			startDate: new Date().toDateString(),
-			minStartDate: new Date().toDateString(),
-			maxStartDate: new Date(8640000000000000),
-
-			endDate: new Date().toDateString(),
-			minEndDate: this.startDate,
-			disabledEndDate : true,
-			endDateValidated: true,
+			startDate:  moment().format('ddd., MMM DD, YYYY'),
+			endDate:  moment().format('ddd., MMM DD, YYYY'),
 
 			startTime: moment().format('h:mm A'),
-			disabledStartTime : false,
-
 			endTime: moment().format('h:mm A'),
-			minEndTime: moment().format('h:mm A'),
-			disabledEndTime : true,
-			endTimeValidated: true,
 
 			location: '',
-			recurrenceValue: 'None',
+			recurrenceValue: this.strings.recurrence[0],
 			recurrence: 'NONE',
 			description: '',
 
@@ -408,6 +237,7 @@ class FixedEvent extends React.PureComponent {
 		});
 	}
 
+	//TODO: Comment function
 	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
 		const scrollResponder = this.refs._scrollView.getScrollResponder();
 		const inputHandle = findNodeHandle(inputFieldRef);
@@ -425,39 +255,22 @@ class FixedEvent extends React.PureComponent {
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorTitle;
-		let errorEnd;
 		let showNextButton = true;
 
 		if (!this.state.titleValidated) {
-			errorTitle = <Text style={styles.errorTitle}>Title cannot be empty.</Text>;
+			errorTitle = <Text style={styles.errorTitle}>{this.strings.titleEmpty}</Text>;
 		} else {
 			errorTitle = null;
-		}
-
-		if(this.state.allDay === false) {
-			if (!this.state.endDateValidated && !this.state.endTimeValidated) {
-				errorEnd = <Text style={styles.errorEnd}>Please select Dates and Times.</Text>;
-			} else if (!this.state.endTimeValidated) {
-				errorEnd = <Text style={styles.errorEnd}>Please select an End Date and Time.</Text>;
-			} else {
-				errorEnd = null;
-			}
-		} else {
-			if (!this.state.endDateValidated) {
-				errorEnd = <Text style={styles.errorEnd}>Please select a Start and End Date.</Text>;
-			} else {
-				errorEnd = null;
-			}
 		}
 
 		/**
 		 * In order to show components based on current route
 		 */
 		if (this.props.navigation.state.routeName === FixedEventRoute) {
-			addEventButtonText = 'Add';
+			addEventButtonText = this.buttonStrings.add;
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			addEventButtonText = 'Done';
+			addEventButtonText = this.buttonStrings.done;
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
 		}
@@ -475,7 +288,7 @@ class FixedEvent extends React.PureComponent {
 						scrollEventThrottle={100}>
 						<View style={[styles.content, {height: containerHeight}]}>
 							<View style={styles.instruction}>
-								<Text style={styles.text}>Add your events, office hours, appointments, etc.</Text>
+								<Text style={styles.text}>{this.strings.description}</Text>
 								
 								<MaterialCommunityIcons name="calendar-today"
 									size={130}
@@ -491,7 +304,7 @@ class FixedEvent extends React.PureComponent {
 									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText}
 											maxLength={1024}
-											placeholder="Title" 
+											placeholder={this.strings.titlePlaceholder}
 											returnKeyType = {'next'}
 											onSubmitEditing={() => this.refs.locationInput.focus()}
 											blurOnSubmit={false}
@@ -505,101 +318,93 @@ class FixedEvent extends React.PureComponent {
 
 							<View style={styles.timeSection}>
 								<View style={[styles.allDay, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>All-Day</Text>
+									<Text style={styles.blueTitleAllDay}>{this.strings.allday}</Text>
 									<View style={styles.switch}>
 										<Switch trackColor={{false: 'lightgray', true: blue}} 
 											ios_backgroundColor={'lightgray'} 
 											thumbColor={(this.state.allDay && Platform.OS !== 'ios') ? dark_blue : null} 
-											onValueChange={(allDay) => this.setState({
-												allDay: allDay, 
-												disabledStartTime: !this.state.disabledStartTime,
-												disabledEndTime: true,
-												endTimeValidated: true})} 
+											onValueChange={(allDay) => this.setState({allDay: allDay})} 
 											value = {this.state.allDay} />
 									</View>
-									<Text style={styles.empty}>empty</Text>
 								</View>
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>Start</Text>
+									<Text style={styles.blueTitle}>{this.strings.start}</Text>
 									<DatePicker showIcon={false} 
 										date={this.state.startDate} 
 										mode="date" 
 										style={{width:140}}
 										customStyles={{
 											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular',
-												color: !this.state.endDateValidated ? '#ff0000' : gray}
+											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
 										format="ddd., MMM DD, YYYY"
-										minDate={this.state.minStartDate}
-										maxDate={this.state.maxStartDate}
-										confirmBtnText="Confirm"
-										cancelBtnText="Cancel"
-										onDateChange={this.startDateOnDateChange} />
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										onDateChange={(startDate) => {
+											this.setState({
+												startDate,
+												endDate: dateVerification(startDate, this.state.endDate, this.state.endDate)}, () => this.dateTimeStateVerification());
+										}} />
 										
 									<DatePicker showIcon={false} 
 										date={this.state.startTime} 
 										mode="time"
-										disabled={this.state.disabledStartTime}
+										disabled={this.state.allDay}
 										style={{width:70}}
 										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
-											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular',
-												color: gray,
-												opacity: this.state.allDay ? 0 : 1} 
+											dateInput:{borderWidth: 0},
+											disabled:{opacity: 0},
+											dateText:{fontFamily: 'OpenSans-Regular'} 
 										}}
 										format="h:mm A" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										locale={'US'}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
 										is24Hour={false}
-										onDateChange={this.startTimeOnDateChange}/>
+										onDateChange={(startTime) => {
+											this.setState({startTime}, () => this.setState({endTime: this.dateTimeVerification(this.state.endTime)}));
+										}} />
 								</View>
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
-									<Text style={styles.blueTitle}>End</Text>
+									<Text style={styles.blueTitle}>{this.strings.end}</Text>
 									<DatePicker showIcon={false} 
 										date={this.state.endDate} 
 										mode="date" 
 										style={{width:140}}
-										disabled = {this.state.disabledEndDate}
 										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
-											dateText:{
-												fontFamily: 'OpenSans-Regular', 
-												color: !this.state.endDateValidated || !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndDate ? 'line-through' : 'none'}}}
-										format="ddd., MMM DD, YYYY" 
-										minDate={this.state.minEndDate}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
-										onDateChange={this.endDateOnDateChange} />
+											dateText:{fontFamily: 'OpenSans-Regular'}
+										}}
+										format="ddd., MMM DD, YYYY"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										onDateChange={(endDate) => {
+											this.setState({
+												endDate,
+												startDate: dateVerification(this.state.startDate, endDate, this.state.startDate)}, () => this.dateTimeStateVerification());
+										}} />
 
 									<DatePicker showIcon={false} 
 										date={this.state.endTime} 
-										mode="time" 
-										disabled = {this.state.disabledEndTime}
+										mode="time"
+										disabled={this.state.allDay}
 										style={{width:70}}
 										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
 											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular',
-												opacity: this.state.allDay ? 0 : 1,
-												color: !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}
+											disabled:{opacity: 0},
+											dateText:{fontFamily: 'OpenSans-Regular'}
 										}}
-										format="h:mm A"
+										format="h:mm A" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
 										locale={'US'}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
 										is24Hour={false}
-										onDateChange={this.endTimeOnDateChange}/>
+										onDateChange={(endTime) => {
+											this.setState({endTime}, () => this.setState({startTime: this.dateTimeVerification(this.state.startTime)}));
+										}} />
 								</View>
-
-								{errorEnd}
 							</View>
 
 							<View style={styles.description}>
@@ -612,7 +417,7 @@ class FixedEvent extends React.PureComponent {
 										<TextInput style={styles.textInputText} 
 											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
-											placeholder="Location" 
+											placeholder={this.strings.locationPlaceholder} 
 											ref='locationInput'
 											returnKeyType = {'next'}
 											onSubmitEditing={() =>  this.refs.descriptionInput.focus()}
@@ -631,7 +436,7 @@ class FixedEvent extends React.PureComponent {
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
 											onFocus={() => this.scrollToInput(this.refs.descriptionInput, 300)}
-											placeholder="Description" 
+											placeholder={this.strings.descriptionPlaceholder} 
 											ref='descriptionInput'
 											returnKeyType = {'done'}
 											onChangeText={(description) => this.setState({description})} 
@@ -660,10 +465,10 @@ class FixedEvent extends React.PureComponent {
 												<Picker style={styles.recurrence} 
 													selectedValue={this.state.recurrence} 
 													onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
-													<Picker.Item label="None" value="NONE" />
-													<Picker.Item label="Everyday" value="DAILY" />
-													<Picker.Item label="Weekly" value="WEEKLY" />
-													<Picker.Item label="Monthly" value="MONTHLY" />
+													<Picker.Item label={this.strings.recurrence[0]} value="NONE" />
+													<Picker.Item label={this.strings.recurrence[1]} value="DAILY" />
+													<Picker.Item label={this.strings.recurrence[2]} value="WEEKLY" />
+													<Picker.Item label={this.strings.recurrence[3]} value="MONTHLY" />
 												</Picker>
 
 										}
@@ -672,7 +477,7 @@ class FixedEvent extends React.PureComponent {
 							</View>
 
 							<BottomButtons twoButtons={showNextButton}
-								buttonText={[addEventButtonText, 'Done']}
+								buttonText={[addEventButtonText, this.buttonStrings.done]}
 								buttonMethods={[addEventButtonFunction, this.skip]} />
 						</View>
 					</ScrollView>

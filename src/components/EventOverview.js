@@ -7,6 +7,7 @@ import { setNavigationScreen } from '../actions';
 import ModalEvent from '../components/ModalEvent';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
+import { getStrings } from '../services/helper';
 import { calendarColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
@@ -26,6 +27,8 @@ import DeleteModal from './DeleteModal';
  * @prop {function} action The function to be executed when delete is triggered
  */
 class EventOverview extends React.PureComponent {
+
+	strings = getStrings().EventOverview;
 
 	constructor(props) {
 		super(props);
@@ -81,7 +84,7 @@ class EventOverview extends React.PureComponent {
 			categoryIcon = 'school';
 			details = 
 				<View style={styles.modalDetailView}>
-					<Text style={styles.modalDetailsSubtitle}>Location: </Text>
+					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 				</View>;
 			detailHeight = 45;
@@ -92,17 +95,17 @@ class EventOverview extends React.PureComponent {
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Location: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Description: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Recurrence: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
@@ -114,19 +117,19 @@ class EventOverview extends React.PureComponent {
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Recurrence: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Priority Level: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.priorityLevel}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Location: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>Description: </Text>
+						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
 					</View>
 				</View>;
@@ -234,6 +237,18 @@ let mapStateToProps = (state) => {
 				courseColor = value;
 				break;
 		}
+	}
+
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
 	}
 
 	return {

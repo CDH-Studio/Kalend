@@ -1,1 +1,1 @@
-../../../../../../node_modules/lottie-ios/lottie-ios/Classes/MacCompatibility/UIBezierPath.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/MacCompatability/UIBezierPath.h

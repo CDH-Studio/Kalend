@@ -3,19 +3,23 @@ import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacit
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { setCalendarID, logonUser, setCalendarColor } from '../../actions';
+import { setCalendarID, logonUser, setBottomString, setCalendarColor } from '../../actions';
+import { DashboardNavigator } from '../../constants/screenNames';
 import { gradientColors } from '../../../config/config';
 import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
-import { DashboardNavigator } from '../../constants/screenNames';
+import { getStrings } from '../../services/helper';
 
 /** 
  * Home/Login screen of the app.
- * Permits the user to log into the app with their Google account.*/
+ * Permits the user to log into the app with their Google account.
+ */
 class Home extends React.PureComponent {
+
+	strings = getStrings().Home;
 
 	constructor(props) {
 		super(props);
@@ -37,7 +41,7 @@ class Home extends React.PureComponent {
 	 */
 	setCalendar() {
 		getCalendarID2().then(data => {
-			if (data === undefined) {
+			if (data.calendarID === undefined) {
 				createCalendar().then(data => {
 					this.props.setCalendarID(data.calendarID);
 					this.props.setCalendarColor(data.calendarColor);
@@ -55,6 +59,15 @@ class Home extends React.PureComponent {
 	 * Log In the user with their Google Account
 	 */
 	signIn = () => {
+		let params = {
+			dashboardTitle: getStrings().Dashboard.title, 
+			chatbotTitle: getStrings().Chatbot.title, 
+			compareTitle: getStrings().CompareSchedule.title, 
+			settingsTitle: getStrings().Settings.title
+		};
+		
+		this.props.setBottomString(params);
+
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
@@ -110,12 +123,12 @@ class Home extends React.PureComponent {
 
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
-									Linking.openURL('https://cdhstudio.ca/');
+									Linking.openURL('https://cdhstudio.ca/fr');
 								}}>
 								<Text style={styles.cdhSectionText}>
-									<Text style={styles.cdhText}>Created by </Text>
+									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>
 
-									<Text style={styles.cdhLink}>CDH Studio</Text>
+									<Text style={styles.cdhLink}>{this.strings.cdhStudio}</Text>
 								</Text>
 							</TouchableOpacity>
 						</View>
@@ -137,7 +150,7 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser, setCalendarColor}, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, setBottomString, setCalendarColor }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

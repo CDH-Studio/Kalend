@@ -1,18 +1,27 @@
 import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
-import { Agenda } from 'react-native-calendars';
+import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { FAB, Portal, Snackbar } from 'react-native-paper';
+import { Snackbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, blue, white, dark_blue, black } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { calendarColors } from '../../../config/config';
-import { ReviewEventRoute, FixedEventRoute, NonFixedEventRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
+import { ReviewEventRoute } from '../../constants/screenNames';
+import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
 
 const moment = require('moment');
+
+LocaleConfig.locales.en = LocaleConfig.locales[''];
+LocaleConfig.locales['fr'] = {
+	monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+	monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+	dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+	dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.']
+};
 
 /**
  * Dashboard of the application which shows the user's calendar and
@@ -20,10 +29,13 @@ const moment = require('moment');
  */
 class Dashboard extends React.PureComponent {
 
+	defaultLocale = store.getState().SettingsReducer.language;
+
+	strings = getStrings().Dashboard;
 
 	static navigationOptions = ({navigation}) => ({
 		headerRight: (
-			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute)}
+			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
 				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
 					...Platform.select({
 						ios: {
@@ -37,20 +49,19 @@ class Dashboard extends React.PureComponent {
 						},
 					})
 				}}>
-				<Text style={{color: white, fontFamily: 'Raleway-Bold'}}>Create </Text>
+				<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
 				<MaterialCommunityIcons size={25}
 					name="calendar-multiple-check"
 					color={white}/>
 			</TouchableOpacity>
 		),
+		header: null
 	});
 
 	constructor(props) {
 		super(props);
 		this.state = { 
 			containerHeight: null,
-			opened: false,
-			optionsOpen: false,
 			items: {},
 			isVisible: false,
 			calendarOpened: false,
@@ -64,6 +75,8 @@ class Dashboard extends React.PureComponent {
 			shouldShowModal: false
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
+
+		LocaleConfig.defaultLocale = this.defaultLocale;
 	}
 	
 	renderItem(item) {
@@ -89,10 +102,10 @@ class Dashboard extends React.PureComponent {
 
 	renderEmptyData = () => {
 		return <View>
-			<Text style={styles.eventsDayTitle}>Events of the Day</Text>
+			<Text style={styles.eventsDayTitle}>{this.strings.eventsDayTitle}</Text>
 			
 			<View style={styles.noEvents}>
-				<Text style={styles.noEventsText}>There's no events for the day.</Text>
+				<Text style={styles.noEventsText}>{this.strings.noEventsText}</Text>
 			</View>
 		</View>;
 	}
@@ -172,7 +185,7 @@ class Dashboard extends React.PureComponent {
 	}
 
 	render() {
-		const {optionsOpen, calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
+		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
 		let showCloseFab;
 		let showMonthView;
 
@@ -200,86 +213,73 @@ class Dashboard extends React.PureComponent {
 
 		return(
 			<View style={{flex:1}}>
-				<Portal.Host>
-					<View style={styles.content}>
-						<StatusBar translucent={true}
-							barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
-							backgroundColor={'#166489'} />	
+				<View style={styles.content}>
+					<StatusBar translucent={true}
+						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+						backgroundColor={statusBarDark} />	
 
-						{showMonthView}
+					{showMonthView}
 					
-						<View style={styles.content}>
-							<Agenda ref='agenda'
-								items={this.state.items}
-								renderItem={this.renderItem}
-								listTitle={'Events of the Day'}
-								renderEmptyData={this.renderEmptyData}
-								onDayChange={(date) => {
-									this.getMonth(date.month);
-								}}
-								onDayPress={(date) => {
-									this.getMonth(date.month);
-								}}
-								rowHasChanged={this.rowHasChanged}
-								showOnlyDaySelected={true}
-								shouldChangeDay={this.shouldChangeDay}
-								theme={{agendaKnobColor: dark_blue, backgroundColor: white}}
-								onCalendarToggled={(calendarOpened) => {
-									this.setState({calendarOpened}, () => {
-										this.forceUpdate();
-									});
-								}}
-							/>
-						</View>
-
-						<FAB.Group
-							ref={ref => this.touchable = ref}
-							theme={{colors:{accent:blue}}}
-							open={optionsOpen}
-							icon={optionsOpen ? 'close' : 'add'}
-							actions={[
-								{icon: 'school',
-									label: 'Add School Schedule',
-									onPress: () => {
-										if (store.getState().SchoolInformationReducer.info) {
-											if (store.getState().SchoolInformationReducer.info.info.checked === 'third') {
-												this.props.navigation.navigate(CourseRoute);
-											} else {
-												this.props.navigation.navigate(SchoolInformationRoute, {schoolSchedule: true});
-											}
-										}
-									}
-								},
-								{icon: 'today',
-									label: 'Add Fixed Event',
-									onPress: () => this.props.navigation.navigate(FixedEventRoute)},
-								{icon: 'face',
-									label: 'Add Non-Fixed Event',
-									onPress: () => this.props.navigation.navigate(NonFixedEventRoute)},
-							]}
-							onStateChange={() => this.setState({optionsOpen: !optionsOpen})}
-							style={styles.fab} />
-
-						{/* <View>
-							<Popover popoverStyle={styles.tooltipView}
-								isVisible={this.state.isVisible}
-								fromView={this.touchable}
-								onClose={() => this.closePopover()}>
-								<Feather name="x"
-									style={{top:-2.5, right: -2.5, justifyContent: "flex-end"}}
-									size={25}
-									color={black} />
-								<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
-							</Popover>
-						</View> */}
+					<View style={styles.content}>
+						<Agenda ref='agenda'
+							items={this.state.items}
+							renderItem={this.renderItem}
+							listTitle={'Events of the Day'}
+							renderEmptyData={this.renderEmptyData}
+							onDayChange={(date) => {
+								this.getMonth(date.month);
+							}}
+							onDayPress={(date) => {
+								this.getMonth(date.month);
+							}}
+							rowHasChanged={this.rowHasChanged}
+							showOnlyDaySelected={true}
+							shouldChangeDay={this.shouldChangeDay}
+							theme={{agendaKnobColor: dark_blue}}
+							onCalendarToggled={(calendarOpened) => {
+								this.setState({calendarOpened}, () => {
+									this.forceUpdate();
+								});
+							}}
+						/>
 					</View>
-				</Portal.Host>
+
+					<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
+						style={{position:'absolute', bottom: 13 , right:10}}>
+						<View style={{flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: 45,
+							width: 110,
+							backgroundColor: dark_blue,
+							borderRadius: 22.5, 
+							...Platform.select({
+								ios: {
+									shadowColor: black,
+									shadowOffset: { width: 0, height: 2 },
+									shadowOpacity: 0.3,
+									shadowRadius: 3,    
+								},
+								android: {
+									elevation: 4,
+								},
+							})
+						}}>
+
+							<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
+
+							<MaterialCommunityIcons size={20}
+								name="calendar-multiple-check"
+								color={white}/>
+						</View>
+					</TouchableOpacity>
+				</View>
 
 				{showCloseFab}
 
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}

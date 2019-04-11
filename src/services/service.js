@@ -1,9 +1,11 @@
-import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents } from './google_calendar';
+import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate, getStrings } from './helper';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents, getCalendar, insertAccessRule, getAccessRules, removeAccessRules, deleteCalendar } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
 import firebase from 'react-native-firebase';
+
+const strings = getStrings().ServicesError;
 
 let serverUrl = 'http://52.60.127.46:8080';
 
@@ -53,12 +55,12 @@ export const analyzePicture = (base64Data) => {
 				if (res) {
 					return res.json();
 				} else {
-					reject('Could not receive response from the server, please try again');
+					reject(strings.analyzePictureServerReceive);
 				}
 			})
 			
 			.then(body => {
-				if(body.data.length == 0) reject('The data from your schedule could not be extracted, please try again');
+				if(body.data.length == 0) reject(strings.analyzePictureData);
 				formatData(body.data)
 					.then(data => {
 						return resolve(data);
@@ -68,7 +70,7 @@ export const analyzePicture = (base64Data) => {
 					});
 			})
 			.catch(err => {
-				if(err) reject('Could not connect to the server, please try again later');
+				if(err) reject(strings.analyzePictureServerConnect);
 			});
 	});
 };
@@ -137,7 +139,7 @@ export const storeCoursesEvents = (events) => {
 				obj.recurrence = recurrence;
 				
 				let courseReduxObj = obj;
-				courseReduxObj.dayOfWeek = event.day;
+				courseReduxObj.dayOfWeekValue = event.day;
 				courseReduxObj.hours = d;
 
 				store.dispatch(addCourse(courseReduxObj));	
@@ -218,7 +220,7 @@ export const getCalendarID2 = () => {
 			let calendarID;
 			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
-				if (data.items[i].summary === 'Kalend') {
+				if (data.items[i].summary === 'Kalend' && data.items[i].accessRole === 'owner' ) {
 					calendarID = data.items[i].id;
 					calendarColor = data.items[i].backgroundColor;
 
@@ -234,9 +236,11 @@ export const getCalendarID2 = () => {
  *	Creates a new calendar, and returns calendarID as a promise
  */
 export const createCalendar = () => {
-	return new Promise( function(resolve) { 
+	return new Promise(function(resolve) { 
 		createSecondaryCalendar({summary: 'Kalend'}).then((data) => {
-			resolve({calendarID: data.id, calendarColor: data.backgroundColor});
+			getCalendar(data.id).then(color => {
+				resolve({calendarID: data.id, calendarColor: color.backgroundColor});
+			});
 		});
 	});
 };
@@ -414,7 +418,7 @@ function findEmptySlots(startDayTime, endDayTime, event, pushedDates) {
 	
 			// Call to google to check whether time conflicts with the specified generated startDate;
 			await getAvailabilities(obj).then(data => {
-				if(data.error) reject('Something went wrong while checking for events in Google Calendar');
+				if(data.error) reject(strings.findEmptySlots);
 				
 				let busySchedule = data.calendars[Object.keys(data.calendars)[0]].busy;
 				if (busySchedule.length > 0) {
@@ -514,8 +518,7 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
-				console.log('course', data);
-				if(data.error) reject('There was a problem inserting Course');
+				if(data.error) reject(strings.insertFixedCourse);
 				resolve(data);
 			});
 		}));
@@ -536,11 +539,141 @@ export const insertFixedEventsToGoogle = async () => {
 		
 		promises.push(new Promise(function(resolve,reject) {
 			InsertFixedEventToCalendar(info).then(data => {
-				if (data.error)  reject('There was a problem inserting Fixed Event');
+				if (data.error) reject(strings.insertFixed);
 				resolve(data);
 			});
 		}));
 	});
 
 	return Promise.all(promises);
+};
+
+
+/*===============================================SHARING SCHEDULES ============================================================*/ 
+
+/**
+ * Function called in compare schedule
+ * 
+ * @param {Strings} email The email of the person that will see the user's calendar
+ */
+export const addPermissionPerson = (email) => {
+	let calendarID = store.getState().CalendarReducer.id;
+	let data = {
+		'role': 'freeBusyReader',
+		'scope': {
+			'type': 'user',
+			'value': email
+		}
+	};
+
+	return new Promise((resolve, reject) => {
+		insertAccessRule(calendarID, data, {sendNotifications: false}).then(data => {
+			if (data.error)  reject('Cannot add that person');
+			resolve(data);
+		});
+	});
+};
+
+/**
+ * Function called in settings, to remove someone else access to the user's calendar
+ * 
+ * @param {Strings} ruleId The permission rule identifier 
+ */
+export const removePermissionPerson = (ruleId) => {
+	let calendarID = store.getState().CalendarReducer.id;
+
+	return new Promise((resolve, reject) => {
+		removeAccessRules(calendarID, ruleId).then(data => {
+			if (data.error)  reject('There was a removing that person from the sharing list');
+			resolve(data);
+		});
+	});
+};
+
+/**
+ * Function called in compare schedule, to remove someone else from your shared calendars
+ * 
+ * @param {Strings} calendarId The calendarId of ther other person
+ */
+export const deleteOtherSharedCalendar = (calendarId) => {
+	return new Promise((resolve, reject) => {
+		deleteCalendar(calendarId).then(data => {
+			if (data.error) reject('The calendar does not exists');
+			resolve(data);
+		});
+	});
+};
+
+/**
+ * Function called in settings, to list everyone who has access to your calendars
+ */
+export const listPermissions = () => {
+	let calendarID = store.getState().CalendarReducer.id;
+
+	return new Promise((resolve, reject) => {
+		getAccessRules(calendarID, {}, {maxResults: 250})
+			.then(data => {
+				if (data.error)  reject('There was a problem getting the list of person who have access to your calendar');
+
+				let list = data.items.reduce((acc, data) => {
+					if (!data.role.includes('owner')) {
+						let info = {}; 
+						info.email = data.scope.value;
+						info.id = data.id;
+						info.role = data.role; 
+						acc.push(info);
+					}
+					
+					return acc;
+				}, []);
+
+				resolve(list);
+			});
+	});
+};
+
+/**
+ * Function in compare schedule, to list everyone who you can compare the schedules
+ */
+export const listSharedKalendCalendars = () => {
+	return new Promise((resolve, reject) => {
+		getCalendarList().then(data => {
+			if (data.error) reject('The calendar does not exists');
+
+			let sharedCalendars = data.items.filter(i => i.accessRole === 'freeBusyReader' && i.summary === 'Kalend');
+
+			resolve(sharedCalendars);
+		});
+	});
+};
+
+/**
+  * 
+  * Function called in compare schedule, to remove someone else from your shared calendars
+  * 
+  * @param {Strings} calendarId The calendarId of ther other person
+  * @param {String} startTime The dateTime string of the start of the freeBusy check
+  * @param {String} endTime The dateTime string of the end of the freeBusy check
+  */
+export const getAvailabilitiesCalendars = (calendarIds, startTime, endTime) => {
+	let items = calendarIds.map(i => {
+		return {id: i};
+	});
+
+	let data = {
+		'timeMin': startTime,
+		'timeMax': endTime,
+		items
+	};
+
+	console.log(data);
+	return new Promise((resolve, reject) => {
+		getAvailabilities(data).then(data => {
+			if (data.error) {
+				console.log(data);
+				reject('Cannot get availabilities');
+			}
+			resolve(data);
+		});
+	});
 };

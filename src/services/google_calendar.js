@@ -33,6 +33,9 @@ let apiHelperCall = (URL, method, body, query) => {
 
 	return fetch(URL + queryText, fetchData)
 		.then((response) => {
+			if (response.status === 204) {
+				return {};
+			}
 			if (response._bodyText === '') {
 				return response;
 			}
@@ -79,6 +82,7 @@ let getCalendarList = () => {
  * @returns {Promise} A promise containing an object with the information about the newly created calendar
  */
 let createSecondaryCalendar = (data) => {
+	console.log('secondary', data);
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars', 'POST', data);
 };
 
@@ -123,7 +127,7 @@ let getAccessRules = (calendarId, data, query) => {
 };
 
 /**
- * Returns the permissions for a specified calendar
+ * Adds someone to the permission list for a specified calendar
  * https://developers.google.com/calendar/v3/reference/acl/insert
  * 
  * @param {String} calendarId The calendar identifier
@@ -137,6 +141,19 @@ let getAccessRules = (calendarId, data, query) => {
  */
 let insertAccessRule = (calendarId, data, query) => {
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/acl', 'POST', data, query);
+};
+
+/**
+ * Removes someone from your list of permissions for a specified calendar
+ * https://developers.google.com/calendar/v3/reference/acl/delete
+ * 
+ * @param {String} calendarId The calendar identifier
+ * @param {String} ruleId The ACL rule identifier
+ * 
+ * @returns {Promise} A promise containing an empty object if successful
+ */
+let removeAccessRules = (calendarId, ruleId) => {
+	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/acl/' + ruleId, 'DELETE');
 };
 
 /**
@@ -260,6 +277,47 @@ let replaceEvent = (calendarId, eventId, data, query) => {
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId, 'PUT', data, query);
 };
 
+/**
+ * Returns information about the specified calendar
+ * https://developers.google.com/calendar/v3/reference/calendarList/get
+ * 
+ * @param {String} calendarId The calendar identifier
+ * @param {Object} data The JSON object containing the optinal information for the API
+ * @param {Object} query Query parameter object to be appended to the URL
+ * 
+ * @returns {Promise} A promise containing an object about the calendar
+ */
+let getCalendar = (calendarId, data, query) => {
+	return apiHelperCall('https://www.googleapis.com/calendar/v3/users/me/calendarList/' + calendarId, 'GET', data, query);
+};
+
+/**
+ * Deletes the specified calendar
+ * https://developers.google.com/calendar/v3/reference/calendarList/delete
+ * 
+ * @param {String} calendarId The calendar identifier
+ * 
+ * @returns {Promise} A promise containing an empty object if successful
+ */
+let deleteCalendar = (calendarId) => {
+	return apiHelperCall('https://www.googleapis.com/calendar/v3/users/me/calendarList/' + calendarId, 'DELETE');
+};
+
+/**
+ * Updates the information of an event with the specified attributes
+ * https://developers.google.com/calendar/v3/reference/events/patch
+ * 
+ * @param {String} calendarId The calendar identifier
+ * @param {String} eventId The event identifier
+ * @param {Object} data The JSON object containing the optinal information for the API
+ * @param {Object} query Query parameter object to be appended to the URL
+ * 
+ * @returns {Promise} A promise containing an object with the information of the newly modified event
+ */
+let updateCalendar = (calendarId, eventId, data, query) => {
+	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId, 'PATCH', data, query);
+};
+
 module.exports = { 
 	createSecondaryCalendar, 
 	getCalendarList, 
@@ -274,5 +332,9 @@ module.exports = {
 	addQuickEvent,
 	getEventsInstances,
 	updateEvent,
-	replaceEvent
+	replaceEvent,
+	getCalendar,
+	removeAccessRules,
+	deleteCalendar,
+	updateCalendar
 };
