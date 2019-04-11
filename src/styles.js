@@ -963,6 +963,69 @@ export const reviewEventStyles = StyleSheet.create({
 	}
 });
 
+export const deleteModalStyles = StyleSheet.create({
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15,
+		marginHorizontal: '7.5%',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
+	},
+
+	dialogMainRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+
+	dialogRightCol: {
+		paddingRight: 5,
+		paddingTop: 3,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
+
+	dialogQuestion: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	},
+
+	dialogOptions: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+
+	dialogCancel: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+	},
+
+	dialogYes: {
+		fontFamily: 'Raleway-Bold', 
+		color: red, 
+		fontSize: 16, 
+		marginLeft: 20
+	},
+
+	icon: {
+		marginBottom: -8,
+	}
+});
+
 export const eventOverviewStyles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',

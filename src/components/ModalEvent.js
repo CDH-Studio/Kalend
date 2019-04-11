@@ -44,7 +44,13 @@ class ModalEvent extends React.PureComponent {
 			<View>
 				<Modal isVisible={this.state.modalVisible}
 					onBackdropPress={this.dismissModal}
-					useNativeDriver>
+					useNativeDriver
+					onModalHide={() => {
+						if (this.state.showDelete) {
+							this.props.showDeleteModal(true);
+							this.setState({showDelete: false});
+						}
+					}}>
 					<View style={[styles.modalContent, {backgroundColor: this.props.categoryColor}]}>
 						<TouchableOpacity style={styles.closeModal}
 							onPress={this.dismissModal}>
@@ -111,7 +117,7 @@ class ModalEvent extends React.PureComponent {
 									size={40}
 									onPress={() => {
 										this.dismissModal();
-										this.props.showDeleteModal(true);
+										this.setState({showDelete: true});
 									}}
 									color={white}
 									icon={({ size, color }) => (

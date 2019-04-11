@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { eventOverviewStyles as styles, gray } from '../styles';
+import { deleteModalStyles as styles, gray, dark_blue } from '../styles';
 
 
 class DeleteModal extends React.PureComponent {
@@ -17,7 +18,7 @@ class DeleteModal extends React.PureComponent {
 	}
 
 	componentWillReceiveProps(newProp) {
-		this.setState({deleteDialogVisible: newProp.visible, shouldShowModal:newProp.shouldShowModal});
+		this.setState({deleteDialogVisible: newProp.visible, shouldShowModal: newProp.shouldShowModal});
 	}
 
 	/**
@@ -30,54 +31,50 @@ class DeleteModal extends React.PureComponent {
 	}
 
 	dismissDelete = () => {
-		this.setState({deleteDialogVisible: false});
+		this.setState({deleteDialogVisible: false, shouldShowModal: this.props.shouldShowModal});
 		this.props.dismiss();
 	}
 
 	render() {
 		return(
 			<View>
-				<Modal visible={this.state.deleteDialogVisible}
-					transparent={true}
-					onRequestClose={() => {
-						//do nothing;
-					}}
-					animationType={'none'}>
-					<TouchableOpacity style={styles.modalView} 
-						onPress={() => this.setState({deleteDialogVisible: false, shouldShowModal: false})}
-						activeOpacity={1}>
-						<TouchableWithoutFeedback>
-							<View style={styles.deleteDialogContent}>
-								<View style={styles.deleteDialogMainRow}>
-									<MaterialCommunityIcons name="trash-can-outline"
-										size={80}
-										color={gray} />
+				<Modal isVisible={this.state.deleteDialogVisible}
+					onBackdropPress={this.dismissDelete}
+					useNativeDriver
+					onModalHide={() => {
+						if (this.props.shouldShowModal) {
+							this.props.showModal();
+						}
+					}}>
+					<View style={styles.modalContent}>
+						<View style={styles.dialogMainRow}>
+							<MaterialCommunityIcons name="trash-can-outline"
+								size={60}
+								color={dark_blue}
+								style={styles.icon} />
 
-									<View style={styles.deleteDialogRightCol}>
-										<Text style={styles.deleteDialogQuestion}>Delete this event?</Text>
+							<View style={styles.dialogRightCol}>
+								<Text style={styles.dialogQuestion}>Delete this event?</Text>
 
-										<View style={styles.deleteDialogOptions}>
-											<TouchableOpacity onPress={() => {
-												if (this.state.shouldShowModal) {
-													this.props.showModal();
-												} else {
-													this.dismissDelete();
-												}
+								<View style={styles.dialogOptions}>
+									<TouchableOpacity onPress={() => {
+										if (
+											!this.state.shouldShowModal) {
+											this.dismissDelete();
+										}
 
-												this.setState({deleteDialogVisible: false, shouldShowModal: false});
-											}}>
-												<Text style={styles.deleteDialogCancel}>Cancel</Text>
-											</TouchableOpacity>
+										this.dismissDelete();
+									}}>
+										<Text style={styles.dialogCancel}>Cancel</Text>
+									</TouchableOpacity>
 
-											<TouchableOpacity onPress={this.deleteEvent}>
-												<Text style={styles.deleteDialogYes}>Yes</Text>
-											</TouchableOpacity>
-										</View>
-									</View>
+									<TouchableOpacity onPress={this.deleteEvent}>
+										<Text style={styles.dialogYes}>Yes</Text>
+									</TouchableOpacity>
 								</View>
 							</View>
-						</TouchableWithoutFeedback>
-					</TouchableOpacity>
+						</View>
+					</View>
 				</Modal>
 			</View>
 		);
