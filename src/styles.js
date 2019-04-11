@@ -6,7 +6,7 @@ import { containerPaddingDetails } from '../src/components/screens/ScheduleSelec
 
 export const white = '#FFFFFF';
 export const black = '#000';
-export const blue = '#1D84B5';
+export const blue = '#153d73';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
 export const red = '#FF0000';
@@ -685,7 +685,7 @@ export const fixedEventStyles = StyleSheet.create({
 	allDay: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 50
+		paddingLeft: 30
 	},
 
 	rowTimeSection: {
@@ -1616,6 +1616,10 @@ export const calendarPermissionStyles = StyleSheet.create({
 		...calendarShareButtons.buttons,
 		justifyContent: 'flex-end',
 		marginHorizontal: 0
+	},
+	
+	snackbar: {
+		width: '100%'
 	}
 });
 
@@ -1829,9 +1833,9 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	profileImage: {
-		width: 80, 
-		height: 80, 
-		borderRadius: 40,
+		width: 100, 
+		height: 100, 
+		borderRadius: 50,
 		marginTop: 20,
 		marginBottom: 10,
 	},
@@ -1847,7 +1851,7 @@ export const settingsStyles = StyleSheet.create({
 				shadowRadius: 3
 			},
 			android: {
-				elevation: 3
+				elevation: 5
 			},
 		}),
 	},
@@ -1898,10 +1902,24 @@ export const settingsStyles = StyleSheet.create({
 	version: {
 		fontFamily: 'OpenSans-SemiBold',
 		textAlign: 'center',
-		paddingVertical: 10,
-		color: gray
+		paddingTop: 20,
+		color: gray,
+		paddingBottom: 5
 	},
 
+	privacyContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingBottom: 30,
+	},
+
+	privacyText: {
+		color: gray,
+		fontFamily: 'Raleway-Regular',
+		fontSize: 13
+	},
+	
 	modalView: {
 		flex: 1,
 		flexDirection: 'column',
@@ -1961,7 +1979,17 @@ export const settingsStyles = StyleSheet.create({
 		fontSize: 16,
 		color: '#ff0000',
 		marginLeft: 20
-	}
+	},
+	
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15
+	},
+
 });
 
 export const cleanReducersStyles = StyleSheet.create({
@@ -1982,7 +2010,8 @@ export const schoolInformationStyles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 20,
-		justifyContent: 'space-around'
+		marginVertical: -15,
+		justifyContent: 'space-evenly'
 	},
 	
 	instruction: {
@@ -2380,7 +2409,7 @@ export const importCalendarStyles = StyleSheet.create({
 	},
 
 	progressModalDescription: {
-		fontFamily: 'Raleway-Regular', 
+		fontFamily: 'OpenSans-Regular', 
 		color: gray, 
 		paddingVertical: 10
 	},

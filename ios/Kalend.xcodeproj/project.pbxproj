@@ -39,6 +39,7 @@
 		E9289188EA13494A87D52E67 /* Raleway-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1244DE0B54764A6A808C3409 /* Raleway-SemiBold.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		EDF883308E734D6FA88A12D0 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32965FA334D747BCB939063F /* OpenSans-SemiBold.ttf */; };
+		64A234258CA44D48B72A772E /* libDBCustomTabs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */; };
 		5A220CC59BC54E2A9695D1B2 /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */; };
 /* End PBXBuildFile section */
 
@@ -388,6 +389,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F431AC3A2819457E8F6A27E8 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
+		8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeCustomTabs.xcodeproj"; path = "../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */ = {isa = PBXFileReference; name = "libDBCustomTabs.a"; path = "libDBCustomTabs.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; name = "RCTRestart.xcodeproj"; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */ = {isa = PBXFileReference; name = "libRCTRestart.a"; path = "libRCTRestart.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
@@ -425,6 +428,7 @@
 				052A233D6E5748DB9C7DC911 /* libRNCViewpager.a in Frameworks */,
 				5A220CC59BC54E2A9695D1B2 /* libRCTRestart.a in Frameworks */,
 				6919D345785D438196F11F0C /* libRNCCameraRoll.a in Frameworks */,
+				64A234258CA44D48B72A772E /* libDBCustomTabs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,6 +670,7 @@
 				8BCA6D386816463CA59444F0 /* RNCViewpager.xcodeproj */,
 				CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */,
 				DAB5E3506847465692EDB152 /* RNCCameraRoll.xcodeproj */,
+				8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1349,12 +1354,14 @@
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
+					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
 				INFOPLIST_FILE = KalendTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1382,12 +1389,14 @@
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
+					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
 				INFOPLIST_FILE = KalendTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1416,6 +1425,7 @@
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
+					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
 				INFOPLIST_FILE = Kalend/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1445,6 +1455,7 @@
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
+					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
 				INFOPLIST_FILE = Kalend/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
