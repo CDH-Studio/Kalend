@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert, Modal, TouchableWithoutFeedback, Linking } from 'react-native';
+import { StatusBar, View , TouchableOpacity, Text, Platform, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -7,12 +7,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { CustomTabs } from 'react-native-custom-tabs';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, dark_blue, gray, statusBarDark, statusBarPopover } from '../../styles';
+import { settingsStyles as styles, blue, dark_blue, statusBarDark, statusBarPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
-import { setLanguage, setCalendarID } from '../../actions';
+import { setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
