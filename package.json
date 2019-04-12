@@ -59,7 +59,8 @@
     "redux-thunk": "^2.3.0",
     "rn-fetch-blob": "^0.10.15",
     "rn-viewpager": "^1.2.9",
-    "sqlite3": "^4.0.6"
+    "sqlite3": "^4.0.6",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
