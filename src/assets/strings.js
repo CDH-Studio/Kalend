@@ -25,7 +25,7 @@ const en = {
 		cancel: 'Cancel',
 	},
 	Dashboard: {
-		name: 'Home',
+		name: 'Dashboard',
 		createSchedule: 'Create Schedule',
 		fabSchool: 'Add School Schedule',
 		fabFixedEvent: 'Add Fixed Event',
@@ -335,7 +335,7 @@ const fr = {
 		cancel: 'Annuler',
 	},
 	Dashboard: {
-		name: 'Accueil',
+		name: 'Tableau de bord',
 		createSchedule: 'Créer un horaire',
 		fabSchool: 'Ajouter un horaire scolaire',
 		fabFixedEvent: 'Ajouter un événement fixe',
