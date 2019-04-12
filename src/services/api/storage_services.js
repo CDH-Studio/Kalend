@@ -1,4 +1,4 @@
-let server  =  'http://10.0.2.2:8080/';
+let server  =  'http://172.17.73.9:8080/';
 
 let apiHelperCall = (URL, method, data) => {
 
@@ -25,11 +25,11 @@ export const getUserInfoService = () => {
 };
 
 export const getUserInfoByColumnService = (info) => {
-	return apiHelperCall(server + 'api/getUserInfo','POST', info);
+	return apiHelperCall(server + 'api/getUserInfoByColumns','POST', info);
 };
 
 export const getUserValuesService = (info) => {
-	return apiHelperCall(server + 'api/getUserSpecificValues','POST', info);
+	return apiHelperCall(server + 'api/getUserValues','POST', info);
 };
 
 export const updateUser = (info) => {

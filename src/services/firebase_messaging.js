@@ -1,5 +1,5 @@
 import firebase from 'react-native-firebase';
-import uuid from 'react-native-uuid';
+import uuid from 'uuid';
 
 const apiHelperCall = (data) => {
 	// Create a RemoteMessage
