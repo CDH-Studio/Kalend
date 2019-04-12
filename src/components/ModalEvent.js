@@ -5,7 +5,7 @@ import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getStrings } from '../../services/helper';
+import { getStrings } from '../services/helper';
 import { modalEventStyles as styles, white, semiTransparentWhite } from '../styles';
 import { calendarColors } from '../../config/config';
 import DeleteModal from './DeleteModal';

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getStrings } from '../../services/helper';
+import { getStrings } from '../services/helper';
 import { deleteModalStyles as styles, dark_blue } from '../styles';
 
 
