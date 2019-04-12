@@ -4,6 +4,23 @@ const en = {
 	},
 	CompareSchedule: {
 		name: 'Compare',
+		addPermission: 'This person can now see your calendar',
+		removePermission: 'Successfully removed the selected person/people',
+		noCheckbox: 'Please select one or more users to compare schedules with',
+		availabilities: 'Availabilities',
+		noAvailabilities: 'There\'s no availabilities for the day',
+		instruction: 'Click on See Availabilities to populate this calendar',
+		compareWith: 'Compare schedules with',
+		noCalendars: 'No calendar found',
+		refresh: 'Tap to refresh the calendar information',
+		delete: 'Delete',
+		addRemove: 'Add/Remove Users',
+		seeAvailabilities: 'See Availabilities',
+		allow: 'Allow',
+		enterEmail: 'Enter the person\'s email',
+		email: 'Email',
+		close: 'Close',
+		add: 'Add'
 	}, 
 	Course: {
 		name: 'Course',
@@ -22,10 +39,10 @@ const en = {
 		cancelButton: 'Cancel',
 		startTime: 'Start Time',
 		endTime: 'End Time',
-		cancel: 'Cancel',
+		cancel: 'Cancel', 
 	},
 	Dashboard: {
-		name: 'Home',
+		name: 'Dashboard',
 		createSchedule: 'Create Schedule',
 		fabSchool: 'Add School Schedule',
 		fabFixedEvent: 'Add Fixed Event',
@@ -312,9 +329,28 @@ const fr = {
 	Chatbot: {
 		name: 'Chatbot',
 	},
+	
 	CompareSchedule: {
 		name: 'Comparaison',
+		addPermission: 'Cette personne peut maintenant voir votre calendrier',
+		removePermission: 'Personne(s) sélectionnée(s) retirée(s) avec succès',
+		noCheckbox: 'Veuillez sélectionner un ou plusieurs utilisateurs avec lesquels comparer les horaires',
+		availabilities: 'Disponibilités',
+		noAvailabilities: 'Aucune disponibilités pour la journée',
+		instruction: 'Appuyez sur Voir disponibilités pour remplir ce calendrier',
+		compareWith: 'Comparaison d\'horaire avec',
+		noCalendars: 'Aucun calendrier trouvé',
+		refresh: 'Appuyer pour rafraîchir l\'information du calendrier',
+		delete: 'Supprimer',
+		addRemove: 'Ajouter/Supprimer des utilisateurs',
+		seeAvailabilities: 'Voir disponibilités',
+		allow: 'Autoriser',
+		enterEmail: 'Entrez le courriel de la personne',
+		email: 'Courriel',
+		close: 'Fermer',
+		add: 'Ajouter'
 	}, 
+
 	Course: {
 		name: 'Cours',
 		addTitle: 'Ajouter un cours',
@@ -335,7 +371,7 @@ const fr = {
 		cancel: 'Annuler',
 	},
 	Dashboard: {
-		name: 'Accueil',
+		name: 'Tableau de bord',
 		createSchedule: 'Créer un horaire',
 		fabSchool: 'Ajouter un horaire scolaire',
 		fabFixedEvent: 'Ajouter un événement fixe',

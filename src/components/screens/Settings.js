@@ -158,16 +158,6 @@ class Settings extends React.PureComponent {
 								{this.props.userName}
 							</Text>
 						</View>
-						
-						{
-							__DEV__ ?
-								<View style={styles.titleRow}> 
-									<IconButton icon="delete"
-										onPress={() => this.props.navigation.navigate(CleanReducersRoute)}
-										size={20}
-										color={blue}/> 
-								</View>: null
-						}
 
 						<View style={styles.titleRow}>
 							<MaterialIcons name="person-outline"
@@ -209,9 +199,9 @@ class Settings extends React.PureComponent {
 							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
 						</TouchableOpacity>
 						
-						<TouchableOpacity style={styles.button}>
+						{/* <TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
-						</TouchableOpacity> */}
+						</TouchableOpacity>  */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute, {title: getStrings().CalendarPermission.title})}>
