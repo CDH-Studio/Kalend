@@ -24,6 +24,10 @@ export const getUserInfoService = () => {
 	return apiHelperCall(server + 'api/getUserInfo','GET');
 };
 
+export const getUserInfoByColumnService = (info) => {
+	return apiHelperCall(server + 'api/getUserInfo','POST', info);
+};
+
 export const getUserValuesService = (info) => {
 	return apiHelperCall(server + 'api/getUserValues','POST', info);
 };
