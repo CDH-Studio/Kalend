@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { deleteModalStyles as styles, gray, dark_blue } from '../styles';
+import { deleteModalStyles as styles, dark_blue } from '../styles';
 
 
 class DeleteModal extends React.PureComponent {

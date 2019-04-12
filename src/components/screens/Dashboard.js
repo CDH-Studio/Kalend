@@ -100,10 +100,12 @@ class Dashboard extends React.PureComponent {
 		}
 		
 		return (
-			<View style={[styles.item, {backgroundColor: category}]}>
-				<Text style={styles.itemText}>{item.name}</Text>
-				<Text style={styles.itemText}>{item.time}</Text>
-			</View>
+			<TouchableOpacity onPress={() => this.changeInfo(category)}>
+				<View style={[styles.item, {backgroundColor: category}]}>
+					<Text style={styles.itemText}>{item.name}</Text>
+					<Text style={styles.itemText}>{item.time}</Text>
+				</View>
+			</TouchableOpacity>
 		);
 	}
 
@@ -224,7 +226,7 @@ class Dashboard extends React.PureComponent {
 
 	}
 
-	changeInfo = () => {
+	changeInfo = (category) => {
 		let categoryColor;
 		let lightCategoryColor;
 		let categoryIcon;
@@ -232,7 +234,7 @@ class Dashboard extends React.PureComponent {
 		let editScreen;
 		let detailHeight;
 
-		if (this.props.category === 'SchoolSchedule') {
+		if (category === 'SchoolSchedule') {
 			categoryColor = this.props.courseColor;
 			lightCategoryColor = this.props.insideCourseColor;
 			categoryIcon = 'school';
@@ -243,7 +245,7 @@ class Dashboard extends React.PureComponent {
 				</View>;
 			detailHeight = 45;
 			editScreen = 'Course';
-		} else if (this.props.category === 'FixedEvent') {
+		} else if (category === 'FixedEvent') {
 			categoryColor = this.props.fixedEventsColor;
 			lightCategoryColor = this.props.insideFixedEventsColor;
 			categoryIcon = 'calendar-today';
@@ -292,6 +294,18 @@ class Dashboard extends React.PureComponent {
 			detailHeight = 100;
 			editScreen = 'NonFixedEvent';
 		}
+
+		this.setState({
+			modalInfo: {
+				categoryColor,
+				categoryIcon,
+				lightCategoryColor,
+				details,
+				detailHeight,
+				editScreen
+			},
+			modalVisible: true
+		});
 	}
 
 	render() {
