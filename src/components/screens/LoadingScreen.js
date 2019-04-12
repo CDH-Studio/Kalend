@@ -8,6 +8,7 @@ import { gradientColors } from '../../../config/config';
 import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 import { setBottomString, setLanguage } from '../../actions';
 import { getStrings } from '../../services/helper';
+import firebase from 'react-native-firebase';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
@@ -55,6 +56,23 @@ class LoadingScreen extends React.PureComponent {
 		this.setState({
 			colors: gradientColors
 		});
+		this.messageListener = firebase.messaging().onMessage((message) => {
+			console.log('message', message)
+			const notification = new firebase.notifications.Notification()
+				.setNotificationId('notificationId')
+				.setTitle('My notification title')
+				.setBody('My notification body')
+				.setData({
+					key1: 'value1',
+					key2: 'value2',
+				});
+
+			firebase.notifications().displayNotification(notification);
+		});
+	}
+	
+	componentWillUnmount() {
+		this.messageListener();
 	}
 
 	componentWillMount() {

@@ -13,6 +13,8 @@ import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipp
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
+import { getUserInfoByColumnService } from '../../services/api/storage_services';
+import { sendMessage } from '../../services/firebase_messaging';
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
 LocaleConfig.locales['fr'] = {
@@ -111,6 +113,14 @@ class CompareSchedule extends React.PureComponent {
 	addPerson = () => {
 		addPermissionPerson(this.state.searchText)
 			.then(() => {
+				// getUserInfoByColumnService({
+				// 	columns: ['FIREBASEID'],
+				// 	where: {
+				// 		value: this.state.searchText,
+				// 		field: 'EMAIL'
+				// 	}
+				// });
+
 				this.setState({
 					snackbarText: this.strings.addPermission,
 					snackbarVisible: true
