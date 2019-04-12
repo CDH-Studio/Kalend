@@ -1535,11 +1535,11 @@ export const calendarShareButtons = StyleSheet.create({
 	buttons: {
 		flexDirection: 'row', 
 		margin: 10, 
-		marginTop: 0, 
-		paddingHorizontal: 15
+		marginTop: 0
 	},
 
 	availabilityButton: {
+		marginHorizontal: 10,
 		backgroundColor: dark_blue,
 		borderRadius: 5,
 		padding: 8,
@@ -1790,7 +1790,8 @@ export const compareScheduleStyles = StyleSheet.create({
 	
 	emptyDescription: {
 		fontFamily: 'Raleway-Regular', 
-		color: gray
+		color: gray,
+		textAlign: 'center'
 	},
 
 	modalTextInput: {
