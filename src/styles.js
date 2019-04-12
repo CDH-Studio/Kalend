@@ -1089,92 +1089,10 @@ export const eventOverviewStyles = StyleSheet.create({
 		color: gray
 	},
 
-	// modalView: {
-	// 	flex: 1,
-	// 	flexDirection: 'column',
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// 	backgroundColor: '#00000080',
-	// },
-
-	modalContent: {
-		justifyContent: 'space-between',
-		backgroundColor: white,
-		borderRadius: 8,
-		marginHorizontal: 20,
-		width: '90%',
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.6,
-				shadowRadius: 7  
-			},
-		}),
-	},
-
-	closeModal: {
-		flexDirection:'row',
-		justifyContent:'flex-end',
-		paddingHorizontal: 15,
-		paddingVertical: 10
-	},
-
-	modalInfoDate: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		flexWrap: 'wrap',
-		width: 160
-	},
-
-	modalInfoTime: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		flexWrap: 'wrap'
-	},
-
 	modalDetailView: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		alignItems: 'center'
-	},
-
-	modalTitle: {
-		backgroundColor: blue,
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		flexWrap: 'wrap',
-		fontSize: 18,
-		fontFamily: 'OpenSans-SemiBold',
-		color: white
-	},
-
-	modalInfoView: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 20,
-		marginTop: -20
-	},
-
-	modalInfoTitle: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
-		paddingVertical: 3,
-		color: white
-	},
-
-	modalInfoText: {
-		fontSize: 15,
-		fontFamily: 'OpenSans-Regular',
-		paddingVertical: 3,
-		color: white,
-		width: 120
-	},
-
-	modalDetailsView: {
-		paddingHorizontal: 20,
-		marginTop: 10
 	},
 
 	modalDetailsTitle: {
@@ -1197,60 +1115,6 @@ export const eventOverviewStyles = StyleSheet.create({
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 1,
 		color: white
-	},
-
-	actionsModal: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginVertical: 10,
-	},
-
-	actionIconModal: {
-		margin: 5
-	},
-
-	deleteDialogContent: {
-		backgroundColor: white,
-		borderRadius: 8,
-		justifyContent: 'space-between',
-		padding: 10
-	},
-
-	deleteDialogMainRow: {
-		flexDirection: 'row'
-	},
-
-	deleteDialogRightCol: {
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		paddingVertical: 10,
-		paddingRight: 10
-	},
-
-	deleteDialogQuestion: {
-		fontSize: 20,
-		fontFamily: 'Raleway-SemiBold',
-		marginLeft: 10,
-		marginBottom: 10,
-		color: white
-	},
-
-	deleteDialogOptions: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end'
-	},
-
-	deleteDialogCancel: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize:16,
-		color: white
-	},
-
-	deleteDialogYes: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
-		color: red,
-		marginLeft: 20
 	}
 });
 
@@ -1575,6 +1439,93 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	...DashboardButton,
+});
+
+export const modalEventStyles = StyleSheet.create({
+	modalContent: {
+		justifyContent: 'space-between',
+		backgroundColor: white,
+		borderRadius: 8,
+		marginHorizontal: 20,
+		width: '90%',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.6,
+				shadowRadius: 7  
+			},
+		}),
+	},
+
+	closeModal: {
+		flexDirection:'row',
+		justifyContent:'flex-end',
+		paddingHorizontal: 15,
+		paddingVertical: 10
+	},
+
+	modalTitle: {
+		backgroundColor: blue,
+		paddingHorizontal: 20,
+		paddingVertical: 10,
+		flexWrap: 'wrap',
+		fontSize: 18,
+		fontFamily: 'OpenSans-SemiBold',
+		color: white
+	},
+
+	modalInfoView: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingHorizontal: 20,
+		marginTop: -20
+	},
+
+	modalInfoDate: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		flexWrap: 'wrap',
+		width: 160
+	},
+
+	modalInfoTime: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		flexWrap: 'wrap'
+	},
+
+	modalInfoTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		paddingVertical: 3,
+		color: white
+	},
+
+	modalInfoText: {
+		fontSize: 15,
+		fontFamily: 'OpenSans-Regular',
+		paddingVertical: 3,
+		color: white,
+		width: 120
+	},
+
+	modalDetailsView: {
+		paddingHorizontal: 20,
+		marginTop: 10
+	},
+
+	actionsModal: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginVertical: 10,
+	},
+
+	actionIconModal: {
+		margin: 5
+	}
+
 });
 
 export const calendarShareButtons = StyleSheet.create({
