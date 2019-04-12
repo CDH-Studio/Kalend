@@ -8,7 +8,7 @@ import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
-import { calendarColors } from '../../../config/config';
+import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
@@ -86,7 +86,7 @@ class Dashboard extends React.PureComponent {
 		LocaleConfig.defaultLocale = this.defaultLocale;
 	}
 	
-	renderItem(item) {
+	renderItem(item, changeInfo, setState) {
 		let category;
 
 		if (item.category === 'Course') {
@@ -98,9 +98,12 @@ class Dashboard extends React.PureComponent {
 		} else {
 			category = white;
 		}
+
+		let props = this.props;
+		let strings = this.strings;
 		
 		return (
-			<TouchableOpacity onPress={() => this.changeInfo(category)}>
+			<TouchableOpacity onPress={() => changeInfo(category, item, props, strings, setState)}>
 				<View style={[styles.item, {backgroundColor: category}]}>
 					<Text style={styles.itemText}>{item.name}</Text>
 					<Text style={styles.itemText}>{item.time}</Text>
@@ -226,7 +229,7 @@ class Dashboard extends React.PureComponent {
 
 	}
 
-	changeInfo = (category) => {
+	changeInfo = (category, item, props, strings, setModalInfo) => {
 		let categoryColor;
 		let lightCategoryColor;
 		let categoryIcon;
@@ -235,76 +238,91 @@ class Dashboard extends React.PureComponent {
 		let detailHeight;
 
 		if (category === 'SchoolSchedule') {
-			categoryColor = this.props.courseColor;
-			lightCategoryColor = this.props.insideCourseColor;
+			categoryColor = props.courseColor;
+			lightCategoryColor = props.insideCourseColor;
 			categoryIcon = 'school';
 			details = 
 				<View style={styles.modalDetailView}>
-					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-					<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
+					<Text style={styles.modalDetailsSubtitle}>{strings.location}</Text>
+					<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.location}</Text>
 				</View>;
 			detailHeight = 45;
 			editScreen = 'Course';
 		} else if (category === 'FixedEvent') {
-			categoryColor = this.props.fixedEventsColor;
-			lightCategoryColor = this.props.insideFixedEventsColor;
+			categoryColor = props.fixedEventsColor;
+			lightCategoryColor = props.insideFixedEventsColor;
 			categoryIcon = 'calendar-today';
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.location}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.description}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.recurrence}</Text>
 					</View>
 				</View>;
 			detailHeight = 80;
 			editScreen = 'FixedEvent';
 		} else {
-			categoryColor = this.props.nonFixedEventsColor;
-			lightCategoryColor = this.props.insideNonFixedEventsColor;
+			if (item.category === 'NonFixedEvent') {
+				categoryColor = props.nonFixedEventsColor;
+				lightCategoryColor = props.insideNonFixedEventsColor;
+			} else {
+				categoryColor = '#ababab';
+				lightCategoryColor = '#ababab';
+			}
 			categoryIcon = 'face';
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.recurrence}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.priority}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.priorityLevel}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.location}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
-						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
+						<Text style={styles.modalDetailsSubtitle}>{strings.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{item.description}</Text>
 					</View>
 				</View>;
 			detailHeight = 100;
 			editScreen = 'NonFixedEvent';
 		}
-
-		this.setState({
-			modalInfo: {
+		
+		setModalInfo(
+			{
 				categoryColor,
 				categoryIcon,
 				lightCategoryColor,
 				details,
 				detailHeight,
-				editScreen
+				editScreen,
+				date: item.date,
+				time: item.time,
+				eventTitle: item.name
 			},
-			modalVisible: true
+			true
+		);
+	}
+
+	setModalInfo = (modalInfo, modalVisible) => {
+		this.setState({
+			modalInfo,
+			modalVisible
 		});
 	}
 
@@ -346,7 +364,7 @@ class Dashboard extends React.PureComponent {
 					<View style={styles.calendar}>
 						<Agenda ref='agenda'
 							items={this.state.items}
-							renderItem={this.renderItem}
+							renderItem={(item) => this.renderItem(item, this.changeInfo, this.setModalInfo)}
 							listTitle={'Events of the Day'}
 							renderEmptyData={this.renderEmptyData}
 							onDayChange={(date) => {
@@ -438,7 +456,10 @@ class Dashboard extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
-	
+	let insideFixedEventsColor = fixedEventsColor;
+	let insideNonFixedEventsColor = nonFixedEventsColor;
+	let insideCourseColor = courseColor;
+
 	for (let i = 0; i < calendarColors.length; i++) {
 		let key = Object.keys(calendarColors[i])[0];
 		let value = Object.values(calendarColors[i])[0];
@@ -446,22 +467,52 @@ let mapStateToProps = (state) => {
 		switch(key) {
 			case fixedEventsColor:
 				fixedEventsColor = value;
+				insideFixedEventsColor = Object.values(calendarInsideColors[i])[0];
 				break;
 			
 			case nonFixedEventsColor:
 				nonFixedEventsColor = value;
+				insideNonFixedEventsColor = Object.values(calendarInsideColors[i])[0];
 				break;
 				
 			case courseColor:
 				courseColor = value;
+				insideCourseColor = Object.values(calendarInsideColors[i])[0];
 				break;
 		}
+	}
+
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
+	}
+	
+	if (!insideFixedEventsColor) {
+		insideFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideNonFixedEventsColor) {
+		insideNonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideCourseColor) {
+		insideCourseColor = state.CalendarReducer.calendarColor;
 	}
 
 	return {
 		fixedEventsColor,
 		nonFixedEventsColor,
-		courseColor
+		courseColor,
+		insideNonFixedEventsColor,
+		insideFixedEventsColor,
+		insideCourseColor
 	};
 };
 
