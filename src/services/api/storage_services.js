@@ -29,7 +29,7 @@ export const getUserInfoByColumnService = (info) => {
 };
 
 export const getUserValuesService = (info) => {
-	return apiHelperCall(server + 'api/getUserValues','POST', info);
+	return apiHelperCall(server + 'api/getUserSpecificValues','POST', info);
 };
 
 export const updateUser = (info) => {
