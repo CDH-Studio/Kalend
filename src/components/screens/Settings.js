@@ -201,7 +201,7 @@ class Settings extends React.PureComponent {
 						
 						{/* <TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
-						</TouchableOpacity> */}
+						</TouchableOpacity>  */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute, {title: getStrings().CalendarPermission.title})}>
