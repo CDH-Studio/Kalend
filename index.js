@@ -1,7 +1,8 @@
 import React from 'react';
 import { AppRegistry, StatusBar, Platform } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { name as appName } from './config/app.json';
@@ -63,7 +64,7 @@ const dashboardInnerScreenOptions = {
 	headerBackTitle: null
 };
 
-const DashboardNavigator = createBottomTabNavigator(
+const DashboardNavigator = createMaterialBottomTabNavigator(
 	{
 		Dashboard: {
 			screen: createStackNavigator({
@@ -138,9 +139,7 @@ const DashboardNavigator = createBottomTabNavigator(
 	},
 	{
 		initialRouteName: 'Dashboard',
-		tabBarOptions: {
-			activeTintColor: dark_blue,
-		}
+		barStyle: { backgroundColor: dark_blue },
 	}
 );
 
@@ -219,7 +218,18 @@ const DashboardOptionsNavigator = createStackNavigator(
 				}
 			}
 		},
-		ScheduleSelection: { screen: ScheduleSelection, navigationOptions: DashboardOptionsNavigatorOptions },
+		ScheduleSelection: { 
+			screen: ScheduleSelection, 
+			navigationOptions: {
+				...DashboardOptionsNavigatorOptions,
+				headerTransparent: true,
+				headerTintColor: white,
+				headerStyle: {
+					...DashboardOptionsNavigatorOptions.headerStyle,
+					backgroundColor: 'rgba(0, 0, 0, 0.3)',
+				}
+			}
+		},
 		ScheduleSelectionDetails: { screen: ScheduleSelectionDetails, navigationOptions: DashboardOptionsNavigatorOptions },
 
 		CleanReducers: {

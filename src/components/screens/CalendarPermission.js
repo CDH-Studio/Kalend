@@ -5,14 +5,18 @@ import { TouchableRipple, Snackbar } from 'react-native-paper';
 import { calendarPermissionStyles as styles, gray, dark_blue, whiteRipple, blueRipple } from '../../styles';
 import { listPermissions, removePermissionPerson } from '../../services/service';
 import CalendarPermissionItem from '../CalendarPermissionItem';
+import { getStrings } from '../../services/helper';
 
 /**
  * 
  */
 class CalendarPermission extends React.PureComponent {
-	static navigationOptions = {
-		title: 'Calendar Permissions'
-	}
+
+	strings = getStrings().CalendarPermission;
+
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.params.title
+	});
 
 	constructor(props) {
 		super(props);
@@ -103,7 +107,7 @@ class CalendarPermission extends React.PureComponent {
 		if (calendarIds.length !== 0) {
 			if (!error) {
 				this.setState({
-					snackbarText: 'Successfully removed the selected people',
+					snackbarText: this.strings.deleteSuccess,
 					snackbarVisible: true
 				});
 			}
@@ -121,7 +125,7 @@ class CalendarPermission extends React.PureComponent {
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
 				<Text style={styles.title}>
-					Modify who can see your calendar
+					{this.strings.mainTitle}
 				</Text>
 
 				<View style={styles.list}>
@@ -143,8 +147,8 @@ class CalendarPermission extends React.PureComponent {
 											<MaterialCommunityIcons size={50}
 												name='account-search'
 												color={gray}/>
-											<Text style={styles.emptyTitle}>No people found</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the sharing info</Text> 
+											<Text style={styles.emptyTitle}>{this.strings.emptyTitle}</Text> 
+											<Text style={styles.emptyDescription}>{this.strings.emptyDescription}</Text> 
 										</View>
 									</TouchableOpacity>
 								)}
@@ -163,7 +167,7 @@ class CalendarPermission extends React.PureComponent {
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}
 						onPress={this.delete}>
-						<Text style={styles.availabilityButtonText}>Delete</Text>
+						<Text style={styles.availabilityButtonText}>{this.strings.delete}</Text>
 					</TouchableRipple>
 				</View>
 

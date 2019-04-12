@@ -182,6 +182,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-custom-tabs')
     implementation project(':react-native-restart')
     implementation project(':@react-native-community_cameraroll')
     implementation project(':rn-fetch-blob')    

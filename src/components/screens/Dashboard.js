@@ -2,11 +2,13 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Snackbar } from 'react-native-paper';
+import { Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
+import Popover from 'react-native-popover-view';
+import Feather from 'react-native-vector-icons/Feather';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, statusBarPopover, whiteRipple } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
@@ -104,7 +106,6 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	componentDidMount() {
-		this.setState({isVisible: true});     
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
@@ -145,10 +146,12 @@ class Dashboard extends React.PureComponent {
 
 	showPopover = () => {
 		this.setState({isVisible: true});
+		StatusBar.setBackgroundColor(statusBarPopover);
 	}
 	
 	closePopover = () => {
 		this.setState({isVisible: false});
+		StatusBar.setBackgroundColor(statusBarDark);
 	}
 
 	render() {
@@ -177,6 +180,7 @@ class Dashboard extends React.PureComponent {
 			<View style={{flex:1}}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
+						animated
 						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 						backgroundColor={statusBarDark} />	
 
@@ -199,8 +203,11 @@ class Dashboard extends React.PureComponent {
 					{/* {showCloseFab} */}
 				</View>
 
-				<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-					style={{position:'absolute', bottom: 13 , right:10}}>
+				<TouchableRipple onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
+					style={{position:'absolute', bottom: 13 , right:10, borderRadius: 22.5, }}
+					rippleColor={whiteRipple}
+					underlayColor={whiteRipple}
+					ref='fab'>
 					<View style={{flexDirection: 'row',
 						justifyContent: 'center',
 						alignItems: 'center',
@@ -225,7 +232,22 @@ class Dashboard extends React.PureComponent {
 							name="calendar-multiple-check"
 							color={white}/>
 					</View>
-				</TouchableOpacity>
+				</TouchableRipple>
+
+				<View style={styles.tooltipContainer}>
+					<Popover popoverStyle={styles.tooltipView}
+						isVisible={this.state.isVisible}
+						fromView={this.refs.fab}
+						onClose={this.closePopover}>
+						<TouchableOpacity onPress={this.closePopover}>
+							<Feather name="x"
+								style={{top:-2.5, right: -2.5, justifyContent: 'flex-end'}}
+								size={25}
+								color={black} />
+						</TouchableOpacity>
+						<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
+					</Popover>
+				</View>
 
 				<Snackbar
 					visible={snackbarVisible}

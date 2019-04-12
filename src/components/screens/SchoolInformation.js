@@ -14,7 +14,7 @@ import { dateVerification, getStrings } from '../../services/helper';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const moment = require('moment');
-const viewHeight = 584;
+const viewHeight = 495.75;
 
 class SchoolInformation extends React.PureComponent {
 
