@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {setUnavailableHours} from '../../actions';
 import { UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { unavailableHoursStyles as styles, white, blue, statusBlueColor, dark_blue } from '../../styles';
+import { unavailableHoursStyles as styles, white, statusBlueColor, dark_blue, lightBlue } from '../../styles';
 import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
@@ -117,7 +117,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.week}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.sleepWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(sleepWeek) => this.setState({sleepWeek})}
 													value={this.state.sleepWeek} />
@@ -164,7 +164,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.sleepWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(sleepWeekEnd) => this.setState({sleepWeekEnd})}
 													value={this.state.sleepWeekEnd} />
@@ -226,7 +226,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.week}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.commutingWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(commutingWeek) => this.setState({commutingWeek})}
 													value={this.state.commutingWeek} />
@@ -273,7 +273,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.commutingWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(commutingWeekEnd) => this.setState({commutingWeekEnd})}
 													value={this.state.commutingWeekEnd} />
@@ -335,7 +335,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.week}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.eatingWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(eatingWeek) => this.setState({eatingWeek})}
 													value={this.state.eatingWeek} />
@@ -382,7 +382,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.eatingWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(eatingWeekEnd) => this.setState({eatingWeekEnd})}
 													value={this.state.eatingWeekEnd} />
@@ -444,7 +444,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.week}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.otherWeek && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(otherWeek) => this.setState({otherWeek})}
 													value={this.state.otherWeek} />
@@ -491,7 +491,7 @@ class UnavailableHours extends React.PureComponent {
 											<View style={styles.row}>
 												<Text style={styles.type}>{this.strings.weekEnd}</Text>
 
-												<Switch trackColor={{false: 'lightgray', true: blue}}
+												<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 													thumbColor={(this.state.otherWeekEnd && Platform.OS !== 'ios') ? dark_blue : null}
 													onValueChange={(otherWeekEnd) => this.setState({otherWeekEnd})}
 													value={this.state.otherWeekEnd} />
