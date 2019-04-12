@@ -121,7 +121,7 @@ class Dashboard extends React.PureComponent {
 			updateUser({values:[fcmToken], columns:['FIREBASEID']});
 		});
 	
-		this.setState({isVisible: true});
+		// this.setState({isVisible: true});
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
