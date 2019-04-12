@@ -3,10 +3,13 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getStrings } from '../../services/helper';
 import { deleteModalStyles as styles, dark_blue } from '../styles';
 
 
 class DeleteModal extends React.PureComponent {
+
+	strings = getStrings().DeleteModal;
 
 	constructor(props) {
 		super(props);
@@ -54,7 +57,7 @@ class DeleteModal extends React.PureComponent {
 								style={styles.icon} />
 
 							<View style={styles.dialogRightCol}>
-								<Text style={styles.dialogQuestion}>Delete this event?</Text>
+								<Text style={styles.dialogQuestion}>{this.strings.deleteEvent}</Text>
 
 								<View style={styles.dialogOptions}>
 									<TouchableOpacity onPress={() => {
@@ -65,11 +68,11 @@ class DeleteModal extends React.PureComponent {
 
 										this.dismissDelete();
 									}}>
-										<Text style={styles.dialogCancel}>Cancel</Text>
+										<Text style={styles.dialogCancel}>{this.strings.cancel}</Text>
 									</TouchableOpacity>
 
 									<TouchableOpacity onPress={this.deleteEvent}>
-										<Text style={styles.dialogYes}>Yes</Text>
+										<Text style={styles.dialogYes}>{this.strings.yes}</Text>
 									</TouchableOpacity>
 								</View>
 							</View>

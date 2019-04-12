@@ -3,6 +3,7 @@ import { View, Text, StatusBar, Platform, FlatList, RefreshControl, TouchableOpa
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableRipple, Snackbar } from 'react-native-paper';
 import { calendarPermissionStyles as styles, gray, dark_blue, whiteRipple, blueRipple } from '../../styles';
+import { getStrings } from './../../services/helper';
 import { listPermissions, removePermissionPerson } from '../../services/service';
 import CalendarPermissionItem from '../CalendarPermissionItem';
 
@@ -10,9 +11,14 @@ import CalendarPermissionItem from '../CalendarPermissionItem';
  * 
  */
 class CalendarPermission extends React.PureComponent {
-	static navigationOptions = {
-		title: 'Calendar Permissions'
-	}
+
+	strings = getStrings().CalendarPermission;
+
+	static navigationOptions = ({ navigation }) => {
+		return	{
+			title: navigation.state.params.title
+		};
+	};
 
 	constructor(props) {
 		super(props);
@@ -32,7 +38,7 @@ class CalendarPermission extends React.PureComponent {
 	}
 
 	/**
-	 * Funciton to be called to reload data from the flatList
+	 * Function to be called to reload data from the flatList
 	 */
 	refreshData = () => {
 		this.setState({loadingList: true});
@@ -103,7 +109,7 @@ class CalendarPermission extends React.PureComponent {
 		if (calendarIds.length !== 0) {
 			if (!error) {
 				this.setState({
-					snackbarText: 'Successfully removed the selected people',
+					snackbarText: this.strings.successRemove,
 					snackbarVisible: true
 				});
 			}
@@ -120,9 +126,7 @@ class CalendarPermission extends React.PureComponent {
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<Text style={styles.title}>
-					Modify who can see your calendar
-				</Text>
+				<Text style={styles.title}>{this.strings.instruction}</Text>
 
 				<View style={styles.list}>
 					{ 
@@ -143,8 +147,10 @@ class CalendarPermission extends React.PureComponent {
 											<MaterialCommunityIcons size={50}
 												name='account-search'
 												color={gray}/>
-											<Text style={styles.emptyTitle}>No people found</Text> 
-											<Text style={styles.emptyDescription}>Tap to refresh the sharing info</Text> 
+												
+											<Text style={styles.emptyTitle}>{this.strings.noPeople}</Text>
+
+											<Text style={styles.emptyDescription}>{this.strings.refresh}</Text>
 										</View>
 									</TouchableOpacity>
 								)}
@@ -163,7 +169,7 @@ class CalendarPermission extends React.PureComponent {
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}
 						onPress={this.delete}>
-						<Text style={styles.availabilityButtonText}>Delete</Text>
+						<Text style={styles.availabilityButtonText}>{this.strings.delete}</Text>
 					</TouchableRipple>
 				</View>
 

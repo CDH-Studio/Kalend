@@ -2,9 +2,11 @@ const en = {
 	Chatbot: {
 		name: 'Chatbot',
 	},
+
 	CompareSchedule: {
 		name: 'Compare',
 	}, 
+
 	Course: {
 		name: 'Course',
 		addTitle: 'Add Course',
@@ -24,6 +26,7 @@ const en = {
 		endTime: 'End Time',
 		cancel: 'Cancel',
 	},
+
 	Dashboard: {
 		name: 'Dashboard',
 		createSchedule: 'Create Schedule',
@@ -34,6 +37,7 @@ const en = {
 		noEventsText: 'There\'s no events for the day.',
 		create: 'Create'
 	},
+
 	FixedEvent: {
 		name: 'Fixed Event',
 		addTitle: 'Add Fixed Event',
@@ -56,11 +60,13 @@ const en = {
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
+
 	Home: {
 		name: 'Home',
 		createdBy: 'Created by ',
 		cdhStudio: 'CDH Studio',
 	},
+
 	NonFixedEvent: {
 		name: 'Non-Fixed Event',
 		addTitle: 'Add Non-Fixed Event',
@@ -96,6 +102,7 @@ const en = {
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
+
 	ReviewEvent: {
 		name: 'Review Events',
 		title: 'Create a Schedule',
@@ -115,6 +122,7 @@ const en = {
 		normal: 'Normal',
 		high: 'High',
 	},
+
 	ScheduleCreation: {
 		name: 'Schedule Creation',
 		error: 'Error',
@@ -125,6 +133,7 @@ const en = {
 		backAlertTitle: 'Stopping Creation',
 		backAlertDescription: 'The schedules will stop being generated if you proceed. Where do you want to go?',
 	},
+
 	ScheduleSelection: {
 		name: 'Schedule Selection',
 		title: 'Schedule Selection',
@@ -138,11 +147,13 @@ const en = {
 		nonFixedEvents: 'Non-Fixed Events',
 		schedule: 'schedule',
 	},
+
 	ScheduleSelectionDetails: {
 		name: 'Schedule Selection Details',
 		title: 'Schedule Selection Details',
 		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
+
 	SchoolInformation: {
 		name: 'School Information',
 		title: 'Set School Information',
@@ -159,6 +170,7 @@ const en = {
 		confirmButton: 'Confirm',
 		cancelButton: 'Cancel',
 	},
+
 	SchoolSchedule: {
 		name: 'School Schedule',
 		title: 'Add School Schedule',
@@ -168,6 +180,7 @@ const en = {
 		manual: 'or import your school schedule ',
 		manually: 'manually',
 	},
+
 	SchoolScheduleCreation: {
 		name: 'School Schedule Creation',
 		dialogTitle: 'Analyzing your Picture',
@@ -178,14 +191,17 @@ const en = {
 		backAlertDescription: 'The schedule analyzing process will be stopped if you proceed. Where do you want to go?',
 		cancel: 'Cancel',
 	},
+
 	SchoolScheduleSelectPicture: {
 		name: 'School Schedule Select Picture',
 		title: 'Select Picture',
 	},
+
 	SchoolScheduleTakePicture: {
 		name: 'School Schedule Take Picture',
 		title: 'Take a Picture',
 	},
+
 	Settings: {
 		name: 'Settings',
 		profile: 'Profile',
@@ -207,6 +223,7 @@ const en = {
 		logout: 'Log Out',
 		version: 'Version 0.2.0',
 	},
+
 	UnavailableHours: {
 		name: 'Unavailable Hours',
 		title: 'Unavailable Hours',
@@ -223,6 +240,17 @@ const en = {
 		confirmButton: 'Confirm',
 		cancelButton: 'Cancel',
 	},
+
+	CalendarPermission: {
+		name: 'Calendar Permissions',
+		title: 'Calendar Permissions',
+		successRemove: 'Successfully removed the selected people',
+		instruction: 'Modify who can see your calendar',
+		noPeople: 'No people found',
+		refresh: 'Tap to refresh the sharing info',
+		delete: 'Delete'
+	},
+
 	WelcomeScreen: {
 		name: 'Welcome Screen',
 		title: [
@@ -237,18 +265,25 @@ const en = {
 			'Find availabilities by comparing schedules with your friends and colleagues',
 		],
 	},
+
 	EventOverview: {
 		location: 'Location: ',
 		description: 'Description: ',
 		recurrence: 'Recurrence: ',
-		priority: 'Priority Level: ',
+		priority: 'Priority Level: '
+	},
+
+	ModalEvent: {
 		dates: 'Date(s): ',
-		time: 'Time: ',
-		details: 'Details',
+		time: 'Time: '
+	},
+
+	DeleteModal: {
 		deleteEvent: 'Delete this event?',
 		cancel: 'Cancel',
-		yes: 'Yes',
+		yes: 'Yes'
 	},
+
 	ServicesError: {
 		formatDate: 'Something went wrong while formating data (Array length == 0)',
 		analyzePictureServerReceive: 'Could not receive response from the server, please try again',
@@ -258,6 +293,7 @@ const en = {
 		insertFixedCourse: 'There was a problem inserting Course',
 		insertFixed: 'There was a problem inserting Fixed Event'
 	},
+
 	BottomButtons: {
 		add: 'Add',
 		next: 'Next',
@@ -269,9 +305,11 @@ const fr = {
 	Chatbot: {
 		name: 'Chatbot',
 	},
+
 	CompareSchedule: {
 		name: 'Comparaison',
 	}, 
+
 	Course: {
 		name: 'Cours',
 		addTitle: 'Ajouter un cours',
@@ -291,6 +329,7 @@ const fr = {
 		timeEmpty: 'Veuillez sélectionner un début et une fin.',
 		cancel: 'Annuler',
 	},
+
 	Dashboard: {
 		name: 'Tableau de bord',
 		createSchedule: 'Créer un horaire',
@@ -301,6 +340,7 @@ const fr = {
 		noEventsText: 'Il n\'y a pas d\'événements pour la journée.',
 		create: 'Créer'
 	},
+
 	FixedEvent: {
 		name: 'Événement Fixe',
 		addTitle: 'Ajouter un événement fixe',
@@ -323,11 +363,13 @@ const fr = {
 		locationPlaceholder: 'Localisation',
 		descriptionPlaceholder: 'Description',
 	},
+
 	Home: {
 		name: 'Accueil',
 		createdBy: 'Créer par ',
 		cdhStudio: 'Studio CDH',
 	},
+
 	NonFixedEvent: {
 		name: 'Événement non fixe',
 		addTitle: 'Ajouter un événement non fixe',
@@ -363,6 +405,7 @@ const fr = {
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
+
 	ReviewEvent: {
 		name: 'Création d\'horaire',
 		title: 'Créer un horaire',
@@ -384,6 +427,7 @@ const fr = {
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
 		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
+
 	ScheduleCreation: {
 		name: 'Création d\'horaire',
 		error: 'Erreur',
@@ -394,6 +438,7 @@ const fr = {
 		backAlertTitle: 'Arrêt de la création',
 		backAlertDescription: 'Les horaires vont cesser d\'être générés si vous poursuivez. Où désirez-vous aller?',
 	},
+
 	ScheduleSelection: {
 		name: 'Sélection d\'horaire',
 		title: 'Sélection d\'horaire',
@@ -408,12 +453,14 @@ const fr = {
 		schedule: 'horaire',
 		ordinal: ['Premier', 'Deuxième', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième', 'Septième', 'Huitième', 'Neuvième', 'Dixième']
 	},
+
 	ScheduleSelectionDetails: {
 		name: 'Détails sélection d\'horaire',
 		title: 'Détails sélection d\'horaire',
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
 		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
+
 	SchoolInformation: {
 		name: 'Information scolaire',
 		title: 'Préciser l\'information scolaire',
@@ -430,6 +477,7 @@ const fr = {
 		confirmButton: 'Confirmer',
 		cancelButton: 'Annuler',
 	},
+
 	SchoolSchedule: {
 		name: 'Horaire scolaire',
 		title: 'Ajouter un horaire scolaire',
@@ -439,6 +487,7 @@ const fr = {
 		manual: 'ou ajoutez votre horaire scolaire ',
 		manually: 'manuellement',
 	},
+
 	SchoolScheduleCreation: {
 		name: 'Création de l\'horaire scolaire',
 		dialogTitle: 'Analyse de votre photo',
@@ -449,14 +498,17 @@ const fr = {
 		backAlertDescription: 'L\'analyse de votre horaire sera interrompue si vous poursuivez. Où désirez-vous aller?',
 		cancel: 'Annuler',
 	},
+
 	SchoolScheduleSelectPicture: {
 		name: 'Sélection photo horaire scolaire',
 		title: 'Sélectionner une photo',
 	},
+
 	SchoolScheduleTakePicture: {
 		name: 'Prendre photo horaire scolaire',
 		title: 'Prendre une photo',
 	},
+
 	Settings: {
 		name: 'Paramètres',
 		profile: 'Profil',
@@ -478,6 +530,7 @@ const fr = {
 		logout: 'Déconnexion',
 		version: 'Version 0.2.0',
 	},
+
 	UnavailableHours: {
 		name: 'Heures non disponibles',
 		title: 'Heures non disponibles',
@@ -494,6 +547,17 @@ const fr = {
 		confirmButton: 'Confirmer',
 		cancelButton: 'Annuler',
 	},
+
+	CalendarPermission: {
+		name: 'Autorisations du calendrier',
+		title: 'Autorisations du calendrier',
+		successRemove: 'Successfully removed the selected people',
+		instruction: 'Modify who can see your calendar',
+		noPeople: 'No people found',
+		refresh: 'Tap to refresh the sharing info',
+		delete: 'Delete'
+	},
+
 	WelcomeScreen: {
 		name: 'Écran de bienvenue',
 		title: [
@@ -508,18 +572,25 @@ const fr = {
 			'Trouvez les disponibilités en comparant votre horaire avec ceux de vos amis et collègues',
 		],
 	},
+
 	EventOverview: {
 		location: 'Localisation : ',
 		description: 'Description : ',
 		recurrence: 'Récurrence : ',
-		priority: 'Niveau de priorité : ',
+		priority: 'Niveau de priorité : '
+	},
+
+	ModalEvent: {
 		dates: 'Date(s) : ',
-		time: 'Heures : ',
-		details: 'Détails',
+		time: 'Heure(s) : '
+	},
+
+	DeleteModal: {
 		deleteEvent: 'Supprimer cet\névénement?',
 		cancel: 'Annuler',
 		yes: 'Oui',
 	},
+
 	ServicesError: {
 		formatDate: 'Une erreur s\'est produite lors de la création des données (longeur du tableau == 0)',
 		analyzePictureServerReceive: 'Impossible de recevoir une réponse du serveur, veuillez réessayer',
@@ -529,6 +600,7 @@ const fr = {
 		insertFixedCourse: 'Une erreur d\'insertion s\'est produite pour un ou plusieurs cours',
 		insertFixed: 'Une erreur d\'insertion s\'est produite pour un ou plusieurs événements fixes'
 	},
+	
 	BottomButtons: {
 		add: 'Ajout',
 		next: 'Suivant',

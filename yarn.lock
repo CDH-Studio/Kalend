@@ -659,9 +659,9 @@
     prop-types "^15.6.0"
 
 "@react-native-community/async-storage@^1.2.1":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.3.0.tgz#8254db63d6e2c51574008cce1535447055387b6a"
-  integrity sha512-6nRSNDz8LpN3SXKkDNBXdpsxPt99c3B6hG2YeHoo63KdsEMszvi4JO5vHQVcmyzTE0YNb2whxeieox9uSDYRdg==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.3.1.tgz#66b02438289ea1f525eca65ea2535b7d6ece5eb7"
+  integrity sha512-RTQ/Jmk3j8SsRQCIu89o0TjN8/IIGCiManePhOahSKYGKn0dJw+5lSUSNDca1jboAbytsEowxZXsMSxs1hv6FA==
 
 "@react-native-community/cameraroll@^1.0.3":
   version "1.0.3"
@@ -761,9 +761,9 @@ accepts@~1.3.3, accepts@~1.3.5:
     negotiator "0.6.1"
 
 acorn-globals@^4.1.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/acorn-globals/-/acorn-globals-4.3.0.tgz#e3b6f8da3c1552a95ae627571f7dd6923bb54103"
-  integrity sha512-hMtHj3s5RnuhvHPowpBYvJVj3rAar82JiDQHvGs1zO0l10ocX/xEdBShNHTJaboucJUsScghp74pH3s7EnHHQw==
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/acorn-globals/-/acorn-globals-4.3.1.tgz#deb149c59276657ebd40ba2ba849ddd529763ccf"
+  integrity sha512-gJSiKY8dBIjV/0jagZIFBdVMtfQyA5QHCvAT48H2q8REQoW8Fs5AOjqBql1LgSXgrMWdevcE+8cdZ33NtVbIBA==
   dependencies:
     acorn "^6.0.1"
     acorn-walk "^6.0.1"

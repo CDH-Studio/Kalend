@@ -5,12 +5,15 @@ import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getStrings } from '../../services/helper';
 import { eventOverviewStyles as styles, white, semiTransparentWhite } from '../styles';
 import { calendarColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
 
 class ModalEvent extends React.PureComponent {
+
+	strings = getStrings().ModalEvent;
 
 	constructor(props) {
 		super(props);
@@ -69,11 +72,11 @@ class ModalEvent extends React.PureComponent {
 						<View style={styles.modalInfoView}>
 							<View>
 								<View style={styles.modalInfoDate}>
-									<Text style={styles.modalInfoTitle}>Date(s): </Text>
+									<Text style={styles.modalInfoTitle}>{this.strings.dates}</Text>
 									<Text style={[styles.modalInfoText, {color: semiTransparentWhite}]}>{this.props.date}</Text>
 								</View>
 								<View style={styles.modalInfoTime}>
-									<Text style={styles.modalInfoTitle}>Time: </Text>
+									<Text style={styles.modalInfoTitle}>{this.strings.time}</Text>
 									<Text style={[styles.modalInfoText, {color: semiTransparentWhite}]}>{this.props.time}</Text>
 								</View>
 							</View>
