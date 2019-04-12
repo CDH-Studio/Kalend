@@ -6,6 +6,7 @@ import { calendarPermissionStyles as styles, gray, dark_blue, whiteRipple, blueR
 import { getStrings } from './../../services/helper';
 import { listPermissions, removePermissionPerson } from '../../services/service';
 import CalendarPermissionItem from '../CalendarPermissionItem';
+import { getStrings } from '../../services/helper';
 
 /**
  * 
@@ -109,7 +110,7 @@ class CalendarPermission extends React.PureComponent {
 		if (calendarIds.length !== 0) {
 			if (!error) {
 				this.setState({
-					snackbarText: this.strings.successRemove,
+					snackbarText: this.strings.deleteSuccess,
 					snackbarVisible: true
 				});
 			}
@@ -126,7 +127,9 @@ class CalendarPermission extends React.PureComponent {
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<Text style={styles.title}>{this.strings.instruction}</Text>
+				<Text style={styles.title}>
+					{this.strings.mainTitle}
+				</Text>
 
 				<View style={styles.list}>
 					{ 
@@ -147,10 +150,8 @@ class CalendarPermission extends React.PureComponent {
 											<MaterialCommunityIcons size={50}
 												name='account-search'
 												color={gray}/>
-												
-											<Text style={styles.emptyTitle}>{this.strings.noPeople}</Text>
-
-											<Text style={styles.emptyDescription}>{this.strings.refresh}</Text>
+											<Text style={styles.emptyTitle}>{this.strings.emptyTitle}</Text> 
+											<Text style={styles.emptyDescription}>{this.strings.emptyDescription}</Text> 
 										</View>
 									</TouchableOpacity>
 								)}

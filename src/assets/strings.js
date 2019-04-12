@@ -5,6 +5,23 @@ const en = {
 
 	CompareSchedule: {
 		name: 'Compare',
+		addPermission: 'This person can now see your calendar',
+		removePermission: 'Successfully removed the selected person/people',
+		noCheckbox: 'Please select one or more users to compare schedules with',
+		availabilities: 'Availabilities',
+		noAvailabilities: 'There\'s no availabilities for the day',
+		instruction: 'Click on See Availabilities to populate this calendar',
+		compareWith: 'Compare schedules with',
+		noCalendars: 'No calendar found',
+		refresh: 'Tap to refresh the calendar information',
+		delete: 'Delete',
+		addRemove: 'Add/Remove Users',
+		seeAvailabilities: 'See Availabilities',
+		allow: 'Allow',
+		enterEmail: 'Enter the person\'s email',
+		email: 'Email',
+		close: 'Close',
+		add: 'Add'
 	}, 
 
 	Course: {
@@ -24,7 +41,7 @@ const en = {
 		cancelButton: 'Cancel',
 		startTime: 'Start Time',
 		endTime: 'End Time',
-		cancel: 'Cancel',
+		cancel: 'Cancel', 
 	},
 
 	Dashboard: {
@@ -214,14 +231,29 @@ const en = {
 		notifications: 'Notifications',
 		theme: 'Theme',
 		general: 'General',
-		help: 'Help',
+		help: 'FAQ',
 		tutorial: 'Reload Tutorial',
-		deleteCalendar: 'Reset/Delete Calendar',
-		clearCache: 'Clear Cache/Data',
+		clearDeleteCalendar: 'Clear/Delete Calendar',
 		privacyPolicy: 'Privacy Policy',
 		cdhStudio: 'CDH Studio',
 		logout: 'Log Out',
 		version: 'Version 0.2.0',
+		deleteAccount: 'Delete Account',
+		termsOfService: 'Terms of Service',
+		modifySharing: 'Manage who can see your calendar',
+		languageTitle: 'Change language',
+		modifyCalendar: 'Manage Calendar',
+		modifyCalendarDescription: 'Clear deletes all events from your calendar whereas delete deletes the calendar from your account.',
+		clearCalendar: 'Clear Calendar',
+		deleteCalendar: 'Delete Calendar',
+		deleteCalendarSuccess: 'Calendar has been successfully cleared',
+		warning: 'Warning',
+		warningDescription: 'You will be logged out of the application if you continue',
+		ok: 'Ok',
+		clearing: 'Clearing your calendar ...',
+		clearingError: 'Could not clean calendar',
+		deleteDescription: 'Your Kalend calendar wil be deleted aswell as your account if you continue',
+		import: 'Import Calendar'
 	},
 
 	UnavailableHours: {
@@ -299,15 +331,61 @@ const en = {
 		next: 'Next',
 		done: 'Done',
 	},
+	ColorPicker: {
+		title: 'Select Color for Events',
+		tabTitles: ['Courses', 'Fixed Events', 'Non-Fixed Events'],
+		save: 'Save'
+	},
+	
+	CalendarPermission: {
+		title: 'Calendar Permissions',
+		mainTitle: 'Manage who can see your calendar',
+		deleteSuccess: 'Successfully removed the selected people',
+		emptyTitle: 'No people found',
+		emptyDescription: 'Tap to refresh the sharing info',
+		delete: 'Delete'
+	},
+	ImportCalendar: {
+		title: 'Select Calendar(s) to Import',
+		fetching: 'Fetching your calendar(s) information',
+		found: 'Found',
+		calendar: 'calendar',
+		emptyTitle: 'No calendar(s) found',
+		emptyDescription: 'Tap to refresh the calendar(s) information',
+		cancel: 'Cancel',
+		import: 'Import',
+		progressTitle: 'Importing Selected Calendar(s)',
+		progressDescription: ['Number of events imported:', 'out of'],
+		noEvents: 'No event(s) found in the selected calendar',
+		importError: 'Imported some of the calendar events',
+		importSuccess: ' successfully imported!'
+	}
 };
 
 const fr = {
 	Chatbot: {
 		name: 'Chatbot',
 	},
-
+	
 	CompareSchedule: {
 		name: 'Comparaison',
+		addPermission: 'Cette personne peut maintenant voir votre calendrier',
+		removePermission: 'Personne(s) sélectionnée(s) retirée(s) avec succès',
+		noCheckbox: 'Veuillez sélectionner un ou plusieurs utilisateurs avec lesquels comparer les horaires',
+		availabilities: 'Disponibilités',
+		noAvailabilities: 'Aucune disponibilités pour la journée',
+		instruction: 'Appuyez sur Voir disponibilités pour remplir ce calendrier',
+		compareWith: 'Comparaison d\'horaire avec',
+		noCalendars: 'Aucun calendrier trouvé',
+		refresh: 'Appuyer pour rafraîchir l\'information du calendrier',
+		delete: 'Supprimer',
+		addRemove: 'Ajouter/Supprimer des utilisateurs',
+		seeAvailabilities: 'Voir disponibilités',
+		allow: 'Autoriser',
+		enterEmail: 'Entrez le courriel de la personne',
+		email: 'Courriel',
+		close: 'Fermer',
+		add: 'Ajouter'
 	}, 
 
 	Course: {
@@ -515,20 +593,35 @@ const fr = {
 		unavailableHours: 'Préciser les heures non disponibles',
 		schoolInformation: 'Préciser l\'information scolaire',
 		preferences: 'Préférences',
-		changeLanguage: 'Passer en anglais?',
+		changeLanguage: 'Passer à l\'anglais?',
 		cancel: 'Annuler',
 		yes: 'Oui',
 		notifications: 'Notifications',
 		theme: 'Thème',
 		general: 'Général',
-		help: 'Aide',
+		help: 'FAQ',
 		tutorial: 'Relancer le tutoriel',
-		deleteCalendar: 'Réinitialiser/Supprimer le calendrier',
-		clearCache: 'Effacer le cache/les données',
+		clearDeleteCalendar: 'Réinitialiser/Supprimer le calendrier',
 		privacyPolicy: 'Politique de confidentialité',
 		cdhStudio: 'Studio CDH',
 		logout: 'Déconnexion',
 		version: 'Version 0.2.0',
+		deleteAccount: 'Supprimer le compte',
+		termsOfService: 'Conditions d\'utilisation',
+		modifySharing: 'Gérer qui peut voir votre calendrier',
+		languageTitle: 'Changer la langue',
+		modifyCalendar: 'Gérer le calendrier',
+		modifyCalendarDescription: 'La réinitialisation supprime tous les événements de votre calendrier tandis que la suppression supprime le calendrier de votre compte.',
+		clearCalendar: 'Réinitialiser le calendrier',
+		deleteCalendar: 'Supprimer le calendar',
+		deleteCalendarSuccess: 'Le calendrier a été effacé avec succès',
+		warning: 'Attention',
+		warningDescription: 'Vous serez déconnecté de l\'application si vous poursuivez',
+		ok: 'Ok',
+		clearing: 'Réinitialisation du calendrier en cours ...',
+		clearingError: 'Réinitialiser du calendrier impossible',
+		deleteDescription: 'Votre calendrier Kalend ainsi que votre compte seront supprimés si vous poursuivez',
+		import: 'Importer un calendrier'
 	},
 
 	UnavailableHours: {
@@ -606,6 +699,34 @@ const fr = {
 		next: 'Suivant',
 		done: 'Terminé',
 	},
+	ColorPicker: {
+		title: 'Choisir la couleur pour les événements',
+		tabTitles: ['Cours', 'Événements fixes', 'Événements non fixes'],
+		save: 'Enregistrer'
+	},
+	CalendarPermission: {
+		title: 'Permissions du calendrier',
+		mainTitle: 'Gérer qui peut voir votre calendrier',
+		deleteSuccess: 'Supprimé avec succès les personnes sélectionnées',
+		emptyTitle: 'Aucune personne trouvée',
+		emptyDescription: 'Appuyez pour actualiser les informations de partage',
+		delete: 'Supprimer'
+	},
+	ImportCalendar: {
+		title: 'Sélectionner un ou des calendrier(s) à importer',
+		fetching: 'Récupération de l\'information de votre/vos calendrier(s)',
+		found: 'Trouver',
+		calendar: 'calendrier',
+		emptyTitle: 'Aucun calendrier trouvé',
+		emptyDescription: 'Appuyez pour actualiser l\'information du calendrier',
+		cancel: 'Annuler',
+		import: 'Importer',
+		progressTitle: 'Importation du calendrier en cours',
+		progressDescription: ['Nombre d\'événements importés :', 'de'],
+		noEvents: 'Aucun événement trouvé dans votre sélection de calendrier(s)',
+		importError: 'Importé certains des événements du calendrier',
+		importSuccess: ' importer avec succès!'
+	}
 };
 
 export default {

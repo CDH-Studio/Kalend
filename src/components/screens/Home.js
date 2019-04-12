@@ -60,10 +60,10 @@ class Home extends React.PureComponent {
 	 */
 	signIn = () => {
 		let params = {
-			dashboardTitle: getStrings().Dashboard.title, 
-			chatbotTitle: getStrings().Chatbot.title, 
-			compareTitle: getStrings().CompareSchedule.title, 
-			settingsTitle: getStrings().Settings.title
+			dashboardTitle: getStrings().Dashboard.name, 
+			chatbotTitle: getStrings().Chatbot.name, 
+			compareTitle: getStrings().CompareSchedule.name, 
+			settingsTitle: getStrings().Settings.name
 		};
 		
 		this.props.setBottomString(params);

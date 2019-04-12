@@ -3,14 +3,24 @@ import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIn
 import { TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Agenda } from 'react-native-calendars';
+import { Agenda, LocaleConfig } from 'react-native-calendars';
 import Modal from 'react-native-modal';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+import { getStrings } from '../../services/helper';
+import { store } from '../../store';
 import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
+
+LocaleConfig.locales.en = LocaleConfig.locales[''];
+LocaleConfig.locales['fr'] = {
+	monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+	monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+	dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+	dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.']
+};
 
 const moment = extendMoment(Moment);
 
@@ -23,7 +33,9 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
  */
 class CompareSchedule extends React.PureComponent {
 
+	defaultLocale = store.getState().SettingsReducer.language;
 	listHeight = 280;
+	strings = getStrings().CompareSchedule;
 
 	static navigationOptions = {
 		header: null
@@ -47,6 +59,7 @@ class CompareSchedule extends React.PureComponent {
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
+		LocaleConfig.defaultLocale = this.defaultLocale;
 	}
 
 	componentWillMount() {
@@ -99,7 +112,7 @@ class CompareSchedule extends React.PureComponent {
 		addPermissionPerson(this.state.searchText)
 			.then(() => {
 				this.setState({
-					snackbarText: 'The person can now see your calendar',
+					snackbarText: this.strings.addPermission,
 					snackbarVisible: true
 				});
 			})
@@ -133,7 +146,7 @@ class CompareSchedule extends React.PureComponent {
 		if (!empty) {
 			if (!error) {
 				this.setState({
-					snackbarText: 'Successfully removed the selected people',
+					snackbarText: this.strings.removePermission,
 					snackbarVisible: true
 				});
 			}
@@ -182,7 +195,7 @@ class CompareSchedule extends React.PureComponent {
 		} else {
 			if (selectedValue.length === 0) {
 				this.setState({
-					snackbarText: 'Please check some checkboxes before comparing availabilities',
+					snackbarText: this.strings.noCheckbox,
 					snackbarVisible: true
 				});
 			} else {
@@ -278,11 +291,9 @@ class CompareSchedule extends React.PureComponent {
 	renderItem(item) {
 		return (
 			<View style={styles.item}>
-				<Text style={styles.itemText}>{item.start.format('h:mm')} </Text>
-				<Text style={styles.itemText}>{item.start.format('A')} </Text>
-				<Text style={styles.itemTextAMPM}>- </Text>
-				<Text style={styles.itemText}>{item.end.format('h:mm')} </Text>
-				<Text style={styles.itemText}>{item.end.format('A')}</Text>
+				<Text style={styles.itemText}>{item.start.format('h:mm A')}</Text>
+				<Text style={styles.itemTextAMPM}> - </Text>
+				<Text style={styles.itemText}>{item.end.format('h:mm A')}</Text>
 			</View>
 		);
 	}
@@ -295,12 +306,12 @@ class CompareSchedule extends React.PureComponent {
 			<View style={styles.emptyData}>
 				{
 					this.state.showCalendar ? 
-						<Text style={styles.eventsDayTitle}>Availabilities</Text> : null
+						<Text style={styles.eventsDayTitle}>{this.strings.availabilities}</Text> : null
 				}
 				
 				<View style={styles.noEvents}>
 					<Text style={styles.noEventsText}>{ this.state.showCalendar ?
-						'There\'s no availabilities for the day.' : 'Click on See Availabilities to populate this calendar'}</Text>
+						this.strings.noAvailabilities : this.strings.instruction}</Text>
 				</View>
 			</View>
 		);
@@ -327,7 +338,7 @@ class CompareSchedule extends React.PureComponent {
 					showCalendar ?
 						null :
 						<Animated.View style={[styles.peopleSelection, {height:  animatedHeight}]}>
-							<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>Compare schedules with</Text>
+							<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>{this.strings.compareWith}</Text>
 
 							{ 
 								loadingSharedList ? 
@@ -347,8 +358,8 @@ class CompareSchedule extends React.PureComponent {
 													<MaterialCommunityIcons size={50}
 														name='calendar-search'
 														color={gray}/>
-													<Text style={styles.emptyTitle}>No calendars found</Text> 
-													<Text style={styles.emptyDescription}>Tap to refresh the calendar info</Text> 
+													<Text style={styles.emptyTitle}>{this.strings.noCalendars}</Text> 
+													<Text style={styles.emptyDescription}>{this.strings.refresh}</Text> 
 												</View>
 											</TouchableOpacity>
 										)}
@@ -369,16 +380,16 @@ class CompareSchedule extends React.PureComponent {
 							<TouchableRipple onPress={this.removePeople}
 								style={styles.sideButton}
 								rippleColor={whiteRipple}
-								overlayColor={whiteRipple}>
-								<Text style={styles.sideButtonText}>Delete</Text>
+								underlayColor={whiteRipple}>
+								<Text style={styles.sideButtonText}>{this.strings.delete}</Text>
 							</TouchableRipple>}
 
 					<TouchableRipple onPress={this.seeAvailabilities}
-						style={[styles.availabilityButton, {marginRight: showCalendar ? 0 : 15, width: showCalendar ? '100%' : null}]}
+						style={[styles.availabilityButton, {width: showCalendar ? '100%' : null}]}
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}>
 						<Text style={styles.availabilityButtonText}>
-							{ showCalendar ? 'Add / Remove User(s)' : 'See Availabilities' }
+							{ showCalendar ? this.strings.addRemove : this.strings.seeAvailabilities }
 						</Text>
 					</TouchableRipple>
 					<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
@@ -386,7 +397,7 @@ class CompareSchedule extends React.PureComponent {
 						disabled={showCalendar}
 						rippleColor={whiteRipple}
 						underlayColor={whiteRipple}>
-						<Text style={styles.sideButtonText}>Add</Text>
+						<Text style={styles.sideButtonText}>{this.strings.allow}</Text>
 					</TouchableRipple>
 				</View>
 
@@ -396,7 +407,7 @@ class CompareSchedule extends React.PureComponent {
 					renderItem={this.renderItem}
 					renderEmptyData={this.renderEmptyData}
 					rowHasChanged={this.rowHasChanged}
-					listTitle='Availabilities'
+					listTitle={this.strings.availabilities}
 					renderEmptyDate={() => {
 						return (<View style={{height: 70}}/>);
 					}}
@@ -413,12 +424,12 @@ class CompareSchedule extends React.PureComponent {
 					avoidKeyboard
 					onBackdropPress={() => this.setState({searchModalVisible: false})}>
 					<View style={styles.modalContent}>
-						<Text style={styles.modalTitle}>Enter the person's email</Text>
+						<Text style={styles.modalTitle}>{this.strings.enterEmail}</Text>
 
 						<TextInput  mode="outlined"
 							style={styles.modalTextInput}
 							theme={{colors:{primary: dark_blue}}}
-							label='Email'
+							label={this.strings.email}
 							value={this.state.text}
 							autoCapitalize='none'
 							autoComplete='email'
@@ -427,14 +438,14 @@ class CompareSchedule extends React.PureComponent {
 
 						<View style={styles.modalButtons}>
 							<TouchableOpacity onPress={() => this.setState({searchModalVisible: false})}>
-								<Text style={styles.modalCloseText}>Close</Text>
+								<Text style={styles.modalCloseText}>{this.strings.close}</Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity onPress={() => {
 								this.setState({searchModalVisible: false});
 								this.addPerson();
 							}}>
-								<Text style={styles.modalAddText}>Add</Text>
+								<Text style={styles.modalAddText}>{this.strings.add}</Text>
 							</TouchableOpacity>
 						</View>
 					</View>

@@ -3,6 +3,7 @@ package com.kalend;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.droibit.android.reactnative.customtabs.CustomTabsPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CustomTabsPackage(),
             new ReactNativeRestartPackage(),
             new CameraRollPackage(),
             new RNCViewPagerPackage(),

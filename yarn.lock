@@ -4636,6 +4636,11 @@ moment-range@^4.0.2:
   dependencies:
     es6-symbol "^3.1.0"
 
+moment-round@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/moment-round/-/moment-round-1.0.1.tgz#5baf2b752e85d0f6a227c0a16f6fbe107c2a2d39"
+  integrity sha1-W68rdS6F0PaiJ8Chb2++EHwqLTk=
+
 moment@^2.22.0, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
@@ -5483,7 +5488,7 @@ react-native-app-intro-slider@^1.0.1:
 
 "react-native-calendars@https://github.com/MarieEveLegault/react-native-calendar-kalend.git":
   version "1.19.3"
-  resolved "https://github.com/MarieEveLegault/react-native-calendar-kalend.git#fd82215fb8e7729924c28120f728e45c99fc3ff7"
+  resolved "https://github.com/MarieEveLegault/react-native-calendar-kalend.git#6c3333d32964b39be9bd521c403956c85e543351"
   dependencies:
     lodash.get "^4.4.2"
     lodash.isequal "^4.5.0"
@@ -5496,6 +5501,11 @@ react-native-camera@^2.0.2:
   integrity sha512-K0CTQ+LGeeJ5UDpjAzF1FFZX8fhAEHwtv2IXuQABJuUsXO0+Pc5Ikq5HvD6onsQNMYor96vU5Di7GltZOiPjMA==
   dependencies:
     prop-types "^15.6.2"
+
+react-native-custom-tabs@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-custom-tabs/-/react-native-custom-tabs-0.1.7.tgz#2dfb4028b0a443610d94792b2019810f68dde525"
+  integrity sha512-Lgxh/KvhRnirnvN9FrS/+FJ8OIKJcWGdceSrZutZt2x02Sc72uQVD1O4rh2kzN8NUw8yU6KQz279ltkicISbaw==
 
 react-native-datepicker@^1.7.2:
   version "1.7.2"
@@ -5595,6 +5605,11 @@ react-native-restart@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/react-native-restart/-/react-native-restart-0.0.9.tgz#252611ef4e28a791b02ab4dabd1a7e9ae5fec6b3"
   integrity sha512-kE+bSLFwr0EvHGXOGLDyM+lNAPgt4Cy67v1jdHK9kjgc4osrJVs8WwmWJvQwjDuGNXl14aLD/Ud5JhB4KRlrsQ==
+
+react-native-safari-view@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-safari-view/-/react-native-safari-view-2.1.0.tgz#1e0cd12c62bce79bc1759c7e281646b08b61c959"
+  integrity sha1-HgzRLGK855vBdZx+KBZGsIthyVk=
 
 react-native-safe-area-view@^0.10.0:
   version "0.10.0"
@@ -5723,6 +5738,15 @@ react-navigation-drawer@1.2.1:
   integrity sha512-T2kaBjY2c4/3I6noWFnaf/c18ntNH5DsST38i+pdc2NPxn5Yi5lkK+ZZTeKuHSFD4a7G0jWY9OGf1iRkHWLMAQ==
   dependencies:
     react-native-tab-view "^1.2.0"
+
+react-navigation-material-bottom-tabs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-material-bottom-tabs/-/react-navigation-material-bottom-tabs-1.0.0.tgz#4fc3f21c57891e3a5bff88679afd84801d69adb7"
+  integrity sha512-fmPOt82xYpNYWh7gDdk38ce2TDmKuGnVaC7Pd67Ss62bjZ2CwmX9kOXExThtdY039zDGIcABDq9h65c8TQeTUA==
+  dependencies:
+    hoist-non-react-statics "^2.5.0"
+    prop-types "^15.6.0"
+    react-navigation-tabs "1.0.0"
 
 react-navigation-stack@1.2.0:
   version "1.2.0"
