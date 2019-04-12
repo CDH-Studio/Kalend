@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity, Platform } from 'react-native';
+import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity, Platform, Alert } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import { createCalendar, getCalendarID2 } from '../../services/service';
 import { storeUserInfoService, updateUser } from '../../services/api/storage_services';
 import { homeStyles as styles } from '../../styles';
 import { getStrings } from '../../services/helper';
+import firebase from 'react-native-firebase';
 
 /** 
  * Home/Login screen of the app.
@@ -42,7 +43,7 @@ class Home extends React.PureComponent {
 					this.props.logonUser(userInfo);
 					this.setCalendar().then(id => {
 						updateUser({values:[id], columns:['CALENDARID']});
-						this.props.navigation.navigate(DashboardNavigator);	
+						this.nextScreen();
 					});
 				} else {
 					alert('There was an error setting Users data');
@@ -113,10 +114,18 @@ class Home extends React.PureComponent {
 					this.setCalendar().then(id => {
 						updateUser({values:[id], columns:['CALENDARID']});	
 					});
-					this.props.navigation.navigate(DashboardNavigator);
+					this.nextScreen();
 				}
 			});
 		}
+	}
+
+	nextScreen = async () => {
+		firebase.messaging().hasPermission()
+			.then(async () => {
+				await firebase.messaging().requestPermission();
+				this.props.navigation.navigate(DashboardNavigator);
+			});
 	}
 
 	render() {

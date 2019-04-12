@@ -106,8 +106,6 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	componentDidMount() {
-		this.setState({isVisible: true});
-
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
