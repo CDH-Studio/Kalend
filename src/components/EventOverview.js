@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { setNavigationScreen } from '../actions';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray } from '../styles';
-import { getStrings } from '../services/helper';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 import { calendarColors } from '../../config/config';
 
 
@@ -180,6 +180,8 @@ class EventOverview extends React.PureComponent {
 
 
 				<Modal visible={this.state.modalVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					ref='editModal'
 					transparent={true}
 					onRequestClose={() => this.setState({modalVisible: false})}
@@ -270,6 +272,8 @@ class EventOverview extends React.PureComponent {
 				</Modal>
 
 				<Modal visible={this.state.deleteDialogVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					transparent={true}
 					onRequestClose={() => {
 						//do nothing;

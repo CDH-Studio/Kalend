@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import { setLanguage } from '../actions';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { languageSwitcherStyles as styles, dark_blue } from '../styles';
-import { getStrings } from '../services/helper';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 
 class LanguageSwitcher extends React.PureComponent {
 
@@ -42,6 +42,8 @@ class LanguageSwitcher extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<Modal isVisible={visible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.removeModal}
 					useNativeDriver>
 					<View style={styles.modalContent}>

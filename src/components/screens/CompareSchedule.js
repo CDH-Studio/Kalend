@@ -7,7 +7,7 @@ import { Agenda, LocaleConfig } from 'react-native-calendars';
 import Modal from 'react-native-modal';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import { getStrings } from '../../services/helper';
+import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { store } from '../../store';
 import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
@@ -421,6 +421,8 @@ class CompareSchedule extends React.PureComponent {
 
 
 				<Modal isVisible={searchModalVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					avoidKeyboard
 					onBackdropPress={() => this.setState({searchModalVisible: false})}>
 					<View style={styles.modalContent}>
