@@ -273,16 +273,6 @@ const en = {
 		cancelButton: 'Cancel',
 	},
 
-	CalendarPermission: {
-		name: 'Calendar Permissions',
-		title: 'Calendar Permissions',
-		successRemove: 'Successfully removed the selected people',
-		instruction: 'Modify who can see your calendar',
-		noPeople: 'No people found',
-		refresh: 'Tap to refresh the sharing info',
-		delete: 'Delete'
-	},
-
 	WelcomeScreen: {
 		name: 'Welcome Screen',
 		title: [
@@ -331,12 +321,13 @@ const en = {
 		next: 'Next',
 		done: 'Done',
 	},
+
 	ColorPicker: {
 		title: 'Select Color for Events',
 		tabTitles: ['Courses', 'Fixed Events', 'Non-Fixed Events'],
 		save: 'Save'
 	},
-	
+
 	CalendarPermission: {
 		title: 'Calendar Permissions',
 		mainTitle: 'Manage who can see your calendar',
@@ -345,6 +336,7 @@ const en = {
 		emptyDescription: 'Tap to refresh the sharing info',
 		delete: 'Delete'
 	},
+
 	ImportCalendar: {
 		title: 'Select Calendar(s) to Import',
 		fetching: 'Fetching your calendar(s) information',
@@ -641,16 +633,6 @@ const fr = {
 		cancelButton: 'Annuler',
 	},
 
-	CalendarPermission: {
-		name: 'Autorisations du calendrier',
-		title: 'Autorisations du calendrier',
-		successRemove: 'Successfully removed the selected people',
-		instruction: 'Modify who can see your calendar',
-		noPeople: 'No people found',
-		refresh: 'Tap to refresh the sharing info',
-		delete: 'Delete'
-	},
-
 	WelcomeScreen: {
 		name: 'Écran de bienvenue',
 		title: [
@@ -699,11 +681,13 @@ const fr = {
 		next: 'Suivant',
 		done: 'Terminé',
 	},
+
 	ColorPicker: {
 		title: 'Choisir la couleur pour les événements',
 		tabTitles: ['Cours', 'Événements fixes', 'Événements non fixes'],
 		save: 'Enregistrer'
 	},
+
 	CalendarPermission: {
 		title: 'Permissions du calendrier',
 		mainTitle: 'Gérer qui peut voir votre calendrier',
@@ -712,6 +696,7 @@ const fr = {
 		emptyDescription: 'Appuyez pour actualiser les informations de partage',
 		delete: 'Supprimer'
 	},
+
 	ImportCalendar: {
 		title: 'Sélectionner un ou des calendrier(s) à importer',
 		fetching: 'Récupération de l\'information de votre/vos calendrier(s)',

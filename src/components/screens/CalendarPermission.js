@@ -6,7 +6,6 @@ import { calendarPermissionStyles as styles, gray, dark_blue, whiteRipple, blueR
 import { getStrings } from './../../services/helper';
 import { listPermissions, removePermissionPerson } from '../../services/service';
 import CalendarPermissionItem from '../CalendarPermissionItem';
-import { getStrings } from '../../services/helper';
 
 /**
  * 
