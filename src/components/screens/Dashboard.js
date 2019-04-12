@@ -13,6 +13,8 @@ import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
+import { updateUser } from '../../services/api/storage_services';
+import firebase from 'react-native-firebase';
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
 LocaleConfig.locales['fr'] = {
@@ -106,11 +108,24 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	componentDidMount() {
-		this.setState({isVisible: true});
+		firebase.messaging().getToken().then(fcmToken => {
+			if (fcmToken) {
+				console.log('token firebase', fcmToken);
+				updateUser({values:[fcmToken], columns:['FIREBASEID']});
+			}
+		});
 
+		this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+			// Process your token as required
+			console.log('token firebase', fcmToken);
+			updateUser({values:[fcmToken], columns:['FIREBASEID']});
+		});
+	
+		this.setState({isVisible: true});
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
+				this.setDashboardDataService();
 				if (store.getState().NavigationReducer.successfullyInsertedEvents) {
 					this.setState({
 						snackbarText: 'Event(s) successfully added',
@@ -123,14 +138,9 @@ class Dashboard extends React.PureComponent {
 		);
 	}
 
-	componentWillMount() {
-		setInterval(() => {
-			this.setDashboardDataService();
-		}, 10000);
-	}
-
 	componentWillUnmount() {
 		this.willFocusSubscription.remove();
+		this.onTokenRefreshListener();
 	}
 
 	setDashboardDataService = () => {

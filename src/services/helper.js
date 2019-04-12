@@ -32,6 +32,8 @@ export const convertEventsToDictionary  = async (data) => {
 				instances.items.forEach(eventRec => {
 					let item = {};
 					item.category = tempEvent.CATEGORY;
+					item.location = event.LOCATION;
+					item.description = event.DESCRIPTION;
 					item.name = eventRec.summary;
 					let keyDate = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime.split('T')[0];
 					item.date = keyDate;
@@ -44,6 +46,8 @@ export const convertEventsToDictionary  = async (data) => {
 			let item = {};
 			item.name = event.SUMMARY;
 			item.category = event.CATEGORY;
+			item.location = event.LOCATION;
+			item.description = event.DESCRIPTION;
 			let keyDate = event.START.split('T')[0];
 			item.date = keyDate;
 			item.actualTime = event.START;
