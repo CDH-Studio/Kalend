@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules, LayoutAnimation } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Snackbar, FAB } from 'react-native-paper';
+import { Snackbar, FAB, Checkbox } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
@@ -103,12 +103,18 @@ class Dashboard extends React.PureComponent {
 		let strings = this.strings;
 		
 		return (
-			<TouchableOpacity onPress={() => changeInfo(category, item, props, strings, setState)}>
+			<View style={styles.rowItem}>
 				<View style={[styles.item, {backgroundColor: category}]}>
-					<Text style={styles.itemText}>{item.name}</Text>
-					<Text style={styles.itemText}>{item.time}</Text>
+					<Checkbox />
+					<TouchableOpacity onPress={() => changeInfo(category, item, props, strings, setState)}>
+						<View style={{marginLeft:10}}>
+							<Text style={styles.itemText}>{item.name}</Text>
+							<Text style={styles.itemText}>{item.time}</Text>
+						</View>
+					</TouchableOpacity>
 				</View>
-			</TouchableOpacity>
+				
+			</View>
 		);
 	}
 
@@ -380,7 +386,7 @@ class Dashboard extends React.PureComponent {
 							shouldChangeDay={this.shouldChangeDay}
 							theme={{agendaKnobColor: dark_blue}}
 							onCalendarToggled={(calendarOpened) => {
-								LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
+								// LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
 								this.setState({calendarOpened}, () => {
 									this.forceUpdate();
 								});

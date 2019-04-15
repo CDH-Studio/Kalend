@@ -1350,7 +1350,14 @@ export const dashboardStyles = StyleSheet.create({
 		marginBottom: 15
 	},
 
+	rowItem: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+
 	item: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		borderRadius: 5,
 		width: '95%',
 		paddingVertical: 10,
