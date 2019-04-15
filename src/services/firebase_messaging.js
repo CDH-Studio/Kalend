@@ -7,11 +7,13 @@ const apiHelperCall = (data) => {
 	
 	const message = new firebase.messaging.RemoteMessage()
 		.setMessageId(messagetUUID)
-		.setTo(data.senderID + '@gcm.googleapis.com')
+		.setTo('359972006564@gcm.googleapis.com')
 		.setData(data.body);
 
+	console.log(message);
+
 	// Send the message
-	firebase.messaging().sendMessage(message);  
+	firebase.messaging().sendMessage(message).then((data) => console.log('data', data)).catch(err => console.log('erre', err));  
 };
 
 export const sendMessage = (data) => {

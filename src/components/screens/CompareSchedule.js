@@ -111,6 +111,14 @@ class CompareSchedule extends React.PureComponent {
 	 * Callback fuction when the button add is touched in the modal
 	 */
 	addPerson = () => {
+				sendMessage({
+					senderID: 'dsDIxeKO0YY:APA91bHbBWYRl4SIgc5_RP4nposor8msUKmPUVuh02VyPJQt9i7QjHk8kTnTmlS1k7OzAK9sKQlxXLdnt5s636di6GB7rhR5abilahs5VC6lUWiTdmMehRj0EMqsl_KFGSBRtPvurRgD',
+					body: {
+						asdfasdf: 'HELP',
+						name: 'Fahad Hayat',
+						email: this.state.searchText
+					}
+				});
 		addPermissionPerson(this.state.searchText)
 			.then(() => {
 				// getUserInfoByColumnService({
@@ -120,6 +128,7 @@ class CompareSchedule extends React.PureComponent {
 				// 		field: 'EMAIL'
 				// 	}
 				// });
+
 
 				this.setState({
 					snackbarText: this.strings.addPermission,
