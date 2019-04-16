@@ -52,9 +52,14 @@ export const getUserHours = () => {
 	return apiHelperCall(server + 'api/storeUserHours', 'GET');
 };
 
+export const storeInsertedCalendars = (info) => {
+	return apiHelperCall(server + 'api/storeInsertedCalendars', 'POST', info);
+};
+
 export const storeGeneratedCalendars = (info) => {
 	return apiHelperCall(server + 'api/storeGeneratedCalendars', 'POST', info);
 };
+
 
 export const getEvents = () => {
 	return apiHelperCall(server + 'api/getEvents', 'GET');

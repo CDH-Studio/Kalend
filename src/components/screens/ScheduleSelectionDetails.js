@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { calendarColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
-import { storeGeneratedCalendars } from '../../services/api/storage_services';
+import { storeInsertedCalendars, storeGeneratedCalendars } from '../../services/api/storage_services';
 import { getStrings } from '../../services/helper';
 import updateNavigation from '../NavigationHelper';
 import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse, addEvents, clearAllEvents, setSelectedCalendar } from '../../actions';
@@ -263,7 +263,8 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		if (this.state.data.aiEvents) {
 			this.props.dispatch(setSelectedCalendar(this.props.index));
 			await this.insertGeneratedEvents(this.state.data.aiEvents).then(() => {
-				storeGeneratedCalendars(this.props.AllEventsReducer)
+				storeGeneratedCalendars(this.props.GeneratedCalendarsReducer)
+				storeInsertedCalendars(this.props.AllEventsReducer)
 					.then(success => {
 						if (success) {
 							this.clearEvents();
