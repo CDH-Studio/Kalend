@@ -22,3 +22,4 @@ export const WelcomeScreen = 'WelcomeScreen';
 
 export const CleanReducersRoute = 'CleanReducers';
 export const CalendarPermissionRoute = 'CalendarPermission';
+export const SharingManagementRoute = 'SharingManagement';

@@ -5514,10 +5514,10 @@ react-native-datepicker@^1.7.2:
   dependencies:
     moment "^2.22.0"
 
-react-native-firebase@^5.2.2:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.3.1.tgz#cfd295f562249f6fcf5e3fb2c62894575ece2c7f"
-  integrity sha512-eOuSqIl+DZPNmN5ivSLgkEcsl5m0sXxttoPBn3bOHfI+apEd4I8F+9fcbHerUFUvLzesXmHR9locjhR6IJ+q3w==
+react-native-firebase@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.2.0.tgz#5f5eea19bffbda583af80a9083a14d64648a7dbc"
+  integrity sha512-6IHkJCUlHB71M3kYGOcMQm7qR+OaTgen2HYvVLFjmrLhkW2IEvfipLt0sJfSDW3Mna7n+UDHeugsfViE2b8saA==
   dependencies:
     opencollective-postinstall "^2.0.0"
     prop-types "^15.6.2"

@@ -332,6 +332,19 @@ const en = {
 		deny: 'Deny',
 		allowBody: 'Calendar shared!',
 		denyBody: 'Request cancelled'
+	},
+	SharingManagement: {
+		title: 'Sharing Requests',
+		allowSuccess: 'Successfully shared calendars',
+		allowError: 'Could not share calendars ',
+		denySuccess: 'Removed the selected request',
+		emptyTitle: 'You have no sharing requests',
+		emptyDescription: 'Tap to refresh the notifications',
+	},
+	SharingManagementItem: {
+		allow: 'Allow',
+		deny: 'Deny',
+
 	}
 };
 
@@ -674,6 +687,9 @@ const fr = {
 		deny: 'Refuser',
 		allowBody: 'Calendrier partagé',
 		denyBody: 'Requête annulé'
+	},
+	SharingManagement: {
+		title: 'Requête de partage de calendrier'
 	}
 };
 
