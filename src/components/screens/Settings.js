@@ -16,7 +16,6 @@ import { setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
-import  ExtraDimensions  from 'react-native-extra-dimensions-android'
 
 import SafariView from 'react-native-safari-view';
 
