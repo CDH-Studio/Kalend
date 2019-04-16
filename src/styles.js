@@ -3,6 +3,7 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Header } from 'react-navigation';
 import { containerPadding, lineThickness, lineColor, lineSpace, lineViewHorizontalPadding, lineViewLeftPadding } from '../src/components/screens/ScheduleSelection';
 import { containerPaddingDetails } from '../src/components/screens/ScheduleSelectionDetails';
+import { deviceWidth, deviceHeight } from './services/helper';
 
 export const white = '#FFFFFF';
 export const black = '#000';
@@ -91,8 +92,8 @@ export const welcomeStyles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		height: Dimensions.get('window').height + getStatusBarHeight(),
-		width: Dimensions.get('window').width
+		height: deviceHeight + getStatusBarHeight(),
+		width: deviceWidth
 	},
 
 	image: {
