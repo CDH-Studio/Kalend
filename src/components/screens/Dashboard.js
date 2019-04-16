@@ -90,26 +90,30 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	renderItem(item, changeInfo, setState) {
-		let category;
+		// let category;
 
-		if (item.category === 'Course') {
-			category = this.props.courseColor;
-		} else if (item.category === 'FixedEvent') {
-			category = this.props.fixedEventsColor;
-		} else if (item.category === 'NonFixedEvent') {
-			category = this.props.nonFixedEventsColor;
-		} else {
-			category = white;
-		}
+		// if (item.category === 'Course') {
+		// 	category = this.props.courseColor;
+		// } else if (item.category === 'FixedEvent') {
+		// 	category = this.props.fixedEventsColor;
+		// } else if (item.category === 'NonFixedEvent') {
+		// 	category = this.props.nonFixedEventsColor;
+		// } else {
+		// 	category = white;
+		// }
 
-		let props = this.props;
-		let strings = this.strings;
+		// let props = this.props;
+		// let strings = this.strings;
 		
 		return (
 			<View style={styles.rowItem}>
-				<View style={[styles.item, {backgroundColor: category}]}>
+				<View style={[styles.item,
+					// {backgroundColor: category}
+				]}>
 					<Checkbox />
-					<TouchableOpacity onPress={() => changeInfo(category, item, props, strings, setState)}>
+					<TouchableOpacity 
+						// onPress={() => changeInfo(category, item, props, strings, setState)}
+					>
 						<View style={{marginLeft:10}}>
 							<Text style={styles.itemText}>{item.name}</Text>
 							<Text style={styles.itemText}>{item.time}</Text>
@@ -145,11 +149,6 @@ class Dashboard extends React.PureComponent {
 			'July', 'August', 'September', 'October', 'November', 'December'];
 			
 		this.setState({ month: monthNames[month], showMonth: true });
-	}
-	
-	timeToString = (time) => {
-		const date = new Date(time);
-		return date.toISOString().split('T')[0];
 	}
 	
 	componentDidMount() {
@@ -196,17 +195,6 @@ class Dashboard extends React.PureComponent {
 			});
 	}
 
-
-	showPopover = () => {
-		this.setState({isVisible: true});
-		StatusBar.setBackgroundColor(statusBarPopover);
-	}
-	
-	closePopover = () => {
-		this.setState({isVisible: false});
-		StatusBar.setBackgroundColor(statusBarDark);
-	}
-
 	dismissModal = () => {
 		this.setState({modalVisible: false});
 	}
@@ -232,13 +220,13 @@ class Dashboard extends React.PureComponent {
 		this.props.navigation.navigate('Edit' + editScreen, param);
 	}
 
-	showDeleteModal = () => {
-		this.setState({deleteDialogVisible: true, shouldShowModal: true});
-	}
+	// showDeleteModal = () => {
+	// 	this.setState({deleteDialogVisible: true, shouldShowModal: true});
+	// }
 
-	dismissDeleteModal = () => {
+	// dismissDeleteModal = () => {
 
-	}
+	// }
 
 	changeInfo = (category, item, props, strings, setModalInfo) => {
 		let categoryColor;
@@ -335,16 +323,6 @@ class Dashboard extends React.PureComponent {
 			modalInfo,
 			modalVisible
 		});
-	}
-
-	showPopover = () => {
-		this.setState({isVisible: true});
-		StatusBar.setBackgroundColor(statusBarPopover);
-	}
-	
-	closePopover = () => {
-		this.setState({isVisible: false});
-		StatusBar.setBackgroundColor(statusBarDark);
 	}
 
 	render() {
@@ -488,7 +466,7 @@ class Dashboard extends React.PureComponent {
 					{snackbarText}
 				</Snackbar>
 
-				<ModalEvent visible={this.state.modalVisible}
+				{/* <ModalEvent visible={this.state.modalVisible}
 					dismiss={this.dismissModal}
 					navigateEditScreen={this.navigateEditScreen}
 					showDeleteModal={this.showDeleteModal}
@@ -505,7 +483,7 @@ class Dashboard extends React.PureComponent {
 					dismiss={this.dismissDelete}
 					shouldShowModal={this.state.shouldShowModal}
 					deleteEvent={this.deleteEvent}
-					showModal={this.showModal} />
+					showModal={this.showModal} /> */}
 			</View>
 		);
 	}
