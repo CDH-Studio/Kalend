@@ -9,8 +9,11 @@ export default async (notificationOpen) => {
 	let accpterEmail = store.getState().HomeReducer.profile.profile.user.email;	
 	let strings = getStrings().SharingNotification;
 	let notification = notificationOpen.notification;
-	
-	if (notificationOpen.action === 'allow') {
+	let action = notificationOpen.action;
+
+	let notification = notificationOpen.notification;
+
+	if (action === 'allow') {
 		let newNotification = new firebase.notifications.Notification({
 			sound: 'default',
 			show_in_foreground: true,
@@ -35,11 +38,18 @@ export default async (notificationOpen) => {
 			.then((success) => {
 				console.log('success', success);
 				if(success) {
+					firebase.database()
+						.ref(`notifications/${notification.data.path}/${notification.notificationId}/`)
+						.update({
+							allow: true,
+							dismiss: false
+						});
+
 					firebase.notifications()
 						.displayNotification(newNotification);
 				}
 			});	
-	} else if (notificationOpen.action === 'deny') {
+	} else if (action === 'deny') {
 		let newNotification = new firebase.notifications.Notification({
 			sound: 'default',
 			show_in_foreground: true,
@@ -57,8 +67,22 @@ export default async (notificationOpen) => {
 			.android.setTimeoutAfter(2000)
 			.android.setPriority(firebase.notifications.Android.Priority.High);
 		
+		
+		firebase.database()
+			.ref(`notifications/${notification.data.path}/${notification.notificationId}/`)
+			.update({
+				allow: false,
+				dismiss: false
+			});
+		
 		firebase.notifications()
 			.displayNotification(newNotification);
+	} else if (action === 'prompt') {
+		firebase.database()
+			.ref(`notifications/${notification.data.path}/${notification.notificationId}/`)
+			.update({
+				dismiss: true
+			});
 	}
 
 	return Promise.resolve();

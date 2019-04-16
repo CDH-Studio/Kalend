@@ -11,10 +11,9 @@ import { getStrings } from '../../services/helper';
 import { store } from '../../store';
 import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
-import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
+import { getAvailabilitiesCalendars, listSharedKalendCalendars, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
 import { getUserInfoByColumnService } from '../../services/api/storage_services';
-import { sendMessage } from '../../services/firebase_messaging';
 import firebase from 'react-native-firebase';
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
@@ -124,7 +123,9 @@ class CompareSchedule extends React.PureComponent {
 					.push({
 						name: this.props.name,
 						email: this.props.email,
-						createdAt: new Date().toJSON()
+						createdAt: new Date().toJSON(),
+						allow: false,
+						dismiss: true
 					})
 					.then(() => {
 						this.setState({

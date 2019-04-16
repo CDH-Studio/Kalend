@@ -76,12 +76,28 @@ class LoadingScreen extends React.PureComponent {
 						})
 						.then(res => res.json())
 						.then(success => {
-							if(success) Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true});
+							if(success) {
+								firebase.database()
+									.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+									.update({
+										allow: true,
+										dismiss: false
+									});
+								Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true});
+							}
 						});
 					
 					}
 				},
-				{text: 'Deny', onPress: () => Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true}), style: 'cancel'}
+				{text: 'Deny', onPress: () => {
+					firebase.database()
+						.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+						.update({
+							allow: false,
+							dismiss: false
+						});
+					Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true});
+				}, style: 'cancel'}
 			], {cancelable: true});
 		});
 
