@@ -15,6 +15,7 @@ import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPer
 import CalendarScheduleItem from '../CalendarScheduleItem';
 import { getUserInfoByColumnService } from '../../services/api/storage_services';
 import { sendMessage } from '../../services/firebase_messaging';
+import firebase from 'react-native-firebase';
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
 LocaleConfig.locales['fr'] = {
@@ -110,36 +111,33 @@ class CompareSchedule extends React.PureComponent {
 	/**
 	 * Callback fuction when the button add is touched in the modal
 	 */
-	addPerson = () => {
-				sendMessage({
-					senderID: 'dsDIxeKO0YY:APA91bHbBWYRl4SIgc5_RP4nposor8msUKmPUVuh02VyPJQt9i7QjHk8kTnTmlS1k7OzAK9sKQlxXLdnt5s636di6GB7rhR5abilahs5VC6lUWiTdmMehRj0EMqsl_KFGSBRtPvurRgD',
-					body: {
-						asdfasdf: 'HELP',
-						name: 'Fahad Hayat',
-						email: this.state.searchText
-					}
-				});
-		addPermissionPerson(this.state.searchText)
-			.then(() => {
-				// getUserInfoByColumnService({
-				// 	columns: ['FIREBASEID'],
-				// 	where: {
-				// 		value: this.state.searchText,
-				// 		field: 'EMAIL'
-				// 	}
-				// });
-
-
-				this.setState({
-					snackbarText: this.strings.addPermission,
-					snackbarVisible: true
-				});
-			})
-			.catch((err) => {
-				this.setState({
-					snackbarText: err,
-					snackbarVisible: true
-				});
+	addPerson = async () => { 
+		getUserInfoByColumnService({
+			columns: ['ID'],
+			where: {
+				value: this.state.searchText,
+				field: 'EMAIL'
+			}
+		}).then(res => res.json())
+			.then(data => {
+				firebase.database().ref(`notifications/${data.ID}/`)
+					.push({
+						name: this.props.name,
+						email: this.props.email,
+						createdAt: new Date().toJSON()
+					})
+					.then(() => {
+						this.setState({
+							snackbarText: this.strings.addPermission,
+							snackbarVisible: true
+						});
+					})
+					.catch(() => {
+						this.setState({
+							snackbarText: this.strings.permissionError,
+							snackbarVisible: true
+						});
+					});
 			});
 	}
 
@@ -484,9 +482,12 @@ class CompareSchedule extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	const { id } = state.CalendarReducer;
+	const { name, email } = state.HomeReducer.profile.profile.user;
 
 	return {
-		calendarID: id
+		calendarID: id,
+		name,
+		email
 	};
 };
 

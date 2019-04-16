@@ -18,6 +18,8 @@ import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
 
 import SafariView from 'react-native-safari-view';
+import { getUserValuesService } from '../../services/api/storage_services';
+import firebase from 'react-native-firebase';
 
 const viewHeight = 669.1428833007812;
 
@@ -81,9 +83,11 @@ class Settings extends React.PureComponent {
 		});
 	}
 
-	logout = () => {
+	logout = async () => {
 		googleSignOut();
 		clearEveryReducer();
+		let id = await getUserValuesService({columns:['ID']}).then(res => res.json());
+		firebase.messaging().unsubscribeFromTopic((id.ID).toString());
 		this.props.navigation.navigate(LoginNavigator);
 	}
 

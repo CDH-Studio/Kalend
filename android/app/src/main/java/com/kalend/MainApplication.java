@@ -25,6 +25,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.RNFetchBlob.RNFetchBlobPackage;                        
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 
 import java.util.Arrays;
@@ -61,6 +62,7 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseCrashlyticsPackage(),
           new RNFirebasePerformancePackage(),
           new RNFetchBlobPackage(),
+          new RNFirebaseDatabasePackage(),
           new RNFirebaseNotificationsPackage()
       );
     }

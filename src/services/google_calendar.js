@@ -8,8 +8,6 @@ import { getUserValuesService  } from './api/storage_services';
  * @param {Object} body The body of the call
  * @param {Object} query Query parameter object to be appended to the URL
  */
-
-	
 let apiHelperCall = async (URL, method, body, query) => {
 	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN']}).then(res => res.json());
 	let accessToken = tokenData.ACCESSTOKEN;

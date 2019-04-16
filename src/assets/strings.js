@@ -4,7 +4,8 @@ const en = {
 	},
 	CompareSchedule: {
 		name: 'Compare',
-		addPermission: 'This person can now see your calendar',
+		addPermission: 'A notification has been sent to the other person',
+		permissionError: 'Cannot send notification to the other person',
 		removePermission: 'Successfully removed the selected person/people',
 		noCheckbox: 'Please select one or more users to compare schedules with',
 		availabilities: 'Availabilities',
@@ -322,6 +323,15 @@ const en = {
 		noEvents: 'No event(s) found in the selected calendar',
 		importError: 'Imported some of the calendar events',
 		importSuccess: ' successfully imported!'
+	},
+	SharingNotification: {
+		title: 'Sharing Request',
+		subtitle: 'Compare Schedule',
+		body: ' would like to share calendars with you',
+		allow: 'Allow',
+		deny: 'Deny',
+		allowBody: 'Calendar shared!',
+		denyBody: 'Request cancelled'
 	}
 };
 
@@ -655,6 +665,15 @@ const fr = {
 		noEvents: 'Aucun événement trouvé dans votre sélection de calendrier(s)',
 		importError: 'Importé certains des événements du calendrier',
 		importSuccess: ' importer avec succès!'
+	},
+	SharingNotification: {
+		title: 'Demande de partage',
+		subtitle: 'Comparaison d\'horaires',
+		body: ' aimerait partager de calendriers avec vous',
+		allow: 'Autoriser',
+		deny: 'Refuser',
+		allowBody: 'Calendrier partagé',
+		denyBody: 'Requête annulé'
 	}
 };
 

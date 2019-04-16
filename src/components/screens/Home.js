@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity, Platform, Alert } from 'react-native';
+import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity, Platform } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
-import { storeUserInfoService, updateUser } from '../../services/api/storage_services';
+import { storeUserInfoService, updateUser, getUserValuesService } from '../../services/api/storage_services';
 import { homeStyles as styles } from '../../styles';
 import { getStrings } from '../../services/helper';
 import firebase from 'react-native-firebase';
@@ -35,7 +35,6 @@ class Home extends React.PureComponent {
 	 * Sets the user information
 	 */
 	setUser = (userInfo) => {
-		this.props.logonUser(userInfo);
 		storeUserInfoService(userInfo)
 			.then(res => res.json())
 			.then((success) => {
@@ -69,7 +68,6 @@ class Home extends React.PureComponent {
 								resolve(id);
 							});
 					} else {
-						
 						this.props.setCalendarID(data.calendarID);
 						this.props.setCalendarColor(data.calendarColor);
 						resolve(data.calendarID);
@@ -124,6 +122,8 @@ class Home extends React.PureComponent {
 		firebase.messaging().hasPermission()
 			.then(async () => {
 				await firebase.messaging().requestPermission();
+				let id = await getUserValuesService({columns:['ID']}).then(res => res.json());
+				firebase.messaging().subscribeToTopic((id.ID).toString());
 				this.props.navigation.navigate(DashboardNavigator);
 			});
 	}

@@ -19,6 +19,8 @@ const logoAnimDuration = 3000;
  */
 class LoadingScreen extends React.PureComponent {
 
+	notificationStrings = getStrings().SharingNotification;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -59,43 +61,25 @@ class LoadingScreen extends React.PureComponent {
 
 		this.createNotificationListeners();
 	}
-	
-	componentWillUnmount() {
-		this.notificationListener();
-		this.notificationOpenedListener();
-	}
 
 	createNotificationListeners = async () => {
-		/*
-		* Triggered when a particular notification has been received in foreground
-		* */
-		this.notificationListener = firebase.notifications().onNotification((notification) => {
-			const { title, body } = notification;
-			this.showAlert(title, body);
-		});
-	
-		/*
-		* If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-		* */
-		this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-			const { title, body } = notificationOpen.notification;
-			this.showAlert(title, body);
-		});
-	
-		/*
-		* If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-		* */
-		const notificationOpen = await firebase.notifications().getInitialNotification();
-		if (notificationOpen) {
-			const { title, body } = notificationOpen.notification;
-			this.showAlert(title, body);
-		}
 		/*
 		* Triggered for data only payload in foreground
 		* */
 		this.messageListener = firebase.messaging().onMessage((message) => {
-			//process data message
-			console.log(JSON.stringify(message));
+			Alert.alert(this.notificationStrings.title, message.data.name + this.notificationStrings.body, [
+				{text: 'Allow', onPress: () => Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true})},
+				{text: 'Deny', onPress: () => Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true}), style: 'cancel'}
+			], {cancelable: true});
+		});
+
+		this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+			const action = notificationOpen.action;
+			const notification = notificationOpen.notification;
+
+			if (action === 'allow' ||  action === 'deny') {
+				firebase.notifications().removeDeliveredNotification(notification.notificationId);
+			}
 		});
 	}
 

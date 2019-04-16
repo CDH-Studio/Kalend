@@ -138,7 +138,7 @@ android {
         versionName userVer
         versionCode googleVer
         multiDexEnabled true
-    missingDimensionStrategy 'react-native-camera', 'general'
+        missingDimensionStrategy 'react-native-camera', 'general'
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -200,10 +200,11 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 	implementation "com.google.android.gms:play-services-base:16.0.1"
 	implementation "com.google.firebase:firebase-core:16.0.8"
-	implementation "com.google.firebase:firebase-config:16.4.0"
-    implementation "com.google.firebase:firebase-auth:16.1.0"
-	implementation "com.google.firebase:firebase-messaging:17.4.0"
-	implementation "com.google.firebase:firebase-perf:16.2.4"
+	implementation "com.google.firebase:firebase-config:16.5.0"
+    implementation "com.google.firebase:firebase-auth:16.2.1"
+	implementation "com.google.firebase:firebase-messaging:17.6.0"
+	implementation "com.google.firebase:firebase-perf:16.2.5"
+    implementation "com.google.firebase:firebase-database:16.1.0"
 	implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
 	implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
 		transitive = true
