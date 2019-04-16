@@ -26,7 +26,7 @@ export default async (message) => {
 		.setBody(message.data.name + strings.body)
 		.setSubtitle(strings.subtitle)
 		.setData({
-			aasd: 12
+			path: message.from.split('/')[2]
 		})
 		.android.addAction(allow)
 		.android.addAction(deny)

@@ -124,7 +124,9 @@ class CompareSchedule extends React.PureComponent {
 					.push({
 						name: this.props.name,
 						email: this.props.email,
-						createdAt: new Date().toJSON()
+						createdAt: new Date().toJSON(),
+						allow: false,
+						dismiss: true
 					})
 					.then(() => {
 						this.setState({

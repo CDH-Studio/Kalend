@@ -68,8 +68,24 @@ class LoadingScreen extends React.PureComponent {
 		* */
 		this.messageListener = firebase.messaging().onMessage((message) => {
 			Alert.alert(this.notificationStrings.title, message.data.name + this.notificationStrings.body, [
-				{text: 'Allow', onPress: () => Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true})},
-				{text: 'Deny', onPress: () => Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true}), style: 'cancel'}
+				{text: 'Allow', onPress: () => {
+					firebase.database()
+						.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+						.update({
+							allow: true,
+							dismiss: false
+						});
+					Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true});
+				}},
+				{text: 'Deny', onPress: () => {
+					firebase.database()
+						.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+						.update({
+							allow: false,
+							dismiss: false
+						});
+					Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true})
+				}, style: 'cancel'}
 			], {cancelable: true});
 		});
 
