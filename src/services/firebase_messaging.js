@@ -1,23 +1,22 @@
-import firebase from 'react-native-firebase';
-import uuid from 'uuid';
+let server  =  'http://172.17.73.9:8080/';
 
-const apiHelperCall = (data) => {
-	// Create a RemoteMessage
-	const messagetUUID = uuid.v1();
-	
-	const message = new firebase.messaging.RemoteMessage()
-		.setMessageId(messagetUUID)
-		.setTo('359972006564@gcm.googleapis.com')
-		.setData(data.body);
+let apiHelperCall = (URL, method, data) => {
 
-	console.log(message);
+	let fetchData = {
+		method,
+		credentials: 'same-origin',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		}
+	};
 
-	// Send the message
-	firebase.messaging().sendMessage(message).then((data) => console.log('data', data)).catch(err => console.log('erre', err));  
-};
+	if( method == 'POST') fetchData.body = JSON.stringify(data);
 
-export const sendMessage = (data) => {
-	apiHelperCall(data);
+	return fetch(URL, fetchData);
 };
 
 
+export const requestCalendarPermissions = (info) => {
+	return apiHelperCall(server + 'api/setCalendarAccess','POST', info);
+};

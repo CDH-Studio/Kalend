@@ -9,6 +9,7 @@ import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 import { setBottomString, setLanguage } from '../../actions';
 import { getStrings } from '../../services/helper';
 import firebase from 'react-native-firebase';
+import { requestCalendarPermissions } from '../../services/firebase_messaging';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
@@ -69,14 +70,25 @@ class LoadingScreen extends React.PureComponent {
 		this.messageListener = firebase.messaging().onMessage((message) => {
 			Alert.alert(this.notificationStrings.title, message.data.name + this.notificationStrings.body, [
 				{text: 'Allow', onPress: () => {
-					firebase.database()
-						.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
-						.update({
-							allow: true,
-							dismiss: false
+						requestCalendarPermissions({
+							requester: {email: message.data.email},
+							accepter : {email: this.props.profile.profile.user.email}
+						})
+						.then(res => res.json())
+						.then(success => {
+							if(success) {
+								firebase.database()
+									.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+									.update({
+										allow: true,
+										dismiss: false
+									});
+								Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true});
+							}
 						});
-					Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true});
-				}},
+					
+					}
+				},
 				{text: 'Deny', onPress: () => {
 					firebase.database()
 						.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)

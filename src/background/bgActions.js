@@ -1,13 +1,15 @@
 import firebase from 'react-native-firebase';
 import { dark_blue } from '../styles';
 import { getStrings } from '../services/helper';
+import { requestCalendarPermissions } from '../services/firebase_messaging';
+import { store } from '../store';
+
 
 export default async (notificationOpen) => {
-
+	let accpterEmail = store.getState().HomeReducer.profile.profile.user.email;	
 	let strings = getStrings().SharingNotification;
-	let action = notificationOpen.action;
-
 	let notification = notificationOpen.notification;
+	let action = notificationOpen.action;
 
 	if (action === 'allow') {
 		let newNotification = new firebase.notifications.Notification({
@@ -26,16 +28,25 @@ export default async (notificationOpen) => {
 			.android.setColorized(true)
 			.android.setTimeoutAfter(2000)
 			.android.setPriority(firebase.notifications.Android.Priority.High);
+			requestCalendarPermissions({
+				requester: {email: notification.data.email},
+				accepter : {email: accpterEmail}
+			})
+			.then(res => res.json())
+			.then((success) => {
+				console.log('success', success);
+				if(success) {
+					firebase.database()
+						.ref(`notifications/${notification.data.path}/${notification.notificationId}/`)
+						.update({
+							allow: true,
+							dismiss: false
+						});
 
-		firebase.database()
-			.ref(`notifications/${notification.data.path}/${notification.notificationId}/`)
-			.update({
-				allow: true,
-				dismiss: false
-			});
-
-		firebase.notifications()
-			.displayNotification(newNotification);
+					firebase.notifications()
+						.displayNotification(newNotification);
+				}
+			});	
 	} else if (action === 'deny') {
 		let newNotification = new firebase.notifications.Notification({
 			sound: 'default',

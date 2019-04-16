@@ -5,7 +5,6 @@ import { getStrings } from '../services/helper';
 export default async (message) => {
 
 	const strings = getStrings().SharingNotification;
-
 	// Creates buttons to the notification
 	const allow = new firebase.notifications.Android.Action('allow', 'ic_launcher', strings.allow);
 	const deny = new firebase.notifications.Android.Action('deny', 'ic_launcher', strings.deny);
@@ -26,6 +25,7 @@ export default async (message) => {
 		.setBody(message.data.name + strings.body)
 		.setSubtitle(strings.subtitle)
 		.setData({
+			email: message.data.email, 
 			path: message.from.split('/')[2]
 		})
 		.android.addAction(allow)
