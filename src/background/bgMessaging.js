@@ -25,7 +25,7 @@ export default async (message) => {
 		.setBody(message.data.name + strings.body)
 		.setSubtitle(strings.subtitle)
 		.setData({
-			email: message.data.email 
+			email: message.data.email, 
 			path: message.from.split('/')[2]
 		})
 		.android.addAction(allow)

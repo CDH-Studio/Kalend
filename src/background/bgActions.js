@@ -11,8 +11,6 @@ export default async (notificationOpen) => {
 	let notification = notificationOpen.notification;
 	let action = notificationOpen.action;
 
-	let notification = notificationOpen.notification;
-
 	if (action === 'allow') {
 		let newNotification = new firebase.notifications.Notification({
 			sound: 'default',

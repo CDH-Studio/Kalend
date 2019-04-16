@@ -16,7 +16,7 @@ import { setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
-
+import { logOutUser } from '../../services/api/storage_services';
 import SafariView from 'react-native-safari-view';
 import { getUserValuesService } from '../../services/api/storage_services';
 import firebase from 'react-native-firebase';
@@ -84,11 +84,14 @@ class Settings extends React.PureComponent {
 	}
 
 	logout = async () => {
-		googleSignOut();
+		await googleSignOut();
 		clearEveryReducer();
-		let id = await getUserValuesService({columns:['ID']}).then(res => res.json());
-		firebase.messaging().unsubscribeFromTopic((id.ID).toString());
-		this.props.navigation.navigate(LoginNavigator);
+		await logOutUser()
+			.then(res => res.json())
+			.then(id => {
+				firebase.messaging().unsubscribeFromTopic((id).toString());
+				this.props.navigation.navigate(LoginNavigator);
+			});
 	}
 
 	dismissImportCalendar = () => {

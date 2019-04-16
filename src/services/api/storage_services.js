@@ -8,7 +8,7 @@ let apiHelperCall = (URL, method, data) => {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
-		}
+     		}
 	};
 
 	if( method == 'POST') fetchData.body = JSON.stringify(data);
@@ -61,5 +61,5 @@ export const getEvents = () => {
 };
 
 export const logOutUser = () => {
-	return apiHelperCall(server + 'api/logOut', 'GET');
+	return apiHelperCall(server + 'api/logOut', 'POST ', {});
 };

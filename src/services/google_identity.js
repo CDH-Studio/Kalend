@@ -1,5 +1,4 @@
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { logOutUser } from '../services/api/storage_services';
 import { webClientId, googleIdentityScope } from '../../config/config';
 
 GoogleSignin.configure({
@@ -23,7 +22,6 @@ let googleSignIn = async () => {
 let googleSignOut = async () => {
 	try {
 		await GoogleSignin.signOut();
-		await logOutUser();
 	} catch (error) {
 		// console.error(error);
 	}
