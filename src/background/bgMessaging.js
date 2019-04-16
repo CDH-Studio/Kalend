@@ -21,7 +21,7 @@ export default async (message) => {
 		sound: 'default',
 		show_in_foreground: true,
 	})
-		.setNotificationId(new Date().getTime().toString())
+		.setNotificationId(message.data.notificationId)
 		.setTitle(strings.title)
 		.setBody(message.data.name + strings.body)
 		.setSubtitle(strings.subtitle)
