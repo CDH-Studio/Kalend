@@ -78,7 +78,7 @@ class CompareSchedule extends React.PureComponent {
 
 							let notDimissed = [];
 							Object.keys(data).map(i => {
-								if (!('dismiss' in data[i]) || !data[i].dismiss) {
+								if (!('dismiss' in data[i]) || data[i].dismiss) {
 									notDimissed.push(data[i]);
 								}
 							});
@@ -141,36 +141,43 @@ class CompareSchedule extends React.PureComponent {
 	/**
 	 * Callback fuction when the button add is touched in the modal
 	 */
-	addPerson = async () => { 
-		getUserInfoByColumnService({
-			columns: ['ID'],
-			where: {
-				value: this.state.searchText,
-				field: 'EMAIL'
-			}
-		}).then(res => res.json())
-			.then(data => {
-				firebase.database().ref(`notifications/${data.ID}/`)
-					.push({
-						name: this.props.name,
-						email: this.props.email,
-						createdAt: new Date().toJSON(),
-						allow: false,
-						dismiss: true
-					})
-					.then(() => {
-						this.setState({
-							snackbarText: this.strings.addPermission,
-							snackbarVisible: true
-						});
-					})
-					.catch(() => {
-						this.setState({
-							snackbarText: this.strings.permissionError,
-							snackbarVisible: true
-						});
-					});
+	addPerson = async () => {
+		if (this.state.searchText === this.props.email) {
+			this.setState({
+				snackbarText: this.strings.permissionError,
+				snackbarVisible: true
 			});
+		} else {
+			getUserInfoByColumnService({
+				columns: ['ID'],
+				where: {
+					value: this.state.searchText,
+					field: 'EMAIL'
+				}
+			}).then(res => res.json())
+				.then(data => {
+					firebase.database().ref(`notifications/${data.ID}/`)
+						.push({
+							name: this.props.name,
+							email: this.props.email,
+							createdAt: new Date().toJSON(),
+							allow: false,
+							dismiss: true
+						})
+						.then(() => {
+							this.setState({
+								snackbarText: this.strings.addPermission,
+								snackbarVisible: true
+							});
+						})
+						.catch(() => {
+							this.setState({
+								snackbarText: this.strings.permissionError,
+								snackbarVisible: true
+							});
+						});
+				});
+		}
 	}
 
 	/**

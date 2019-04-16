@@ -7,6 +7,7 @@ import { sharingManagementStyles as styles, white, gray, dark_blue } from '../..
 import { Snackbar } from 'react-native-paper';
 import { getStrings } from '../../services/helper';
 import SharingManagementItem from '../SharingManagementItem';
+import { requestCalendarPermissions } from '../../services/firebase_messaging';
 
 class SharingManagement extends React.PureComponent {
 	strings = getStrings().SharingManagement;
@@ -83,26 +84,31 @@ class SharingManagement extends React.PureComponent {
 	}
 
 	_onAllowItem = (id) => {
-		let success = false;
-
-		if (success) {
-			this._deleteItem(id);
-			firebase.database()
-				.ref(`notifications/${this.props.id}/${this.state.data[id].notificationPath}/`)
-				.update({
-					allow: true,
-					dismiss: false
-				});
-			this.setState({
-				snackbarVisible: true,
-				snackbarText: this.strings.allowSuccess,
+		requestCalendarPermissions({
+			requester: {email: this.state.data[id].email},
+			accepter: {email: this.props.email}
+		})
+			.then(res => res.json())
+			.then(success => {
+				if (success) {
+					this._deleteItem(id);
+					firebase.database()
+						.ref(`notifications/${this.props.id}/${this.state.data[id].notificationPath}/`)
+						.update({
+							allow: true,
+							dismiss: false
+						});
+					this.setState({
+						snackbarVisible: true,
+						snackbarText: this.strings.allowSuccess,
+					});
+				} else {
+					this.setState({
+						snackbarVisible: true,
+						snackbarText: this.strings.allowError,
+					});
+				}
 			});
-		} else {
-			this.setState({
-				snackbarVisible: true,
-				snackbarText: this.strings.allowError,
-			});
-		}
 	}
 
 	_onDenyItem = (id) => {
@@ -189,9 +195,9 @@ class SharingManagement extends React.PureComponent {
 }
 
 let mapStateToProps = (state) => {
-	const { id } = state.HomeReducer.profile.profile.user;
+	const { id, email } = state.HomeReducer.profile.profile.user;
 	return {
-		id
+		id, email
 	};
 };
 

@@ -2455,18 +2455,7 @@ export const sharingManagementItemsStyles = StyleSheet.create({
 		marginHorizontal: 10,
 		backgroundColor: dark_blue,
 		borderRadius: 5,
-		padding: 8,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.1,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 2,
-			},
-		})
+		padding: 8
 	},
 
 	allowText: {
@@ -2478,18 +2467,7 @@ export const sharingManagementItemsStyles = StyleSheet.create({
 		marginHorizontal: 10,
 		backgroundColor: white,
 		borderRadius: 5,
-		padding: 8,
-		...Platform.select({
-			ios: {
-				shadowColor: '#000000',
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 4,
-			},
-		})
+		padding: 8
 	},
 
 	denyText: {

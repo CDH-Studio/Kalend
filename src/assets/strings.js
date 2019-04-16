@@ -21,7 +21,8 @@ const en = {
 		enterEmail: 'Enter the person\'s email',
 		email: 'Email',
 		close: 'Close',
-		add: 'Add'
+		add: 'Add',
+		invalidEmail: 'You cannot add yourself'
 	}, 
 	Course: {
 		name: 'Course',
@@ -371,7 +372,8 @@ const fr = {
 		enterEmail: 'Entrez le courriel de la personne',
 		email: 'Courriel',
 		close: 'Fermer',
-		add: 'Ajouter'
+		add: 'Ajouter',
+		invalidEmail: 'Vous ne pouvez pas vous ajoutez'
 	}, 
 
 	Course: {
