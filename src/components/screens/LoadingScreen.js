@@ -84,7 +84,7 @@ class LoadingScreen extends React.PureComponent {
 							allow: false,
 							dismiss: false
 						});
-					Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true})
+					Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true});
 				}, style: 'cancel'}
 			], {cancelable: true});
 		});

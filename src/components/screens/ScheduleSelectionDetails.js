@@ -8,7 +8,7 @@ import { insertGeneratedEvent } from '../../services/service';
 import { storeGeneratedCalendars } from '../../services/api/storage_services';
 import { getStrings } from '../../services/helper';
 import updateNavigation from '../NavigationHelper';
-import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse, addEvents, clearAllEvents} from '../../actions';
+import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse, addEvents, clearAllEvents, setSelectedCalendar } from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, blue } from '../../styles';
 
 const moment = require('moment');
