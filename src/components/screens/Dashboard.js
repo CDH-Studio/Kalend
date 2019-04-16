@@ -2,19 +2,19 @@ import React from 'react';
 import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Snackbar, FAB, Checkbox } from 'react-native-paper';
+import { Snackbar, FAB } from 'react-native-paper';
 import Popover from 'react-native-popover-view';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, statusBarPopover, semiTransparentWhite } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite } from '../../styles';
 import { setDashboardData, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
-import ModalEvent from '../ModalEvent';
-import DeleteModal from '../DeleteModal';
+// import ModalEvent from '../ModalEvent';
+// import DeleteModal from '../DeleteModal';
 
 const moment = require('moment');
 
@@ -89,7 +89,9 @@ class Dashboard extends React.PureComponent {
 		LocaleConfig.defaultLocale = this.defaultLocale;
 	}
 	
-	renderItem(item, changeInfo, setState) {
+	renderItem(item, 
+		// changeInfo, setState
+	) {
 		// let category;
 
 		// if (item.category === 'Course') {
@@ -110,7 +112,7 @@ class Dashboard extends React.PureComponent {
 				<View style={[styles.item,
 					// {backgroundColor: category}
 				]}>
-					<Checkbox />
+					{/* <Checkbox /> */}
 					<TouchableOpacity 
 						// onPress={() => changeInfo(category, item, props, strings, setState)}
 					>
