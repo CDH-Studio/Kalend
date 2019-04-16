@@ -7,6 +7,7 @@ import {
 	SET_BOTTOM_STRINGS,
 	SET_IMG, 
 	SET_DASHBOARD_DATA,
+	SET_TUTORIAL_STATUS,
 	SET_NONFIXED_COLOR,
 	SET_COURSE_COLOR,
 	SET_FIXED_COLOR,
@@ -33,6 +34,7 @@ import {
 	CLEAR_GENERATED_NFE,
 	CLEAR_FE,
 	CLEAR_NFE,
+	CLEAR_TUTORIAL_STATUS,
 	CLEAR_NAV_SCREEN,
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
@@ -311,6 +313,16 @@ export function setCalendarColor (calendarColor) {
 	return action;
 }
 
+export function setTutorialStatus (tutorialScreen, tutorialValue) {
+	const action = {
+		type: SET_TUTORIAL_STATUS,
+		tutorialScreen,
+		tutorialValue
+	};
+
+	return action;
+}
+
 /*** CLEAR ***/
 export function clearCalendarID () {
 	const action = {
@@ -419,6 +431,14 @@ export function clearLanguage () {
 export function clearBottomString () {
 	const action = {
 		type: CLEAR_BOTTOM_STRINGS
+	};
+
+	return action;
+}
+
+export function clearTutorialStatus () {
+	const action = {
+		type: CLEAR_TUTORIAL_STATUS
 	};
 
 	return action;

@@ -2,7 +2,7 @@ import { getEventsInstances } from './google_calendar';
 import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
 import strings from '../assets/strings';
-// import { LocaleConfig } from 'react-native-calendars';
+
 const moment = require('moment');
 
 export const convertToDictionary  = (data) => {
