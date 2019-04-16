@@ -1,13 +1,14 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules, LayoutAnimation } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Snackbar, FAB, Checkbox } from 'react-native-paper';
+import Popover from 'react-native-popover-view';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
 import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, statusBarPopover, semiTransparentWhite } from '../../styles';
-import { setDashboardData, setNavigationScreen } from '../../actions';
+import { setDashboardData, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
@@ -69,7 +70,6 @@ class Dashboard extends React.PureComponent {
 		this.state = { 
 			containerHeight: null,
 			items: {},
-			isVisible: false,
 			calendarOpened: false,
 			snackbarVisible: false,
 			snackbarTime: 3000,
@@ -79,7 +79,10 @@ class Dashboard extends React.PureComponent {
 			modalVisible: false,
 			deleteDialogVisible: false,
 			shouldShowModal: false,
-			modalInfo: {}
+			modalInfo: {},
+			eventsPopover: false,
+			knobPopover: false,
+			createPopover: false
 		};
 		updateNavigation('Dashboard', props.navigation.state.routeName);
 
@@ -153,6 +156,7 @@ class Dashboard extends React.PureComponent {
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
+				this.setState({eventsPopover: !this.props.showTutorial});
 				if (store.getState().NavigationReducer.successfullyInsertedEvents) {
 					this.setState({
 						snackbarText: 'Event(s) successfully added',
@@ -333,6 +337,16 @@ class Dashboard extends React.PureComponent {
 		});
 	}
 
+	showPopover = () => {
+		this.setState({isVisible: true});
+		StatusBar.setBackgroundColor(statusBarPopover);
+	}
+	
+	closePopover = () => {
+		this.setState({isVisible: false});
+		StatusBar.setBackgroundColor(statusBarDark);
+	}
+
 	render() {
 		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
 		let showCloseFab;
@@ -398,7 +412,8 @@ class Dashboard extends React.PureComponent {
 						calendarOpened ?
 							null :
 							<TouchableOpacity onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-								style={{position:'absolute', bottom: 13 , right:10}}>
+								style={{position:'absolute', bottom: 13 , right:10}}
+								ref='create'>
 								<View style={{flexDirection: 'row',
 									justifyContent: 'center',
 									alignItems: 'center',
@@ -430,6 +445,40 @@ class Dashboard extends React.PureComponent {
 				</View>
 
 				{showCloseFab}
+
+				<Popover popoverStyle={styles.tooltipView}
+					isVisible={this.state.eventsPopover}
+					onClose={() => this.setState({eventsPopover:false}, () => this.setState({knobPopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({eventsPopover:false}, () => this.setState({knobPopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.eventsPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={60}
+					fromView={this.refs.agenda}
+					isVisible={this.state.knobPopover}
+					onClose={() => this.setState({knobPopover:false}, () => this.setState({createPopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({knobPopover:false}, () => this.setState({createPopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.knobPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+				
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={-(StatusBar.currentHeight + 2)}
+					isVisible={this.state.createPopover}
+					fromView={this.refs.create}
+					onClose={() => {
+						this.setState({createPopover:false});
+						this.props.dispatch(setTutorialStatus('dashboard', true));
+					}}>
+					<TouchableOpacity onPress={() => {
+						this.setState({createPopover:false});
+						this.props.dispatch(setTutorialStatus('dashboard', true));
+					}}>
+						<Text style={styles.tooltipText}>{this.strings.createPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
 
 				<Snackbar
 					visible={snackbarVisible}
@@ -520,7 +569,8 @@ let mapStateToProps = (state) => {
 		courseColor,
 		insideNonFixedEventsColor,
 		insideFixedEventsColor,
-		insideCourseColor
+		insideCourseColor,
+		showTutorial: state.SettingsReducer.tutorialStatus.dashboard
 	};
 };
 

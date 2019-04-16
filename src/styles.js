@@ -962,7 +962,31 @@ export const reviewEventStyles = StyleSheet.create({
 
 	textNoData: {
 		color: gray,
-	}
+	},
+
+	tooltipText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	tooltipView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: 10,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: {
+					width: 0,
+					height: 3,
+				},
+				shadowOpacity: 0.29,
+				shadowRadius: 4.65,
+			},
+			android: {
+				elevation: 4
+			},
+		}),
+	},
 });
 
 export const deleteModalStyles = StyleSheet.create({
@@ -1415,6 +1439,8 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	tooltipView: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		padding: 10,
 		...Platform.select({
 			ios: {
@@ -1585,6 +1611,30 @@ export const calendarShareButtons = StyleSheet.create({
 	availabilityButtonText: {
 		fontFamily: 'Raleway-Regular', 
 		color: white,
+	},
+
+	tooltipText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	tooltipView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: 10,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: {
+					width: 0,
+					height: 3,
+				},
+				shadowOpacity: 0.29,
+				shadowRadius: 4.65,
+			},
+			android: {
+				elevation: 4
+			},
+		}),
 	},
 });
 

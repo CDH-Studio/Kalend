@@ -12,7 +12,7 @@ import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
-import { setCalendarID } from '../../actions';
+import { setCalendarID, clearTutorialStatus } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
@@ -223,14 +223,15 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/FAQ');
+								this.props.dispatch(clearTutorialStatus());
+								this.setState({
+									snackbarVisible: true,
+									snackbarTime: 3000,
+									snackbarText: this.strings.resetTutorialSuccess
+								});
 							}}>
-							<Text style={styles.buttonText}>{this.strings.help}</Text>
-						</TouchableOpacity>
-
-						{/* <TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.tutorial}</Text>
-						</TouchableOpacity> */}
+						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {

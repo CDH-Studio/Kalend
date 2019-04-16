@@ -1,6 +1,14 @@
-import { SET_LANGUAGE, CLEAR_SETTINGS } from '../constants';
+import { SET_LANGUAGE, CLEAR_SETTINGS, SET_TUTORIAL_STATUS, CLEAR_TUTORIAL_STATUS } from '../constants';
 
-export default function SettingsReducer(state = [], action) {
+let defaultState = {
+	tutorialStatus: {
+		dashboard: false,
+		reviewEvents: false,
+		compareSchedule: false
+	}
+};
+
+export default function SettingsReducer(state = defaultState, action) {
 	const { language } = action;
 
 	switch (action.type) {
@@ -9,6 +17,21 @@ export default function SettingsReducer(state = [], action) {
 			return  {
 				...state,
 				language
+			};
+
+		case SET_TUTORIAL_STATUS:
+			return {
+				...state,
+				tutorialStatus: {
+					...state.tutorialStatus,
+					[action.tutorialScreen]: action.tutorialValue
+				}
+			};
+
+		case CLEAR_TUTORIAL_STATUS:
+			return {
+				...state,
+				tutorialStatus: defaultState.tutorialStatus
 			};
 
 		case CLEAR_SETTINGS:

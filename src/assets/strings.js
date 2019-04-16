@@ -21,7 +21,10 @@ const en = {
 		enterEmail: 'Enter the person\'s email',
 		email: 'Email',
 		close: 'Close',
-		add: 'Add'
+		add: 'Add',
+		allowPopover: 'Add users so that they can see your calendar!',
+		availabilitiesPopover: 'Select users from the list above and tap here to see when you\'re all available!',
+		deletePopover: 'Select the users for which you don\'t want to share your calendar with anymore and tap here to remove them!'
 	}, 
 
 	Course: {
@@ -52,7 +55,10 @@ const en = {
 		fabNonFixedEvent: 'Add Non-Fixed Event',
 		eventsDayTitle: 'Events of the Day',
 		noEventsText: 'There\'s no events for the day.',
-		create: 'Create'
+		create: 'Create',
+		eventsPopover: 'Your events will show here. Don\'t forget to keep track of your progress with the checkboxes beside each of them!',
+		knobPopover: 'Pull down the knob to see more dates!',
+		createPopover: 'Tap here to start adding events!'
 	},
 
 	FixedEvent: {
@@ -138,6 +144,11 @@ const en = {
 		low: 'Low',
 		normal: 'Normal',
 		high: 'High',
+		coursePopover: 'Add your school schedule/courses!',
+		fixedPopover: 'Add the events for which you know the date and time!',
+		nonFixedPopover: 'Add the events for which you don\'t know the date and time and want the app to plan for you!',
+		unavailablePopover: 'Set the hours for which you\'re not available or don\'t want anything to be booked!',
+		checkPopover: 'Tap here when you\'re done!'
 	},
 
 	ScheduleCreation: {
@@ -231,8 +242,8 @@ const en = {
 		notifications: 'Notifications',
 		theme: 'Theme',
 		general: 'General',
-		help: 'FAQ',
 		tutorial: 'Reload Tutorial',
+		resetTutorialSuccess: 'Tutorial reloaded!',
 		clearDeleteCalendar: 'Clear/Delete Calendar',
 		privacyPolicy: 'Privacy Policy',
 		cdhStudio: 'CDH Studio',
@@ -351,7 +362,8 @@ const en = {
 		noEvents: 'No event(s) found in the selected calendar',
 		importError: 'Imported some of the calendar events',
 		importSuccess: ' successfully imported!'
-	}
+	},
+
 };
 
 const fr = {
@@ -377,7 +389,10 @@ const fr = {
 		enterEmail: 'Entrez le courriel de la personne',
 		email: 'Courriel',
 		close: 'Fermer',
-		add: 'Ajouter'
+		add: 'Ajouter',
+		allowPopover: 'Ajoutez des utilisateurs pour qu\'ils puissent voir votre calendrier!',
+		availabilitiesPopover: 'Sélectionnez des utilisateurs parmi la liste ci-dessus et appuyer ici pour voir quand vous êtes tous disponibles!',
+		deletePopover: 'Sélectionnez les utilisateurs pour lesquels vous ne voulez plus partager votre calendrier avec et appuyer ici pour les retirer!'
 	}, 
 
 	Course: {
@@ -408,7 +423,10 @@ const fr = {
 		fabNonFixedEvent: 'Ajouter un événement non fixe',
 		eventsDayTitle: 'Événements de la journée',
 		noEventsText: 'Il n\'y a pas d\'événements pour la journée.',
-		create: 'Créer'
+		create: 'Créer',
+		eventsPopover: 'Vos événements vont apparaîte ici. N\'oubliez pas de suivre votre progrès avec les boîtes à cocher à côté de chacun d\'entres eux!',
+		knobPopover: 'Dérouler le calendrier pour plus de dates!',
+		createPopover: 'Appuyer ici pour commencer à ajouter des événements!'
 	},
 
 	FixedEvent: {
@@ -496,6 +514,11 @@ const fr = {
 		high: 'Haut',
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
 		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+		coursePopover: 'Ajoutez votre horaire scolaire/cours!',
+		fixedPopover: 'Ajoutez les événements pour lesquels vous connaissez les dates et les heures!',
+		nonFixedPopover: 'Ajoutez les événements pour lesquels vous ne connaissez pas les dates et les heures et voulez que l\'application planifie pour vous!',
+		unavailablePopover: 'Sélectionnez les heures pour lesquelles vous n\'êtes pas disponible ou ne voulez pas d\'événmenents planifiés!',
+		checkPopover: 'Appuyer ici lorsque vous avez terminé!'
 	},
 
 	ScheduleCreation: {
@@ -591,8 +614,8 @@ const fr = {
 		notifications: 'Notifications',
 		theme: 'Thème',
 		general: 'Général',
-		help: 'FAQ',
 		tutorial: 'Relancer le tutoriel',
+		resetTutorialSuccess: 'Tutoriel relancé!',
 		clearDeleteCalendar: 'Réinitialiser/Supprimer le calendrier',
 		privacyPolicy: 'Politique de confidentialité',
 		cdhStudio: 'Studio CDH',
