@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, Platform, StatusBar } from 'react-native'
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getStrings } from '../services/helper';
 import { deleteModalStyles as styles, dark_blue, statusBarPopover, statusBarDark } from '../styles';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 
 class DeleteModal extends React.PureComponent {
 
@@ -59,6 +59,8 @@ class DeleteModal extends React.PureComponent {
 		return(
 			<View>
 				<Modal isVisible={this.state.deleteDialogVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.dismissDelete}
 					useNativeDriver
 					onModalHide={() => {

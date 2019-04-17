@@ -5,8 +5,8 @@ import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getStrings } from '../services/helper';
 import { modalEventStyles as styles, white, semiTransparentWhite, statusBarPopover, statusBarDark } from '../styles';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 import { calendarColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
@@ -62,6 +62,8 @@ class ModalEvent extends React.PureComponent {
 		return(
 			<View>
 				<Modal isVisible={this.state.modalVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.dismissModal}
 					useNativeDriver
 					onModalHide={() => {

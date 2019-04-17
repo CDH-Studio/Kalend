@@ -8,8 +8,13 @@ import Modal from 'react-native-modal';
 import Popover from 'react-native-popover-view';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+<<<<<<< HEAD
 import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { setTutorialStatus } from '../../actions';
+=======
+import { setTutorialStatus } from '../../actions';
+import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
+>>>>>>> 43cd8815d1318ec5050da50d2a769500011ccaa2
 import { store } from '../../store';
 import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
