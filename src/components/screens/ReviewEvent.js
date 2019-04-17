@@ -474,7 +474,7 @@ function mapStateToProps(state) {
 
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ addEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearCourse, clearFixedEvents, setNavigationScreen}, dispatch);
+	return bindActionCreators({ clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearCourse, clearFixedEvents, setNavigationScreen}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReviewEvent);

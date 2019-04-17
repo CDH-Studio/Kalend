@@ -17,7 +17,7 @@ import { setCalendarID, clearTutorialStatus } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
-import { logOutUser, getUserValuesService } from '../../services/api/storage_services';
+import { logOutUser } from '../../services/api/storage_services';
 import firebase from 'react-native-firebase';
 
 const viewHeight = 669.1428833007812;

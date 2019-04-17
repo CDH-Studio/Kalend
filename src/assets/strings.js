@@ -414,13 +414,10 @@ const fr = {
 		email: 'Courriel',
 		close: 'Fermer',
 		add: 'Ajouter',
-<<<<<<< HEAD
-		invalidEmail: 'Vous ne pouvez pas vous ajoutez'
-=======
+		invalidEmail: 'Vous ne pouvez pas vous ajoutez',
 		allowPopover: 'Ajoutez des utilisateurs pour qu\'ils puissent voir votre calendrier!',
 		availabilitiesPopover: 'Sélectionnez des utilisateurs parmi la liste ci-dessus et appuyer ici pour voir quand vous êtes tous disponibles!',
 		deletePopover: 'Sélectionnez les utilisateurs pour lesquels vous ne voulez plus partager votre calendrier avec et appuyer ici pour les retirer!'
->>>>>>> b82043239f88267c5baeec24d539fd9aa6d70bdd
 	}, 
 
 	Course: {

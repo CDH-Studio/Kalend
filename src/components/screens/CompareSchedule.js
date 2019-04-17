@@ -61,7 +61,7 @@ class CompareSchedule extends React.PureComponent {
 			endDate: moment().startOf('day').add(90, 'd'),
 			showCalendar: false,
 			animatedHeight: this.listHeight,
-			hasNotification: false
+			hasNotification: false,
 			allowPopover: false,
 			availabilitiesPopover: false,
 			deletePopover: false
@@ -96,21 +96,8 @@ class CompareSchedule extends React.PureComponent {
 		);
 	}
 
-	componentWillUnmount() {
-		this.willFocusSubscription.remove();
-	}
-
 	componentWillMount() {
 		this.refreshData();
-	}
-
-	componentDidMount() {
-		this.willFocusSubscription = this.props.navigation.addListener(
-			'willFocus',
-			() => {
-				this.setState({allowPopover: !this.props.showTutorial});
-			}
-		);
 	}
 
 	componentWillUnmount() {
@@ -596,7 +583,7 @@ let mapStateToProps = (state) => {
 		calendarID: id,
 		name,
 		email,
-		id: state.HomeReducer.profile.profile.user.id
+		id: state.HomeReducer.profile.profile.user.id,
 		showTutorial: state.SettingsReducer.tutorialStatus.compareSchedule
 	};
 };

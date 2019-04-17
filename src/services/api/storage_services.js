@@ -8,7 +8,7 @@ let apiHelperCall = (URL, method, data) => {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
-     		}
+		}
 	};
 
 	if( method == 'POST') fetchData.body = JSON.stringify(data);

@@ -14,6 +14,7 @@ import GeneratedCalendarsReducer from './GeneratedCalendarsReducer';
 import SettingsReducer from './SettingsReducer';
 import BottomNavReducer from './BottomNavReducer';
 import DashboardReducer from './DashboardReducer';
+import AllEventsReducer from './AllEventsReducer';
 
 export default combineReducers( 
 	{ 	
