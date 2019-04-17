@@ -7,7 +7,7 @@ import Popover from 'react-native-popover-view';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite, statusBarPopover } from '../../styles';
 import { setDashboardData, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
@@ -92,17 +92,17 @@ class Dashboard extends React.PureComponent {
 	renderItem(item, 
 		// changeInfo, setState
 	) {
-		// let category;
+		let category;
 
-		// if (item.category === 'Course') {
-		// 	category = this.props.courseColor;
-		// } else if (item.category === 'FixedEvent') {
-		// 	category = this.props.fixedEventsColor;
-		// } else if (item.category === 'NonFixedEvent') {
-		// 	category = this.props.nonFixedEventsColor;
-		// } else {
-		// 	category = white;
-		// }
+		if (item.category === 'Course') {
+			category = this.props.courseColor;
+		} else if (item.category === 'FixedEvent') {
+			category = this.props.fixedEventsColor;
+		} else if (item.category === 'NonFixedEvent') {
+			category = this.props.nonFixedEventsColor;
+		} else {
+			category = white;
+		}
 
 		// let props = this.props;
 		// let strings = this.strings;
@@ -110,7 +110,7 @@ class Dashboard extends React.PureComponent {
 		return (
 			<View style={styles.rowItem}>
 				<View style={[styles.item,
-					// {backgroundColor: category}
+					{backgroundColor: category}
 				]}>
 					{/* <Checkbox /> */}
 					<TouchableOpacity 
@@ -157,7 +157,12 @@ class Dashboard extends React.PureComponent {
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
+				this.setDashboardDataService();
 				this.setState({eventsPopover: !this.props.showTutorial});
+				if (!this.props.showTutorial) {
+					this.darkenStatusBar();
+				}
+
 				if (store.getState().NavigationReducer.successfullyInsertedEvents) {
 					this.setState({
 						snackbarText: 'Event(s) successfully added',
@@ -327,6 +332,18 @@ class Dashboard extends React.PureComponent {
 		});
 	}
 
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
+	}
+
 	render() {
 		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
 		let showCloseFab;
@@ -367,7 +384,7 @@ class Dashboard extends React.PureComponent {
 						<Agenda ref='agenda'
 							items={this.state.items}
 							renderItem={(item) => this.renderItem(item, this.changeInfo, this.setModalInfo)}
-							listTitle={'Events of the Day'}
+							listTitle={this.strings.eventsDayTitle}
 							renderEmptyData={this.renderEmptyData}
 							onDayChange={(date) => {
 								this.getMonth(date.month);
@@ -451,10 +468,12 @@ class Dashboard extends React.PureComponent {
 					onClose={() => {
 						this.setState({createPopover:false});
 						this.props.dispatch(setTutorialStatus('dashboard', true));
+						this.restoreStatusBar();
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({createPopover:false});
 						this.props.dispatch(setTutorialStatus('dashboard', true));
+						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.createPopover}</Text>
 					</TouchableOpacity>

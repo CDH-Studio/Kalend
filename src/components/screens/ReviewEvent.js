@@ -109,7 +109,7 @@ class ReviewEvent extends React.PureComponent {
 				if (data.day) {
 					dayOfWeek = data.day;
 				} else {
-					dayOfWeek = data.dayOfWeek;
+					dayOfWeek = data.dayOfWeekValue;
 				}
 
 				if (fr) {
@@ -272,6 +272,7 @@ class ReviewEvent extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					animated
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 
