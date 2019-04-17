@@ -8,7 +8,7 @@ import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
 import { setCourseColor, setFixedColor, setNonFixedColor } from '../actions';
 import { eventsColorPickerStyles as styles } from '../styles';
 import { calendarColors } from '../../config/config';
-import { getStrings } from '../services/helper';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 
 class EventsColorPicker extends React.Component {
 
@@ -115,6 +115,8 @@ class EventsColorPicker extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Modal isVisible={visible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.removeModal}
 					useNativeDriver>
 					<View style={styles.modalContent}>
