@@ -279,7 +279,7 @@ const en = {
 		eating: 'Eating Hours',
 		other: 'Other Unavailable Hours',
 		week: 'Week',
-		weekEnd: 'Week-End',
+		weekEnd: 'Weekend',
 		confirmButton: 'Confirm',
 		cancelButton: 'Cancel',
 	},
@@ -426,7 +426,7 @@ const fr = {
 		create: 'Créer',
 		eventsPopover: 'Vos événements vont apparaîte ici. N\'oubliez pas de suivre votre progrès avec les boîtes à cocher à côté de chacun d\'entres eux!',
 		knobPopover: 'Dérouler le calendrier pour plus de dates!',
-		createPopover: 'Appuyer ici pour commencer à ajouter des événements!'
+		createPopover: 'Appuyer ici pour commencer à ajouter des événements!',
 	},
 
 	FixedEvent: {

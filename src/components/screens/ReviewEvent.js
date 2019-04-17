@@ -109,7 +109,7 @@ class ReviewEvent extends React.PureComponent {
 				if (data.day) {
 					dayOfWeek = data.day;
 				} else {
-					dayOfWeek = data.dayOfWeek;
+					dayOfWeek = data.dayOfWeekValue;
 				}
 
 				if (fr) {

@@ -68,7 +68,7 @@ class LanguageSwitcher extends React.PureComponent {
 
 										setTimeout(() => {
 											RNRestart.Restart();
-										}, 50);
+										}, 500);
 									}}>
 										<Text style={styles.languageDialogYes}>{this.strings.yes}</Text>
 									</TouchableOpacity>
@@ -82,4 +82,12 @@ class LanguageSwitcher extends React.PureComponent {
 	}
 }
 
-export default connect()(LanguageSwitcher);
+let mapStateToProps = (state) => {
+	const { SettingsReducer } = state;
+
+	return {
+		language: SettingsReducer.language
+	};
+};
+
+export default connect(mapStateToProps)(LanguageSwitcher);

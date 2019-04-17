@@ -8,7 +8,7 @@ import { deviceWidth, deviceHeight } from './services/helper';
 export const white = '#FFFFFF';
 export const black = '#000000';
 export const blue = '#153d73';
-export const lightBlue = '#215FB4';
+export const lightBlue = '#43638f';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
 export const red = '#FF0000';
@@ -354,7 +354,7 @@ export const selectPictureStyles = StyleSheet.create({
 	emptyView: {
 		alignItems: 'center', 
 		padding: 20, 
-		height: Dimensions.get('window').height*0.85, 
+		height: Dimensions.get('window').height * 0.85, 
 		justifyContent: 'center'
 	}
 });
@@ -379,7 +379,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 				shadowRadius: 5
 			},
 			android: {
-				elevation: 5
+				elevation: 3
 			},
 		}),
 	},

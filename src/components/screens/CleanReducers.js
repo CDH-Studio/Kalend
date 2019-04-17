@@ -28,7 +28,6 @@ class CleanReducers extends React.PureComponent {
 		'Navigation': clearNavigation,
 		'Schedule': clearSchedule,
 		'School Information': clearSchoolInformation,
-		'State of Application': clearState,
 		'Tutorial Status': clearTutorialStatus,
 		'Unavailable Hours': clearUnavailableHours,
 		'User Profile': logoffUser

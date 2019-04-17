@@ -232,7 +232,6 @@ export const clearEveryReducer = () => {
 		clearNavigation,
 		clearSchedule,
 		clearSchoolInformation,
-		clearState,
 		clearUnavailableHours,
 		logoffUser
 	];

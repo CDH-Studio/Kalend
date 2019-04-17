@@ -92,17 +92,17 @@ class Dashboard extends React.PureComponent {
 	renderItem(item, 
 		// changeInfo, setState
 	) {
-		// let category;
+		let category;
 
-		// if (item.category === 'Course') {
-		// 	category = this.props.courseColor;
-		// } else if (item.category === 'FixedEvent') {
-		// 	category = this.props.fixedEventsColor;
-		// } else if (item.category === 'NonFixedEvent') {
-		// 	category = this.props.nonFixedEventsColor;
-		// } else {
-		// 	category = white;
-		// }
+		if (item.category === 'Course') {
+			category = this.props.courseColor;
+		} else if (item.category === 'FixedEvent') {
+			category = this.props.fixedEventsColor;
+		} else if (item.category === 'NonFixedEvent') {
+			category = this.props.nonFixedEventsColor;
+		} else {
+			category = white;
+		}
 
 		// let props = this.props;
 		// let strings = this.strings;
@@ -110,7 +110,7 @@ class Dashboard extends React.PureComponent {
 		return (
 			<View style={styles.rowItem}>
 				<View style={[styles.item,
-					// {backgroundColor: category}
+					{backgroundColor: category}
 				]}>
 					{/* <Checkbox /> */}
 					<TouchableOpacity 
@@ -157,6 +157,7 @@ class Dashboard extends React.PureComponent {
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
+				this.setDashboardDataService();
 				this.setState({eventsPopover: !this.props.showTutorial});
 				if (!this.props.showTutorial) {
 					this.darkenStatusBar();
@@ -383,7 +384,7 @@ class Dashboard extends React.PureComponent {
 						<Agenda ref='agenda'
 							items={this.state.items}
 							renderItem={(item) => this.renderItem(item, this.changeInfo, this.setModalInfo)}
-							listTitle={'Events of the Day'}
+							listTitle={this.strings.eventsDayTitle}
 							renderEmptyData={this.renderEmptyData}
 							onDayChange={(date) => {
 								this.getMonth(date.month);

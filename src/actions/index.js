@@ -39,7 +39,6 @@ import {
 	CLEAR_SCHEDULE,
 	CLEAR_SCHOOL_INFORMATION,
 	CLEAR_UNAVAILABLE_HOURS,
-	CLEAR_OPENED,
 	CLEAR_SETTINGS,
 	CLEAR_BOTTOM_STRINGS,
 	CLEAR_DASHBOARD_DATA,
@@ -399,14 +398,6 @@ export function clearDashboardData () {
 export function clearSchoolInformation () {
 	const action = {
 		type: CLEAR_SCHOOL_INFORMATION
-	};
-
-	return action;
-}
-
-export function clearState () {
-	const action = {
-		type: CLEAR_OPENED
 	};
 
 	return action;
