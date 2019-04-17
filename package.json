@@ -35,7 +35,7 @@
     "react-native-camera": "^2.0.2",
     "react-native-custom-tabs": "^0.1.7",
     "react-native-datepicker": "^1.7.2",
-    "react-native-firebase": "^5.2.2",
+    "react-native-firebase": "5.2.0",
     "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.1",

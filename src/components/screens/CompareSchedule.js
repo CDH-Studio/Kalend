@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, View, Platform, FlatList, Text, TouchableOpacity, ActivityIndicator, RefreshControl, Animated, NativeModules, LayoutAnimation } from 'react-native';
-import { TextInput, Snackbar, TouchableRipple } from 'react-native-paper';
+import { TextInput, Snackbar, TouchableRipple, IconButton, Badge } from 'react-native-paper';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
@@ -15,6 +15,7 @@ import { getAvailabilitiesCalendars, listSharedKalendCalendars, deleteOtherShare
 import CalendarScheduleItem from '../CalendarScheduleItem';
 import { getUserInfoByColumnService } from '../../services/api/storage_services';
 import firebase from 'react-native-firebase';
+import { SharingManagementRoute } from '../../constants/screenNames';
 
 LocaleConfig.locales.en = LocaleConfig.locales[''];
 LocaleConfig.locales['fr'] = {
@@ -57,11 +58,41 @@ class CompareSchedule extends React.PureComponent {
 			startDate: moment().startOf('day'),
 			endDate: moment().startOf('day').add(90, 'd'),
 			showCalendar: false,
-			animatedHeight: this.listHeight
+			animatedHeight: this.listHeight,
+			hasNotification: false
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
 		LocaleConfig.defaultLocale = this.defaultLocale;
+	}
+
+	componentDidMount() {
+		this.willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			() => {
+				firebase.database()
+					.ref(`notifications/${this.props.id}/`)
+					.once('value', 
+						async (data) => {
+							data = await data.val();
+
+							let notDimissed = [];
+							Object.keys(data).map(i => {
+								if (!('dismiss' in data[i]) || data[i].dismiss) {
+									notDimissed.push(data[i]);
+								}
+							});
+
+							this.setState({
+								hasNotification: notDimissed.length !== 0,
+							});
+						});
+			}
+		);
+	}
+
+	componentWillUnmount() {
+		this.willFocusSubscription.remove();
 	}
 
 	componentWillMount() {
@@ -110,36 +141,43 @@ class CompareSchedule extends React.PureComponent {
 	/**
 	 * Callback fuction when the button add is touched in the modal
 	 */
-	addPerson = async () => { 
-		getUserInfoByColumnService({
-			columns: ['ID'],
-			where: {
-				value: this.state.searchText,
-				field: 'EMAIL'
-			}
-		}).then(res => res.json())
-			.then(data => {
-				firebase.database().ref(`notifications/${data.ID}/`)
-					.push({
-						name: this.props.name,
-						email: this.props.email,
-						createdAt: new Date().toJSON(),
-						allow: false,
-						dismiss: true
-					})
-					.then(() => {
-						this.setState({
-							snackbarText: this.strings.addPermission,
-							snackbarVisible: true
-						});
-					})
-					.catch(() => {
-						this.setState({
-							snackbarText: this.strings.permissionError,
-							snackbarVisible: true
-						});
-					});
+	addPerson = async () => {
+		if (this.state.searchText === this.props.email) {
+			this.setState({
+				snackbarText: this.strings.permissionError,
+				snackbarVisible: true
 			});
+		} else {
+			getUserInfoByColumnService({
+				columns: ['ID'],
+				where: {
+					value: this.state.searchText,
+					field: 'EMAIL'
+				}
+			}).then(res => res.json())
+				.then(data => {
+					firebase.database().ref(`notifications/${data.ID}/`)
+						.push({
+							name: this.props.name,
+							email: this.props.email,
+							createdAt: new Date().toJSON(),
+							allow: false,
+							dismiss: true
+						})
+						.then(() => {
+							this.setState({
+								snackbarText: this.strings.addPermission,
+								snackbarVisible: true
+							});
+						})
+						.catch(() => {
+							this.setState({
+								snackbarText: this.strings.permissionError,
+								snackbarVisible: true
+							});
+						});
+				});
+		}
 	}
 
 	/**
@@ -344,7 +382,7 @@ class CompareSchedule extends React.PureComponent {
 	}
 
 	render() {
-		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight } = this.state;
+		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight, hasNotification } = this.state;
 
 		return(
 			<View style={styles.content}>
@@ -356,7 +394,20 @@ class CompareSchedule extends React.PureComponent {
 					showCalendar ?
 						null :
 						<Animated.View style={[styles.peopleSelection, {height:  animatedHeight}]}>
-							<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>{this.strings.compareWith}</Text>
+							<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+								<Text style={[styles.eventsDayTitle, {marginTop: 0}]}>{this.strings.compareWith}</Text>
+								<View style={{marginTop: -15, marginRight: -15}}>
+
+									<IconButton icon="notifications"
+										color={dark_blue}
+										size={30}
+										onPress={() => this.props.navigation.navigate(SharingManagementRoute, {title: getStrings().SharingManagement.title})} />
+									<TouchableOpacity style={{position: 'absolute', top: 11, right: 11}} onPress={() => this.props.navigation.navigate(SharingManagementRoute, {title: getStrings().SharingManagement.title})}>
+										<Badge visible={hasNotification}
+											size={11}></Badge>
+									</TouchableOpacity>
+								</View>
+							</View>
 
 							{ 
 								loadingSharedList ? 
@@ -488,7 +539,8 @@ let mapStateToProps = (state) => {
 	return {
 		calendarID: id,
 		name,
-		email
+		email,
+		id: state.HomeReducer.profile.profile.user.id
 	};
 };
 

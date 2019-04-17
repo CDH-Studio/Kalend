@@ -21,7 +21,8 @@ const en = {
 		enterEmail: 'Enter the person\'s email',
 		email: 'Email',
 		close: 'Close',
-		add: 'Add'
+		add: 'Add',
+		invalidEmail: 'You cannot add yourself'
 	}, 
 	Course: {
 		name: 'Course',
@@ -332,6 +333,19 @@ const en = {
 		deny: 'Deny',
 		allowBody: 'Calendar shared!',
 		denyBody: 'Request cancelled'
+	},
+	SharingManagement: {
+		title: 'Sharing Requests',
+		allowSuccess: 'Successfully shared calendars',
+		allowError: 'Could not share calendars ',
+		denySuccess: 'Removed the selected request',
+		emptyTitle: 'You have no sharing requests',
+		emptyDescription: 'Tap to refresh the notifications',
+	},
+	SharingManagementItem: {
+		allow: 'Allow',
+		deny: 'Deny',
+
 	}
 };
 
@@ -358,7 +372,8 @@ const fr = {
 		enterEmail: 'Entrez le courriel de la personne',
 		email: 'Courriel',
 		close: 'Fermer',
-		add: 'Ajouter'
+		add: 'Ajouter',
+		invalidEmail: 'Vous ne pouvez pas vous ajoutez'
 	}, 
 
 	Course: {
@@ -674,6 +689,9 @@ const fr = {
 		deny: 'Refuser',
 		allowBody: 'Calendrier partagé',
 		denyBody: 'Requête annulé'
+	},
+	SharingManagement: {
+		title: 'Requête de partage de calendrier'
 	}
 };
 

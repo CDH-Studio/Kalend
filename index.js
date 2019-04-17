@@ -37,6 +37,7 @@ import { getStrings } from './src/services/helper';
 import firebase from 'react-native-firebase';
 import bgMessaging from './src/background/bgMessaging';
 import bgActions from './src/background/bgActions';
+import SharingManagement from './src/components/screens/SharingManagement';
 
 let config = {
 	databaseURL: 'https://kalend.firebaseio.com/',
@@ -254,7 +255,8 @@ const DashboardOptionsNavigator = createStackNavigator(
 
 		UnavailableHours: { screen: UnavailableHours, navigationOptions: DashboardOptionsNavigatorOptions },
 		UnavailableFixed: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
-		CalendarPermission: { screen: CalendarPermission, navigationOptions: DashboardOptionsNavigatorOptions }
+		CalendarPermission: { screen: CalendarPermission, navigationOptions: DashboardOptionsNavigatorOptions },
+		SharingManagement: { screen: SharingManagement, navigationOptions: DashboardOptionsNavigatorOptions}
 	},
 	{
 		initialRouteName: 'DashboardNavigator',
