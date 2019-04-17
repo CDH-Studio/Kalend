@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView, findNodeHandle } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -12,7 +12,7 @@ import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { FixedEventRoute, UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { timeVerification, dateVerification, getStrings, scrollToInput } from '../../services/helper';
+import { timeVerification, dateVerification, getStrings } from '../../services/helper';
 import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white, red } from '../../styles';
 
 const moment = require('moment');
@@ -76,6 +76,17 @@ class FixedEvent extends React.PureComponent {
 		}
 		this.setContainerHeight();
 	}
+
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+	
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	};
 
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
@@ -398,7 +409,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={() => scrollToInput(this.refs.locationInput, 200)}
+											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
 											placeholder={this.strings.locationPlaceholder} 
 											ref='locationInput'
@@ -418,7 +429,7 @@ class FixedEvent extends React.PureComponent {
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
-											onFocus={() => scrollToInput(this.refs.descriptionInput, 300)}
+											onFocus={() => this.scrollToInput(this.refs.descriptionInput, 300)}
 											placeholder={this.strings.descriptionPlaceholder} 
 											ref='descriptionInput'
 											returnKeyType = {'done'}

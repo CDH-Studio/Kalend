@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { CustomTabs } from 'react-native-custom-tabs';
+import SafariView from 'react-native-safari-view';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, statusBarDark, statusBarPopover } from '../../styles';
+import { settingsStyles as styles, blue, statusBarDark, statusBarPopover, dark_blue, white } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
-import { clearEveryReducer, getStrings, showWebsite } from '../../services/helper';
+import { clearEveryReducer, getStrings } from '../../services/helper';
 import { setCalendarID, clearTutorialStatus } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
@@ -92,6 +94,33 @@ class Settings extends React.PureComponent {
 		if (Platform.OS === 'android') {
 			StatusBar.setBackgroundColor(statusBarDark, true);
 		}
+	}
+
+	showWebsite = (url) => {
+		if (Platform.OS === 'ios') {
+			this.openSafari(url);
+		} else {
+			this.openChrome(url);
+		}
+	}
+
+	openSafari = (url) => {
+		SafariView.isAvailable()
+			.then(SafariView.show({url,
+				tintColor: dark_blue,
+				barTintColor: white,
+				fromBottom: true }))
+			.catch(() => this.openChrome(url));
+	}
+
+	openChrome = (url) => {
+		CustomTabs.openURL(url, {
+			toolbarColor: dark_blue,
+			enableUrlBarHiding: true,
+			showPageTitle: true,
+			enableDefaultShare: true,
+			forceCloseOnRedirection: true,
+		});
 	}
 
 	render() {
@@ -253,7 +282,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button} 
 							onPress={()=>{
-								this.props.language === 'en' ? showWebsite('https://cdhstudio.ca/fr') : showWebsite('https://cdhstudio.ca/');
+								this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/fr') : this.showWebsite('https://cdhstudio.ca/');
 							}}>
 							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
@@ -286,7 +315,7 @@ class Settings extends React.PureComponent {
 						<View style={[styles.privacyContainer, {marginLeft: this.props.language === 'en' ? 15 : 0}]}>
 							<TouchableOpacity style={styles.privacy}
 								onPress={() => {
-									showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
+									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
 								}}>
 								<Text style={styles.privacyText}>{this.strings.privacyPolicy}</Text>
 							</TouchableOpacity>
@@ -295,7 +324,7 @@ class Settings extends React.PureComponent {
 
 							<TouchableOpacity style={styles.privacy}
 								onPress={() => {
-									showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Terms-of-Service');
+									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Terms-of-Service');
 								}}>
 								<Text style={styles.privacyText}>{this.strings.termsOfService}</Text>
 							</TouchableOpacity>

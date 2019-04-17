@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView, findNodeHandle } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -10,7 +10,7 @@ import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { getStartDate, timeVerification, getStrings, scrollToInput } from '../../services/helper';
+import { getStartDate, timeVerification, getStrings } from '../../services/helper';
 import { courseStyles as styles, statusBlueColor, dark_blue, blue, white, red } from '../../styles';
 
 const moment = require('moment');
@@ -76,6 +76,17 @@ class Course extends React.PureComponent {
 			}
 		}	
 	}
+
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+	
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	};
 
 	/**
 	 * Opens up the iOS action sheet to set the recurrence
@@ -362,7 +373,7 @@ class Course extends React.PureComponent {
 
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
-										onFocus={() => scrollToInput(this.refs.locationInput, 230)}
+										onFocus={() => this.scrollToInput(this.refs.locationInput, 230)}
 										maxLength={1024}
 										placeholder={this.strings.locationPlaceholder}
 										ref='locationInput'

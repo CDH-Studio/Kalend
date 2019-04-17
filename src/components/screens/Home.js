@@ -2,6 +2,8 @@ import React from 'react';
 import { ImageBackground, StatusBar, View, Image, Text, TouchableOpacity, Platform } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
+import { CustomTabs } from 'react-native-custom-tabs';
+import SafariView from 'react-native-safari-view';
 import { connect } from 'react-redux';
 import { setCalendarID, logonUser, setBottomString, setCalendarColor } from '../../actions';
 import { DashboardNavigator } from '../../constants/screenNames';
@@ -10,8 +12,8 @@ import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
-import { homeStyles as styles } from '../../styles';
-import { getStrings, showWebsite } from '../../services/helper';
+import { homeStyles as styles, dark_blue, white } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 /** 
  * Home/Login screen of the app.
@@ -92,6 +94,33 @@ class Home extends React.PureComponent {
 		}
 	}
 
+	showWebsite = (url) => {
+		if (Platform.OS === 'ios') {
+			this.openSafari(url);
+		} else {
+			this.openChrome(url);
+		}
+	}
+
+	openSafari = (url) => {
+		SafariView.isAvailable()
+			.then(SafariView.show({url,
+				tintColor: dark_blue,
+				barTintColor: white,
+				fromBottom: true }))
+			.catch(() => this.openChrome(url));
+	}
+
+	openChrome = (url) => {
+		CustomTabs.openURL(url, {
+			toolbarColor: dark_blue,
+			enableUrlBarHiding: true,
+			showPageTitle: true,
+			enableDefaultShare: true,
+			forceCloseOnRedirection: true,
+		});
+	}
+
 	render() {
 		let source = Platform.OS === 'ios' ? require('../../assets/img/loginScreen/backPattern_ios.png') : 
 			require('../../assets/img/loginScreen/backPattern_android.png');
@@ -123,7 +152,7 @@ class Home extends React.PureComponent {
 
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
-									this.props.language === 'en' ? showWebsite('https://cdhstudio.ca/fr') : showWebsite('https://cdhstudio.ca/');
+									this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/fr') : this.showWebsite('https://cdhstudio.ca/');
 								}}>
 								<Text style={styles.cdhSectionText}>
 									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>

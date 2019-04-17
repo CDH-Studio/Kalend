@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, ScrollView, Text, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView, findNodeHandle } from 'react-native';
 import Slider from '@react-native-community/slider';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
@@ -12,7 +12,7 @@ import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { dateVerification, getStrings, scrollToInput } from '../../services/helper';
+import { dateVerification, getStrings } from '../../services/helper';
 import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor, red } from '../../styles';
 
 const moment = require('moment');
@@ -75,6 +75,17 @@ class NonFixedEvent extends React.PureComponent {
 			this.resetFields();
 		}
 	}
+
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+	
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	};
 
 	/**
 	 * To go to the next screen without entering any information
@@ -433,7 +444,7 @@ class NonFixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={() => scrollToInput(this.refs.locationInput, 200)}
+											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
 											placeholder={this.strings.locationPlaceholder}
 											ref="locationInput"
@@ -452,7 +463,7 @@ class NonFixedEvent extends React.PureComponent {
 								
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={() => scrollToInput(this.refs.locationInput, 300)}
+											onFocus={() => this.scrollToInput(this.refs.locationInput, 300)}
 											maxLength={1024}
 											placeholder={this.strings.descriptionPlaceholder}
 											ref="descriptionInput"
