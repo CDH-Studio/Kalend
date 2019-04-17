@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, ScrollView, Text, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView, findNodeHandle } from 'react-native';
+import { StatusBar, View, ScrollView, Text, Switch, Dimensions, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
 import Slider from '@react-native-community/slider';
 import DatePicker from 'react-native-datepicker';
 import NumericInput from 'react-native-numeric-input';
@@ -12,8 +12,8 @@ import { updateNonFixedEvents, addNonFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { dateVerification, getStrings } from '../../services/helper';
-import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor } from '../../styles';
+import { dateVerification, getStrings, scrollToInput } from '../../services/helper';
+import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor, red } from '../../styles';
 
 const moment = require('moment');
 const viewHeight = 843.4285888671875;
@@ -60,7 +60,6 @@ class NonFixedEvent extends React.PureComponent {
 			location: '',
 			description: '',
 
-			showTutShadow: true,
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000
@@ -170,23 +169,10 @@ class NonFixedEvent extends React.PureComponent {
 			location: '',
 			description: '',
 
-			showTutShadow: true,
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000
 		});
-	}
-
-	//TODO: Comment function
-	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
-		const scrollResponder = this.refs._scrollView.getScrollResponder();
-		const inputHandle = findNodeHandle(inputFieldRef);
-
-		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-			inputHandle,
-			keyboardScrollHeight,
-			true
-		);
 	}
 
 	render() {
@@ -247,7 +233,7 @@ class NonFixedEvent extends React.PureComponent {
 										size={30}
 										color={blue} />
 
-									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? red : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
 											placeholder={this.strings.titlePlaceholder} 
@@ -268,6 +254,7 @@ class NonFixedEvent extends React.PureComponent {
 								<View style={styles.timeSection}>
 									<View style={styles.dateRange}>
 										<Text style={styles.blueTitle}>{this.strings.dates}</Text>
+
 										<View style={styles.dateRangeCol}>
 											<RadioButton.Group
 												onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
@@ -282,7 +269,7 @@ class NonFixedEvent extends React.PureComponent {
 												</View>
 
 												<View style={styles.date}>
-													<Text style={[styles.optionDate, {width: 200}]}>{this.strings.specificDate}</Text>
+													<Text style={styles.optionDate}>{this.strings.specificDate}</Text>
 
 													<RadioButton.Android value={true}
 														uncheckedColor={'lightgray'}
@@ -350,8 +337,8 @@ class NonFixedEvent extends React.PureComponent {
 													rightButtonBackgroundColor={blue}
 													rounded={true}
 													borderColor={'lightgray'}
-													textColor={!this.state.durationValidated ? '#ff0000' : gray}
-													iconStyle={{color: '#ffffff'}} />
+													textColor={!this.state.durationValidated ? red : gray}
+													iconStyle={{color: white}} />
 												<Text style={styles.optionsText}>{this.strings.hours}</Text>
 											</View>
 
@@ -364,8 +351,8 @@ class NonFixedEvent extends React.PureComponent {
 													rightButtonBackgroundColor={blue}
 													rounded={true}
 													borderColor={'lightgray'}
-													textColor={!this.state.durationValidated ? '#ff0000' : gray}
-													iconStyle={{color: '#ffffff'}}  />
+													textColor={!this.state.durationValidated ? red : gray}
+													iconStyle={{color: white}}  />
 												<Text style={styles.optionsText}>{this.strings.minutes}</Text>
 											</View>
 										</View>
@@ -440,7 +427,7 @@ class NonFixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
+											onFocus={() => scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
 											placeholder={this.strings.locationPlaceholder}
 											ref="locationInput"
@@ -459,7 +446,7 @@ class NonFixedEvent extends React.PureComponent {
 								
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={() => this.scrollToInput(this.refs.locationInput, 300)}
+											onFocus={() => scrollToInput(this.refs.locationInput, 300)}
 											maxLength={1024}
 											placeholder={this.strings.descriptionPlaceholder}
 											ref="descriptionInput"
@@ -469,7 +456,6 @@ class NonFixedEvent extends React.PureComponent {
 									</View>
 								</View>
 							</View>
-
 
 							<BottomButtons twoButtons={showNextButton}
 								buttonText={[addEventButtonText, this.buttonStrings.done]}

@@ -8,7 +8,7 @@ import CalendarPermissionItem from '../CalendarPermissionItem';
 import { getStrings } from '../../services/helper';
 
 /**
- * 
+ * Shows the users for which you have a calendar access
  */
 class CalendarPermission extends React.PureComponent {
 
@@ -36,13 +36,12 @@ class CalendarPermission extends React.PureComponent {
 	}
 
 	/**
-	 * Funciton to be called to reload data from the flatList
+	 * Reloada data from the flatList
 	 */
 	refreshData = () => {
 		this.setState({loadingList: true});
 		setTimeout(() => {
 			listPermissions().then((data) => {
-				console.log(data);
 				this.setState({
 					data,
 					loadingList: false
@@ -89,6 +88,9 @@ class CalendarPermission extends React.PureComponent {
 		return selectedValue;
 	}
 
+	/**
+	 * Delete the calendarIds from the flatList
+	 */
 	delete = () => {
 		let calendarIds = this.getListIdSelected();
 		let error = false;
@@ -124,9 +126,7 @@ class CalendarPermission extends React.PureComponent {
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<Text style={styles.title}>
-					{this.strings.mainTitle}
-				</Text>
+				<Text style={styles.title}>{this.strings.mainTitle}</Text>
 
 				<View style={styles.list}>
 					{ 
@@ -147,7 +147,9 @@ class CalendarPermission extends React.PureComponent {
 											<MaterialCommunityIcons size={50}
 												name='account-search'
 												color={gray}/>
+
 											<Text style={styles.emptyTitle}>{this.strings.emptyTitle}</Text> 
+											
 											<Text style={styles.emptyDescription}>{this.strings.emptyDescription}</Text> 
 										</View>
 									</TouchableOpacity>

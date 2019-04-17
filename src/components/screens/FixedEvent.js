@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView, findNodeHandle } from 'react-native';
+import { StatusBar, View, Text, Platform, TextInput, Switch, Picker, ActionSheetIOS, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -12,8 +12,8 @@ import { updateFixedEvents, addFixedEvent } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { FixedEventRoute, UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { timeVerification, dateVerification, getStrings } from '../../services/helper';
-import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white } from '../../styles';
+import { timeVerification, dateVerification, getStrings, scrollToInput } from '../../services/helper';
+import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white, red } from '../../styles';
 
 const moment = require('moment');
 require('moment-round');
@@ -61,7 +61,6 @@ class FixedEvent extends React.PureComponent {
 			recurrence: 'NONE',
 			description: '',
 
-			showTutShadow: true,
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000
@@ -78,19 +77,13 @@ class FixedEvent extends React.PureComponent {
 		this.setContainerHeight();
 	}
 
-	//TODO: Do we need it?
 	setContainerHeight = () => {
 		let statusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
 		let containerHeightTemp = Dimensions.get('window').height - Header.HEIGHT - statusBarHeight;
 		let containerHeight = viewHeight < containerHeightTemp ? containerHeightTemp : null;
 
-		// Causes a bug (cannot scroll when keyboard is shown)
-		// let scrollable = containerHeight !== containerHeightTemp;
-		let showTutShadow = containerHeight !== containerHeightTemp;
-
 		this.setState({
-			containerHeight,
-			showTutShadow
+			containerHeight
 		});
 	}
 
@@ -145,7 +138,6 @@ class FixedEvent extends React.PureComponent {
 			},
 		);
 	}
-
 
 	/**
 	 * To go to the next screen without entering any information
@@ -231,23 +223,10 @@ class FixedEvent extends React.PureComponent {
 			recurrence: 'NONE',
 			description: '',
 
-			showTutShadow: true,
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000
 		});
-	}
-
-	//TODO: Comment function
-	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
-		const scrollResponder = this.refs._scrollView.getScrollResponder();
-		const inputHandle = findNodeHandle(inputFieldRef);
-
-		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-			inputHandle,
-			keyboardScrollHeight,
-			true
-		);
 	}
 
 	render() {
@@ -302,7 +281,7 @@ class FixedEvent extends React.PureComponent {
 										size={30}
 										color={blue} />
 
-									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? red : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText}
 											maxLength={1024}
 											placeholder={this.strings.titlePlaceholder}
@@ -320,17 +299,19 @@ class FixedEvent extends React.PureComponent {
 							<View style={styles.timeSection}>
 								<View style={[styles.allDay, {width: containerWidth}]}>
 									<Text style={styles.blueTitleAllDay}>{this.strings.allday}</Text>
+
 									<View style={styles.switch}>
 										<Switch trackColor={{false: 'lightgray', true: blue}} 
 											ios_backgroundColor={'lightgray'} 
 											thumbColor={(this.state.allDay && Platform.OS !== 'ios') ? dark_blue : null} 
 											onValueChange={(allDay) => this.setState({allDay: allDay})} 
-											value = {this.state.allDay} />
+											value={this.state.allDay} />
 									</View>
 								</View>
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
 									<Text style={styles.blueTitle}>{this.strings.start}</Text>
+
 									<DatePicker showIcon={false} 
 										date={this.state.startDate} 
 										mode="date" 
@@ -370,6 +351,7 @@ class FixedEvent extends React.PureComponent {
 
 								<View style={[styles.rowTimeSection, {width: containerWidth}]}>
 									<Text style={styles.blueTitle}>{this.strings.end}</Text>
+
 									<DatePicker showIcon={false} 
 										date={this.state.endDate} 
 										mode="date" 
@@ -416,7 +398,7 @@ class FixedEvent extends React.PureComponent {
 
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
-											onFocus={() => this.scrollToInput(this.refs.locationInput, 200)}
+											onFocus={() => scrollToInput(this.refs.locationInput, 200)}
 											maxLength={1024}
 											placeholder={this.strings.locationPlaceholder} 
 											ref='locationInput'
@@ -436,7 +418,7 @@ class FixedEvent extends React.PureComponent {
 									<View style={styles.textInputBorder}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
-											onFocus={() => this.scrollToInput(this.refs.descriptionInput, 300)}
+											onFocus={() => scrollToInput(this.refs.descriptionInput, 300)}
 											placeholder={this.strings.descriptionPlaceholder} 
 											ref='descriptionInput'
 											returnKeyType = {'done'}
@@ -456,8 +438,8 @@ class FixedEvent extends React.PureComponent {
 												<View>
 													<MaterialIcons name="arrow-drop-down"
 														size={20}
-														style={{position: 'absolute', right: 0}} />
-													<Text style={{padding: 1}} 
+														style={styles.arrow} />
+													<Text style={styles.recurrenceText} 
 														onPress={this.recurrenceOnClick}>
 														{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}
 													</Text>
@@ -483,9 +465,10 @@ class FixedEvent extends React.PureComponent {
 						</View>
 					</ScrollView>
 				</KeyboardAvoidingView>
+
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}

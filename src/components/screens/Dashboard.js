@@ -8,7 +8,7 @@ import Popover from 'react-native-popover-view';
 import Feather from 'react-native-vector-icons/Feather';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, statusBarPopover, whiteRipple } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, whiteRipple } from '../../styles';
 import { setDashboardData, setNavigationScreen } from '../../actions';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
@@ -29,33 +29,11 @@ LocaleConfig.locales['fr'] = {
 class Dashboard extends React.PureComponent {
 
 	defaultLocale = store.getState().SettingsReducer.language;
-
 	strings = getStrings().Dashboard;
 
-	static navigationOptions = ({navigation}) => ({
-		headerRight: (
-			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
-					...Platform.select({
-						ios: {
-							shadowColor: black,
-							shadowOffset: { width: 0, height: 2 },
-							shadowOpacity: 0.3,
-							shadowRadius: 3,    
-						},
-						android: {
-							elevation: 4,
-						},
-					})
-				}}>
-				<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
-				<MaterialCommunityIcons size={25}
-					name="calendar-multiple-check"
-					color={white}/>
-			</TouchableOpacity>
-		),
+	static navigationOptions = {
 		header: null
-	});
+	}
 
 	constructor(props) {
 		super(props);
@@ -100,11 +78,6 @@ class Dashboard extends React.PureComponent {
 		return r1 !== r2;
 	}
 	
-	timeToString = (time) => {
-		const date = new Date(time);
-		return date.toISOString().split('T')[0];
-	}
-	
 	componentDidMount() {
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -142,12 +115,6 @@ class Dashboard extends React.PureComponent {
 				console.log('err', err);
 			});
 	}
-
-
-	showPopover = () => {
-		this.setState({isVisible: true});
-		StatusBar.setBackgroundColor(statusBarPopover);
-	}
 	
 	closePopover = () => {
 		this.setState({isVisible: false});
@@ -156,37 +123,14 @@ class Dashboard extends React.PureComponent {
 
 	render() {
 		const { snackbarVisible, snackbarTime, snackbarText } = this.state;
-		// let showCloseFab;
-		// let currentMonthText = 'jninm';
-
-		// if (calendarOpened) {
-		// 	showCloseFab = 
-		// 	<View style={styles.closeCalendarView}>
-		// 		<FAB
-		// 			style={styles.closeCalendarFab}
-		// 			small
-		// 			theme={{colors:{accent:dark_blue}}}
-		// 			icon="close"
-		// 			onPress={() => this.refs.agenda.chooseDay(this.refs.agenda.state.selectedDay)} />
-		// 	</View>;
-
-		// 	// currentMonthText = null;
-		// } else {
-		// 	showCloseFab = null;
-		// 	// setTimeout(() => currentMonthText = this.refs.agenda.state.selectedDay.clone(), 300);
-		// }
 
 		return(
-			<View style={{flex:1}}>
+			<View style={styles.container}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						animated
 						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 						backgroundColor={statusBarDark} />	
-
-					{/* <View style={styles.calendarBack}>
-						<Text style={styles.calendarBackText}>{currentMonthText}</Text>
-					</View> */}
 
 					<Agenda ref='agenda'
 						items={this.state.items}
@@ -197,37 +141,17 @@ class Dashboard extends React.PureComponent {
 						shouldChangeDay={this.shouldChangeDay}
 						listTitle={this.strings.eventsDayTitle}
 						theme={{agendaKnobColor: dark_blue}}
-						// onCalendarToggled={() => this.setState({calendarOpened: !calendarOpened})}
 					/>
-
-					{/* {showCloseFab} */}
 				</View>
 
 				<TouchableRipple onPress={() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-					style={{position:'absolute', bottom: 13 , right:10, borderRadius: 22.5, }}
+					style={styles.createButton}
 					rippleColor={whiteRipple}
 					underlayColor={whiteRipple}
 					ref='fab'>
-					<View style={{flexDirection: 'row',
-						justifyContent: 'center',
-						alignItems: 'center',
-						height: 45,
-						width: 110,
-						backgroundColor: dark_blue,
-						borderRadius: 22.5, 
-						...Platform.select({
-							ios: {
-								shadowColor: black,
-								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: 0.3,
-								shadowRadius: 3,    
-							},
-							android: {
-								elevation: 4,
-							},
-						})
-					}}>
-						<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
+					<View style={styles.createContent}>
+						<Text style={styles.createText}>{getStrings().Dashboard.create}</Text>
+
 						<MaterialCommunityIcons size={20}
 							name="calendar-multiple-check"
 							color={white}/>
@@ -241,10 +165,11 @@ class Dashboard extends React.PureComponent {
 						onClose={this.closePopover}>
 						<TouchableOpacity onPress={this.closePopover}>
 							<Feather name="x"
-								style={{top:-2.5, right: -2.5, justifyContent: 'flex-end'}}
+								style={styles.iconPopover}
 								size={25}
 								color={black} />
 						</TouchableOpacity>
+
 						<Text style={styles.tooltipText}>I'm the content of this popover!</Text>
 					</Popover>
 				</View>

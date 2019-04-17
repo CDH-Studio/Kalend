@@ -1,8 +1,12 @@
+import { findNodeHandle, Platform } from 'react-native';
+import { CustomTabs } from 'react-native-custom-tabs';
+import SafariView from 'react-native-safari-view';
 import { getEventsInstances } from './google_calendar';
 import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
 import strings from '../assets/strings';
-// import { LocaleConfig } from 'react-native-calendars';
+import {dark_blue, white} from '../styles';
+
 const moment = require('moment');
 
 export const convertToDictionary  = (data) => {
@@ -267,4 +271,42 @@ export const dateVerification = (startDate, endDate, date) => {
 	} else {
 		return date;
 	}
+};
+
+export const scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+	const scrollResponder = this.refs._scrollView.getScrollResponder();
+	const inputHandle = findNodeHandle(inputFieldRef);
+
+	scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+		inputHandle,
+		keyboardScrollHeight,
+		true
+	);
+};
+
+export const showWebsite = (url) => {
+	if (Platform.OS === 'ios') {
+		this.openSafari(url);
+	} else {
+		this.openChrome(url);
+	}
+};
+
+export const openSafari = (url) => {
+	SafariView.isAvailable()
+		.then(SafariView.show({url,
+			tintColor: dark_blue,
+			barTintColor: white,
+			fromBottom: true }))
+		.catch(() => this.openChrome(url));
+};
+
+export const openChrome = (url) => {
+	CustomTabs.openURL(url, {
+		toolbarColor: dark_blue,
+		enableUrlBarHiding: true,
+		showPageTitle: true,
+		enableDefaultShare: true,
+		forceCloseOnRedirection: true,
+	});
 };

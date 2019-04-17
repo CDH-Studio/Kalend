@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StatusBar, View, Image, Text, Linking, TouchableOpacity, Platform } from 'react-native';
+import { ImageBackground, StatusBar, View, Image, Text, TouchableOpacity, Platform } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
 import { homeStyles as styles } from '../../styles';
-import { getStrings } from '../../services/helper';
+import { getStrings, showWebsite } from '../../services/helper';
 
 /** 
  * Home/Login screen of the app.
@@ -123,7 +123,7 @@ class Home extends React.PureComponent {
 
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
-									Linking.openURL('https://cdhstudio.ca/fr');
+									showWebsite('https://cdhstudio.ca/fr');
 								}}>
 								<Text style={styles.cdhSectionText}>
 									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>

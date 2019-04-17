@@ -4,20 +4,17 @@ import { connect } from 'react-redux';
 import { Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CustomTabs } from 'react-native-custom-tabs';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, dark_blue, statusBarDark, statusBarPopover } from '../../styles';
+import { settingsStyles as styles, blue, statusBarDark, statusBarPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
-import { clearEveryReducer, getStrings } from '../../services/helper';
+import { clearEveryReducer, getStrings, showWebsite } from '../../services/helper';
 import { setCalendarID } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
-
-import SafariView from 'react-native-safari-view';
 
 const viewHeight = 669.1428833007812;
 
@@ -52,33 +49,6 @@ class Settings extends React.PureComponent {
 	dismissEventsColorPicker = () => {
 		this.setState({showEventsColorPicker: false});
 		this.restoreStatusBar();
-	}
-
-	showWebsite = (url) => {
-		if (Platform.OS === 'ios') {
-			this.openSafari(url);
-		} else {
-			this.openChrome(url);
-		}
-	}
-
-	openSafari = (url) => {
-		SafariView.isAvailable()
-			.then(SafariView.show({url,
-				tintColor: dark_blue,
-				barTintColor: '#fff',
-				fromBottom: true }))
-			.catch(() => this.openChrome(url));
-	}
-
-	openChrome = (url) => {
-		CustomTabs.openURL(url, {
-			toolbarColor: dark_blue,
-			enableUrlBarHiding: true,
-			showPageTitle: true,
-			enableDefaultShare: true,
-			forceCloseOnRedirection: true,
-		});
 	}
 
 	logout = () => {
@@ -198,10 +168,6 @@ class Settings extends React.PureComponent {
 							onPress={this.showLanguage}>
 							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
 						</TouchableOpacity>
-						
-						{/* <TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
-						</TouchableOpacity>  */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute, {title: getStrings().CalendarPermission.title})}>
@@ -223,14 +189,10 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/FAQ');
+								showWebsite('https://github.com/CDH-Studio/Kalend/wiki/FAQ');
 							}}>
 							<Text style={styles.buttonText}>{this.strings.help}</Text>
 						</TouchableOpacity>
-
-						{/* <TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>{this.strings.tutorial}</Text>
-						</TouchableOpacity> */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
@@ -286,7 +248,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button} 
 							onPress={()=>{
-								this.showWebsite('https://cdhstudio.ca/');
+								showWebsite('https://cdhstudio.ca/');
 							}}>
 							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
@@ -319,7 +281,7 @@ class Settings extends React.PureComponent {
 						<View style={[styles.privacyContainer, {marginLeft: this.props.language === 'en' ? 15 : 0}]}>
 							<TouchableOpacity style={styles.privacy}
 								onPress={() => {
-									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
+									showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Privacy-Policy');
 								}}>
 								<Text style={styles.privacyText}>{this.strings.privacyPolicy}</Text>
 							</TouchableOpacity>
@@ -328,7 +290,7 @@ class Settings extends React.PureComponent {
 
 							<TouchableOpacity style={styles.privacy}
 								onPress={() => {
-									this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Terms-of-Service');
+									showWebsite('https://github.com/CDH-Studio/Kalend/wiki/Terms-of-Service');
 								}}>
 								<Text style={styles.privacyText}>{this.strings.termsOfService}</Text>
 							</TouchableOpacity>

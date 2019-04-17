@@ -238,8 +238,9 @@ class ReviewEvent extends React.PureComponent {
 				<ScrollView style={styles.scrollView}>
 					<View style={styles.content}>
 						<View>
-							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+							<View style={styles.section}>
 								<Text style={styles.sectionTitle}>{this.strings.courseTitle}</Text>
+
 								<TouchableOpacity onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {
@@ -275,7 +276,7 @@ class ReviewEvent extends React.PureComponent {
 						</View>
 
 						<View>
-							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+							<View style={styles.section}>
 								<Text style={styles.sectionTitle}>{this.strings.fixedTitle}</Text>
 								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
@@ -304,8 +305,9 @@ class ReviewEvent extends React.PureComponent {
 						</View>
 
 						<View>
-							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+							<View style={styles.section}>
 								<Text style={styles.sectionTitle}>{this.strings.nonFixedTitle}</Text>
+								
 								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 

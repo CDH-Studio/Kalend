@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView, findNodeHandle } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -10,8 +10,8 @@ import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
 import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
-import { getStartDate, timeVerification, getStrings } from '../../services/helper';
-import { courseStyles as styles, statusBlueColor, dark_blue, blue, white } from '../../styles';
+import { getStartDate, timeVerification, getStrings, scrollToInput } from '../../services/helper';
+import { courseStyles as styles, statusBlueColor, dark_blue, blue, white, red } from '../../styles';
 
 const moment = require('moment');
 require('moment-round');
@@ -25,10 +25,7 @@ const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
  */
 class Course extends React.PureComponent {
 
-	days = [
-		'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-	]
-
+	days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	strings = getStrings().Course;
 	buttonStrings = getStrings().BottomButtons;
 
@@ -60,8 +57,7 @@ class Course extends React.PureComponent {
 
 	componentWillMount() {
 		this.resetField();
-		//In order to modify the courses taken from OCR
-		//TODO: Convert to moment.js
+
 		if (this.props.navigation.state.routeName !== CourseRoute) {
 			this.setState({...this.props.CourseState});
 
@@ -72,22 +68,13 @@ class Course extends React.PureComponent {
 			}
 
 			if ('end' in this.props.CourseState && !('endTime' in this.props.CourseState)) {
-				this.setState({endTime: this.convertTimeWithSeconds(new Date(this.props.CourseState.end.dateTime).toLocaleTimeString())});
+				this.setState({endTime: moment(this.props.CourseState.end.dateTime).format('h:mm A')});
 			}
 
 			if ('start' in this.props.CourseState && !('startTime' in this.props.CourseState)) {
-				this.setState({startTime: this.convertTimeWithSeconds(new Date(this.props.CourseState.start.dateTime).toLocaleTimeString())});
+				this.setState({endTime: moment(this.props.CourseState.start.dateTime).format('h:mm A')});
 			}
 		}	
-	}
-
-	//TODO: Remove if moment is applied in componentWillMount
-	convertTimeWithSeconds = (time) => {
-		let endTimeSplit = time.split(':');
-		let endTimeSplitSpace = time.split(' ');
-
-		time = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
-		return time;
 	}
 
 	/**
@@ -117,6 +104,16 @@ class Course extends React.PureComponent {
 				}
 			},
 		);
+	}
+
+	getDateFromTimeString = (timeString, currentDate) => {
+		let currentMoment = new moment(currentDate);
+		let timeMoment = new moment(timeString, 'h:mm A');
+
+		currentMoment.hours(timeMoment.hours());
+		currentMoment.minutes(timeMoment.minutes());
+
+		return currentMoment;
 	}
 
 	/**
@@ -202,17 +199,6 @@ class Course extends React.PureComponent {
 		});
 	}
 
-	//TODO: Comment function
-	getDateFromTimeString = (timeString, currentDate) => {
-		let currentMoment = new moment(currentDate);
-		let timeMoment = new moment(timeString, 'h:mm A');
-
-		currentMoment.hours(timeMoment.hours());
-		currentMoment.minutes(timeMoment.minutes());
-
-		return currentMoment;
-	}
-
 	/**
 	 * Reset the fields of the form
 	 */
@@ -230,18 +216,6 @@ class Course extends React.PureComponent {
 			snackbarTime: 3000,
 			recurrence: [`RRULE:FREQ=WEEKLY;UNTIL=${this.props.semesterEndDate};`]
 		});
-	}
-
-	//TODO: Comment function
-	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
-		const scrollResponder = this.refs._scrollView.getScrollResponder();
-		const inputHandle = findNodeHandle(inputFieldRef);
-
-		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-			inputHandle,
-			keyboardScrollHeight,
-			true
-		);
 	}
 
 	render() {
@@ -280,6 +254,7 @@ class Course extends React.PureComponent {
 						<View style={[styles.content, {height: containerHeight}]}>
 							<View style={styles.instruction}>
 								<Text style={styles.text}>{this.strings.description}</Text>
+
 								<FontAwesome5 name="university"
 									size={130}
 									color={dark_blue}/>
@@ -291,7 +266,7 @@ class Course extends React.PureComponent {
 										size={30}
 										color={blue} />
 
-									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? red : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
 											placeholder={this.strings.courseCodePlaceholder}
@@ -315,8 +290,8 @@ class Course extends React.PureComponent {
 											<View>
 												<MaterialIcons name="arrow-drop-down"
 													size={20}
-													style={{position: 'absolute', right: 0}} />
-												<Text style={{padding: 1}} 
+													style={styles.arrow} />
+												<Text style={styles.dayOfWeekText} 
 													onPress={this.dayOfWeekOnClick}>
 													{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}
 												</Text>
@@ -339,6 +314,7 @@ class Course extends React.PureComponent {
 							<View>
 								<View style={styles.time}>
 									<Text style={styles.blueTitle}>{this.strings.startTime}</Text>
+
 									<DatePicker showIcon={false} 
 										date={this.state.startTime} 
 										mode="time" 
@@ -359,6 +335,7 @@ class Course extends React.PureComponent {
 
 								<View style={styles.time}>
 									<Text style={styles.blueTitle}>{this.strings.endTime}</Text>
+
 									<DatePicker showIcon={false} 
 										date={this.state.endTime} 
 										mode="time"
@@ -382,9 +359,10 @@ class Course extends React.PureComponent {
 								<MaterialIcons name="location-on"
 									size={30}
 									color={blue} />
+
 								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
-										onFocus={() => this.scrollToInput(this.refs.locationInput, 230)}
+										onFocus={() => scrollToInput(this.refs.locationInput, 230)}
 										maxLength={1024}
 										placeholder={this.strings.locationPlaceholder}
 										ref='locationInput'
@@ -410,11 +388,11 @@ class Course extends React.PureComponent {
 								}]} />
 						</View>
 					</ScrollView>
-
 				</KeyboardAvoidingView>
+
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}
@@ -426,10 +404,12 @@ class Course extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	const { CoursesReducer, NavigationReducer, SchoolInformationReducer } = state;
+
 	let selected = NavigationReducer.reviewEventSelected;
 	let semesterEndDate = new Date(SchoolInformationReducer.info.info.endDate);
 	let semesterStartDate = new Date(SchoolInformationReducer.info.info.startDate);
-	semesterEndDate  = semesterEndDate.toISOString().split('T')[0].replace(/-/g, '');
+
+	semesterEndDate = semesterEndDate.toISOString().split('T')[0].replace(/-/g, '');
 
 	return {
 		CourseState: CoursesReducer[selected],
