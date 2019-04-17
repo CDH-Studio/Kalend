@@ -9,7 +9,7 @@ import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreat
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor, statusBarPopover, statusBarDark, black, dark_blue } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor, statusBarPopover, statusBarDark, black, dark_blue, statusBarLightPopover } from '../../styles';
 import { insertFixedEventsToGoogle } from '../../services/service';
 import { getStrings } from '../../services/helper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -277,7 +277,7 @@ class ReviewEvent extends React.PureComponent {
 
 	darkenStatusBar = () => {
 		if (Platform.OS === 'android') {
-			StatusBar.setBackgroundColor(statusBarPopover, true);
+			StatusBar.setBackgroundColor(statusBarLightPopover, true);
 		}
 	}
 

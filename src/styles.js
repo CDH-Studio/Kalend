@@ -14,6 +14,7 @@ export const dark_blue = '#153d73';
 export const red = '#FF0000';
 export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
+export const statusBarLightPopover = '#000000A0';
 export const statusBarPopover = '#000000D0';
 export const gray = '#565454';
 export const whiteRipple = '#DDDDDD';

@@ -11,7 +11,7 @@ import { extendMoment } from 'moment-range';
 import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { setTutorialStatus } from '../../actions';
 import { store } from '../../store';
-import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark, statusBarPopover } from '../../styles';
+import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark, statusBarPopover, statusBarLightPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
@@ -261,6 +261,9 @@ class CompareSchedule extends React.PureComponent {
 							});
 						}
 
+						// Inverts the dates to show availabilities instead of the non-availabilities
+						console.log(ranges);
+
 						// Formats to wix calendar data
 						ranges.map(range => {
 							dates[range.start.format('YYYY-MM-DD')].push({
@@ -333,7 +336,7 @@ class CompareSchedule extends React.PureComponent {
 
 	darkenStatusBar = () => {
 		if (Platform.OS === 'android') {
-			StatusBar.setBackgroundColor(statusBarPopover, true);
+			StatusBar.setBackgroundColor(statusBarLightPopover, true);
 		}
 	}
 
@@ -443,7 +446,6 @@ class CompareSchedule extends React.PureComponent {
 					shouldChangeDay={this.shouldChangeDay}
 					hideKnob={!showCalendar}
 					theme={{agendaKnobColor: dark_blue}}/>
-
 
 				<Modal isVisible={searchModalVisible}
 					deviceHeight={deviceHeight}
