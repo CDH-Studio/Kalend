@@ -272,6 +272,7 @@ class ReviewEvent extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
+					animated
 					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 					backgroundColor={statusBlueColor} />
 

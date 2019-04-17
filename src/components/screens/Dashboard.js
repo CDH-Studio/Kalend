@@ -7,7 +7,7 @@ import Popover from 'react-native-popover-view';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite, statusBarPopover } from '../../styles';
 import { setDashboardData, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
@@ -158,6 +158,10 @@ class Dashboard extends React.PureComponent {
 			'willFocus',
 			() => {
 				this.setState({eventsPopover: !this.props.showTutorial});
+				if (!this.props.showTutorial) {
+					this.darkenStatusBar();
+				}
+
 				if (store.getState().NavigationReducer.successfullyInsertedEvents) {
 					this.setState({
 						snackbarText: 'Event(s) successfully added',
@@ -327,6 +331,18 @@ class Dashboard extends React.PureComponent {
 		});
 	}
 
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
+	}
+
 	render() {
 		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
 		let showCloseFab;
@@ -451,10 +467,12 @@ class Dashboard extends React.PureComponent {
 					onClose={() => {
 						this.setState({createPopover:false});
 						this.props.dispatch(setTutorialStatus('dashboard', true));
+						this.restoreStatusBar();
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({createPopover:false});
 						this.props.dispatch(setTutorialStatus('dashboard', true));
+						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.createPopover}</Text>
 					</TouchableOpacity>

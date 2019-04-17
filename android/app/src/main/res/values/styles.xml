@@ -8,7 +8,7 @@
         <item name="android:colorPrimaryDark">#166489</item>
         <item name="android:datePickerDialogTheme">@style/Dialog.Theme</item>
         <item name="android:timePickerDialogTheme">@style/Dialog.Theme</item>
-        <item name="android:windowBackground">@color/lightBlue</item>
+        <item name="android:windowBackground">@color/main_blue</item>
     </style>
 
     <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
