@@ -3,10 +3,12 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Header } from 'react-navigation';
 import { containerPadding, lineThickness, lineColor, lineSpace, lineViewHorizontalPadding, lineViewLeftPadding } from '../src/components/screens/ScheduleSelection';
 import { containerPaddingDetails } from '../src/components/screens/ScheduleSelectionDetails';
+import { deviceWidth, deviceHeight } from './services/helper';
 
 export const white = '#FFFFFF';
-export const black = '#000';
+export const black = '#000000';
 export const blue = '#153d73';
+export const lightBlue = '#43638f';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
 export const red = '#FF0000';
@@ -16,6 +18,7 @@ export const statusBarPopover = '#000000D0';
 export const gray = '#565454';
 export const whiteRipple = '#DDDDDD';
 export const blueRipple = dark_blue + '50';
+export const semiTransparentWhite = '#ffffffa0';
 
 export const snackbarStyle = StyleSheet.create({
 	snackbar: {
@@ -32,7 +35,7 @@ export const bottomButtonsStyles = StyleSheet.create({
 	},
 
 	button: {
-		backgroundColor: blue,
+		backgroundColor: lightBlue,
 		color:'white',
 		width: '48%',
 		padding: 5,
@@ -90,8 +93,8 @@ export const welcomeStyles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		height: Dimensions.get('window').height + getStatusBarHeight(),
-		width: Dimensions.get('window').width
+		height: deviceHeight + getStatusBarHeight(),
+		width: deviceWidth
 	},
 
 	image: {
@@ -243,8 +246,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	buttonSelect: {
 		borderRadius: 12,
-		backgroundColor: blue,
 		padding: 20,
+		backgroundColor: dark_blue,
 		alignItems: 'center',
 		width: 300,
 		...Platform.select({
@@ -269,7 +272,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	buttonTake: {
 		borderRadius: 12,
-		backgroundColor: dark_blue,
+		backgroundColor: lightBlue,
 		padding: 20,
 		alignItems: 'center',
 		marginTop: 20,
@@ -351,7 +354,7 @@ export const selectPictureStyles = StyleSheet.create({
 	emptyView: {
 		alignItems: 'center', 
 		padding: 20, 
-		height: Dimensions.get('window').height*0.85, 
+		height: Dimensions.get('window').height * 0.85, 
 		justifyContent: 'center'
 	}
 });
@@ -376,7 +379,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 				shadowRadius: 5
 			},
 			android: {
-				elevation: 5
+				elevation: 3
 			},
 		}),
 	},
@@ -577,12 +580,21 @@ export const courseStyles = StyleSheet.create({
 		width: 93
 	},
 
-	dayOfWeekValues:{
+	dayOfWeekValues: {
 		color: gray,
 		height: 40,
 		width: '110%',
 		marginLeft: -5,
 		marginBottom:-8
+	},
+
+	dayOfWeekText: {
+		padding: 1
+	},
+
+	arrow: {
+		position: 'absolute',
+		right: 0
 	},
 
 	time: {
@@ -700,6 +712,15 @@ export const fixedEventStyles = StyleSheet.create({
 		marginLeft: -5,
 		marginBottom: -8,
 		color: gray
+	},
+
+	recurrenceText: {
+		padding: 1
+	},
+
+	arrow: {
+		position: 'absolute',
+		right: 0
 	},
 
 	...snackbarStyle
@@ -944,6 +965,13 @@ export const reviewEventStyles = StyleSheet.create({
 		paddingBottom: 80
 	},
 
+	section: {
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+		width: '100%',
+		alignItems: 'flex-end'
+	},
+
 	sectionTitle: {
 		color: dark_blue,
 		fontFamily: 'Raleway-SemiBold',
@@ -961,6 +989,93 @@ export const reviewEventStyles = StyleSheet.create({
 
 	textNoData: {
 		color: gray,
+	},
+
+	tooltipText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	tooltipView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: 10,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: {
+					width: 0,
+					height: 3,
+				},
+				shadowOpacity: 0.29,
+				shadowRadius: 4.65,
+			},
+			android: {
+				elevation: 4
+			},
+		}),
+	},
+});
+
+export const deleteModalStyles = StyleSheet.create({
+	modalContent : {
+		flexDirection: 'column', 
+		justifyContent: 'center', 
+		alignContent: 'center', 
+		borderRadius: 5, 
+		backgroundColor: white, 
+		padding: 15,
+		marginHorizontal: '7.5%',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.4,
+				shadowRadius: 3
+			},
+			android: {
+				elevation: 3
+			},
+		}),
+	},
+
+	dialogMainRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+
+	dialogRightCol: {
+		paddingRight: 5,
+		paddingTop: 3,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
+
+	dialogQuestion: {
+		fontFamily: 'Raleway-Medium', 
+		color: dark_blue, 
+		fontSize: 20, 
+	},
+
+	dialogOptions: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+
+	dialogCancel: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray, 
+		fontSize: 16, 
+	},
+
+	dialogYes: {
+		fontFamily: 'Raleway-Bold', 
+		color: red, 
+		fontSize: 16, 
+		marginLeft: 20
+	},
+
+	icon: {
+		marginBottom: -8,
 	}
 });
 
@@ -1025,92 +1140,10 @@ export const eventOverviewStyles = StyleSheet.create({
 		color: gray
 	},
 
-	modalView: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#00000080',
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.6,
-				shadowRadius: 7  
-			},
-		}),
-	},
-
-	modalContent: {
-		justifyContent: 'space-between',
-		backgroundColor: white,
-		borderRadius: 8,
-		marginHorizontal: 20,
-		width: '90%'
-	},
-
-	closeModal: {
-		flexDirection:'row',
-		justifyContent:'flex-end',
-		paddingHorizontal: 15,
-		paddingVertical: 10
-	},
-
-	modalInfoDate: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		flexWrap: 'wrap',
-		width: 160
-	},
-
-	modalInfoTime: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		flexWrap: 'wrap'
-	},
-
 	modalDetailView: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		alignItems: 'center'
-	},
-
-	modalTitle: {
-		backgroundColor: blue,
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		flexWrap: 'wrap',
-		fontSize: 18,
-		fontFamily: 'OpenSans-SemiBold',
-		color: white
-	},
-
-	modalInfoView: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 20,
-		marginTop: -20
-	},
-
-	modalInfoTitle: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
-		paddingVertical: 3,
-		color: gray
-	},
-
-	modalInfoText: {
-		fontSize: 15,
-		fontFamily: 'OpenSans-Regular',
-		paddingVertical: 3,
-		color: gray,
-		width: 120
-	},
-
-	modalDetailsView: {
-		paddingHorizontal: 20,
-		marginTop: 10
 	},
 
 	modalDetailsTitle: {
@@ -1118,76 +1151,21 @@ export const eventOverviewStyles = StyleSheet.create({
 		textDecorationLine: 'underline',
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: gray
+		color: white
 	},
 	
 	modalDetailsSubtitle: {
 		fontSize: 15,
 		fontFamily: 'Raleway-SemiBold',
 		paddingVertical: 1,
-		color: gray
+		color: white
 	},
 
 	modalDetailsText: {
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 1,
-		color: gray
-	},
-
-	actionsModal: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginVertical: 10,
-		backgroundColor: white,
-	},
-
-	actionIconModal: {
-		margin: 5
-	},
-
-	deleteDialogContent: {
-		backgroundColor: white,
-		borderRadius: 8,
-		justifyContent: 'space-between',
-		padding: 10
-	},
-
-	deleteDialogMainRow: {
-		flexDirection: 'row'
-	},
-
-	deleteDialogRightCol: {
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		paddingVertical: 10,
-		paddingRight: 10
-	},
-
-	deleteDialogQuestion: {
-		fontSize: 20,
-		fontFamily: 'Raleway-SemiBold',
-		marginLeft: 10,
-		marginBottom: 10,
-		color: gray
-	},
-
-	deleteDialogOptions: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end'
-	},
-
-	deleteDialogCancel: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize:16,
-		color: gray
-	},
-
-	deleteDialogYes: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
-		color: red,
-		marginLeft: 20
+		color: white
 	}
 });
 
@@ -1396,12 +1374,19 @@ const DashboardButton = StyleSheet.create({
 });
 
 export const dashboardStyles = StyleSheet.create({
+	container: {
+		flex:1
+	},
+
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 10,
-		backgroundColor: '#F6F8FA',
-		paddingTop: getStatusBarHeight() + 10
+		paddingTop: getStatusBarHeight()
+	},
+
+	calendar: {
+		width: '100%',
+		height: '100%'
 	},
 
 	fab: {
@@ -1411,16 +1396,23 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	closeCalendarView: {
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 
 	closeCalendarFab: {
 		position: 'absolute',
-		bottom: 0
+		bottom: 0,
+		marginBottom: 15
+	},
+
+	rowItem: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 
 	item: {
-		backgroundColor: white,
+		flexDirection: 'row',
+		alignItems: 'center',
 		borderRadius: 5,
 		width: '95%',
 		paddingVertical: 10,
@@ -1478,6 +1470,8 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	tooltipView: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		padding: 10,
 		...Platform.select({
 			ios: {
@@ -1496,17 +1490,144 @@ export const dashboardStyles = StyleSheet.create({
 	},
 
 	calendarBack: {
-		backgroundColor: white
+		backgroundColor: white,
+		justifyContent: 'center'
 	},
 	
 	calendarBackText: {
 		fontFamily: 'Raleway-SemiBold',
-		fontSize: 16,
+		fontSize: 18,
 		color: dark_blue,
-		textAlign: 'center'
+		textAlign: 'center',
+		paddingTop: 10
+	},
+
+	createButton: {
+		position: 'absolute',
+		bottom: 13,
+		right: 10,
+		borderRadius: 22.5 
+	},
+
+	createContent: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 45,
+		width: 110,
+		backgroundColor: dark_blue,
+		borderRadius: 22.5, 
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		})
+	},
+
+	createText: {
+		color: white,
+		fontFamily: 'Raleway-Bold',
+		marginRight: 5
+	},
+
+	iconPopover: {
+		top:-2.5,
+		right: -2.5,
+		justifyContent: 'flex-end'
 	},
 
 	...DashboardButton,
+});
+
+export const modalEventStyles = StyleSheet.create({
+	modalContent: {
+		justifyContent: 'space-between',
+		backgroundColor: white,
+		borderRadius: 8,
+		marginHorizontal: 20,
+		width: '90%',
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.6,
+				shadowRadius: 7  
+			},
+		}),
+	},
+
+	closeModal: {
+		justifyContent:'flex-end',
+		paddingHorizontal: 15,
+		paddingVertical: 10
+	},
+
+	modalTitle: {
+		paddingHorizontal: 20,
+		paddingVertical: 10,
+		flexWrap: 'wrap',
+		fontSize: 18,
+		fontFamily: 'OpenSans-SemiBold',
+		color: white
+	},
+
+	modalInfoView: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingHorizontal: 20,
+		marginTop: -20
+	},
+
+	modalInfoDate: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		flexWrap: 'wrap',
+		width: 160
+	},
+
+	modalInfoTime: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		flexWrap: 'wrap'
+	},
+
+	modalInfoTitle: {
+		fontFamily: 'Raleway-SemiBold',
+		fontSize: 16,
+		paddingVertical: 3,
+		color: white
+	},
+
+	modalInfoText: {
+		fontSize: 15,
+		fontFamily: 'OpenSans-Regular',
+		paddingVertical: 3,
+		color: white,
+		width: 120
+	},
+
+	modalDetailsView: {
+		paddingHorizontal: 20,
+		marginTop: 10
+	},
+
+	actionsModal: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginVertical: 10,
+	},
+
+	actionIconModal: {
+		margin: 5
+	}
+
 });
 
 export const calendarShareButtons = StyleSheet.create({
@@ -1533,7 +1654,8 @@ export const calendarShareButtons = StyleSheet.create({
 	},
 
 	buttons: {
-		flexDirection: 'row', 
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 		margin: 10, 
 		marginTop: 0
 	},
@@ -1560,14 +1682,30 @@ export const calendarShareButtons = StyleSheet.create({
 		fontFamily: 'Raleway-Regular', 
 		color: white,
 	},
-});
 
-export const chatbotStyles = StyleSheet.create({
-	content: {
-		width: '100%',
-		height: '100%',
-		paddingTop: getStatusBarHeight()
-	}
+	tooltipText: {
+		fontFamily: 'Raleway-Regular'
+	},
+
+	tooltipView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: 10,
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: {
+					width: 0,
+					height: 3,
+				},
+				shadowOpacity: 0.29,
+				shadowRadius: 4.65,
+			},
+			android: {
+				elevation: 4
+			},
+		}),
+	},
 });
 
 export const calendarPermissionStyles = StyleSheet.create({
@@ -1718,9 +1856,7 @@ export const compareScheduleStyles = StyleSheet.create({
 	},
 
 	emptyDate: {
-		height: 15,
-		flex:1,
-		paddingTop: 30
+		height: 70
 	},
 
 	eventsDayTitle: {
@@ -1978,7 +2114,7 @@ export const settingsStyles = StyleSheet.create({
 	languageDialogYes: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
-		color: '#ff0000',
+		color: red,
 		marginLeft: 20
 	},
 	

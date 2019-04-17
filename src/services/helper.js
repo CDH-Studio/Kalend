@@ -1,9 +1,14 @@
+import { Platform, Dimensions } from 'react-native';
 import { getEventsInstances } from './google_calendar';
-import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser } from '../actions';
+import { clearCourse, clearCalendarID, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearNavigation, clearSchedule, clearSchoolInformation, clearUnavailableHours, logoffUser } from '../actions';
 import { store } from '../store';
 import strings from '../assets/strings';
+import  ExtraDimensions  from 'react-native-extra-dimensions-android';
 
 const moment = require('moment');
+
+export const deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Platform.OS === 'ios' ? Dimensions.get('window').height : ExtraDimensions.getRealWindowHeight();
 
 export const convertToDictionary  = (data) => {
 	let dict = {};
@@ -233,7 +238,6 @@ export const clearEveryReducer = () => {
 		clearNavigation,
 		clearSchedule,
 		clearSchoolInformation,
-		clearState,
 		clearUnavailableHours,
 		logoffUser
 	];

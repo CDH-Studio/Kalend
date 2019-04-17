@@ -13,7 +13,7 @@ import BottomButtons from '../BottomButtons';
 import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { dateVerification, getStrings } from '../../services/helper';
-import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor } from '../../styles';
+import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor, red, lightBlue } from '../../styles';
 
 const moment = require('moment');
 const viewHeight = 843.4285888671875;
@@ -60,7 +60,6 @@ class NonFixedEvent extends React.PureComponent {
 			location: '',
 			description: '',
 
-			showTutShadow: true,
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000
@@ -76,6 +75,17 @@ class NonFixedEvent extends React.PureComponent {
 			this.resetFields();
 		}
 	}
+
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+	
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	};
 
 	/**
 	 * To go to the next screen without entering any information
@@ -170,23 +180,10 @@ class NonFixedEvent extends React.PureComponent {
 			location: '',
 			description: '',
 
-			showTutShadow: true,
 			snackbarVisible: false,
 			snackbarText: '',
 			snackbarTime: 3000
 		});
-	}
-
-	//TODO: Comment function
-	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
-		const scrollResponder = this.refs._scrollView.getScrollResponder();
-		const inputHandle = findNodeHandle(inputFieldRef);
-
-		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-			inputHandle,
-			keyboardScrollHeight,
-			true
-		);
 	}
 
 	render() {
@@ -247,7 +244,7 @@ class NonFixedEvent extends React.PureComponent {
 										size={30}
 										color={blue} />
 
-									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? '#ff0000' : '#D4D4D4'}]}>
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.titleValidated ? red : '#D4D4D4'}]}>
 										<TextInput style={styles.textInputText} 
 											maxLength={1024}
 											placeholder={this.strings.titlePlaceholder} 
@@ -268,6 +265,7 @@ class NonFixedEvent extends React.PureComponent {
 								<View style={styles.timeSection}>
 									<View style={styles.dateRange}>
 										<Text style={styles.blueTitle}>{this.strings.dates}</Text>
+
 										<View style={styles.dateRangeCol}>
 											<RadioButton.Group
 												onValueChange={(specificDateRange) => this.setState({specificDateRange: specificDateRange})}
@@ -282,7 +280,7 @@ class NonFixedEvent extends React.PureComponent {
 												</View>
 
 												<View style={styles.date}>
-													<Text style={[styles.optionDate, {width: 200}]}>{this.strings.specificDate}</Text>
+													<Text style={styles.optionDate}>{this.strings.specificDate}</Text>
 
 													<RadioButton.Android value={true}
 														uncheckedColor={'lightgray'}
@@ -349,9 +347,11 @@ class NonFixedEvent extends React.PureComponent {
 													leftButtonBackgroundColor={blue}
 													rightButtonBackgroundColor={blue}
 													rounded={true}
+													totalHeight={42}
+													totalWidth={102}
 													borderColor={'lightgray'}
-													textColor={!this.state.durationValidated ? '#ff0000' : gray}
-													iconStyle={{color: '#ffffff'}} />
+													textColor={!this.state.durationValidated ? red : gray}
+													iconStyle={{color: white}} />
 												<Text style={styles.optionsText}>{this.strings.hours}</Text>
 											</View>
 
@@ -363,9 +363,11 @@ class NonFixedEvent extends React.PureComponent {
 													leftButtonBackgroundColor={blue}
 													rightButtonBackgroundColor={blue}
 													rounded={true}
+													totalHeight={42}
+													totalWidth={102}
 													borderColor={'lightgray'}
-													textColor={!this.state.durationValidated ? '#ff0000' : gray}
-													iconStyle={{color: '#ffffff'}}  />
+													textColor={!this.state.durationValidated ? red : gray}
+													iconStyle={{color: white}}  />
 												<Text style={styles.optionsText}>{this.strings.minutes}</Text>
 											</View>
 										</View>
@@ -376,8 +378,7 @@ class NonFixedEvent extends React.PureComponent {
 									<View style={styles.switch}>
 										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? this.strings.splitDurationDate : this.strings.splitDurationWeek}</Text>
 
-										<Switch trackColor={{false: 'lightgray', true: blue}}
-											ios_backgroundColor={'lightgray'}
+										<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 											thumbColor={(this.state.isDividable && Platform.OS !== 'ios') ? dark_blue : null}
 											onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
 											value = {this.state.isDividable} />
@@ -393,6 +394,8 @@ class NonFixedEvent extends React.PureComponent {
 											leftButtonBackgroundColor={blue}
 											rightButtonBackgroundColor={blue}
 											rounded={true}
+											totalHeight={42}
+											totalWidth={102}
 											borderColor={'lightgray'}
 											textColor={gray}
 											iconStyle={{color: white}} />
@@ -402,8 +405,7 @@ class NonFixedEvent extends React.PureComponent {
 										<View style={styles.switch}>
 											<Text style={[styles.blueTitle, {width: 200}]}>{this.strings.everyWeek}</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
+											<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 												thumbColor={(this.state.isRecurrent && Platform.OS !== 'ios') ? dark_blue : null}
 												onValueChange={(isRecurrent) => this.setState({isRecurrent})}
 												value = {this.state.isRecurrent} />
@@ -469,7 +471,6 @@ class NonFixedEvent extends React.PureComponent {
 									</View>
 								</View>
 							</View>
-
 
 							<BottomButtons twoButtons={showNextButton}
 								buttonText={[addEventButtonText, this.buttonStrings.done]}

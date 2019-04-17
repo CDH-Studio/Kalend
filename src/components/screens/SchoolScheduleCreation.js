@@ -54,7 +54,6 @@ class SchoolScheduleCreation extends React.PureComponent {
 			
 			RNFetchBlob.fs.readFile(uri, 'base64')
 				.then(data => {
-					console.log(data);
 					if (data != undefined) {
 						this.success(data);
 					} else {
@@ -165,9 +164,12 @@ class SchoolScheduleCreation extends React.PureComponent {
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+
 				<Surface style={styles.surface}>
 					<Text style={styles.title}>{this.strings.dialogTitle}</Text>
+
 					<Text style={styles.subtitle}>{this.strings.dialogDescription}</Text>
+					
 					<Progress.Bar style={{alignSelf:'center'}} 
 						indeterminate={true} 
 						width={200} 

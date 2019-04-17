@@ -5,20 +5,19 @@ import { Snackbar } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CustomTabs } from 'react-native-custom-tabs';
+import SafariView from 'react-native-safari-view';
 import { Header } from 'react-navigation';
 import { LoginNavigator, UnavailableRoute, SchoolInformationRoute, CleanReducersRoute, CalendarPermissionRoute } from '../../constants/screenNames';
-import { settingsStyles as styles, blue, dark_blue, statusBarDark, statusBarPopover } from '../../styles';
+import { settingsStyles as styles, blue, statusBarDark, statusBarPopover, dark_blue, white } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { deleteCalendar, createSecondaryCalendar } from '../../services/google_calendar';
 import { googleSignOut } from '../../services/google_identity';
 import { clearEveryReducer, getStrings } from '../../services/helper';
-import { setCalendarID } from '../../actions';
+import { setCalendarID, clearTutorialStatus } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
-import { logOutUser } from '../../services/api/storage_services';
-import SafariView from 'react-native-safari-view';
-import { getUserValuesService } from '../../services/api/storage_services';
+import { logOutUser, getUserValuesService } from '../../services/api/storage_services';
 import firebase from 'react-native-firebase';
 
 const viewHeight = 669.1428833007812;
@@ -131,6 +130,33 @@ class Settings extends React.PureComponent {
 		}
 	}
 
+	showWebsite = (url) => {
+		if (Platform.OS === 'ios') {
+			this.openSafari(url);
+		} else {
+			this.openChrome(url);
+		}
+	}
+
+	openSafari = (url) => {
+		SafariView.isAvailable()
+			.then(SafariView.show({url,
+				tintColor: dark_blue,
+				barTintColor: white,
+				fromBottom: true }))
+			.catch(() => this.openChrome(url));
+	}
+
+	openChrome = (url) => {
+		CustomTabs.openURL(url, {
+			toolbarColor: dark_blue,
+			enableUrlBarHiding: true,
+			showPageTitle: true,
+			enableDefaultShare: true,
+			forceCloseOnRedirection: true,
+		});
+	}
+
 	render() {
 		const { containerHeight, showEventsColorPicker, showImportCalendar, snackbarText, snackbarTime, snackbarVisible, languageDialogVisible } = this.state;
 
@@ -176,7 +202,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={this.showImportCalendar}>
-							<Text style={styles.buttonText}>Import Calendar</Text>
+							<Text style={styles.buttonText}>{this.strings.import}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -205,10 +231,6 @@ class Settings extends React.PureComponent {
 							onPress={this.showLanguage}>
 							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
 						</TouchableOpacity>
-						
-						{/* <TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>{this.strings.notifications}</Text>
-						</TouchableOpacity>  */}
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => this.props.navigation.navigate(CalendarPermissionRoute, {title: getStrings().CalendarPermission.title})}>
@@ -230,14 +252,15 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
-								this.showWebsite('https://github.com/CDH-Studio/Kalend/wiki/FAQ');
+								this.props.dispatch(clearTutorialStatus());
+								this.setState({
+									snackbarVisible: true,
+									snackbarTime: 3000,
+									snackbarText: this.strings.resetTutorialSuccess
+								});
 							}}>
-							<Text style={styles.buttonText}>{this.strings.help}</Text>
-						</TouchableOpacity>
-
-						{/* <TouchableOpacity style={styles.button}>
 							<Text style={styles.buttonText}>{this.strings.tutorial}</Text>
-						</TouchableOpacity> */}
+						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
 							onPress={() => {
@@ -293,7 +316,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button} 
 							onPress={()=>{
-								this.showWebsite('https://cdhstudio.ca/');
+								this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/fr') : this.showWebsite('https://cdhstudio.ca/');
 							}}>
 							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
@@ -345,7 +368,7 @@ class Settings extends React.PureComponent {
 
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}
@@ -362,7 +385,7 @@ let mapStateToProps = (state) => {
 
 	return {
 		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
-		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user',
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unknown user',
 		calendarId: CalendarReducer.id,
 		language: SettingsReducer.language
 	};

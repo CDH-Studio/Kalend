@@ -60,7 +60,9 @@ class ScheduleEvent extends React.PureComponent  {
 
 				<View style={styles.eventData}>
 					<Text style={styles.eventTitle}>{actualTitle}</Text>
+
 					<Text style={styles.eventLocation}>{location}</Text>
+					
 					<Text style={styles.eventTime}>{time}</Text>
 				</View>
 			</View>

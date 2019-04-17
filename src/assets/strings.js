@@ -2,6 +2,7 @@ const en = {
 	Chatbot: {
 		name: 'Chatbot',
 	},
+
 	CompareSchedule: {
 		name: 'Compare',
 		addPermission: 'A notification has been sent to the other person',
@@ -22,8 +23,12 @@ const en = {
 		email: 'Email',
 		close: 'Close',
 		add: 'Add',
-		invalidEmail: 'You cannot add yourself'
+		invalidEmail: 'You cannot add yourself',
+		allowPopover: 'Add users so that they can see your calendar!',
+		availabilitiesPopover: 'Select users from the list above and tap here to see when you\'re all available!',
+		deletePopover: 'Select the users for which you don\'t want to share your calendar with anymore and tap here to remove them!'
 	}, 
+
 	Course: {
 		name: 'Course',
 		addTitle: 'Add Course',
@@ -43,6 +48,7 @@ const en = {
 		endTime: 'End Time',
 		cancel: 'Cancel', 
 	},
+
 	Dashboard: {
 		name: 'Dashboard',
 		createSchedule: 'Create Schedule',
@@ -51,8 +57,12 @@ const en = {
 		fabNonFixedEvent: 'Add Non-Fixed Event',
 		eventsDayTitle: 'Events of the Day',
 		noEventsText: 'There\'s no events for the day.',
-		create: 'Create'
+		create: 'Create',
+		eventsPopover: 'Your events will show here. Don\'t forget to keep track of your progress with the checkboxes beside each of them!',
+		knobPopover: 'Pull down the knob to see more dates!',
+		createPopover: 'Tap here to start adding events!'
 	},
+
 	FixedEvent: {
 		name: 'Fixed Event',
 		addTitle: 'Add Fixed Event',
@@ -75,11 +85,13 @@ const en = {
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
+
 	Home: {
 		name: 'Home',
 		createdBy: 'Created by ',
 		cdhStudio: 'CDH Studio',
 	},
+
 	NonFixedEvent: {
 		name: 'Non-Fixed Event',
 		addTitle: 'Add Non-Fixed Event',
@@ -115,6 +127,7 @@ const en = {
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
+
 	ReviewEvent: {
 		name: 'Review Events',
 		title: 'Create a Schedule',
@@ -133,7 +146,13 @@ const en = {
 		low: 'Low',
 		normal: 'Normal',
 		high: 'High',
+		coursePopover: 'Add your school schedule/courses!',
+		fixedPopover: 'Add the events for which you know the date and time!',
+		nonFixedPopover: 'Add the events for which you don\'t know the date and time and want the app to plan for you!',
+		unavailablePopover: 'Set the hours for which you\'re not available or don\'t want anything to be booked!',
+		checkPopover: 'Tap here when you\'re done!'
 	},
+
 	ScheduleCreation: {
 		name: 'Schedule Creation',
 		error: 'Error',
@@ -144,6 +163,7 @@ const en = {
 		backAlertTitle: 'Stopping Creation',
 		backAlertDescription: 'The schedules will stop being generated if you proceed. Where do you want to go?',
 	},
+
 	ScheduleSelection: {
 		name: 'Schedule Selection',
 		title: 'Schedule Selection',
@@ -157,11 +177,13 @@ const en = {
 		nonFixedEvents: 'Non-Fixed Events',
 		schedule: 'schedule',
 	},
+
 	ScheduleSelectionDetails: {
 		name: 'Schedule Selection Details',
 		title: 'Schedule Selection Details',
 		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
+
 	SchoolInformation: {
 		name: 'School Information',
 		title: 'Set School Information',
@@ -178,6 +200,7 @@ const en = {
 		confirmButton: 'Confirm',
 		cancelButton: 'Cancel',
 	},
+
 	SchoolSchedule: {
 		name: 'School Schedule',
 		title: 'Add School Schedule',
@@ -187,6 +210,7 @@ const en = {
 		manual: 'or import your school schedule ',
 		manually: 'manually',
 	},
+
 	SchoolScheduleCreation: {
 		name: 'School Schedule Creation',
 		dialogTitle: 'Analyzing your Picture',
@@ -197,14 +221,17 @@ const en = {
 		backAlertDescription: 'The schedule analyzing process will be stopped if you proceed. Where do you want to go?',
 		cancel: 'Cancel',
 	},
+
 	SchoolScheduleSelectPicture: {
 		name: 'School Schedule Select Picture',
 		title: 'Select Picture',
 	},
+
 	SchoolScheduleTakePicture: {
 		name: 'School Schedule Take Picture',
 		title: 'Take a Picture',
 	},
+
 	Settings: {
 		name: 'Settings',
 		profile: 'Profile',
@@ -217,8 +244,8 @@ const en = {
 		notifications: 'Notifications',
 		theme: 'Theme',
 		general: 'General',
-		help: 'FAQ',
 		tutorial: 'Reload Tutorial',
+		resetTutorialSuccess: 'Tutorial reloaded!',
 		clearDeleteCalendar: 'Clear/Delete Calendar',
 		privacyPolicy: 'Privacy Policy',
 		cdhStudio: 'CDH Studio',
@@ -241,6 +268,7 @@ const en = {
 		deleteDescription: 'Your Kalend calendar wil be deleted aswell as your account if you continue',
 		import: 'Import Calendar'
 	},
+
 	UnavailableHours: {
 		name: 'Unavailable Hours',
 		title: 'Unavailable Hours',
@@ -253,10 +281,11 @@ const en = {
 		eating: 'Eating Hours',
 		other: 'Other Unavailable Hours',
 		week: 'Week',
-		weekEnd: 'Week-End',
+		weekEnd: 'Weekend',
 		confirmButton: 'Confirm',
 		cancelButton: 'Cancel',
 	},
+
 	WelcomeScreen: {
 		name: 'Welcome Screen',
 		title: [
@@ -271,18 +300,25 @@ const en = {
 			'Find availabilities by comparing schedules with your friends and colleagues',
 		],
 	},
+
 	EventOverview: {
 		location: 'Location: ',
 		description: 'Description: ',
 		recurrence: 'Recurrence: ',
-		priority: 'Priority Level: ',
+		priority: 'Priority Level: '
+	},
+
+	ModalEvent: {
 		dates: 'Date(s): ',
-		time: 'Time: ',
-		details: 'Details',
+		time: 'Time: '
+	},
+
+	DeleteModal: {
 		deleteEvent: 'Delete this event?',
 		cancel: 'Cancel',
-		yes: 'Yes',
+		yes: 'Yes'
 	},
+
 	ServicesError: {
 		formatDate: 'Something went wrong while formating data (Array length == 0)',
 		analyzePictureServerReceive: 'Could not receive response from the server, please try again',
@@ -292,16 +328,19 @@ const en = {
 		insertFixedCourse: 'There was a problem inserting Course',
 		insertFixed: 'There was a problem inserting Fixed Event'
 	},
+
 	BottomButtons: {
 		add: 'Add',
 		next: 'Next',
 		done: 'Done',
 	},
+
 	ColorPicker: {
 		title: 'Select Color for Events',
 		tabTitles: ['Courses', 'Fixed Events', 'Non-Fixed Events'],
 		save: 'Save'
 	},
+
 	CalendarPermission: {
 		title: 'Calendar Permissions',
 		mainTitle: 'Manage who can see your calendar',
@@ -310,6 +349,7 @@ const en = {
 		emptyDescription: 'Tap to refresh the sharing info',
 		delete: 'Delete'
 	},
+
 	ImportCalendar: {
 		title: 'Select Calendar(s) to Import',
 		fetching: 'Fetching your calendar(s) information',
@@ -347,6 +387,7 @@ const en = {
 		deny: 'Deny',
 
 	}
+
 };
 
 const fr = {
@@ -373,7 +414,13 @@ const fr = {
 		email: 'Courriel',
 		close: 'Fermer',
 		add: 'Ajouter',
+<<<<<<< HEAD
 		invalidEmail: 'Vous ne pouvez pas vous ajoutez'
+=======
+		allowPopover: 'Ajoutez des utilisateurs pour qu\'ils puissent voir votre calendrier!',
+		availabilitiesPopover: 'Sélectionnez des utilisateurs parmi la liste ci-dessus et appuyer ici pour voir quand vous êtes tous disponibles!',
+		deletePopover: 'Sélectionnez les utilisateurs pour lesquels vous ne voulez plus partager votre calendrier avec et appuyer ici pour les retirer!'
+>>>>>>> b82043239f88267c5baeec24d539fd9aa6d70bdd
 	}, 
 
 	Course: {
@@ -395,6 +442,7 @@ const fr = {
 		timeEmpty: 'Veuillez sélectionner un début et une fin.',
 		cancel: 'Annuler',
 	},
+
 	Dashboard: {
 		name: 'Tableau de bord',
 		createSchedule: 'Créer un horaire',
@@ -403,8 +451,12 @@ const fr = {
 		fabNonFixedEvent: 'Ajouter un événement non fixe',
 		eventsDayTitle: 'Événements de la journée',
 		noEventsText: 'Il n\'y a pas d\'événements pour la journée.',
-		create: 'Créer'
+		create: 'Créer',
+		eventsPopover: 'Vos événements vont apparaîte ici. N\'oubliez pas de suivre votre progrès avec les boîtes à cocher à côté de chacun d\'entres eux!',
+		knobPopover: 'Dérouler le calendrier pour plus de dates!',
+		createPopover: 'Appuyer ici pour commencer à ajouter des événements!',
 	},
+
 	FixedEvent: {
 		name: 'Événement Fixe',
 		addTitle: 'Ajouter un événement fixe',
@@ -427,11 +479,13 @@ const fr = {
 		locationPlaceholder: 'Localisation',
 		descriptionPlaceholder: 'Description',
 	},
+
 	Home: {
 		name: 'Accueil',
 		createdBy: 'Créer par ',
 		cdhStudio: 'Studio CDH',
 	},
+
 	NonFixedEvent: {
 		name: 'Événement non fixe',
 		addTitle: 'Ajouter un événement non fixe',
@@ -467,6 +521,7 @@ const fr = {
 		locationPlaceholder: 'Location',
 		descriptionPlaceholder: 'Description',
 	},
+
 	ReviewEvent: {
 		name: 'Création d\'horaire',
 		title: 'Créer un horaire',
@@ -487,7 +542,13 @@ const fr = {
 		high: 'Haut',
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
 		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+		coursePopover: 'Ajoutez votre horaire scolaire/cours!',
+		fixedPopover: 'Ajoutez les événements pour lesquels vous connaissez les dates et les heures!',
+		nonFixedPopover: 'Ajoutez les événements pour lesquels vous ne connaissez pas les dates et les heures et voulez que l\'application planifie pour vous!',
+		unavailablePopover: 'Sélectionnez les heures pour lesquelles vous n\'êtes pas disponible ou ne voulez pas d\'événmenents planifiés!',
+		checkPopover: 'Appuyer ici lorsque vous avez terminé!'
 	},
+
 	ScheduleCreation: {
 		name: 'Création d\'horaire',
 		error: 'Erreur',
@@ -498,6 +559,7 @@ const fr = {
 		backAlertTitle: 'Arrêt de la création',
 		backAlertDescription: 'Les horaires vont cesser d\'être générés si vous poursuivez. Où désirez-vous aller?',
 	},
+
 	ScheduleSelection: {
 		name: 'Sélection d\'horaire',
 		title: 'Sélection d\'horaire',
@@ -512,12 +574,14 @@ const fr = {
 		schedule: 'horaire',
 		ordinal: ['Premier', 'Deuxième', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième', 'Septième', 'Huitième', 'Neuvième', 'Dixième']
 	},
+
 	ScheduleSelectionDetails: {
 		name: 'Détails sélection d\'horaire',
 		title: 'Détails sélection d\'horaire',
 		days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
 		daysEn: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	},
+
 	SchoolInformation: {
 		name: 'Information scolaire',
 		title: 'Préciser l\'information scolaire',
@@ -534,6 +598,7 @@ const fr = {
 		confirmButton: 'Confirmer',
 		cancelButton: 'Annuler',
 	},
+
 	SchoolSchedule: {
 		name: 'Horaire scolaire',
 		title: 'Ajouter un horaire scolaire',
@@ -543,6 +608,7 @@ const fr = {
 		manual: 'ou ajoutez votre horaire scolaire ',
 		manually: 'manuellement',
 	},
+
 	SchoolScheduleCreation: {
 		name: 'Création de l\'horaire scolaire',
 		dialogTitle: 'Analyse de votre photo',
@@ -553,14 +619,17 @@ const fr = {
 		backAlertDescription: 'L\'analyse de votre horaire sera interrompue si vous poursuivez. Où désirez-vous aller?',
 		cancel: 'Annuler',
 	},
+
 	SchoolScheduleSelectPicture: {
 		name: 'Sélection photo horaire scolaire',
 		title: 'Sélectionner une photo',
 	},
+
 	SchoolScheduleTakePicture: {
 		name: 'Prendre photo horaire scolaire',
 		title: 'Prendre une photo',
 	},
+
 	Settings: {
 		name: 'Paramètres',
 		profile: 'Profil',
@@ -573,8 +642,8 @@ const fr = {
 		notifications: 'Notifications',
 		theme: 'Thème',
 		general: 'Général',
-		help: 'FAQ',
 		tutorial: 'Relancer le tutoriel',
+		resetTutorialSuccess: 'Tutoriel relancé!',
 		clearDeleteCalendar: 'Réinitialiser/Supprimer le calendrier',
 		privacyPolicy: 'Politique de confidentialité',
 		cdhStudio: 'Studio CDH',
@@ -597,6 +666,7 @@ const fr = {
 		deleteDescription: 'Votre calendrier Kalend ainsi que votre compte seront supprimés si vous poursuivez',
 		import: 'Importer un calendrier'
 	},
+
 	UnavailableHours: {
 		name: 'Heures non disponibles',
 		title: 'Heures non disponibles',
@@ -613,6 +683,7 @@ const fr = {
 		confirmButton: 'Confirmer',
 		cancelButton: 'Annuler',
 	},
+
 	WelcomeScreen: {
 		name: 'Écran de bienvenue',
 		title: [
@@ -627,18 +698,25 @@ const fr = {
 			'Trouvez les disponibilités en comparant votre horaire avec ceux de vos amis et collègues',
 		],
 	},
+
 	EventOverview: {
 		location: 'Localisation : ',
 		description: 'Description : ',
 		recurrence: 'Récurrence : ',
-		priority: 'Niveau de priorité : ',
+		priority: 'Niveau de priorité : '
+	},
+
+	ModalEvent: {
 		dates: 'Date(s) : ',
-		time: 'Heures : ',
-		details: 'Détails',
+		time: 'Heure(s) : '
+	},
+
+	DeleteModal: {
 		deleteEvent: 'Supprimer cet\névénement?',
 		cancel: 'Annuler',
 		yes: 'Oui',
 	},
+
 	ServicesError: {
 		formatDate: 'Une erreur s\'est produite lors de la création des données (longeur du tableau == 0)',
 		analyzePictureServerReceive: 'Impossible de recevoir une réponse du serveur, veuillez réessayer',
@@ -648,16 +726,19 @@ const fr = {
 		insertFixedCourse: 'Une erreur d\'insertion s\'est produite pour un ou plusieurs cours',
 		insertFixed: 'Une erreur d\'insertion s\'est produite pour un ou plusieurs événements fixes'
 	},
+	
 	BottomButtons: {
 		add: 'Ajout',
 		next: 'Suivant',
 		done: 'Terminé',
 	},
+
 	ColorPicker: {
 		title: 'Choisir la couleur pour les événements',
 		tabTitles: ['Cours', 'Événements fixes', 'Événements non fixes'],
 		save: 'Enregistrer'
 	},
+
 	CalendarPermission: {
 		title: 'Permissions du calendrier',
 		mainTitle: 'Gérer qui peut voir votre calendrier',
@@ -666,6 +747,7 @@ const fr = {
 		emptyDescription: 'Appuyez pour actualiser les informations de partage',
 		delete: 'Supprimer'
 	},
+
 	ImportCalendar: {
 		title: 'Sélectionner un ou des calendrier(s) à importer',
 		fetching: 'Récupération de l\'information de votre/vos calendrier(s)',

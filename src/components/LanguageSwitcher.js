@@ -6,7 +6,7 @@ import { setLanguage } from '../actions';
 import { connect } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { languageSwitcherStyles as styles, dark_blue } from '../styles';
-import { getStrings } from '../services/helper';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 
 class LanguageSwitcher extends React.PureComponent {
 
@@ -33,7 +33,7 @@ class LanguageSwitcher extends React.PureComponent {
 	 * Dismisses the modal
 	 */
 	removeModal = () => {
-		this.setState({ visible: false });
+		this.setState({visible: false});
 		this.props.dismiss();
 	}
 
@@ -43,6 +43,8 @@ class LanguageSwitcher extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<Modal isVisible={visible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.removeModal}
 					useNativeDriver>
 					<View style={styles.modalContent}>
@@ -66,7 +68,7 @@ class LanguageSwitcher extends React.PureComponent {
 
 										setTimeout(() => {
 											RNRestart.Restart();
-										}, 50);
+										}, 500);
 									}}>
 										<Text style={styles.languageDialogYes}>{this.strings.yes}</Text>
 									</TouchableOpacity>
@@ -80,4 +82,12 @@ class LanguageSwitcher extends React.PureComponent {
 	}
 }
 
-export default connect()(LanguageSwitcher);
+let mapStateToProps = (state) => {
+	const { SettingsReducer } = state;
+
+	return {
+		language: SettingsReducer.language
+	};
+};
+
+export default connect(mapStateToProps)(LanguageSwitcher);

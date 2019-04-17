@@ -1,21 +1,19 @@
 import { combineReducers } from 'redux';
-import HomeReducer from './reducer_user';
-import ImageReducer  from './reducer_image';
-import FixedEventsReducer from './reducer_fixedEvent';
-import NonFixedEventsReducer from './reducer_nonfixedEvent';
-import NavigationReducer from './reducer_navigation';
-import StateReducer from './reducer_state';
-import ScheduleSelectionReducer from './reducer_schedule';
-import CoursesReducer from './reducer_course';
-import CalendarReducer from './reducer_calendar';
-import GeneratedNonFixedEventsReducer from './reducer_generatedNonFixedEvent';
-import UnavailableReducer from './reducer_unavailable';
-import SchoolInformationReducer from './reducer_schoolInformation';
-import GeneratedCalendarsReducer from './reducer_generatedCalendars';
-import AllEventsReducer from './reducer_allEvents';
-import SettingsReducer from './reducer_settings';
-import BottomNavReducer from './recuder_bottomNav';
-import DashboardReducer from './reducer_dashboard';
+import HomeReducer from './HomeReducer';
+import ImageReducer  from './ImageReducer';
+import FixedEventsReducer from './FixedEventsReducer';
+import NonFixedEventsReducer from './NonFixedEventsReducer';
+import NavigationReducer from './NavigationReducer';
+import ScheduleSelectionReducer from './ScheduleSelectionReducer';
+import CoursesReducer from './CoursesReducer';
+import CalendarReducer from './CalendarReducer';
+import GeneratedNonFixedEventsReducer from './GeneratedNonFixedEventsReducer';
+import UnavailableReducer from './UnavailableReducer';
+import SchoolInformationReducer from './SchoolInformationReducer';
+import GeneratedCalendarsReducer from './GeneratedCalendarsReducer';
+import SettingsReducer from './SettingsReducer';
+import BottomNavReducer from './BottomNavReducer';
+import DashboardReducer from './DashboardReducer';
 
 export default combineReducers( 
 	{ 	
@@ -25,7 +23,6 @@ export default combineReducers(
 		CoursesReducer, 
 		NonFixedEventsReducer,  
 		NavigationReducer, 
-		StateReducer, 
 		ScheduleSelectionReducer, 
 		UnavailableReducer,
 		CalendarReducer,

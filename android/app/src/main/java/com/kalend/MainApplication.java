@@ -3,6 +3,8 @@ package com.kalend;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+
 import com.github.droibit.android.reactnative.customtabs.CustomTabsPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
@@ -64,6 +66,7 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFetchBlobPackage(),
           new RNFirebaseDatabasePackage(),
           new RNFirebaseNotificationsPackage()
+          new ExtraDimensionsPackage() 
       );
     }
 
