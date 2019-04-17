@@ -202,16 +202,8 @@ class CompareSchedule extends React.PureComponent {
 				showCalendar: false,
 				agendaData: {},
 			}, () => {
-				this.forceUpdate();
 				LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-				this.setState({animatedHeight: this.listHeight});
-				// Animated.timing(
-				// 	this.state.animatedHeight,
-				// 	{
-				// 		toValue: this.listHeight,
-				// 		useNativeDriver: true,
-				// 	},
-				// ).start();
+				this.setState({animatedHeight: this.listHeight}, () => this.refreshAgenda());
 			});
 		} else {
 			if (selectedValue.length === 0) {
@@ -279,15 +271,8 @@ class CompareSchedule extends React.PureComponent {
 						
 						LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 						this.setState({animatedHeight: 0});
+						this.refreshAgenda();
 
-						// Animated.timing(
-						// 	// Animate value over time
-						// 	this.state.animatedHeight, // The value to drive
-						// 	{
-						// 		toValue: 0,
-						// 		useNativeDriver: true,
-						// 	},
-						// ).start(); // Start the animation
 						this.setState({
 							agendaData: dates,
 							showCalendar: true
@@ -357,9 +342,15 @@ class CompareSchedule extends React.PureComponent {
 			StatusBar.setBackgroundColor(statusBarDark, true);
 		}
 	}
+	
+	refreshAgenda = () => {
+		if (Platform.OS !== 'ios') {
+			this.setState({agendaKey: Math.random()});
+		}
+	}
 
 	render() {
-		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight } = this.state;
+		const { agendaKey, userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight } = this.state;
 
 		return(
 			<View style={styles.content}>
@@ -409,18 +400,15 @@ class CompareSchedule extends React.PureComponent {
 						</Animated.View> }
 
 				<View style={styles.buttons}>
-					{
-						showCalendar ?
-							null :
-							<TouchableRipple ref='delete' onPress={this.removePeople}
-								style={styles.sideButton}
-								rippleColor={whiteRipple}
-								underlayColor={whiteRipple}>
-								<Text style={styles.sideButtonText}>{this.strings.delete}</Text>
-							</TouchableRipple>}
+					<TouchableRipple ref='delete' onPress={this.removePeople}
+						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1, width: showCalendar ? 0 : null, height: showCalendar ? 0 : null, padding: showCalendar ? 0 : 8}]}
+						rippleColor={whiteRipple}
+						underlayColor={whiteRipple}>
+						<Text style={styles.sideButtonText}>{this.strings.delete}</Text>
+					</TouchableRipple>
 
 					<TouchableRipple ref='availabilities' onPress={this.seeAvailabilities}
-						style={[styles.availabilityButton, {width: showCalendar ? '100%' : null}]}
+						style={[styles.availabilityButton, {width: showCalendar ? '95%' : null}]}
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}>
 						<Text style={styles.availabilityButtonText}>
@@ -429,7 +417,7 @@ class CompareSchedule extends React.PureComponent {
 					</TouchableRipple>
 					
 					<TouchableRipple ref='allow' onPress={() => this.setState({searchModalVisible: true}) }
-						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1}]}
+						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1, width: showCalendar ? 0 : null, height: showCalendar ? 0 : null, padding: showCalendar ? 0 : 8}]}
 						disabled={showCalendar}
 						rippleColor={whiteRipple}
 						underlayColor={whiteRipple}>
@@ -438,6 +426,7 @@ class CompareSchedule extends React.PureComponent {
 				</View>
 
 				<Agenda ref='agenda'
+					key={agendaKey}
 					items={agendaData}
 					refreshing={loadingSharedList}
 					renderItem={this.renderItem}

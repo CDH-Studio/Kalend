@@ -146,6 +146,8 @@ class Dashboard extends React.PureComponent {
 
 					this.props.dispatch(setNavigationScreen({successfullyInsertedEvents: null}));
 				}
+
+				this.refreshAgenda();
 			}
 		);
 	}
@@ -319,8 +321,14 @@ class Dashboard extends React.PureComponent {
 		}
 	}
 
+	refreshAgenda = () => {
+		if (Platform.OS !== 'ios') {
+			this.setState({agendaKey: Math.random()});
+		}
+	}
+
 	render() {
-		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
+		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month, agendaKey} = this.state;
 		let showCloseFab;
 		let showMonthView;
 
@@ -357,6 +365,7 @@ class Dashboard extends React.PureComponent {
 					
 					<View style={styles.calendar}>
 						<Agenda ref='agenda'
+							key={agendaKey}
 							items={this.state.items}
 							renderItem={(item) => this.renderItem(item, this.changeInfo, this.setModalInfo)}
 							listTitle={this.strings.eventsDayTitle}
