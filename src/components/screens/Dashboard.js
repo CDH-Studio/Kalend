@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules, LayoutAnimation } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Snackbar, FAB } from 'react-native-paper';
@@ -125,10 +125,7 @@ class Dashboard extends React.PureComponent {
 
 	getMonth(date) {
 		const month = date - 1;
-		const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-			'July', 'August', 'September', 'October', 'November', 'December'];
-			
-		this.setState({ month: monthNames[month], showMonth: true });
+		this.setState({ month: this.strings.months[month], showMonth: true });
 	}
 	
 	componentDidMount() {
@@ -375,9 +372,8 @@ class Dashboard extends React.PureComponent {
 							shouldChangeDay={this.shouldChangeDay}
 							theme={{agendaKnobColor: dark_blue}}
 							onCalendarToggled={(calendarOpened) => {
-								// LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
 								this.setState({calendarOpened}, () => {
-									this.forceUpdate();
+									LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
 								});
 							}}
 						/>

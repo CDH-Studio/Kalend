@@ -58,7 +58,8 @@ const en = {
 		create: 'Create',
 		eventsPopover: 'Your events will show here. Don\'t forget to keep track of your progress with the checkboxes beside each of them!',
 		knobPopover: 'Pull down the knob to see more dates!',
-		createPopover: 'Tap here to start adding events!'
+		createPopover: 'Tap here to start adding events!',
+		months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	},
 
 	FixedEvent: {
@@ -240,7 +241,7 @@ const en = {
 		cancel: 'Cancel',
 		yes: 'Yes',
 		notifications: 'Notifications',
-		theme: 'Theme',
+		theme: 'Event Colors',
 		general: 'General',
 		tutorial: 'Reload Tutorial',
 		resetTutorialSuccess: 'Tutorial reloaded!',
@@ -427,6 +428,7 @@ const fr = {
 		eventsPopover: 'Vos événements vont apparaîte ici. N\'oubliez pas de suivre votre progrès avec les boîtes à cocher à côté de chacun d\'entres eux!',
 		knobPopover: 'Dérouler le calendrier pour plus de dates!',
 		createPopover: 'Appuyer ici pour commencer à ajouter des événements!',
+		months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
 	},
 
 	FixedEvent: {
@@ -612,7 +614,7 @@ const fr = {
 		cancel: 'Annuler',
 		yes: 'Oui',
 		notifications: 'Notifications',
-		theme: 'Thème',
+		theme: 'Couleur des événements',
 		general: 'Général',
 		tutorial: 'Relancer le tutoriel',
 		resetTutorialSuccess: 'Tutoriel relancé!',

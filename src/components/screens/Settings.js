@@ -195,7 +195,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={this.showLanguage}>
-							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
+							<Text style={styles.buttonText}>{this.strings.changeLanguage}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
