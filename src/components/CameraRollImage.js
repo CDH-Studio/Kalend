@@ -48,8 +48,8 @@ class CameraRollImage extends React.PureComponent {
 		return (
 			<View>
 				<View style={[styles.image, styles.shadow, {
-		margin: 5,
-		borderRadius: 5,}]}/>
+					margin: 5,
+					borderRadius: 5,}]}/>
 
 				<TouchableOpacity
 					onPress={() => this.update(image.uri, index)}
