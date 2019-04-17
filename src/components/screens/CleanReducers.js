@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, ScrollView, TouchableOpacity, Text, Platform } from 'react-native';
 import { cleanReducersStyles as styles, blue, dark_blue, red } from '../../styles';
-import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser, clearGeneratedCalendars, clearSchedule } from '../../actions';
+import { clearCalendarID, clearCourse, clearFixedEvents, clearNonFixedEvents, clearGeneratedNonFixedEvents, clearNavigation, clearSchoolInformation, clearState, clearUnavailableHours, logoffUser, clearGeneratedCalendars, clearSchedule, clearDashboardData, clearLanguage, clearBottomString, clearTutorialStatus } from '../../actions';
 import { LoginNavigator } from '../../constants/screenNames';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
@@ -18,14 +18,18 @@ class CleanReducers extends React.PureComponent {
 	reducersDeleteActions = {
 		'Course': clearCourse,
 		'Calendar ID': clearCalendarID,
+		'Bottom Strings': clearBottomString,
+		'Dashboard' : clearDashboardData,
 		'Fixed Events': clearFixedEvents,
 		'Non-Fixed Events': clearNonFixedEvents,
 		'Generated Non-Fixed Events': clearGeneratedNonFixedEvents,
 		'Generated Calendars': clearGeneratedCalendars,
+		'Language': clearLanguage,
 		'Navigation': clearNavigation,
 		'Schedule': clearSchedule,
 		'School Information': clearSchoolInformation,
 		'State of Application': clearState,
+		'Tutorial Status': clearTutorialStatus,
 		'Unavailable Hours': clearUnavailableHours,
 		'User Profile': logoffUser
 	};

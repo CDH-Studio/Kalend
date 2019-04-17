@@ -336,6 +336,8 @@ class NonFixedEvent extends React.PureComponent {
 													leftButtonBackgroundColor={blue}
 													rightButtonBackgroundColor={blue}
 													rounded={true}
+													totalHeight={42}
+													totalWidth={102}
 													borderColor={'lightgray'}
 													textColor={!this.state.durationValidated ? red : gray}
 													iconStyle={{color: white}} />
@@ -350,6 +352,8 @@ class NonFixedEvent extends React.PureComponent {
 													leftButtonBackgroundColor={blue}
 													rightButtonBackgroundColor={blue}
 													rounded={true}
+													totalHeight={42}
+													totalWidth={102}
 													borderColor={'lightgray'}
 													textColor={!this.state.durationValidated ? red : gray}
 													iconStyle={{color: white}}  />
@@ -380,6 +384,8 @@ class NonFixedEvent extends React.PureComponent {
 											leftButtonBackgroundColor={blue}
 											rightButtonBackgroundColor={blue}
 											rounded={true}
+											totalHeight={42}
+											totalWidth={102}
 											borderColor={'lightgray'}
 											textColor={gray}
 											iconStyle={{color: white}} />

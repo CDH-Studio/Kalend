@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import Modal from 'react-native-modal';
+import Popover from 'react-native-popover-view';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+import { setTutorialStatus } from '../../actions';
 import { getStrings } from '../../services/helper';
 import { store } from '../../store';
 import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
@@ -55,7 +57,10 @@ class CompareSchedule extends React.PureComponent {
 			startDate: moment().startOf('day'),
 			endDate: moment().startOf('day').add(90, 'd'),
 			showCalendar: false,
-			animatedHeight: this.listHeight
+			animatedHeight: this.listHeight,
+			allowPopover: false,
+			availabilitiesPopover: false,
+			deletePopover: false
 		};
 
 		updateNavigation('CompareSchedule', props.navigation.state.routeName);
@@ -64,6 +69,19 @@ class CompareSchedule extends React.PureComponent {
 
 	componentWillMount() {
 		this.refreshData();
+	}
+
+	componentDidMount() {
+		this.willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			() => {
+				this.setState({allowPopover: !this.props.showTutorial});
+			}
+		);
+	}
+
+	componentWillUnmount() {
+		this.willFocusSubscription.remove();
 	}
 
 	/**
@@ -234,7 +252,7 @@ class CompareSchedule extends React.PureComponent {
 
 						// Split dates
 						for (let i = 0; i < ranges.length - 1; i++) {
-							Object.keys(dates).map(date => {
+							Object.keys(dates).forEach(date => {
 								if (ranges[i].contains(moment(date))) {
 									ranges[i] = moment.range(
 										ranges[i].start,
@@ -379,14 +397,14 @@ class CompareSchedule extends React.PureComponent {
 					{
 						showCalendar ?
 							null :
-							<TouchableRipple onPress={this.removePeople}
+							<TouchableRipple ref='delete' onPress={this.removePeople}
 								style={styles.sideButton}
 								rippleColor={whiteRipple}
 								underlayColor={whiteRipple}>
 								<Text style={styles.sideButtonText}>{this.strings.delete}</Text>
 							</TouchableRipple>}
 
-					<TouchableRipple onPress={this.seeAvailabilities}
+					<TouchableRipple ref='availabilities' onPress={this.seeAvailabilities}
 						style={[styles.availabilityButton, {width: showCalendar ? '100%' : null}]}
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}>
@@ -394,8 +412,8 @@ class CompareSchedule extends React.PureComponent {
 							{ showCalendar ? this.strings.addRemove : this.strings.seeAvailabilities }
 						</Text>
 					</TouchableRipple>
-
-					<TouchableRipple onPress={() => this.setState({searchModalVisible: true}) }
+					
+					<TouchableRipple ref='allow' onPress={() => this.setState({searchModalVisible: true}) }
 						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1}]}
 						disabled={showCalendar}
 						rippleColor={whiteRipple}
@@ -454,6 +472,39 @@ class CompareSchedule extends React.PureComponent {
 					</View>
 				</Modal>
 
+				<Popover popoverStyle={styles.tooltipView}
+					isVisible={this.state.allowPopover}
+					fromView={this.refs.allow}
+					onClose={() => this.setState({allowPopover:false}, () => this.setState({availabilitiesPopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({allowPopover:false}, () => this.setState({availabilitiesPopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.allowPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					isVisible={this.state.availabilitiesPopover}
+					fromView={this.refs.availabilities}
+					onClose={() => this.setState({availabilitiesPopover:false}, () => this.setState({deletePopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({availabilitiesPopover:false}, () => this.setState({deletePopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.availabilitiesPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					isVisible={this.state.deletePopover}
+					fromView={this.refs.delete}
+					onClose={() => {
+						this.setState({deletePopover:false});
+						this.props.dispatch(setTutorialStatus('compareSchedule', true));	
+					}}>
+					<TouchableOpacity onPress={() => {
+						this.setState({deletePopover:false});
+						this.props.dispatch(setTutorialStatus('compareSchedule', true));	
+					}}>
+						<Text style={styles.tooltipText}>{this.strings.deletePopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
 				<Snackbar
 					visible={snackbarVisible}
 					onDismiss={() => this.setState({snackbarVisible: false})} 
@@ -470,7 +521,8 @@ let mapStateToProps = (state) => {
 	const { id } = state.CalendarReducer;
 
 	return {
-		calendarID: id
+		calendarID: id,
+		showTutorial: state.SettingsReducer.tutorialStatus.compareSchedule
 	};
 };
 
