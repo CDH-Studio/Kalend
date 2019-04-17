@@ -7,7 +7,7 @@ import * as Progress from 'react-native-progress';
 import { importCalendarStyles as styles, dark_blue, gray } from '../styles';
 import { getCalendarList, listEvents, insertEvent } from '../services/google_calendar';
 import { Checkbox } from 'react-native-paper';
-import { getStrings } from '../services/helper';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 
 /**
  * Modal view to import events from other calendars to the Kalend calendar
@@ -214,6 +214,8 @@ class ImportCalendar extends React.PureComponent {
 		return(
 			<View style={styles.container}>
 				<Modal isVisible={visible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.removeModal}
 					useNativeDriver
 					onModalHide={() => {
@@ -281,6 +283,8 @@ class ImportCalendar extends React.PureComponent {
 				</Modal>
 
 				<Modal isVisible={progressVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					useNativeDriver>
 					<View style={styles.modalContent}>
 						<Text style={styles.title}>{this.strings.progressTitle}</Text>

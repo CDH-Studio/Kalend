@@ -8,8 +8,8 @@ import Modal from 'react-native-modal';
 import Popover from 'react-native-popover-view';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { setTutorialStatus } from '../../actions';
-import { getStrings } from '../../services/helper';
 import { store } from '../../store';
 import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
 import updateNavigation from '../NavigationHelper';
@@ -442,6 +442,8 @@ class CompareSchedule extends React.PureComponent {
 
 
 				<Modal isVisible={searchModalVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					avoidKeyboard
 					onBackdropPress={() => this.setState({searchModalVisible: false})}>
 					<View style={styles.modalContent}>

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Platform, StatusBar} from 'react-native';
 import Modal from 'react-native-modal';
 import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getStrings } from '../services/helper';
-import { modalEventStyles as styles, white, semiTransparentWhite } from '../styles';
+import { modalEventStyles as styles, white, semiTransparentWhite, statusBarPopover, statusBarDark } from '../styles';
+import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
 import { calendarColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
@@ -23,7 +23,25 @@ class ModalEvent extends React.PureComponent {
 		};
 	}
 
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
+	}
+
 	componentWillReceiveProps(newProp) {
+		if (newProp.visible) {
+			this.darkenStatusBar();
+		} else {
+			this.restoreStatusBar();
+		}
+
 		this.setState({modalVisible: newProp.visible});
 	}
 
@@ -44,6 +62,8 @@ class ModalEvent extends React.PureComponent {
 		return(
 			<View>
 				<Modal isVisible={this.state.modalVisible}
+					deviceHeight={deviceHeight}
+					deviceWidth={deviceWidth}
 					onBackdropPress={this.dismissModal}
 					useNativeDriver
 					onModalHide={() => {
@@ -53,22 +73,23 @@ class ModalEvent extends React.PureComponent {
 						}
 					}}>
 					<View style={[styles.modalContent, {backgroundColor: this.props.categoryColor}]}>
-						<TouchableOpacity style={styles.closeModal}
-							onPress={this.dismissModal}>
-							<Feather name="x"
-								size={30}
-								color={semiTransparentWhite} />
-						</TouchableOpacity>
+						<View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5}}>
+							<View style={{height:70, padding: 3}}>
+								<ScrollView>
+									<TouchableOpacity activeOpacity={1}>
+										<Text style={styles.modalTitle}>{this.props.eventTitle}</Text>
+									</TouchableOpacity>
+								</ScrollView>
+							</View>
 
-						<View style={{height:70}}>
-							<ScrollView>
-								<TouchableOpacity activeOpacity={1}>
-									<Text style={[styles.modalTitle, {backgroundColor: this.props.categoryColor}]}>{this.props.eventTitle}</Text>
-								</TouchableOpacity>
-							</ScrollView>
+							<TouchableOpacity style={styles.closeModal}
+								onPress={this.dismissModal}>
+								<Feather name="x"
+									size={30}
+									color={semiTransparentWhite} />
+							</TouchableOpacity>
 						</View>
 						
-							
 						<View style={styles.modalInfoView}>
 							<View>
 								<View style={styles.modalInfoDate}>

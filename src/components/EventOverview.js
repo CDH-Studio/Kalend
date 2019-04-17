@@ -8,7 +8,7 @@ import ModalEvent from '../components/ModalEvent';
 import { store } from '../store';
 import { eventOverviewStyles as styles, gray, semiTransparentWhite } from '../styles';
 import { getStrings } from '../services/helper';
-import { calendarColors, calendarInsideColors } from '../../config/config';
+import { calendarColors,  calendarInsideColors } from '../../config/config';
 import DeleteModal from './DeleteModal';
 
 /**

@@ -3,10 +3,12 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Header } from 'react-navigation';
 import { containerPadding, lineThickness, lineColor, lineSpace, lineViewHorizontalPadding, lineViewLeftPadding } from '../src/components/screens/ScheduleSelection';
 import { containerPaddingDetails } from '../src/components/screens/ScheduleSelectionDetails';
+import { deviceWidth, deviceHeight } from './services/helper';
 
 export const white = '#FFFFFF';
-export const black = '#000';
+export const black = '#000000';
 export const blue = '#153d73';
+export const lightBlue = '#43638f';
 export const statusBlueColor = '#00000040';
 export const dark_blue = '#153d73';
 export const red = '#FF0000';
@@ -33,7 +35,7 @@ export const bottomButtonsStyles = StyleSheet.create({
 	},
 
 	button: {
-		backgroundColor: blue,
+		backgroundColor: lightBlue,
 		color:'white',
 		width: '48%',
 		padding: 5,
@@ -91,8 +93,8 @@ export const welcomeStyles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		height: Dimensions.get('window').height + getStatusBarHeight(),
-		width: Dimensions.get('window').width
+		height: deviceHeight + getStatusBarHeight(),
+		width: deviceWidth
 	},
 
 	image: {
@@ -244,8 +246,8 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	buttonSelect: {
 		borderRadius: 12,
-		backgroundColor: blue,
 		padding: 20,
+		backgroundColor: dark_blue,
 		alignItems: 'center',
 		width: 300,
 		...Platform.select({
@@ -270,7 +272,7 @@ export const schoolScheduleStyles = StyleSheet.create({
 
 	buttonTake: {
 		borderRadius: 12,
-		backgroundColor: dark_blue,
+		backgroundColor: lightBlue,
 		padding: 20,
 		alignItems: 'center',
 		marginTop: 20,
@@ -352,7 +354,7 @@ export const selectPictureStyles = StyleSheet.create({
 	emptyView: {
 		alignItems: 'center', 
 		padding: 20, 
-		height: Dimensions.get('window').height*0.85, 
+		height: Dimensions.get('window').height * 0.85, 
 		justifyContent: 'center'
 	}
 });
@@ -377,7 +379,7 @@ export const cameraRollImageStyles = StyleSheet.create({
 				shadowRadius: 5
 			},
 			android: {
-				elevation: 5
+				elevation: 3
 			},
 		}),
 	},
@@ -1561,14 +1563,12 @@ export const modalEventStyles = StyleSheet.create({
 	},
 
 	closeModal: {
-		flexDirection:'row',
 		justifyContent:'flex-end',
 		paddingHorizontal: 15,
 		paddingVertical: 10
 	},
 
 	modalTitle: {
-		backgroundColor: blue,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
 		flexWrap: 'wrap',
