@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
-import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { setNavigationScreen } from '../actions';
+import ModalEvent from '../components/ModalEvent';
 import { store } from '../store';
-import { eventOverviewStyles as styles, gray } from '../styles';
-import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
-import { calendarColors } from '../../config/config';
-
+import { eventOverviewStyles as styles, gray, semiTransparentWhite } from '../styles';
+import { getStrings } from '../services/helper';
+import { calendarColors, calendarInsideColors } from '../../config/config';
+import DeleteModal from './DeleteModal';
 
 /**
  * Permits the user to get more information on their events in the Review Events screen
@@ -36,7 +36,7 @@ class EventOverview extends React.PureComponent {
 		this.state = {
 			modalVisible: false,
 			deleteDialogVisible: false,
-			edited: false
+			shouldShowModal: false
 		};
 	}
 	
@@ -52,12 +52,29 @@ class EventOverview extends React.PureComponent {
 	 * To delete the event from the database and delete the component 
 	 */
 	deleteEvent = () => {
-		this.setState({deleteDialogVisible: false, modalVisible: false, edited: false});
+		this.setState({deleteDialogVisible: false, modalVisible: false, shouldShowModal: false});
 		this.props.action(this.props.id, this.props.category);
+	}
+
+	showDeleteModal = (shouldShowModal) => {
+		this.setState({deleteDialogVisible: true, shouldShowModal});
+	}
+
+	showModal = () => {
+		this.setState({modalVisible: true});
+	}
+
+	dismissModal = () => {
+		this.setState({modalVisible: false});
+	}
+
+	dismissDelete = () => {
+		this.setState({deleteDialogVisible: false});
 	}
 
 	render() {
 		let categoryColor;
+		let lightCategoryColor;
 		let categoryIcon;
 		let details;
 		let editScreen;
@@ -65,56 +82,59 @@ class EventOverview extends React.PureComponent {
 
 		if (this.props.category === 'SchoolSchedule') {
 			categoryColor = this.props.courseColor;
+			lightCategoryColor = this.props.insideCourseColor;
 			categoryIcon = 'school';
 			details = 
 				<View style={styles.modalDetailView}>
 					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-					<Text style={styles.modalDetailsText}>{this.props.location}</Text>
+					<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 				</View>;
 			detailHeight = 45;
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = this.props.fixedEventsColor;
+			lightCategoryColor = this.props.insideFixedEventsColor;
 			categoryIcon = 'calendar-today';
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
 			detailHeight = 80;
 			editScreen = 'FixedEvent';
 		} else {
 			categoryColor = this.props.nonFixedEventsColor;
+			lightCategoryColor = this.props.insideNonFixedEventsColor;
 			categoryIcon = 'face';
 			details = 
 				<View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.priorityLevel}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.location}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
-						<Text style={styles.modalDetailsText}>{this.props.description}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
 					</View>
 				</View>;
 			detailHeight = 100;
@@ -166,7 +186,7 @@ class EventOverview extends React.PureComponent {
 							)} />
 						<IconButton 
 							size={30}
-							onPress={() => this.setState({deleteDialogVisible: true})}
+							onPress={() => this.showDeleteModal(false)}
 							color={gray}
 							icon={({ size, color }) => (
 								<MaterialCommunityIcons
@@ -178,135 +198,25 @@ class EventOverview extends React.PureComponent {
 					</View>
 				</TouchableOpacity>
 
+				<ModalEvent visible={this.state.modalVisible}
+					dismiss={this.dismissModal}
+					navigateEditScreen={this.props.navigateEditScreen}
+					categoryColor={categoryColor}
+					lightCategoryColor={lightCategoryColor}
+					eventTitle={this.props.eventTitle}
+					date={this.props.date}
+					time={this.props.time}
+					categoryIcon={categoryIcon}
+					detailHeight={detailHeight}
+					details={details}
+					editScreen={editScreen}
+					showDeleteModal={this.showDeleteModal} />
 
-				<Modal visible={this.state.modalVisible}
-					deviceHeight={deviceHeight}
-					deviceWidth={deviceWidth}
-					ref='editModal'
-					transparent={true}
-					onRequestClose={() => this.setState({modalVisible: false})}
-					animationType={'none'}>
-					<TouchableOpacity style={styles.modalView} 
-						onPress={() => this.setState({modalVisible: false})}
-						activeOpacity={1}>
-						<TouchableWithoutFeedback>
-							<View style={styles.modalContent}>
-								<TouchableOpacity style={styles.closeModal}
-									onPress={() => this.setState({modalVisible: false})}>
-									<Feather name="x"
-										size={30}
-										color={gray} />
-								</TouchableOpacity>
-
-								<View style={{height:70}}>
-									<ScrollView>
-										<TouchableOpacity activeOpacity={1}>
-											<Text style={[styles.modalTitle, {backgroundColor: categoryColor}]}>{this.props.eventTitle}</Text>
-										</TouchableOpacity>
-									</ScrollView>
-								</View>
-								
-								
-								<View style={styles.modalInfoView}>
-									<View>
-										<View style={styles.modalInfoDate}>
-											<Text style={styles.modalInfoTitle}>{this.strings.dates}</Text>
-											<Text style={styles.modalInfoText}>{this.props.date}</Text>
-										</View>
-										<View style={styles.modalInfoTime}>
-											<Text style={styles.modalInfoTitle}>{this.strings.time}</Text>
-											<Text style={styles.modalInfoText}>{this.props.time}</Text>
-										</View>
-									</View>
-									
-									<MaterialCommunityIcons name={categoryIcon}
-										size={80}
-										color={gray} />
-								</View>
-
-								<View style={styles.modalDetailsView}>
-									<Text style={styles.modalDetailsTitle}>{this.strings.details}</Text>
-
-									<View style={{height:detailHeight}} onStartShouldSetResponder={() => true}>
-										<ScrollView>
-											<TouchableOpacity activeOpacity={1}>
-												{details}
-											</TouchableOpacity>
-										</ScrollView>
-									</View>
-								</View>
-								
-								<View style={styles.actionsModal}>
-									<View style={styles.actionIconModal}>
-										<IconButton
-											size={40}
-											onPress={() => this.navigateAndCloseModal(editScreen)}
-											color={gray}
-											icon={({ size, color }) => (
-												<MaterialCommunityIcons
-													name='square-edit-outline'
-													size={size}
-													color={color}
-													style={{height: size, width: size}}
-												/>
-											)} />
-									</View>
-									<View style={styles.actionIconModal}>
-										<IconButton
-											size={40}
-											onPress={() => this.setState({modalVisible: false, edited: true, deleteDialogVisible: true})}
-											color={gray}
-											icon={({ size, color }) => (
-												<MaterialCommunityIcons
-													name='trash-can-outline'
-													size={size}
-													color={color}
-													style={{height: size, width: size}}
-												/>
-											)} />
-									</View>
-								</View>
-							</View>
-						</TouchableWithoutFeedback>
-					</TouchableOpacity>
-				</Modal>
-
-				<Modal visible={this.state.deleteDialogVisible}
-					deviceHeight={deviceHeight}
-					deviceWidth={deviceWidth}
-					transparent={true}
-					onRequestClose={() => {
-						//do nothing;
-					}}
-					animationType={'none'}>
-					<TouchableOpacity style={styles.modalView} 
-						onPress={() => this.setState({deleteDialogVisible: false, edited: false})}
-						activeOpacity={1}>
-						<TouchableWithoutFeedback>
-							<View style={styles.deleteDialogContent}>
-								<View style={styles.deleteDialogMainRow}>
-									<MaterialCommunityIcons name="trash-can-outline"
-										size={80}
-										color={gray} />
-
-									<View style={styles.deleteDialogRightCol}>
-										<Text style={styles.deleteDialogQuestion}>{this.strings.deleteEvent}</Text>
-
-										<View style={styles.deleteDialogOptions}>
-											<TouchableOpacity onPress={() => this.setState({deleteDialogVisible: false, edited: false, modalVisible: this.state.edited})}>
-												<Text style={styles.deleteDialogCancel}>{this.strings.cancel}</Text>
-											</TouchableOpacity>
-
-											<TouchableOpacity onPress={this.deleteEvent}>
-												<Text style={styles.deleteDialogYes}>{this.strings.yes}</Text>
-											</TouchableOpacity>
-										</View>
-									</View>
-								</View>
-							</View>
-						</TouchableWithoutFeedback>
-					</TouchableOpacity>
-				</Modal>
+				<DeleteModal visible={this.state.deleteDialogVisible}
+					dismiss={this.dismissDelete}
+					shouldShowModal={this.state.shouldShowModal}
+					deleteEvent={this.deleteEvent}
+					showModal={this.showModal} />
 			</View>
 		);
 	}
@@ -314,7 +224,10 @@ class EventOverview extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
-	
+	let insideFixedEventsColor = fixedEventsColor;
+	let insideNonFixedEventsColor = nonFixedEventsColor;
+	let insideCourseColor = courseColor;
+
 	for (let i = 0; i < calendarColors.length; i++) {
 		let key = Object.keys(calendarColors[i])[0];
 		let value = Object.values(calendarColors[i])[0];
@@ -322,14 +235,17 @@ let mapStateToProps = (state) => {
 		switch(key) {
 			case fixedEventsColor:
 				fixedEventsColor = value;
+				insideFixedEventsColor = Object.values(calendarInsideColors[i])[0];
 				break;
 			
 			case nonFixedEventsColor:
 				nonFixedEventsColor = value;
+				insideNonFixedEventsColor = Object.values(calendarInsideColors[i])[0];
 				break;
 				
 			case courseColor:
 				courseColor = value;
+				insideCourseColor = Object.values(calendarInsideColors[i])[0];
 				break;
 		}
 	}
@@ -345,11 +261,26 @@ let mapStateToProps = (state) => {
 	if (!courseColor) {
 		courseColor = state.CalendarReducer.calendarColor;
 	}
+	
+	if (!insideFixedEventsColor) {
+		insideFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideNonFixedEventsColor) {
+		insideNonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!insideCourseColor) {
+		insideCourseColor = state.CalendarReducer.calendarColor;
+	}
 
 	return {
 		fixedEventsColor,
 		nonFixedEventsColor,
-		courseColor
+		courseColor,
+		insideNonFixedEventsColor,
+		insideFixedEventsColor,
+		insideCourseColor
 	};
 };
 

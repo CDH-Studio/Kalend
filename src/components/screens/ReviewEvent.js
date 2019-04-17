@@ -1,14 +1,15 @@
 import React from 'react';
 import { StatusBar, ScrollView, View, Text, TouchableOpacity, Platform, Alert } from 'react-native';
 import { FAB } from 'react-native-paper';
+import Popover from 'react-native-popover-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearCourse, clearFixedEvents, setNavigationScreen } from '../../actions';
-import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute } from '../../constants/screenNames';
+import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearCourse, clearFixedEvents, setNavigationScreen, setTutorialStatus } from '../../actions';
+import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute, UnavailableRoute } from '../../constants/screenNames';
 import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor, statusBarPopover, statusBarDark, black, dark_blue } from '../../styles';
 import { insertFixedEventsToGoogle } from '../../services/service';
 import { getStrings } from '../../services/helper';
 
@@ -29,7 +30,27 @@ class ReviewEvent extends React.PureComponent {
 			title: navigation.state.params.title,
 			headerStyle: {
 				backgroundColor: white,
-			}
+			},
+			headerRight: (
+				<TouchableOpacity onPress={() => navigation.navigate(UnavailableRoute, {title: getStrings().UnavailableHours.title})}
+					style={{marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
+						...Platform.select({
+							ios: {
+								shadowColor: black,
+								shadowOffset: { width: 0, height: 2 },
+								shadowOpacity: 0.3,
+								shadowRadius: 3,    
+							},
+							android: {
+								elevation: 4,
+							},
+						})
+					}}>
+					<MaterialCommunityIcons size={25}
+						name="clock-alert-outline"
+						color={white}/>
+				</TouchableOpacity>
+			),
 		};
 	};
 		
@@ -43,7 +64,12 @@ class ReviewEvent extends React.PureComponent {
 			fixedEventData: [],
 			nonFixedEventData: [],
 			schoolScheduleData: [],
-			showTutShadow: true
+			coursePopover: false,
+			fixedPopover: false,
+			nonFixedPopover: false,
+			unavailablePopover: false,
+			checkPopover: false
+
 		};
 
 		updateNavigation('ReviewEvent', props.navigation.state.routeName);
@@ -51,6 +77,10 @@ class ReviewEvent extends React.PureComponent {
 
 	componentWillMount() {
 		this.updateInformation();
+	}
+
+	componentDidMount() {
+		this.setState({coursePopover: !this.props.showTutorial});
 	}
 
 	componentWillReceiveProps() {
@@ -131,7 +161,7 @@ class ReviewEvent extends React.PureComponent {
 	
 	deleteEvent = (id, category) => {
 		let dataToDispatch;
-		let newEvents;
+		let newEvents = [];
 		let objectToChange;
 
 		switch (category) {
@@ -228,6 +258,16 @@ class ReviewEvent extends React.PureComponent {
 		}
 	}
 
+	showPopover = (isVisible) => {
+		this.setState({[isVisible]: true});
+		StatusBar.setBackgroundColor(statusBarPopover);
+	}
+	
+	closePopover = (toClose, toOpen) => {
+		this.setState({[toClose]:false}, () => this.setState({[toOpen]:true}));
+		StatusBar.setBackgroundColor(statusBarDark);
+	}
+
 	render() {
 		return(
 			<View style={styles.container}>
@@ -240,7 +280,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.courseTitle}</Text>
-								<TouchableOpacity onPress={() => {
+								<TouchableOpacity ref='course' onPress={() => {
 									if (this.props.hasSchoolInformation) {
 										if (this.props.checked) {
 											this.props.navigation.navigate(CourseRoute, {addTitle: getStrings().Course.addTitle});
@@ -277,7 +317,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.fixedTitle}</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle})}>
+								<TouchableOpacity ref='fixed' onPress={() => this.props.navigation.navigate(FixedEventRoute, {addTitle: getStrings().FixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -306,7 +346,7 @@ class ReviewEvent extends React.PureComponent {
 						<View>
 							<View style={{justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
 								<Text style={styles.sectionTitle}>{this.strings.nonFixedTitle}</Text>
-								<TouchableOpacity onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})}>
+								<TouchableOpacity ref='nonFixed' onPress={() => this.props.navigation.navigate(NonFixedEventRoute, {addTitle: getStrings().NonFixedEvent.addTitle})}>
 									<MaterialCommunityIcons name="plus-circle" 
 										size={25} 
 										color={blue}/>
@@ -336,7 +376,68 @@ class ReviewEvent extends React.PureComponent {
 					</View>		
 				</ScrollView>
 
-				<FAB style={styles.fab}
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={-(StatusBar.currentHeight)}
+					placement={'bottom'}
+					isVisible={this.state.coursePopover}
+					fromView={this.refs.course}
+					onClose={() => this.setState({coursePopover:false}, () => this.setState({fixedPopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({coursePopover:false}, () => this.setState({fixedPopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.coursePopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={-(StatusBar.currentHeight)}
+					placement={'bottom'}
+					isVisible={this.state.fixedPopover}
+					fromView={this.refs.fixed}
+					onClose={() => this.setState({fixedPopover:false}, () => this.setState({nonFixedPopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({fixedPopover:false}, () => this.setState({nonFixedPopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.fixedPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={-(StatusBar.currentHeight)}
+					placement={'bottom'}
+					isVisible={this.state.nonFixedPopover}
+					fromView={this.refs.nonFixed}
+					onClose={() => this.setState({nonFixedPopover:false}, () => this.setState({unavailablePopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({nonFixedPopover:false}, () => this.setState({unavailablePopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.nonFixedPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={-(StatusBar.currentHeight + 57)}
+					placement={'bottom'}
+					isVisible={this.state.unavailablePopover}
+					fromView={this.refs.course}
+					onClose={() => this.setState({unavailablePopover:false}, () => this.setState({checkPopover:true}))}>
+					<TouchableOpacity onPress={() => this.setState({unavailablePopover:false}, () => this.setState({checkPopover:true}))}>
+						<Text style={styles.tooltipText}>{this.strings.unavailablePopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<Popover popoverStyle={styles.tooltipView}
+					verticalOffset={-(StatusBar.currentHeight)}
+					isVisible={this.state.checkPopover}
+					fromView={this.refs.check}
+					onClose={() => {
+						this.setState({checkPopover:false});
+						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+					}}>
+					<TouchableOpacity onPress={() => {
+						this.setState({checkPopover:false});
+						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+					}}>
+						<Text style={styles.tooltipText}>{this.strings.checkPopover}</Text>
+					</TouchableOpacity>
+				</Popover>
+
+				<FAB ref='check' 
+					style={styles.fab}
 					icon="check"
 					theme={{colors:{accent:blue}}}
 					visible={this.state.showFAB}
@@ -355,7 +456,8 @@ function mapStateToProps(state) {
 		CoursesReducer, 
 		selectedIndex: NavigationReducer.reviewEventSelected,
 		hasSchoolInformation: SchoolInformationReducer.info,
-		checked: SchoolInformationReducer.info && SchoolInformationReducer.info.info.checked === 'third'
+		checked: SchoolInformationReducer.info && SchoolInformationReducer.info.info.checked === 'third',
+		showTutorial: state.SettingsReducer.tutorialStatus.reviewEvents
 	};
 }
 

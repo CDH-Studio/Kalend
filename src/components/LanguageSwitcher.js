@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import RNRestart from 'react-native-restart';
 import Modal from 'react-native-modal';
 import { setLanguage } from '../actions';
+import { connect } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { languageSwitcherStyles as styles, dark_blue } from '../styles';
 import { getStrings, deviceHeight, deviceWidth } from '../services/helper';
@@ -81,4 +82,4 @@ class LanguageSwitcher extends React.PureComponent {
 	}
 }
 
-export default LanguageSwitcher;
+export default connect()(LanguageSwitcher);

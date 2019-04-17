@@ -10,6 +10,7 @@ import { unavailableHoursStyles as styles, white, statusBlueColor, dark_blue, li
 import { getStrings } from '../../services/helper';
 
 const moment = require('moment');
+require('moment-round');
 
 /**
  * Permits the user to input the hours they are not available or don't want to have anything booked
@@ -33,32 +34,32 @@ class UnavailableHours extends React.PureComponent {
 
 		this.state = { 
 			sleepWeek: false,
-			startSleepWeek: moment().format('h:mm A'),
-			endSleepWeek: moment().format('h:mm A'),
+			startSleepWeek: moment().round(30, 'minutes').format('h:mm A'),
+			endSleepWeek: moment().round(30, 'minutes').format('h:mm A'),
 			sleepWeekEnd: false,
-			startSleepWeekEnd: moment().format('h:mm A'),
-			endSleepWeekEnd: moment().format('h:mm A'),
+			startSleepWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
+			endSleepWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
 
 			commutingWeek: false,
-			startCommutingWeek: moment().format('h:mm A'),
-			endCommutingWeek: moment().format('h:mm A'),
+			startCommutingWeek: moment().round(30, 'minutes').format('h:mm A'),
+			endCommutingWeek: moment().round(30, 'minutes').format('h:mm A'),
 			commutingWeekEnd: false,
-			startCommutingWeekEnd: moment().format('h:mm A'),
-			endCommutingWeekEnd: moment().format('h:mm A'),
+			startCommutingWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
+			endCommutingWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
 
 			eatingWeek: false,
-			startEatingWeek: moment().format('h:mm A'),
-			endEatingWeek: moment().format('h:mm A'),
+			startEatingWeek: moment().round(30, 'minutes').format('h:mm A'),
+			endEatingWeek: moment().round(30, 'minutes').format('h:mm A'),
 			eatingWeekEnd: false,
-			startEatingWeekEnd: moment().format('h:mm A'),
-			endEatingWeekEnd:moment().format('h:mm A'),
+			startEatingWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
+			endEatingWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
 
 			otherWeek: false,
-			startOtherWeek: moment().format('h:mm A'),
-			endOtherWeek: moment().format('h:mm A'),
+			startOtherWeek: moment().round(30, 'minutes').format('h:mm A'),
+			endOtherWeek: moment().round(30, 'minutes').format('h:mm A'),
 			otherWeekEnd: false,
-			startOtherWeekEnd: moment().format('h:mm A'),
-			endOtherWeekEnd: moment().format('h:mm A'),
+			startOtherWeekEnd: moment().round(30, 'minutes').format('h:mm A'),
+			endOtherWeekEnd: moment().round(30, 'minutes').format('h:mm A')
 		};
 		
 		updateNavigation('UnavailableHours', props.navigation.state.routeName);
@@ -107,7 +108,7 @@ class UnavailableHours extends React.PureComponent {
 								<View style={styles.row}>
 									<MaterialCommunityIcons name="sleep"
 										size={30}
-										color={dark_blue}/>
+										color={dark_blue} />
 
 									<Text style={styles.blueTitle}>{this.strings.sleeping}</Text>
 								</View>
@@ -156,7 +157,7 @@ class UnavailableHours extends React.PureComponent {
 														cancelBtnText={this.strings.cancelButton}
 														locale={'US'}
 														is24Hour={false}
-														onDateChange={(endSleepWeek) => this.setState({endSleepWeek})} /> />
+														onDateChange={(endSleepWeek) => this.setState({endSleepWeek})} />
 												</View> : <View style={[styles.rowTime]}><Text> </Text></View>}
 										</View>
 

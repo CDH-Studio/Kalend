@@ -16,6 +16,7 @@ import { timeVerification, dateVerification, getStrings } from '../../services/h
 import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white } from '../../styles';
 
 const moment = require('moment');
+require('moment-round');
 
 const viewHeight = 515.1428833007812;
 const containerWidth = Dimensions.get('window').width;
@@ -52,8 +53,8 @@ class FixedEvent extends React.PureComponent {
 			startDate: moment().format('ddd., MMM DD, YYYY'),
 			endDate: moment().format('ddd., MMM DD, YYYY'),
 
-			startTime: moment().format('h:mm A'),
-			endTime: moment().format('h:mm A'),
+			startTime: moment().round(30, 'minutes').format('h:mm A'),
+			endTime: moment().round(30, 'minutes').format('h:mm A'),
 
 			location: '',
 			recurrenceValue: this.strings.recurrence[0],
@@ -222,8 +223,8 @@ class FixedEvent extends React.PureComponent {
 			startDate:  moment().format('ddd., MMM DD, YYYY'),
 			endDate:  moment().format('ddd., MMM DD, YYYY'),
 
-			startTime: moment().format('h:mm A'),
-			endTime: moment().format('h:mm A'),
+			startTime: moment().round(30, 'minutes').format('h:mm A'),
+			endTime: moment().round(30, 'minutes').format('h:mm A'),
 
 			location: '',
 			recurrenceValue: this.strings.recurrence[0],

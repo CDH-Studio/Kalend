@@ -14,6 +14,7 @@ import { getStartDate, timeVerification, getStrings } from '../../services/helpe
 import { courseStyles as styles, statusBlueColor, dark_blue, blue, white } from '../../styles';
 
 const moment = require('moment');
+require('moment-round');
 
 const viewHeight = 774.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
@@ -49,8 +50,8 @@ class Course extends React.PureComponent {
 			summary: '',
 			dayOfWeek: 'Monday',
 			dayOfWeekValue: 'Monday',
-			startTime: moment().format('h:mm A'),
-			endTime: moment().format('h:mm A'),
+			startTime: moment().round(30, 'minutes').format('h:mm A'),
+			endTime: moment().round(30, 'minutes').format('h:mm A'),
 			location: ''
 		};
 
@@ -221,8 +222,8 @@ class Course extends React.PureComponent {
 			courseCodeValidated: true,
 			dayOfWeek: this.strings.week[0],
 			dayOfWeekValue: 'Monday',
-			startTime: moment().format('h:mm A'),
-			endTime: moment().format('h:mm A'),
+			startTime: moment().round(30, 'minutes').format('h:mm A'),
+			endTime: moment().round(30, 'minutes').format('h:mm A'),
 			location: '',
 			snackbarVisible: false,
 			snackbarText: '',

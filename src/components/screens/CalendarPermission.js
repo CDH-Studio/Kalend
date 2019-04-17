@@ -3,9 +3,9 @@ import { View, Text, StatusBar, Platform, FlatList, RefreshControl, TouchableOpa
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableRipple, Snackbar } from 'react-native-paper';
 import { calendarPermissionStyles as styles, gray, dark_blue, whiteRipple, blueRipple } from '../../styles';
+import { getStrings } from './../../services/helper';
 import { listPermissions, removePermissionPerson } from '../../services/service';
 import CalendarPermissionItem from '../CalendarPermissionItem';
-import { getStrings } from '../../services/helper';
 
 /**
  * 
@@ -14,9 +14,11 @@ class CalendarPermission extends React.PureComponent {
 
 	strings = getStrings().CalendarPermission;
 
-	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.params.title
-	});
+	static navigationOptions = ({ navigation }) => {
+		return	{
+			title: navigation.state.params.title
+		};
+	};
 
 	constructor(props) {
 		super(props);
@@ -36,7 +38,7 @@ class CalendarPermission extends React.PureComponent {
 	}
 
 	/**
-	 * Funciton to be called to reload data from the flatList
+	 * Function to be called to reload data from the flatList
 	 */
 	refreshData = () => {
 		this.setState({loadingList: true});
