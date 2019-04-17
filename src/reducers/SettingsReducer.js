@@ -3,8 +3,8 @@ import { SET_LANGUAGE, CLEAR_SETTINGS, SET_TUTORIAL_STATUS, CLEAR_TUTORIAL_STATU
 let defaultState = {
 	tutorialStatus: {
 		dashboard: false,
-		reviewEvents: true,
-		compareSchedule: true
+		reviewEvents: false,
+		compareSchedule: false
 	}
 };
 

@@ -11,7 +11,7 @@ import { extendMoment } from 'moment-range';
 import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { setTutorialStatus } from '../../actions';
 import { store } from '../../store';
-import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
+import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark, statusBarPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
@@ -76,6 +76,9 @@ class CompareSchedule extends React.PureComponent {
 			'willFocus',
 			() => {
 				this.setState({allowPopover: !this.props.showTutorial});
+				if (!this.props.showTutorial) {
+					this.darkenStatusBar();
+				}
 			}
 		);
 	}
@@ -343,6 +346,18 @@ class CompareSchedule extends React.PureComponent {
 		return r1 !== r2;
 	}
 
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
+	}
+
 	render() {
 		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight } = this.state;
 
@@ -477,8 +492,10 @@ class CompareSchedule extends React.PureComponent {
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.allowPopover}
 					fromView={this.refs.allow}
-					onClose={() => this.setState({allowPopover:false}, () => this.setState({availabilitiesPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({allowPopover:false}, () => this.setState({availabilitiesPopover:true}))}>
+					placement={'bottom'}
+					onClose={() => this.setState({allowPopover:false})}
+					doneClosingCallback={() => this.setState({availabilitiesPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({allowPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.allowPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
@@ -486,8 +503,10 @@ class CompareSchedule extends React.PureComponent {
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.availabilitiesPopover}
 					fromView={this.refs.availabilities}
-					onClose={() => this.setState({availabilitiesPopover:false}, () => this.setState({deletePopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({availabilitiesPopover:false}, () => this.setState({deletePopover:true}))}>
+					placement={'bottom'}
+					onClose={() => this.setState({availabilitiesPopover:false})}
+					doneClosingCallback={() => this.setState({deletePopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({availabilitiesPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.availabilitiesPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
@@ -495,13 +514,16 @@ class CompareSchedule extends React.PureComponent {
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.deletePopover}
 					fromView={this.refs.delete}
+					placement={'bottom'}
 					onClose={() => {
 						this.setState({deletePopover:false});
-						this.props.dispatch(setTutorialStatus('compareSchedule', true));	
+						this.props.dispatch(setTutorialStatus('compareSchedule', true));
+						this.restoreStatusBar();	
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({deletePopover:false});
 						this.props.dispatch(setTutorialStatus('compareSchedule', true));	
+						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.deletePopover}</Text>
 					</TouchableOpacity>

@@ -378,7 +378,7 @@ class Dashboard extends React.PureComponent {
 							}}
 						/>
 					</View>
-
+					
 					{ 
 						calendarOpened ?
 							null :
@@ -419,26 +419,29 @@ class Dashboard extends React.PureComponent {
 
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.eventsPopover}
-					onClose={() => this.setState({eventsPopover:false}, () => this.setState({knobPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({eventsPopover:false}, () => this.setState({knobPopover:true}))}>
+					onClose={() => this.setState({eventsPopover:false})}
+					doneClosingCallback={() => this.setState({knobPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({eventsPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.eventsPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={60}
+					verticalOffset={Platform.OS === 'ios' ? 90 : 55}
 					fromView={this.refs.agenda}
 					isVisible={this.state.knobPopover}
-					onClose={() => this.setState({knobPopover:false}, () => this.setState({createPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({knobPopover:false}, () => this.setState({createPopover:true}))}>
+					onClose={() => this.setState({knobPopover:false})}
+					doneClosingCallback={() => this.setState({createPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({knobPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.knobPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 				
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight + 2)}
+					verticalOffset={Platform.OS === 'ios' ? 0 : -(StatusBar.currentHeight + 2)}
 					isVisible={this.state.createPopover}
 					fromView={this.refs.create}
+					placement={'top'}
 					onClose={() => {
 						this.setState({createPopover:false});
 						this.props.dispatch(setTutorialStatus('dashboard', true));
