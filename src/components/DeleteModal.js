@@ -6,7 +6,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { getStrings } from '../services/helper';
 import { deleteModalStyles as styles, dark_blue } from '../styles';
 
-
 class DeleteModal extends React.PureComponent {
 
 	strings = getStrings().DeleteModal;

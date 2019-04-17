@@ -33,7 +33,7 @@ class LanguageSwitcher extends React.PureComponent {
 	 * Dismisses the modal
 	 */
 	removeModal = () => {
-		this.setState({ visible: false });
+		this.setState({visible: false});
 		this.props.dismiss();
 	}
 

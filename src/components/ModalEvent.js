@@ -73,10 +73,12 @@ class ModalEvent extends React.PureComponent {
 							<View>
 								<View style={styles.modalInfoDate}>
 									<Text style={styles.modalInfoTitle}>{this.strings.dates}</Text>
+
 									<Text style={[styles.modalInfoText, {color: semiTransparentWhite}]}>{this.props.date}</Text>
 								</View>
 								<View style={styles.modalInfoTime}>
 									<Text style={styles.modalInfoTitle}>{this.strings.time}</Text>
+									
 									<Text style={[styles.modalInfoText, {color: semiTransparentWhite}]}>{this.props.time}</Text>
 								</View>
 							</View>

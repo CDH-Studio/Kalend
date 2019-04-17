@@ -123,7 +123,7 @@ class Home extends React.PureComponent {
 
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
-									showWebsite('https://cdhstudio.ca/fr');
+									this.props.language === 'en' ? showWebsite('https://cdhstudio.ca/fr') : showWebsite('https://cdhstudio.ca/');
 								}}>
 								<Text style={styles.cdhSectionText}>
 									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>
@@ -145,7 +145,8 @@ let mapStateToProps = (state) => {
 
 	return {
 		NavigationReducer,
-		calendarID: id
+		calendarID: id,
+		language: state.SettingsReducer.language
 	};
 };
 

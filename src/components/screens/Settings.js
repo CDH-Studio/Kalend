@@ -139,7 +139,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={this.showImportCalendar}>
-							<Text style={styles.buttonText}>Import Calendar</Text>
+							<Text style={styles.buttonText}>{this.strings.import}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}
@@ -253,7 +253,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button} 
 							onPress={()=>{
-								showWebsite('https://cdhstudio.ca/');
+								this.props.language === 'en' ? showWebsite('https://cdhstudio.ca/fr') : showWebsite('https://cdhstudio.ca/');
 							}}>
 							<Text style={styles.buttonText}>{this.strings.cdhStudio}</Text>
 						</TouchableOpacity>
@@ -305,7 +305,7 @@ class Settings extends React.PureComponent {
 
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}
@@ -322,7 +322,7 @@ let mapStateToProps = (state) => {
 
 	return {
 		profileImage: hasUserInfo ? HomeReducer.profile.profile.user.photo : `https://api.adorable.io/avatars/285/${new Date().getTime()}.png`,
-		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unkown user',
+		userName: hasUserInfo ? HomeReducer.profile.profile.user.name : 'Unknown user',
 		calendarId: CalendarReducer.id,
 		language: SettingsReducer.language
 	};

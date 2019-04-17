@@ -48,6 +48,7 @@ class WelcomeScreen extends React.PureComponent {
 			
 			<View>
 				<Text style={styles.title}>{props.title}</Text>
+				
 				<Text style={styles.text}>{props.text}</Text>
 			</View>
 		</LinearGradient>

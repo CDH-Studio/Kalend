@@ -99,16 +99,19 @@ class EventOverview extends React.PureComponent {
 				<View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
 					</View>
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
 					</View>
 				</View>;
@@ -122,18 +125,22 @@ class EventOverview extends React.PureComponent {
 				<View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.priority}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 					</View>
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
+
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
 					</View>
 				</View>;
@@ -155,15 +162,19 @@ class EventOverview extends React.PureComponent {
 						<View style={[styles.category, {backgroundColor: categoryColor}]}>
 							<Text></Text>
 						</View>
+
 						<View>
 							<Text style={styles.eventTitle}
 								numberOfLines={1}>{this.props.eventTitle}</Text>
+
 							<Text style={styles.eventInfo}
 								numberOfLines={1}>{this.props.date}</Text>
+
 							<Text style={styles.eventInfo}
 								numberOfLines={1}>{this.props.time}</Text>
 						</View>
 					</View>
+					
 					<View style={styles.actions}>
 						<IconButton 
 							size={30}

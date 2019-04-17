@@ -252,7 +252,9 @@ class ImportCalendar extends React.PureComponent {
 												<MaterialCommunityIcons size={50}
 													name='calendar-search'
 													color={gray}/>
+
 												<Text style={styles.emptyTitle}>{this.strings.emptyTitle}</Text> 
+												
 												<Text style={styles.emptyDescription}>{this.strings.emptyDescription}</Text> 
 											</View>
 										</TouchableOpacity>
