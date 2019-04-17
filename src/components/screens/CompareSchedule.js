@@ -261,9 +261,6 @@ class CompareSchedule extends React.PureComponent {
 							});
 						}
 
-						// Inverts the dates to show availabilities instead of the non-availabilities
-						console.log(ranges);
-
 						// Formats to wix calendar data
 						ranges.map(range => {
 							dates[range.start.format('YYYY-MM-DD')].push({
@@ -271,13 +268,43 @@ class CompareSchedule extends React.PureComponent {
 								end: range.end
 							});
 						});
+
+						// Inverts the dates to show availabilities instead of the non-availabilities
+						let invertedDates = {};
+						Object.keys(dates).map(date => {
+							let ranges = [];
+
+							let startMoment = moment(date, 'YYYY-MM-DD').startOf('day');
+
+							// Iterates over the array of ranges, and create a range from the start of the day or the last event to the start of the next event
+							dates[date].map(range => {
+								if (!startMoment.isSame(range.start)) {
+									ranges.push({
+										start: startMoment,
+										end: range.start
+									});
+								}
+								startMoment = range.end;
+							});
+
+							// Adds the last event of the day
+							let endOfDay = moment(date, 'YYYY-MM-DD').endOf('day');
+							if (!endOfDay.isSame(startMoment)) {
+								ranges.push({
+									start: startMoment,
+									end: endOfDay
+								});
+							}
+
+							invertedDates[date] = ranges;
+						});
 						
 						LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 						this.setState({animatedHeight: 0});
 						this.refreshAgenda();
 
 						this.setState({
-							agendaData: dates,
+							agendaData: invertedDates,
 							showCalendar: true
 						});
 					})
