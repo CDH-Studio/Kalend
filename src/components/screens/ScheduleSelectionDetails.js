@@ -265,7 +265,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		if (this.state.data.aiEvents) {
 			this.props.dispatch(setSelectedCalendar(this.props.index));
 			await this.insertGeneratedEvents(this.state.data.aiEvents).then(() => {
-				storeGeneratedCalendars(this.props.GeneratedCalendarsReducer);
+				//storeGeneratedCalendars(this.props.GeneratedCalendarsReducer);
 				storeInsertedCalendars(this.props.AllEventsReducer)
 					.then(success => {
 						if (success) {

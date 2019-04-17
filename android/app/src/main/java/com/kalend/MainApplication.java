@@ -65,7 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebasePerformancePackage(),
           new RNFetchBlobPackage(),
           new RNFirebaseDatabasePackage(),
-          new RNFirebaseNotificationsPackage()
+          new RNFirebaseNotificationsPackage(),
           new ExtraDimensionsPackage() 
       );
     }
