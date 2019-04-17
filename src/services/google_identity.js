@@ -1,4 +1,4 @@
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+import { GoogleSignin } from 'react-native-google-signin';
 import { webClientId, googleIdentityScope } from '../../config/config';
 
 GoogleSignin.configure({
@@ -46,11 +46,7 @@ let googleGetCurrentUserInfo = async () => {
 		const userInfo = await GoogleSignin.signInSilently();
 		return userInfo;
 	} catch (error) {
-		if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-			// user has not signed in yet
-		} else {
-			// some other error
-		}
+		//console.error(error);
 	}
 };
 
