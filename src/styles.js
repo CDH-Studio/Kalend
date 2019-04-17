@@ -580,12 +580,21 @@ export const courseStyles = StyleSheet.create({
 		width: 93
 	},
 
-	dayOfWeekValues:{
+	dayOfWeekValues: {
 		color: gray,
 		height: 40,
 		width: '110%',
 		marginLeft: -5,
 		marginBottom:-8
+	},
+
+	dayOfWeekText: {
+		padding: 1
+	},
+
+	arrow: {
+		position: 'absolute',
+		right: 0
 	},
 
 	time: {
@@ -703,6 +712,15 @@ export const fixedEventStyles = StyleSheet.create({
 		marginLeft: -5,
 		marginBottom: -8,
 		color: gray
+	},
+
+	recurrenceText: {
+		padding: 1
+	},
+
+	arrow: {
+		position: 'absolute',
+		right: 0
 	},
 
 	...snackbarStyle
@@ -945,6 +963,13 @@ export const reviewEventStyles = StyleSheet.create({
 		flex:1,
 		paddingHorizontal: 20,
 		paddingBottom: 80
+	},
+
+	section: {
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+		width: '100%',
+		alignItems: 'flex-end'
 	},
 
 	sectionTitle: {
@@ -1349,6 +1374,10 @@ const DashboardButton = StyleSheet.create({
 });
 
 export const dashboardStyles = StyleSheet.create({
+	container: {
+		flex:1
+	},
+
 	content: {
 		width: '100%',
 		height: '100%',
@@ -1473,6 +1502,46 @@ export const dashboardStyles = StyleSheet.create({
 		paddingTop: 10
 	},
 
+	createButton: {
+		position: 'absolute',
+		bottom: 13,
+		right: 10,
+		borderRadius: 22.5 
+	},
+
+	createContent: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 45,
+		width: 110,
+		backgroundColor: dark_blue,
+		borderRadius: 22.5, 
+		...Platform.select({
+			ios: {
+				shadowColor: black,
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		})
+	},
+
+	createText: {
+		color: white,
+		fontFamily: 'Raleway-Bold',
+		marginRight: 5
+	},
+
+	iconPopover: {
+		top:-2.5,
+		right: -2.5,
+		justifyContent: 'flex-end'
+	},
+
 	...DashboardButton,
 });
 
@@ -1585,7 +1654,8 @@ export const calendarShareButtons = StyleSheet.create({
 	},
 
 	buttons: {
-		flexDirection: 'row', 
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 		margin: 10, 
 		marginTop: 0
 	},
@@ -1786,9 +1856,7 @@ export const compareScheduleStyles = StyleSheet.create({
 	},
 
 	emptyDate: {
-		height: 15,
-		flex:1,
-		paddingTop: 30
+		height: 70
 	},
 
 	eventsDayTitle: {
@@ -2046,7 +2114,7 @@ export const settingsStyles = StyleSheet.create({
 	languageDialogYes: {
 		fontFamily: 'Raleway-SemiBold',
 		fontSize: 16,
-		color: '#ff0000',
+		color: red,
 		marginLeft: 20
 	},
 	

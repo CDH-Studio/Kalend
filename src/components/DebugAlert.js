@@ -4,6 +4,7 @@ import { deviceHeight, deviceWidth } from '../services/helper';
 
 // Class for popping Debug Alerts for testing on Release version
 class DebugAlert extends React.Component {
+	
 	state = {
 		modalVisible: true
 	};

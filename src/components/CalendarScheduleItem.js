@@ -13,6 +13,7 @@ import { calendarPermissionItemStyles as styles, dark_blue } from '../styles';
  * @prop {Function} onPressItem the function to be triggered in the parent component when the item is touched
  */
 class CalendarScheduleItem extends React.PureComponent {
+	
 	_onPress = () => {
 		this.props.onPressItem(this.props.id);
 	};

@@ -31,7 +31,7 @@ const { UIManager } = NativeModules;
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 /**
- * The screen for comparing schedules
+ * Allows the users to compare schedules
  */
 class CompareSchedule extends React.PureComponent {
 
@@ -85,7 +85,7 @@ class CompareSchedule extends React.PureComponent {
 	}
 
 	/**
-	 * Funciton to be called to reload data from the flatList
+	 * Reloads data from the flatList
 	 */
 	refreshData = () => {
 		this.setState({loadingSharedList: true});
@@ -376,7 +376,9 @@ class CompareSchedule extends React.PureComponent {
 													<MaterialCommunityIcons size={50}
 														name='calendar-search'
 														color={gray}/>
+
 													<Text style={styles.emptyTitle}>{this.strings.noCalendars}</Text> 
+
 													<Text style={styles.emptyDescription}>{this.strings.refresh}</Text> 
 												</View>
 											</TouchableOpacity>
@@ -391,7 +393,7 @@ class CompareSchedule extends React.PureComponent {
 							}
 						</Animated.View> }
 
-				<View style={[styles.buttons, {justifyContent: 'space-between'}]}>
+				<View style={styles.buttons}>
 					{
 						showCalendar ?
 							null :
@@ -410,6 +412,7 @@ class CompareSchedule extends React.PureComponent {
 							{ showCalendar ? this.strings.addRemove : this.strings.seeAvailabilities }
 						</Text>
 					</TouchableRipple>
+					
 					<TouchableRipple ref='allow' onPress={() => this.setState({searchModalVisible: true}) }
 						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1}]}
 						disabled={showCalendar}
@@ -427,7 +430,7 @@ class CompareSchedule extends React.PureComponent {
 					rowHasChanged={this.rowHasChanged}
 					listTitle={this.strings.availabilities}
 					renderEmptyDate={() => {
-						return (<View style={{height: 70}}/>);
+						return (<View style={styles.emptyDate}/>);
 					}}
 					pastScrollRange={1}
 					futureScrollRange={4}
@@ -446,7 +449,7 @@ class CompareSchedule extends React.PureComponent {
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>{this.strings.enterEmail}</Text>
 
-						<TextInput  mode="outlined"
+						<TextInput mode="outlined"
 							style={styles.modalTextInput}
 							theme={{colors:{primary: dark_blue}}}
 							label={this.strings.email}
@@ -506,7 +509,7 @@ class CompareSchedule extends React.PureComponent {
 
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}

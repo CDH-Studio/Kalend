@@ -37,33 +37,11 @@ LocaleConfig.locales['fr'] = {
 class Dashboard extends React.PureComponent {
 
 	defaultLocale = store.getState().SettingsReducer.language;
-
 	strings = getStrings().Dashboard;
 
-	static navigationOptions = ({navigation}) => ({
-		headerRight: (
-			<TouchableOpacity onPress={() => navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title})}
-				style={{flexDirection: 'row', alignItems: 'center', marginRight: 10, paddingHorizontal: 10, paddingVertical: 3, backgroundColor: dark_blue, borderRadius: 5, 
-					...Platform.select({
-						ios: {
-							shadowColor: black,
-							shadowOffset: { width: 0, height: 2 },
-							shadowOpacity: 0.3,
-							shadowRadius: 3,    
-						},
-						android: {
-							elevation: 4,
-						},
-					})
-				}}>
-				<Text style={{color: white, fontFamily: 'Raleway-Bold', marginRight: 5}}>{getStrings().Dashboard.create}</Text>
-				<MaterialCommunityIcons size={25}
-					name="calendar-multiple-check"
-					color={white}/>
-			</TouchableOpacity>
-		),
+	static navigationOptions = {
 		header: null
-	});
+	}
 
 	constructor(props) {
 		super(props);
@@ -371,7 +349,7 @@ class Dashboard extends React.PureComponent {
 		}
 
 		return(
-			<View style={{flex:1}}>
+			<View style={styles.container}>
 				<View style={styles.content}>
 					<StatusBar translucent={true}
 						animated

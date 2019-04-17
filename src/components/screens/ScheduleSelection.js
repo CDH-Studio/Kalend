@@ -79,7 +79,7 @@ class ScheduleEvent extends React.PureComponent {
 				break;
 		}
 
-		this.setState({height,width,left,top,color, colorInside});
+		this.setState({height, width, left, top, color, colorInside});
 	}
 
 	render() {
@@ -93,7 +93,7 @@ class ScheduleEvent extends React.PureComponent {
 				height: height, 
 				width: width,
 				top: top,
-				left: left,}}>
+				left: left}}>
 			</View>
 		);
 	}
@@ -159,6 +159,7 @@ class Schedule extends React.PureComponent {
 		// Gets the earliest and latest hours in the events
 		let earliestHour = 12;
 		let latestHour = 12;
+		
 		Object.entries(data).forEach((i) => {
 			i[1].map((i) => {
 				let start = i.start;
@@ -176,6 +177,7 @@ class Schedule extends React.PureComponent {
 		// If the range of the earliest and latest hours divided by the number of lines 
 		// is odd, change it to be event
 		let interval = (latestHour - earliestHour);
+
 		if (interval % this.props.numOfLines !== 0) {
 			let diff = this.props.numOfLines - interval % this.props.numOfLines;
 			interval += diff;
@@ -200,7 +202,9 @@ class Schedule extends React.PureComponent {
 		// Creates the hours on the side
 		let currentHour = earliestHour;
 		let count = 0;
+
 		interval = interval / this.props.numOfLines;
+
 		for (let i = 0; i <= this.props.numOfLines; i++) {
 			hours.push(currentHour);
 			currentHour += interval;
@@ -238,7 +242,6 @@ class Schedule extends React.PureComponent {
 
 	render() {
 		const { numOfLines, id, colors } = this.props;
-		// console.log('data in render', id, data.ai[id]);
 		const { weekLetters, ordinal, hours, showShadow, startOffset, timeInterval } = this.state;
 
 		return (
@@ -367,8 +370,6 @@ class Schedule extends React.PureComponent {
 	}
 }
 
-
-
 /**
  * The component which encloses all of the schedules which has been generated
  */
@@ -403,7 +404,6 @@ class ScheduleSelection extends React.PureComponent {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		this.props.navigation.setParams({onBackPress: this.handleBackButton});
 	}
-
 	
 	deleteCalendar = (index) => {
 		let data = this.state.data;
@@ -418,7 +418,6 @@ class ScheduleSelection extends React.PureComponent {
 			this.setState({data});
 		});
 	}
-
 
 	handleBackButton = () => {
 		Alert.alert(
@@ -475,7 +474,6 @@ class ScheduleSelection extends React.PureComponent {
 	setIndex = (index) => {
 		this.props.dispatch(setSelectedSchedule(index));
 	}
-
 	
 	_renderItem = ({item, index}) => {
 		return <Schedule nextScreen={this.nextScreen} 
@@ -500,7 +498,6 @@ class ScheduleSelection extends React.PureComponent {
 
 	render() {
 		return(
-
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
 					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
@@ -509,17 +506,21 @@ class ScheduleSelection extends React.PureComponent {
 				<ScrollView >
 					<View style={styles.content}>
 						<Text style={styles.description}>{this.strings.description}</Text>
+
 						<View style={styles.legendRow}>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.courseColor, backgroundColor: this.props.insideCourseColor}]}></View>
+
 								<Text style={styles.legendText}>{this.strings.courses}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.fixedEventsColor, backgroundColor: this.props.insideFixedEventsColor}]}></View>
+
 								<Text style={styles.legendText}>{this.strings.fixedEvents}</Text>
 							</View>
 							<View style={styles.singleLegend}>
 								<View style={[styles.legendColor, {borderColor: this.props.nonFixedEventsColor, backgroundColor: this.props.insideNonFixedEventsColor}]}></View>
+								
 								<Text style={styles.legendText}>{this.strings.nonFixedEvents}</Text>
 							</View>
 						</View>
