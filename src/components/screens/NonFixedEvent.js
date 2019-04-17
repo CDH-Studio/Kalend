@@ -13,7 +13,7 @@ import BottomButtons from '../BottomButtons';
 import { ReviewEventRoute, NonFixedEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { dateVerification, getStrings } from '../../services/helper';
-import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor, red } from '../../styles';
+import { nonFixedEventStyles as styles, white, blue, gray, dark_blue, statusBlueColor, red, lightBlue } from '../../styles';
 
 const moment = require('moment');
 const viewHeight = 843.4285888671875;
@@ -378,8 +378,7 @@ class NonFixedEvent extends React.PureComponent {
 									<View style={styles.switch}>
 										<Text style={[styles.blueTitle, {width:200}]}>{this.state.specificDateRange ? this.strings.splitDurationDate : this.strings.splitDurationWeek}</Text>
 
-										<Switch trackColor={{false: 'lightgray', true: blue}}
-											ios_backgroundColor={'lightgray'}
+										<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 											thumbColor={(this.state.isDividable && Platform.OS !== 'ios') ? dark_blue : null}
 											onValueChange={(isDividable) => this.setState({isDividable: isDividable})}
 											value = {this.state.isDividable} />
@@ -406,8 +405,7 @@ class NonFixedEvent extends React.PureComponent {
 										<View style={styles.switch}>
 											<Text style={[styles.blueTitle, {width: 200}]}>{this.strings.everyWeek}</Text>
 
-											<Switch trackColor={{false: 'lightgray', true: blue}}
-												ios_backgroundColor={'lightgray'}
+											<Switch trackColor={{false: 'lightgray', true: lightBlue}}
 												thumbColor={(this.state.isRecurrent && Platform.OS !== 'ios') ? dark_blue : null}
 												onValueChange={(isRecurrent) => this.setState({isRecurrent})}
 												value = {this.state.isRecurrent} />

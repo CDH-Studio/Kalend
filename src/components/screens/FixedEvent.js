@@ -13,7 +13,7 @@ import BottomButtons from '../BottomButtons';
 import { FixedEventRoute, UnavailableFixedRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { timeVerification, dateVerification, getStrings } from '../../services/helper';
-import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white, red } from '../../styles';
+import { fixedEventStyles as styles, blue, dark_blue, statusBlueColor, white, red, lightBlue } from '../../styles';
 
 const moment = require('moment');
 require('moment-round');
@@ -312,8 +312,7 @@ class FixedEvent extends React.PureComponent {
 									<Text style={styles.blueTitleAllDay}>{this.strings.allday}</Text>
 
 									<View style={styles.switch}>
-										<Switch trackColor={{false: 'lightgray', true: blue}} 
-											ios_backgroundColor={'lightgray'} 
+										<Switch trackColor={{false: 'lightgray', true: lightBlue}} 
 											thumbColor={(this.state.allDay && Platform.OS !== 'ios') ? dark_blue : null} 
 											onValueChange={(allDay) => this.setState({allDay: allDay})} 
 											value={this.state.allDay} />
