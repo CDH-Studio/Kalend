@@ -141,16 +141,16 @@ class EventOverview extends React.PureComponent {
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
 					</View>
-					<View style={styles.modalDetailView}>
+					{this.props.location ? <View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
-					</View>
-					<View style={styles.modalDetailView}>
+					</View> : null}
+					{this.props.description ? <View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
-					</View>
+					</View> : null}
 				</View>;
 			detailHeight = 100;
 			editScreen = 'NonFixedEvent';

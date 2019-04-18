@@ -105,10 +105,6 @@ class ModalEvent extends React.PureComponent {
 									<Text style={[styles.modalInfoText, {color: semiTransparentWhite}]}>{this.props.time}</Text>
 								</View>
 							</View>
-							
-							{/* <MaterialCommunityIcons name={this.props.categoryIcon}
-								size={80}
-								color={semiTransparentWhite} /> */}
 						</View>
 
 						{this.props.details ? <View style={styles.modalDetailsView}>

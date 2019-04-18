@@ -1619,7 +1619,8 @@ export const modalEventStyles = StyleSheet.create({
 	actionsModal: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginVertical: 10,
+		marginTop: 5,
+		marginBottom: 10
 	},
 
 	actionIconModal: {
