@@ -488,9 +488,9 @@ const fr = {
 		numberTimeDate: 'Nombre de fois que cela aura lieu au cours de la période de temps',
 		numberTimeWeek: 'Nombre de fois que cela aura lieu au cours de la semaine',
 		everyWeek: 'À toute les semaines?',
-		priorityLevel: 'Priority Level',
-		details: 'Details',
-		locationPlaceholder: 'Location',
+		priorityLevel: 'Niveau de priorité',
+		details: 'Détails',
+		locationPlaceholder: 'Localisation',
 		descriptionPlaceholder: 'Description',
 	},
 
