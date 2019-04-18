@@ -152,7 +152,7 @@ class Home extends React.PureComponent {
 
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
-									this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/fr') : this.showWebsite('https://cdhstudio.ca/');
+									this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/') : this.showWebsite('https://cdhstudio.ca/fr');
 								}}>
 								<Text style={styles.cdhSectionText}>
 									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>

@@ -136,7 +136,7 @@ class ReviewEvent extends React.PureComponent {
 				fixedEventData.push({
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
-					recurrence: data.recurrenceValue,
+					recurrence: data.recurrence,
 					hours: data.allDay ? this.strings.allDay : (data.startTime + ' - ' + data.endTime),
 					location: data.location,
 					description: data.description
