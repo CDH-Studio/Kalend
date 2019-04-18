@@ -100,7 +100,6 @@ class EventOverview extends React.PureComponent {
 			categoryColor = this.props.fixedEventsColor;
 			lightCategoryColor = this.props.insideFixedEventsColor;
 			categoryIcon = 'calendar-today';
-			console.log(this.props.recurrence);
 
 			details = 
 				<View>

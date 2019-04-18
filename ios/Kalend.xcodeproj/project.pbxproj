@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -27,8 +28,10 @@
 		380AC81E94470E0883FCB8AC /* libPods-Kalend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E97E04B7433198E3893D2942 /* libPods-Kalend.a */; };
 		458AD3A43B4B496A96B5E15E /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B96BE309C844EADBFD545B3 /* OpenSans-Bold.ttf */; };
 		4748A6643CD040E5A5AC93DF /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B0CDFB589D4437B5F5FD58 /* libRNGoogleSignin.a */; };
+		5A220CC59BC54E2A9695D1B2 /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */; };
 		5E163785221486E00067C59A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E163784221486E00067C59A /* GoogleService-Info.plist */; };
 		5E97DEF0224BCDAC007FF53E /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E97DECD224BCDA4007FF53E /* libRCTImage.a */; };
+		64A234258CA44D48B72A772E /* libDBCustomTabs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */; };
 		6919D345785D438196F11F0C /* libRNCCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A39498284C4FBA98EA14A7 /* libRNCCameraRoll.a */; };
 		6D5AF45C4A4846C896118055 /* libPods-KalendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFC1AEC0D07A891A7BE7D56B /* libPods-KalendTests.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -39,8 +42,6 @@
 		E9289188EA13494A87D52E67 /* Raleway-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1244DE0B54764A6A808C3409 /* Raleway-SemiBold.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		EDF883308E734D6FA88A12D0 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32965FA334D747BCB939063F /* OpenSans-SemiBold.ttf */; };
-		64A234258CA44D48B72A772E /* libDBCustomTabs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */; };
-		5A220CC59BC54E2A9695D1B2 /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -240,6 +241,20 @@
 			remoteGlobalIDString = 9FD355121D3E4A2900D06170;
 			remoteInfo = RNGoogleSignin;
 		};
+		5E8DEED12268D4A0001C8F55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
+			remoteInfo = RCTRestart;
+		};
+		5E8DEED42268D4A0001C8F55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA7118681CC9158A0087DF95;
+			remoteInfo = DBCustomTabs;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -378,21 +393,21 @@
 		8833342E8D4C583FE1D9777B /* Pods-KalendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KalendTests.release.xcconfig"; path = "Target Support Files/Pods-KalendTests/Pods-KalendTests.release.xcconfig"; sourceTree = "<group>"; };
 		8BCA6D386816463CA59444F0 /* RNCViewpager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCViewpager.xcodeproj; path = "../node_modules/@react-native-community/viewpager/ios/RNCViewpager.xcodeproj"; sourceTree = "<group>"; };
 		8C009E16F1E444C7AFDCE725 /* libRNCViewpager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCViewpager.a; sourceTree = "<group>"; };
+		8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeCustomTabs.xcodeproj; path = "../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs.xcodeproj"; sourceTree = "<group>"; };
 		915EFF7DB854499D8AA3BA03 /* Raleway-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Bold.ttf"; path = "../src/assets/fonts/Raleway-Bold.ttf"; sourceTree = "<group>"; };
 		95064AC3353B35EC1EA588E7 /* Pods-Kalend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kalend.release.xcconfig"; path = "Target Support Files/Pods-Kalend/Pods-Kalend.release.xcconfig"; sourceTree = "<group>"; };
+		A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AFC1AEC0D07A891A7BE7D56B /* libPods-KalendTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KalendTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTRestart.xcodeproj; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; };
 		DAB5E3506847465692EDB152 /* RNCCameraRoll.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCCameraRoll.xcodeproj; path = "../node_modules/@react-native-community/cameraroll/ios/RNCCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		E367A3D5E0FA43CEA3F51748 /* RNGoogleSignin.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGoogleSignin.xcodeproj; path = "../node_modules/react-native-google-signin/ios/RNGoogleSignin.xcodeproj"; sourceTree = "<group>"; };
 		E97E04B7433198E3893D2942 /* libPods-Kalend.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kalend.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED161E15E425458687888B8E /* Raleway-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Regular.ttf"; path = "../src/assets/fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libDBCustomTabs.a; sourceTree = "<group>"; };
 		F431AC3A2819457E8F6A27E8 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
-		8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeCustomTabs.xcodeproj"; path = "../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */ = {isa = PBXFileReference; name = "libDBCustomTabs.a"; path = "libDBCustomTabs.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; name = "RCTRestart.xcodeproj"; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */ = {isa = PBXFileReference; name = "libRCTRestart.a"; path = "libRCTRestart.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -587,6 +602,8 @@
 				F431AC3A2819457E8F6A27E8 /* libRNFirebase.a */,
 				8C009E16F1E444C7AFDCE725 /* libRNCViewpager.a */,
 				04A39498284C4FBA98EA14A7 /* libRNCCameraRoll.a */,
+				A0B31F5A5EFD4A4CAC66F247 /* libRCTRestart.a */,
+				F25B0D7E23294F9BA5AD07BD /* libDBCustomTabs.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -595,6 +612,22 @@
 			isa = PBXGroup;
 			children = (
 				5E6D3604221466310007137A /* libRNGoogleSignin.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E8DEECC2268D49F001C8F55 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5E8DEED22268D4A0001C8F55 /* libRCTRestart.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E8DEECE2268D49F001C8F55 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5E8DEED52268D4A0001C8F55 /* libDBCustomTabs.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -822,6 +855,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = 5E8DEECC2268D49F001C8F55 /* Products */;
+					ProjectRef = CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -840,6 +877,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 5E8DEECE2268D49F001C8F55 /* Products */;
+					ProjectRef = 8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */;
 				},
 				{
 					ProductGroup = 5EE7286B224EEFEA00972F69 /* Products */;
@@ -1054,6 +1095,20 @@
 			fileType = archive.ar;
 			path = libRNGoogleSignin.a;
 			remoteRef = 5E6D3603221466310007137A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5E8DEED22268D4A0001C8F55 /* libRCTRestart.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTRestart.a;
+			remoteRef = 5E8DEED12268D4A0001C8F55 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5E8DEED52268D4A0001C8F55 /* libDBCustomTabs.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libDBCustomTabs.a;
+			remoteRef = 5E8DEED42268D4A0001C8F55 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
@@ -1352,7 +1407,7 @@
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
-					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)..\node_modules\neact-native-restartiosRCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
 					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
@@ -1387,7 +1442,7 @@
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
-					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)..\node_modules\neact-native-restartiosRCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
 					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
@@ -1423,7 +1478,7 @@
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
-					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)..\node_modules\neact-native-restartiosRCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
 					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
@@ -1453,7 +1508,7 @@
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)..\node_modules@react-native-community\viewpagerios",
-					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)..\node_modules\neact-native-restartiosRCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/cameraroll/ios",
 					"$(SRCROOT)/../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs",
 				);
