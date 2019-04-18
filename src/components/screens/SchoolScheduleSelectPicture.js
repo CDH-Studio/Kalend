@@ -7,7 +7,7 @@ import updateNavigation from '../NavigationHelper';
 import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
-import { selectPictureStyles as styles, white, blue, dark_blue } from '../../styles';
+import { selectPictureStyles as styles, white, dark_blue } from '../../styles';
 import { getStrings } from '../../services/helper';
 import CameraRoll from '@react-native-community/cameraroll';
 

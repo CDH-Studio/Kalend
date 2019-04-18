@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, TouchableOpacity, View, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { cameraRollImageStyles as styles, blue, white, dark_blue } from '../styles';
+import { cameraRollImageStyles as styles, white, dark_blue } from '../styles';
 
 const selectedIconSize = 35;
 
