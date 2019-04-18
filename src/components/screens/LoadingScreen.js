@@ -1,11 +1,14 @@
 import React from 'react';
-import { StatusBar, View, Animated, Easing} from 'react-native';
+import { StatusBar, View, Animated, Easing, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
-import { gradientColors, statusBarDark } from '../../../config';
-import { loadingStyles as styles, blue } from '../../styles';
-import { WelcomeScreen, LoginNavigator, TutorialNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
+import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
+import { gradientColors } from '../../../config/config';
+import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
+import { setBottomString, setLanguage } from '../../actions';
+import { getStrings } from '../../services/helper';
+
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
 const logoAnimDuration = 3000;
@@ -13,7 +16,7 @@ const logoAnimDuration = 3000;
 /**
  * The logo animation screen when the application is opened.
  */
-class LoadingScreen extends React.Component {
+class LoadingScreen extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -23,6 +26,17 @@ class LoadingScreen extends React.Component {
 			nextScreen: WelcomeScreen
 		};
 
+		this.props.dispatch(setBottomString({
+			dashboardTitle: getStrings().Dashboard.name, 
+			chatbotTitle: getStrings().Chatbot.name, 
+			compareTitle: getStrings().CompareSchedule.name, 
+			settingsTitle: getStrings().Settings.name
+		}));
+
+		if (props.language === undefined) {
+			this.props.dispatch(setLanguage('en'));
+		}
+		
 		// Waits for the animation to finish, then goes to the next screen
 		setTimeout(()=> {
 			this.props.navigation.navigate(this.state.nextScreen);
@@ -54,7 +68,7 @@ class LoadingScreen extends React.Component {
 				break;
 			case 'SchoolSchedule':
 				this.setState({
-					nextScreen: TutorialNavigator
+					nextScreen: DashboardOptionsNavigator,
 				});
 				break;
 			case 'Dashboard':
@@ -80,15 +94,13 @@ class LoadingScreen extends React.Component {
 					end={{ x: 0, y: 1 }}/>
 
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={statusBarDark} />
 				
 				<View style={styles.animView}>
-					<LottieView
-						progress={animProgress}
-						source={logoFile}
+					<LottieView progress={animProgress}
 						loop={false}
-						speed={1}
-						style={styles.anim} />
+						source={logoFile}/>
 				</View>
 			</View>
 		);
@@ -98,7 +110,8 @@ class LoadingScreen extends React.Component {
 let mapStateToProps = (state) => {
 	return {
 		main: state.NavigationReducer.main, 
-		profile: state.HomeReducer.profile
+		profile: state.HomeReducer.profile,
+		language: state.SettingsReducer.language
 	};
 };
 

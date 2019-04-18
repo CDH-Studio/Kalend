@@ -14,11 +14,6 @@ test("Linear Gradient renders correctly", () => {
     expect(linearGradient).toMatchSnapshot();
 });
 
-test("Image Background renders correctly", () => {
-    const imageBackground = renderer.create(<ImageBackground  style={{flex: 1, width: '100%', height: '110%'}} source={require('../src/assets/img/loginScreen/backPattern.png')} resizeMode="repeat" ></ImageBackground>).toJSON();
-    expect(imageBackground).toMatchSnapshot();
-});
-
 test("StatusBar renders correctly", () => {
     const statusBar = renderer.create(<StatusBar translucent={true} backgroundColor={'#00000050'}/>).toJSON();
     expect(statusBar).toMatchSnapshot();

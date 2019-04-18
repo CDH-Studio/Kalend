@@ -147,6 +147,7 @@ exports[`Text inputs render correctly 1`] = `
 <TextInput
   allowFontScaling={true}
   placeholder="Title"
+  rejectResponderTermination={true}
   underlineColorAndroid="transparent"
 />
 `;

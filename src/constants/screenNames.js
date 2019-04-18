@@ -1,36 +1,24 @@
-//Tutorials
-export const TutorialNavigator = 'TutorialNavigator';
-export const TutorialSchoolSchedule = 'TutorialSchoolSchedule';
-export const TutorialSchoolScheduleSelectPicture = 'TutorialSchoolScheduleSelectPicture';
-export const TutorialSchoolScheduleTakePicture = 'TutorialSchoolScheduleTakePicture';
-export const TutorialAddCourse = 'TutorialAddCourse';
-export const TutorialSchoolScheduleCreation = 'TutorialSchoolScheduleCreation';
-export const TutorialFixedEvent = 'TutorialFixedEvent';
-export const TutorialNonFixedEvent = 'TutorialNonFixedEvent';
-export const TutorialUnavailableHours = 'TutorialUnavailableHours';
-export const TutorialUnavailableFixed = 'TutorialUnavailableFixed';
-export const TutorialReviewEvent = 'TutorialReviewEvent';
-export const TutorialScheduleCreation = 'TutorialScheduleCreation';
-export const TutorialScheduleSelection = 'TutorialScheduleSelection';
-export const TutorialScheduleSelectionDetails = 'TutorialScheduleSelectionDetails';
+export const SchoolScheduleRoute = 'SchoolSchedule';
+export const FixedEventRoute = 'FixedEvent';
+export const NonFixedEventRoute = 'NonFixedEvent';
+export const ReviewEventRoute = 'ReviewEvent';
+export const CourseRoute = 'AddCourse';
+export const UnavailableRoute = 'UnavailableHours';
+export const UnavailableFixedRoute = 'UnavailableFixed';
+export const SchoolInformationRoute = 'SchoolInformation';
 
+export const ScheduleCreationRoute = 'ScheduleCreation';
+export const ScheduleSelectionRoute = 'ScheduleSelection';
+export const ScheduleSelectionDetailsRoute = 'ScheduleSelectionDetails';
 
+export const SchoolScheduleCreationRoute = 'SchoolScheduleCreation';
+export const SchoolScheduleSelectPictureRoute = 'SchoolScheduleSelectPicture';
+export const SchoolScheduleTakePictureRoute = 'SchoolScheduleTakePicture';
 
-// Dashboard Screen
-export const DashboardSchoolSchedule = 'DashboardSchoolSchedule';
-export const DashboardEditFixedEvent = 'DashboardEditFixedEvent';
-export const DashboardEditNonFixedEvent = 'DashboardEditNonFixedEvent';
-export const DashboardUnavailableFixed = 'DashboardUnavailableFixed';
-export const DashboardReviewEvent = 'DashboardReviewEvent';
 export const DashboardOptionsNavigator = 'DashboardOptionsNavigator';
-export const DashboardScheduleCreation = 'DashboardScheduleCreation';
-export const DashboardScheduleSelection = 'DashboardScheduleSelection';
-export const DashboardSchoolScheduleCreation = 'DashboardSchoolScheduleCreation';
-export const DashboardSchoolScheduleSelectPicture = 'DashboardSchoolScheduleSelectPicture';
-export const DashboardSchoolScheduleTakePicture = 'DashboardSchoolScheduleTakePicture';
-export const DashboardAddCourse = 'DashboardAddCourse';
-export const DashboardAddNonFixedEvent = 'DashboardAddNonFixedEvent';
-export const DashboardScheduleSelectionDetails = 'DashboardScheduleSelectionDetails';
 export const DashboardNavigator = 'DashboardNavigator';
 export const LoginNavigator = 'LoginNavigator';
 export const WelcomeScreen = 'WelcomeScreen';
+
+export const CleanReducersRoute = 'CleanReducers';
+export const CalendarPermissionRoute = 'CalendarPermission';

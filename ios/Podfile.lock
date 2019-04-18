@@ -1,10 +1,10 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.3):
+  - BVLinearGradient (2.5.4):
     - React
   - Crashlytics (3.10.9):
     - Fabric (~> 1.7.13)
-  - DoubleConversion (1.1.5)
+  - DoubleConversion (1.1.6)
   - Fabric (1.7.13)
   - Firebase/Core (5.15.0):
     - Firebase/CoreOnly
@@ -53,11 +53,11 @@ PODS:
     - GoogleUtilities/Environment (~> 5.2)
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - Protobuf (~> 3.5)
-  - Folly (2016.10.31.00):
+  - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
     - glog
-  - glog (0.3.4)
+  - glog (0.3.5)
   - GoogleAppMeasurement (5.4.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -80,28 +80,28 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.0)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
-  - GoogleUtilities/AppDelegateSwizzler (5.3.7):
+  - GoogleUtilities/AppDelegateSwizzler (5.5.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (5.3.7)
-  - GoogleUtilities/ISASwizzler (5.3.7)
-  - GoogleUtilities/Logger (5.3.7):
+  - GoogleUtilities/Environment (5.5.0)
+  - GoogleUtilities/ISASwizzler (5.5.0)
+  - GoogleUtilities/Logger (5.5.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (5.3.7):
+  - GoogleUtilities/MethodSwizzler (5.5.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (5.3.7):
+  - GoogleUtilities/Network (5.5.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (5.3.7)"
-  - GoogleUtilities/Reachability (5.3.7):
+  - "GoogleUtilities/NSData+zlib (5.5.0)"
+  - GoogleUtilities/Reachability (5.5.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (5.3.7):
+  - GoogleUtilities/UserDefaults (5.5.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.1)
-  - lottie-ios (2.5.2)
-  - lottie-react-native (2.3.2):
+  - lottie-ios (2.5.3)
+  - lottie-react-native (2.6.0):
     - lottie-ios
     - React
   - nanopb (0.3.901):
@@ -110,75 +110,102 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
-  - React (0.57.8):
-    - React/Core (= 0.57.8)
-  - react-native-camera (1.12.0):
+  - React (0.59.4):
+    - React/Core (= 0.59.4)
+  - react-native-camera (2.4.0):
     - React
-    - react-native-camera/RCT (= 1.12.0)
-    - react-native-camera/RN (= 1.12.0)
-  - react-native-camera/RCT (1.12.0):
+    - react-native-camera/RCT (= 2.4.0)
+    - react-native-camera/RN (= 2.4.0)
+  - react-native-camera/RCT (2.4.0):
     - React
-  - react-native-camera/RN (1.12.0):
+  - react-native-camera/RN (2.4.0):
     - React
-  - React/ART (0.57.8):
+  - react-native-safari-view (1.0.0):
+    - React
+  - react-native-slider (1.0.4):
+    - React
+  - React/ART (0.59.4):
     - React/Core
-  - React/Core (0.57.8):
-    - yoga (= 0.57.8.React)
-  - React/CxxBridge (0.57.8):
-    - Folly (= 2016.10.31.00)
+  - React/Core (0.59.4):
+    - yoga (= 0.59.4.React)
+  - React/CxxBridge (0.59.4):
+    - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
-  - React/cxxreact (0.57.8):
+    - React/jsiexecutor
+  - React/cxxreact (0.59.4):
     - boost-for-react-native (= 1.63.0)
-    - Folly (= 2016.10.31.00)
-    - React/jschelpers
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
     - React/jsinspector
-  - React/DevSupport (0.57.8):
+  - React/DevSupport (0.59.4):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.57.8)
-  - React/jschelpers (0.57.8):
-    - Folly (= 2016.10.31.00)
-    - React/PrivateDatabase
-  - React/jsinspector (0.57.8)
-  - React/PrivateDatabase (0.57.8)
-  - React/RCTAnimation (0.57.8):
+  - React/fishhook (0.59.4)
+  - React/jsi (0.59.4):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+  - React/jsiexecutor (0.59.4):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.59.4)
+  - React/RCTAnimation (0.59.4):
     - React/Core
-  - React/RCTBlob (0.57.8):
+  - React/RCTBlob (0.59.4):
     - React/Core
-  - React/RCTNetwork (0.57.8):
+  - React/RCTImage (0.59.4):
     - React/Core
-  - React/RCTText (0.57.8):
+    - React/RCTNetwork
+  - React/RCTNetwork (0.59.4):
     - React/Core
-  - React/RCTWebSocket (0.57.8):
+  - React/RCTText (0.59.4):
+    - React/Core
+  - React/RCTWebSocket (0.59.4):
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNGestureHandler (1.0.15):
+  - rn-fetch-blob (0.10.6):
+    - React/Core
+  - RNCAsyncStorage (1.3.3):
+    - React
+  - RNGestureHandler (1.1.0):
     - React
   - RNVectorIcons (6.3.0):
     - React
-  - yoga (0.57.8.React)
+  - yoga (0.59.4.React)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - Crashlytics (~> 3.10.7)
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Fabric (~> 1.7.13)
   - Firebase/Core (~> 5.15.0)
   - Firebase/Performance (~> 5.15.0)
   - Firebase/RemoteConfig (~> 5.15.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn
+  - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - react-native-camera (from `../node_modules/react-native-camera`)
+  - react-native-safari-view (from `../node_modules/react-native-safari-view`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - React/ART (from `../node_modules/react-native`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -187,7 +214,6 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - boost-for-react-native
     - Crashlytics
-    - DoubleConversion
     - Fabric
     - Firebase
     - FirebaseABTesting
@@ -196,27 +222,39 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebasePerformance
     - FirebaseRemoteConfig
-    - glog
     - GoogleAppMeasurement
     - GoogleSignIn
     - GoogleToolboxForMac
     - GoogleUtilities
     - GTMSessionFetcher
-    - lottie-ios
     - nanopb
     - Protobuf
 
 EXTERNAL SOURCES:
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
+  DoubleConversion:
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  lottie-ios:
+    :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   React:
     :path: "../node_modules/react-native"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
+  react-native-safari-view:
+    :path: "../node_modules/react-native-safari-view"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNVectorIcons:
@@ -226,9 +264,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: 0d985ec461359c82bc254f26d11008bdae50d17a
+  BVLinearGradient: 8cbc5155c978f2e43098818c91d206d07aae6d30
   Crashlytics: 55e24fc23989680285a21cb1146578d9d18e432c
-  DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
   Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
   FirebaseABTesting: 1f50b8d50f5e3469eea54e7463a7b7fe221d1f5e
@@ -237,23 +275,27 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
   FirebasePerformance: 6f77b930f982a54ad487d3de5523ce641db9dcc9
   FirebaseRemoteConfig: 7e11c65f0769c09bff6947997c209515058c5318
-  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
-  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   GoogleAppMeasurement: 98b71f5e04142793729a5ef23e5b96651ff4b70f
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
-  GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
+  GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
-  lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
-  lottie-react-native: f2e118cc10f478bc9857bbdb5568b6f4a9d30cf7
+  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
+  lottie-react-native: 05b6e2dd502d7a91ff128036c4f0984363e5eb4a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
-  React: adbac0757ce35e92fbd447ab98c810209d27d9b0
-  react-native-camera: 865a638b7e98a1c3ce3951b2cf21248896e661a6
-  RNGestureHandler: 14c09a7361c272efea8f7f3799142c893a6a4485
+  React: 5cb71fb1a15b5ce04794ab49e24b48ebe4c94e65
+  react-native-camera: afbb9f2ce85ac178314c46dbc4541178ceb1a177
+  react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
+  react-native-slider: f9e501d8ae01322ac4246c57c3655005269c8928
+  rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
+  RNCAsyncStorage: 02c55fdf22e98cdfdddca674e8ce0bb9f4e32fbf
+  RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNVectorIcons: cb42a5653c046f12ca16c9480c571b52620559e8
-  yoga: 74cdf036c30820443b25ade59916236b1e95ee93
+  yoga: 596e61c9b57751d08a22b07aba310dbd3e65ab75
 
-PODFILE CHECKSUM: 1dadd5a4706dfa47a34d5e04116aeb9aa788afd2
+PODFILE CHECKSUM: 1bc1c28808f6ea34810ecf744d14fcab22288c99
 
 COCOAPODS: 1.6.1

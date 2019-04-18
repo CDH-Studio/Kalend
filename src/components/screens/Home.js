@@ -1,29 +1,34 @@
 import React from 'react';
-import { ImageBackground, StatusBar, View, Image, Text } from 'react-native';
+import { ImageBackground, StatusBar, View, Image, Text, TouchableOpacity, Platform } from 'react-native';
 import { GoogleSigninButton } from 'react-native-google-signin';
 import LinearGradient from 'react-native-linear-gradient';
+import { CustomTabs } from 'react-native-custom-tabs';
+import SafariView from 'react-native-safari-view';
 import { connect } from 'react-redux';
-import { gradientColors } from '../../../config';
+import { setCalendarID, logonUser, setBottomString, setCalendarColor } from '../../actions';
+import { DashboardNavigator } from '../../constants/screenNames';
+import { gradientColors } from '../../../config/config';
 import updateNavigation from '../NavigationHelper';
+import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
-import { TutorialNavigator } from '../../constants/screenNames';
-import { bindActionCreators } from 'redux';
-import { setCalendarID, logonUser } from '../../actions';
-import { homeStyles as styles } from '../../styles';
-
+import { homeStyles as styles, dark_blue, white } from '../../styles';
+import { getStrings } from '../../services/helper';
 
 /** 
  * Home/Login screen of the app.
- * Permits the user to log into the app with their Google account.*/
-class Home extends React.Component {
+ * Permits the user to log into the app with their Google account.
+ */
+class Home extends React.PureComponent {
+
+	strings = getStrings().Home;
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			clicked: false
 		};
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Home', props.navigation.state.routeName);
 	}
 
 	/**
@@ -33,15 +38,21 @@ class Home extends React.Component {
 		this.props.logonUser(userInfo);	
 	}
 
-
+	/**
+	 * Creates the Kalend calendar in the user's Google Account
+	 */
 	setCalendar() {
 		getCalendarID2().then(data => {
-			if(data === undefined) {
-				createCalendar().then(id => {
-					this.props.setCalendarID(id);
+			if (data.calendarID === undefined) {
+				createCalendar().then(data => {
+					this.props.setCalendarID(data.calendarID);
+					this.props.setCalendarColor(data.calendarColor);
+					this.props.navigation.navigate(DashboardNavigator);
 				});
 			} else {
-				this.props.setCalendarID(data);
+				this.props.setCalendarID(data.calendarID);
+				this.props.setCalendarColor(data.calendarColor);
+				this.props.navigation.navigate(DashboardNavigator);
 			}
 		});
 	}
@@ -50,60 +61,106 @@ class Home extends React.Component {
 	 * Log In the user with their Google Account
 	 */
 	signIn = () => {
+		let params = {
+			dashboardTitle: getStrings().Dashboard.name, 
+			chatbotTitle: getStrings().Chatbot.name, 
+			compareTitle: getStrings().CompareSchedule.name, 
+			settingsTitle: getStrings().Settings.name
+		};
+		
+		this.props.setBottomString(params);
+
 		if (!this.state.clicked) {
 			this.state.clicked = true;
 			googleIsSignedIn().then((signedIn) => {
-				if (!signedIn || this.props.HomeReducer.profile === null) {
+				if (!signedIn || !this.props.HomeReducer || this.props.HomeReducer.profile === null) {
 					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
 							this.setCalendar();
-							this.props.navigation.navigate(TutorialNavigator);
 						}
 						googleSignIn().then((userInfo) => {
 							if (userInfo !== null) {
 								this.setUser(userInfo);
 								this.setCalendar();
-								this.props.navigation.navigate(TutorialNavigator);
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
 					this.setCalendar();
-					this.props.navigation.navigate(TutorialNavigator);
 				}
 			});
 		}
 	}
 
+	showWebsite = (url) => {
+		if (Platform.OS === 'ios') {
+			this.openSafari(url);
+		} else {
+			this.openChrome(url);
+		}
+	}
+
+	openSafari = (url) => {
+		SafariView.isAvailable()
+			.then(SafariView.show({url,
+				tintColor: dark_blue,
+				barTintColor: white,
+				fromBottom: true }))
+			.catch(() => this.openChrome(url));
+	}
+
+	openChrome = (url) => {
+		CustomTabs.openURL(url, {
+			toolbarColor: dark_blue,
+			enableUrlBarHiding: true,
+			showPageTitle: true,
+			enableDefaultShare: true,
+			forceCloseOnRedirection: true,
+		});
+	}
+
 	render() {
+		let source = Platform.OS === 'ios' ? require('../../assets/img/loginScreen/backPattern_ios.png') : 
+			require('../../assets/img/loginScreen/backPattern_android.png');
 		return (
 			<LinearGradient style={styles.container}
 				colors={gradientColors}>
 				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')}
+					source={source}
 					resizeMode="repeat">
 					<StatusBar translucent={true} 
+						barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
 						backgroundColor={'#00000050'} />
 
 					<View style={styles.content}>
-						<View>
+						<View style={styles.topSection}>
 							<Image style={styles.logo}
-								source={require('../../assets/img/kalendFullLogo.png')}
+								source={require('../../assets/img/kalendLogo.png')}
 								resizeMode="contain" />
-							<Text style={styles.text}>The Better Way to Start your Month!</Text>
 						</View>
+						
+						<View style={styles.bottomSection}>
+							<View style={styles.signInSection}>
+								<GoogleSigninButton 
+									style={styles.signInButton} 
+									size={GoogleSigninButton.Size.Wide} 
+									color={GoogleSigninButton.Color.Light} 
+									onPress={this.signIn} />
+							</View>
 
-						<Image style={styles.userIcon}
-							source={require('../../assets/img/loginScreen/userIcon.png')}
-							resizeMode="contain" />
+							<TouchableOpacity style={styles.cdhSection}
+								onPress={ ()=>{
+									this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/') : this.showWebsite('https://cdhstudio.ca/fr');
+								}}>
+								<Text style={styles.cdhSectionText}>
+									<Text style={styles.cdhText}>{this.strings.createdBy}</Text>
 
-						<GoogleSigninButton 
-							style={styles.signInButton} 
-							size={GoogleSigninButton.Size.Wide} 
-							color={GoogleSigninButton.Color.Light} 
-							onPress={this.signIn} />
+									<Text style={styles.cdhLink}>{this.strings.cdhStudio}</Text>
+								</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				</ImageBackground>
 			</LinearGradient>
@@ -111,19 +168,19 @@ class Home extends React.Component {
 	}
 }
 
-
 let mapStateToProps = (state) => {
 	const { id } = state.CalendarReducer;
 	const NavigationReducer = state.NavigationReducer;
 
 	return {
 		NavigationReducer,
-		calendarID: id
+		calendarID: id,
+		language: state.SettingsReducer.language
 	};
 };
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({setCalendarID, logonUser }, dispatch);
+	return bindActionCreators({setCalendarID, logonUser, setBottomString, setCalendarColor }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

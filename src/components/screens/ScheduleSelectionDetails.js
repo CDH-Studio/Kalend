@@ -1,46 +1,18 @@
 import React from 'react';
-import { Text, Platform, StatusBar, View, StyleSheet, ScrollView } from 'react-native';
+import { Text, StatusBar, View, ScrollView, BackHandler, Platform } from 'react-native';
 import { FAB, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
-import updateNavigation from '../NavigationHelper';
-import { calendarEventColors, statusBlueColor } from '../../../config';
-import { white, blue, black, gray} from '../../styles';
+import { calendarColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
+import { insertGeneratedEvent } from '../../services/service';
+import { getStrings } from '../../services/helper';
+import updateNavigation from '../NavigationHelper';
+import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
+import { scheduleSelectionDetailsStyle as styles, white, dark_blue, blue } from '../../styles';
 
-const containerPadding = 10;
-const data = {
-	fixed: [
-		{
-			title: 'Test',
-			location: 'FSS',
-			time: '1PM - 3PM'
-		}
-	],
-	nonFixed: [
-		{
-			title: 'AI',
-			location: 'CBY 032',
-			time: '3PM - 9:40PM'
-		}
-	],
-	school: [
-		{
-			title: 'School',
-			location: 'SITE 323',
-			time: '8AM - 2PM'
-		}
-	]
-};
+const moment = require('moment');
 
-const days = [
-	'Sunday',
-	'Monday',
-	'Tuesday',
-	'Wednesday',
-	'Thursday',
-	'Friday',
-	'Saturday'
-];
+export const containerPaddingDetails = 10;
 
 /**
  * An event in the list of events
@@ -51,7 +23,7 @@ const days = [
  * @prop {String} info.location The location of the event
  * @prop {String} info.time The time of the event
  */
-class ScheduleEvent extends React.Component  {
+class ScheduleEvent extends React.PureComponent  {
 
 	constructor(props) {
 		super(props);
@@ -60,13 +32,13 @@ class ScheduleEvent extends React.Component  {
 		let color;
 		switch (props.info.type) {
 			case 'fixed':
-				color = 'red';
+				color = this.props.colors.fixedEventsColor;
 				break;
 			case 'school':
-				color = 'green';
+				color = this.props.colors.courseColor;
 				break;
 			case 'nonFixed':
-				color = 'purple';
+				color = this.props.colors.nonFixedEventsColor;
 				break;
 		}
 
@@ -77,15 +49,19 @@ class ScheduleEvent extends React.Component  {
 
 	render() {
 		const { color } = this.state;
-		const { title, location, time } = this.props.info;
+		const { location, time, title, summary } = this.props.info;
+
+		let actualTitle =  (title == undefined) ? summary: title;
 
 		return (
 			<View style={styles.eventContainer}>
-				<View style={[styles.scheduleEventColor, {backgroundColor: calendarEventColors[color]}]} />	
+				<View style={[styles.scheduleEventColor, {backgroundColor: color}]} />	
 
 				<View style={styles.eventData}>
-					<Text style={styles.eventTitle}>{title}</Text>
+					<Text style={styles.eventTitle}>{actualTitle}</Text>
+
 					<Text style={styles.eventLocation}>{location}</Text>
+					
 					<Text style={styles.eventTime}>{time}</Text>
 				</View>
 			</View>
@@ -102,32 +78,52 @@ class ScheduleEvent extends React.Component  {
  * @prop {String} data.location The location of the event
  * @prop {String} data.time The time of the event
  */
-class ScheduleDay extends React.Component {
+class ScheduleDay extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			data: this.constructData(props.data),
+			data:[ ],
 			day: props.day
 		};
 	}
+	
+	componentWillMount() {
+		let { data, day } = this.props;
 
-	/**
-	 * Adds the type of event in data
-	 */
-	constructData = (data) => {
-		let events = [];
-		for (let key in data) {
-			for (let i = 0; i < data[key].length; i++ ) {
-				events.push({
-					...data[key][i],
-					type: key
-				});
+		// Formats the time
+		data.map((info) => {
+			let { end, start } = info;
+			let startTime, endTime, time;
+
+			if (info.end != undefined) {
+				startTime = this.getTime(start.dateTime);
+				endTime = this.getTime(end.dateTime);
+				time = `${startTime.hours}:${startTime.minutes} ${startTime.period} - ${endTime.hours}:${endTime.minutes} ${endTime.period}`;
+			} else {
+				const { startTime, endTime } = info;
+				time = `${startTime} - ${endTime}`;
 			}
-		}
 
-		return events;
+			info.time = time;
+		});
+
+		// Sorts the event
+		data.sort((a,b) => new moment(a.time, 'h:mm A') - new moment(b.time, 'h:mm A'));
+
+		this.setState({day, data});
+	}
+	
+	getTime = (time) => {
+		time = new Date(time);
+		let hours = time.getHours();
+		let minutes = time.getMinutes();
+		minutes = (minutes < 10) ? `0${minutes}`: minutes;
+		let period = hours >= 12 ? 'PM' : 'AM';
+
+		hours = hours > 12 ? hours - 12 : hours;
+		return {hours, minutes, period};
 	}
 
 	render() {
@@ -138,7 +134,7 @@ class ScheduleDay extends React.Component {
 
 				{
 					data.map((info, key) => {
-						return <ScheduleEvent key={key} info={info} />;
+						return <ScheduleEvent key={key} info={info} colors={this.props.colors} />;
 					})
 				}
 			</View>
@@ -149,23 +145,19 @@ class ScheduleDay extends React.Component {
 /**
  * The screen with more information about the selected generated school schedule
  */
-class ScheduleSelectionDetails extends React.Component {
+class ScheduleSelectionDetails extends React.PureComponent {
+
+	strings = getStrings().ScheduleSelectionDetails;
 
 	static navigationOptions = ({navigation}) => ({
 		title: navigation.state.params.title,
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
 		headerStyle: {
-			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: white
 		},
 		headerRight: (
-			<IconButton
-				onPress={navigation.getParam('goBack')}
+			<IconButton onPress={navigation.getParam('goBack')}
 				icon='delete'
-				color='white'
+				color={dark_blue}
 				size={25}
 			/>
 		),
@@ -176,15 +168,78 @@ class ScheduleSelectionDetails extends React.Component {
 		this.state = {
 			showFAB: true,
 			currentY: 0,
+			daysTemp: {
+				[this.strings.days[1]]: []
+			}
 		};
 		
 		// Waits for the animation to finish, then goes to the next screen
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('ScheduleSelectionDetails', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {
-		// Sets the onPress for the delete icon in the header
-		this.props.navigation.setParams({ goBack: this.goBack });
+		this.props.navigation.setParams({ goBack: this.deleteCalendar });
+	}
+
+	deleteCalendar = async () => {
+		this.props.navigation.state.params.delete(this.props.index);
+		this.goBack();
+	}
+
+	componentWillMount() {
+		this.seperateEventsIntoDays(this.props.navigation.state.params.data);
+		this.setState({data: this.props.navigation.state.params.data});
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+	}
+
+	handleBackButton = () => {
+		this.props.navigation.pop();
+		return true;
+	}
+
+	seperateEventsIntoDays = (data) =>{
+		const temp_days = {
+			[this.strings.days[0]]: [],
+			[this.strings.days[1]]: [],
+			[this.strings.days[2]]: [],
+			[this.strings.days[3]]: [],
+			[this.strings.days[4]]: [],
+			[this.strings.days[5]]: [],
+			[this.strings.days[6]]: []
+		};
+
+		if (data.schoolEvents.length != 0) {
+			data.schoolEvents.forEach(event => {
+				event.type = 'school';
+				if ('daysEn' in this.strings) {
+					temp_days[this.strings.days[this.strings.daysEn.indexOf(event.dayOfWeekValue)]].push(event);
+				} else {
+					temp_days[event.dayOfWeekValue].push(event);
+				}
+			});
+		}
+
+		if (data.fixedEvents.length != 0) {
+			data.fixedEvents.forEach(event => {
+				event.type = 'fixed';
+				let day = new Date(event.startDate).getDay();
+				temp_days[this.strings.days[day]].push(event);
+			});
+		}
+
+		if (data.aiEvents) {
+			data.aiEvents.forEach(event => {
+				event.type = 'nonFixed';
+				let day = new Date(event.start.dateTime).getDay();
+				temp_days[this.strings.days[day]].push(event);
+			});
+		}
+		
+		this.setState({daysTemp: temp_days});
 	}
 
 	/**
@@ -195,27 +250,10 @@ class ScheduleSelectionDetails extends React.Component {
 	}
 
 	/**
-	 * Hides the FAB when scrolling down
-	 */
-	onScroll = (event) => {
-		event = Math.abs(event.nativeEvent.contentOffset.y);
-		if (event > Math.abs(this.state.currentY)) {
-			this.setState({
-				showFAB: false,
-				currentY: event
-			});
-		} else {
-			this.setState({
-				showFAB: true,
-				currentY: event
-			});
-		}
-	}
-
-	/**
 	 * TODO: Returns the data for the specified weekday
 	 */
-	getEventForWeekday = () => {
+	getEventForWeekday = (day) => {
+		let data = this.state.daysTemp[day];
 		return data;
 	}
 
@@ -223,30 +261,51 @@ class ScheduleSelectionDetails extends React.Component {
 	 * Goes to the next screen
 	 */
 	nextScreen = () => {
+		if (this.state.data.aiEvents) {
+			this.state.data.aiEvents.forEach(event => {
+				insertGeneratedEvent(event);
+			});
+		}
+		this.clearEvents();
 		this.props.navigation.navigate(DashboardNavigator);
 	}
 
+	clearEvents = () => {
+		this.props.dispatch(clearGeneratedCalendars());
+		this.props.dispatch(clearGeneratedNonFixedEvents());
+		this.props.dispatch(clearNonFixedEvents());
+		this.props.dispatch(clearFixedEvents());
+		this.props.dispatch(clearCourse());
+	}
+
 	render() {
-		const { showFAB } = this.state;
+		const { showFAB, daysTemp } = this.state;
+		const objectArray  = Object.keys(daysTemp);
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
-					backgroundColor={statusBlueColor} />
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={'rgba(0, 0, 0, 0.5)'} />
 
-				<ScrollView onScroll={this.onScroll}>
+				<ScrollView>
 					<View style={styles.content}>
 						{
-							days.map((day, key) => {
-								return <ScheduleDay key={key} 
+							objectArray.map((day, key) => {
+								return (<ScheduleDay key={key} 
+									colors={{
+										courseColor: this.props.courseColor,
+										fixedEventsColor: this.props.fixedEventsColor,
+										nonFixedEventsColor: this.props.nonFixedEventsColor,
+									}}
 									day={day} 
-									data={this.getEventForWeekday(day)} />;
+									data={this.getEventForWeekday(day)} />);
 							})
 						}
 					</View>
 				</ScrollView>
 				
-				<FAB
-					style={styles.fab}
+				<FAB style={styles.fab}
+					theme={{colors:{accent:blue}}}
 					icon="check"
 					visible={showFAB}
 					onPress={this.nextScreen} />
@@ -256,80 +315,48 @@ class ScheduleSelectionDetails extends React.Component {
 }
 
 let mapStateToProps = (state) => {
+	const { index } = state.ScheduleSelectionReducer;
+	const { GeneratedNonFixedEventsReducer } = state;
+	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
+
+	for (let i = 0; i < calendarColors.length; i++) {
+		let key = Object.keys(calendarColors[i])[0];
+		let value = Object.values(calendarColors[i])[0];
+
+		switch(key) {
+			case fixedEventsColor:
+				fixedEventsColor = value;
+				break;
+			
+			case nonFixedEventsColor:
+				nonFixedEventsColor = value;
+				break;
+				
+			case courseColor:
+				courseColor = value;
+				break;
+		}
+	}
+
+	if (!fixedEventsColor) {
+		fixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!nonFixedEventsColor) {
+		nonFixedEventsColor = state.CalendarReducer.calendarColor;
+	}
+
+	if (!courseColor) {
+		courseColor = state.CalendarReducer.calendarColor;
+	}
+
 	return {
-		index: state.ScheduleSelectionReducer.index
+		index,
+		GeneratedNonFixedEventsReducer,
+		fixedEventsColor,
+		nonFixedEventsColor,
+		courseColor
 	};
 };
 
 export default connect(mapStateToProps, null)(ScheduleSelectionDetails);
-
-const styles = StyleSheet.create({
-	container: {
-		width: '100%', 
-		height: '100%'
-	},
-
-	fab: {
-		position: 'absolute',
-		margin: 16,
-		right: 0,
-		bottom: 0,
-	},
-	
-	content: {
-		padding: containerPadding
-	},
-
-	dayContainer: {
-		marginBottom: 15
-	},
-
-	dayTitle: {
-		fontFamily: 'Raleway-SemiBold',
-		fontSize: 20,
-		marginVertical: 7,
-		color: gray
-	},
-
-	eventContainer: {
-		...Platform.select({
-			ios: {
-				shadowColor: black,
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.3,
-				shadowRadius: 3,    
-			},
-			android: {
-				elevation: 5,
-			},
-		}),
-		backgroundColor: white, 
-		borderRadius: 5, 
-		marginVertical: 7,
-		display: 'flex',
-		flexDirection: 'row'
-	},
-
-	eventData: {
-		padding: 7
-	},
-
-	eventTitle: {
-		fontFamily: 'Raleway-Bold',
-		color: gray
-	},
-
-	eventTime : {
-		color: gray
-	},
-
-	eventLocation : {
-		color: gray
-	},
-
-	scheduleEventColor: {
-		width: 20,
-		borderBottomLeftRadius: 5, 
-		borderTopLeftRadius: 5,
-	}
-});

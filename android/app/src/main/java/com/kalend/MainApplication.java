@@ -3,31 +3,30 @@ package com.kalend;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import fr.snapp.imagebase64.RNImgToBase64Package;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import org.reactnative.camera.RNCameraPackage;
-import com.airbnb.android.react.lottie.LottiePackage;
-import io.invertase.firebase.RNFirebasePackage;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+
+import com.github.droibit.android.reactnative.customtabs.CustomTabsPackage;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
+import com.reactnativecommunity.cameraroll.CameraRollPackage;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
+import com.reactnativecommunity.slider.ReactSliderPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
-import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage; 
+import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
-import fr.snapp.imagebase64.RNImgToBase64Package;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.airbnb.android.react.lottie.LottiePackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
 import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import org.reactnative.camera.RNCameraPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;   
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,9 +44,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-		      new RNFirebasePackage(),
-          new RNImgToBase64Package(),
-          new VectorIconsPackage(),
+            new CustomTabsPackage(),
+            new ReactNativeRestartPackage(),
+            new CameraRollPackage(),
+            new RNCViewPagerPackage(),
+            new ReactSliderPackage(),
+            new AsyncStoragePackage(),
+		       new RNFirebasePackage(),
           new LottiePackage(),
           new RNGestureHandlerPackage(),
           new LinearGradientPackage(),
@@ -57,7 +60,9 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseMessagingPackage(),
           new RNFirebaseAnalyticsPackage(),
           new RNFirebaseCrashlyticsPackage(),
-          new RNFirebasePerformancePackage()
+          new RNFirebasePerformancePackage(),
+          new RNFetchBlobPackage(),
+          new ExtraDimensionsPackage() 
       );
     }
 

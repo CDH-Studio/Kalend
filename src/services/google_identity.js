@@ -1,5 +1,5 @@
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { webClientId, googleIdentityScope } from '../../config';
+import { GoogleSignin } from 'react-native-google-signin';
+import { webClientId, googleIdentityScope } from '../../config/config';
 
 GoogleSignin.configure({
 	scopes: googleIdentityScope,
@@ -10,7 +10,9 @@ GoogleSignin.configure({
 let googleSignIn = async () => {
 	try {
 		await GoogleSignin.hasPlayServices();
-		const userInfo = await GoogleSignin.signIn();
+		await GoogleSignin.signIn();
+		const userInfo = await googleGetCurrentUserInfo();
+		
 		return userInfo;
 	} catch (error) {
 		return null;
@@ -44,11 +46,7 @@ let googleGetCurrentUserInfo = async () => {
 		const userInfo = await GoogleSignin.signInSilently();
 		return userInfo;
 	} catch (error) {
-		if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-			// user has not signed in yet
-		} else {
-			// some other error
-		}
+		//console.error(error);
 	}
 };
 

@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/MacCompatibility/NSValue+Compat.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/MacCompatibility/NSValue+Compat.h

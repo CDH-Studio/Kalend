@@ -1,34 +1,32 @@
 import React from 'react';
-import { CameraRoll, ScrollView, View, StatusBar, Platform, ImageBackground, ActivityIndicator, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { ScrollView, View, StatusBar, ActivityIndicator, Text, Platform, NativeModules } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import updateNavigation from '../NavigationHelper';
-import { gradientColors } from '../../../config';
-import CameraRollImage from '../CameraRollImage';
-import { selectPictureStyles as styles, white } from '../../styles';
-import { TutorialSchoolScheduleSelectPicture, TutorialSchoolScheduleCreation, DashboardSchoolScheduleCreation} from '../../constants/screenNames';
 import { setImageURI } from '../../actions';
+import CameraRollImage from '../CameraRollImage';
+import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
+import { selectPictureStyles as styles, white, blue } from '../../styles';
+import { getStrings } from '../../services/helper';
+import CameraRoll from '@react-native-community/cameraroll';
+
+// Enables the LayoutAnimation on Android
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 const imagesPerLoad = 99;
 
 /**
  * Camera roll screen to let the user select a schedule
  */
-class SchoolScheduleSelectPicture extends React.Component {
+class SchoolScheduleSelectPicture extends React.PureComponent {
 
-	static navigationOptions = {
-		title: 'Select Picture',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.2)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		}
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTransparent: true,
+		};
 	};
 
 	constructor(props) {
@@ -42,6 +40,9 @@ class SchoolScheduleSelectPicture extends React.Component {
 			fetchParams: { 
 				first: imagesPerLoad, 
 				assetType: 'Photos',
+				...Platform.OS === 'ios' ? {
+					groupTypes: 'All'
+				} : {}
 			},
 			showFAB: false,
 			loadingAnimationValue: 0,
@@ -53,7 +54,7 @@ class SchoolScheduleSelectPicture extends React.Component {
 		};
 		
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('SchoolScheduleSelectPicture', props.navigation.state.routeName);
 	}
 
 	componentDidMount() {
@@ -189,67 +190,56 @@ class SchoolScheduleSelectPicture extends React.Component {
 	nextScreen = () => {
 		this.setImage(this.state.selected);
 	
-		if (this.props.navigation.state.routeName === TutorialSchoolScheduleSelectPicture) {
-			this.props.navigation.navigate(TutorialSchoolScheduleCreation);
-		} else {
-			this.props.navigation.navigate(DashboardSchoolScheduleCreation);
-		}
+		this.props.navigation.navigate(SchoolScheduleCreationRoute, {title: getStrings().SchoolScheduleCreation.title});
 	}
 
 	render() {
 		const { images, showFAB, activityIndicator, selectedStyle, showNoPhotos } = this.state;
 
 		return (
-			<LinearGradient style={styles.container} 
-				colors={gradientColors}>
-				<ImageBackground style={styles.container} 
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
+			<View style={styles.container}>
+				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
+					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
+					
+				<ScrollView onScroll={this.scrollListener}>
 					<View style={styles.content}>
-						<StatusBar translucent={true} 
-							backgroundColor={'rgba(0, 0, 0, 0.4)'} />
-							
-						<ScrollView style={styles.scroll}
-							onScroll={this.scrollListener}>
+						<View style={styles.imageGrid}>
+							{ 
+								images.map((image, index) => {
+									return (
+										<CameraRollImage key={index}
+											image={image} 
+											index={index} 
+											onUpdate={this.onUpdate}
+											selectedStyle={selectedStyle[index]} />
+									);
+								}) 
+							}
 
-							<View style={styles.imageGrid}>
-								{ 
-									images.map((image, index) => {
-										return (
-											<CameraRollImage key={index}
-												image={image} 
-												index={index} 
-												onUpdate={this.onUpdate}
-												selectedStyle={selectedStyle[index]} />
-										);
-									}) 
-								}
+							{ activityIndicator }
 
-								{ activityIndicator }
+							{ 
+								showNoPhotos ? 
+									<View style={styles.emptyView}>
+										<Ionicons
+											name="ios-images" 
+											size={50} 
+											color={white} />
 
-								{ 
-									showNoPhotos ? 
-										<View style={styles.emptyView}>
-											<Ionicons
-												name="ios-images" 
-												size={50} 
-												color={white} />
-
-											<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
-										</View>
-										:
-										null
-								}
-							</View>
-						</ScrollView>
-						
-						<FAB style={styles.fab}
-							icon="file-upload"
-							visible={showFAB}
-							onPress={this.nextScreen} />
+										<Text style={styles.emptyText}>There are no photos on{'\n'}your device</Text>
+									</View> : null
+							}
+						</View>
 					</View>
-				</ImageBackground>
-			</LinearGradient>
+				</ScrollView>
+				
+				<FAB style={styles.fab}
+					icon="file-upload"
+					theme={{colors:{accent:blue}}}
+					visible={showFAB}
+					onPress={this.nextScreen} />
+			</View>
 		);
 	}
 }

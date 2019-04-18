@@ -1,34 +1,38 @@
 import React from 'react';
-import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS } from 'react-native';
+import { Platform, Dimensions, StatusBar, Text, View, ScrollView, TextInput, Picker, ActionSheetIOS, KeyboardAvoidingView, findNodeHandle } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Snackbar } from 'react-native-paper';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
-import updateNavigation from '../NavigationHelper';
-import { TutorialAddCourse, DashboardAddCourse, TutorialFixedEvent } from '../../constants/screenNames';
-import { courseStyles as styles, blue, statusBlueColor, gray } from '../../styles';
 import { updateCourses, addCourse } from '../../actions';
 import BottomButtons from '../BottomButtons';
+import { CourseRoute, SchoolScheduleRoute, DashboardNavigator, ReviewEventRoute, SchoolInformationRoute } from '../../constants/screenNames';
+import updateNavigation from '../NavigationHelper';
+import { getStartDate, timeVerification, getStrings } from '../../services/helper';
+import { courseStyles as styles, statusBlueColor, dark_blue, blue, white, red } from '../../styles';
 
-const viewHeight = 718.8571166992188;
+const moment = require('moment');
+require('moment-round');
+
+const viewHeight = 774.8571166992188;
 const containerHeight = Dimensions.get('window').height - Header.HEIGHT;
 
 /**
  * Permits the user to input their school schedule manually 
  * or to edit the previously entred courses
  */
-class Course extends React.Component {
+class Course extends React.PureComponent {
+
+	days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	strings = getStrings().Course;
+	buttonStrings = getStrings().BottomButtons;
 
 	static navigationOptions = ({navigation}) => ({
-		title: navigation.state.routeName === TutorialAddCourse || navigation.state.routeName === DashboardAddCourse ? 'Add Courses' : 'Edit Course',
-		headerTintColor: '#ffffff',
-		headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-		headerTransparent: true,
+		title: navigation.state.routeName === CourseRoute ? navigation.state.params.addTitle : navigation.state.params.editTitle,
 		headerStyle: {
-			backgroundColor: blue,
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+			backgroundColor: white,
 		}
 	});
 
@@ -40,177 +44,49 @@ class Course extends React.Component {
 
 		this.state = { 
 			containerHeight,
-
-			courseCode: '',
-
+			summary: '',
 			dayOfWeek: 'Monday',
-			dayOfWeekValue: 'MONDAY',
-
-			startTime: new Date().toLocaleTimeString(),
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime: true,
-			amPmEnd: this.getAmPm(),
-
+			dayOfWeekValue: 'Monday',
+			startTime: moment().round(30, 'minutes').format('h:mm A'),
+			endTime: moment().round(30, 'minutes').format('h:mm A'),
 			location: ''
 		};
 
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('Course', props.navigation.state.routeName);
 	}
 
 	componentWillMount() {
-		if (this.props.navigation.state.routeName !== TutorialAddCourse) {
+		this.resetField();
+
+		if (this.props.navigation.state.routeName !== CourseRoute) {
 			this.setState({...this.props.CourseState});
-		} else {
-			this.resetField();
+
+			const { dayOfWeekValue } = this.state;
+			const { dayOfWeek } = this.props.CourseState;
+			if (dayOfWeek !== dayOfWeekValue) {
+				this.setState({dayOfWeekValue: dayOfWeek});
+			}
+
+			if ('end' in this.props.CourseState && !('endTime' in this.props.CourseState)) {
+				this.setState({endTime: moment(this.props.CourseState.end.dateTime).format('h:mm A')});
+			}
+
+			if ('start' in this.props.CourseState && !('startTime' in this.props.CourseState)) {
+				this.setState({endTime: moment(this.props.CourseState.start.dateTime).format('h:mm A')});
+			}
 		}	
 	}
 
-	/**
-	 * Returns the time formatted with the AM/PM notation
-	 * 
-	 * @param {String} time The time expressed in the 24 hours format
-	 */
-	getTwelveHourTime(time) {
-		let temp = time.split(' ');
-		let amOrPm = temp[1];
-
-		let info = time.split(':');
-		time = new Date();
-
-		time.setHours(parseInt(info[0]));
-		time.setMinutes(parseInt(info[1]));
-
-		let currentHour = time.getHours();
-		let currentMinute = time.getMinutes();
-
-		if (currentHour > 12) {
-			currentHour = currentHour % 12;
-			time.setHours(currentHour);
-		}
-
-		if (currentMinute < 10) {
-			currentMinute = '0' + currentMinute;
-		}
-
-		return time.getHours() + ':' + currentMinute + ' ' + amOrPm;
-	}
-
-	/**
-	 * Gets the current time AM or PM
-	 */
-	getAmPm() {
-		let hours = new Date().getHours();
-		return (hours >= 12) ? ' PM' : ' AM';
-	}
-
-	/**
-	 * Enables endTime and sets it to the startTime
-	 */
-	enableEndTime() {
-		if (this.state.disabledEndTime === true) {
-			this.setState({endTime: this.state.startTime});
-			return false;
-		} else {
-			//do nothing
-		}
-	}
-
-	/**
-	 * Sets the minimum endTime on iOS devices
-	 */
-	setMinEndTime() {
-		let min = new Date();
-
-		if (this.state.startDate === this.state.endDate) {
-			this.state.endTime = this.state.startTime;
-			min = min.toLocaleTimeString();
-			min = this.state.startTime;
-			return min;
-		}
-	}
-
-	/**
-	 * Analyzes the input times and make sure the ranges make sense
-	 * 
-	 * @param {String} startTime The start time received from the time dialog
-	 * @param {String} endTime The end time received from the time dialog
-	 */
-	beforeStartTime = (startTime, endTime) => {
-		let startCheck = true;
-
-		// Check if an end time has been specified, if not, use the state end time
-		if (endTime === undefined) {
-			endTime = this.state.endTime;
-		}
-
-		// Check if a start time has been specified, if not, use the state start time
-		// and specify that the startTime wasn't given by changing the variable startCheck
-		if (startTime === undefined) {
-			startTime = this.state.startTime;
-			startCheck = false;
-		}
-
-		// Fix the undefined bug if you haven't set the end time (since the seconds are included in the time)
-		if (endTime.split(':').length === 3) {
-			let endTimeSplit = endTime.split(':');
-			let endTimeSplitSpace = endTime.split(' ');
-
-			endTime = endTimeSplit[0] + ':' + endTimeSplit[1] + ' ' + endTimeSplitSpace[1];
-		}
-
-		// Analyzes the start time, and converts it to a date
-		let start = this.getDateObject(startTime);
-
-		// End Time
-		let end = this.getDateObject(endTime);
-
-		// Comparing start and end time
-		if (startCheck) {
-			if (start > end) {
-				return startTime;
-			} else {
-				return endTime;
-			}
-		} else {
-			if (end < start) {
-				return endTime;
-			} else {
-				return startTime;
-			}
-		}
-	}
-
-	/**
-	 * Converts a string formatted like ##:## PM or AM to a JavaScript object
-	 * 
-	 * @param {String} time The string representing the time
-	 * 
-	 * @returns {Date} The JavaScript date object equivalent of the string
-	 */
-	getDateObject = (time) => {
-		// Gets the AM/PM
-		let tempTime = time.split(' ');
-		let isPm = tempTime[1].trim().toLowerCase() === 'pm';
-
-		// Gets the hours and minutes
-		let timeContent = tempTime[0].split(':');
-		let hours = parseInt(timeContent[0]);
-		let minutes = parseInt(timeContent[1]);
-
-		// Adds 12 hours if its PM and not equal to 12
-		if (isPm && hours !== 12) {
-			hours += 12;
-		}
-
-		// Creates a JavaScript object
-		let date = new Date();
-		date.setHours(hours, minutes);
-
-		return date;
-	}
+	scrollToInput = (inputFieldRef, keyboardScrollHeight) => {
+		const scrollResponder = this.refs._scrollView.getScrollResponder();
+		const inputHandle = findNodeHandle(inputFieldRef);
+	
+		scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+			inputHandle,
+			keyboardScrollHeight,
+			true
+		);
+	};
 
 	/**
 	 * Opens up the iOS action sheet to set the recurrence
@@ -218,48 +94,50 @@ class Course extends React.Component {
 	dayOfWeekOnClick = () => {
 		return ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Cancel'],
+				options: [...this.strings.week, this.strings.cancel],
 				cancelButtonIndex: 7,
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.state.dayOfWeekValue = 'MONDAY';
+					this.setState({dayOfWeekValue: 'Monday'});
 				} else if (buttonIndex === 1) {
-					this.state.dayOfWeekValue = 'TUESDAY';
+					this.setState({dayOfWeekValue: 'Tuesday'});
 				} else if (buttonIndex === 2) {
-					this.state.dayOfWeekValue = 'WEDNESDAY';
+					this.setState({dayOfWeekValue: 'Wednesday'});
 				} else if (buttonIndex === 3) {
-					this.state.dayOfWeekValue = 'THURSDAY';
+					this.setState({dayOfWeekValue: 'Thursday'});
 				} else if (buttonIndex === 4) {
-					this.state.dayOfWeekValue = 'FRIDAY';
+					this.setState({dayOfWeekValue: 'Friday'});
 				} else if (buttonIndex === 5) {
-					this.state.dayOfWeekValue = 'SATURDAY';
+					this.setState({dayOfWeekValue: 'Saturday'});
 				} else if (buttonIndex === 6) {
-					this.state.dayOfWeekValue = 'SUNDAY';
+					this.setState({dayOfWeekValue: 'Sunday'});
 				}
-				this.forceUpdate();
 			},
 		);
 	}
 
+	getDateFromTimeString = (timeString, currentDate) => {
+		let currentMoment = new moment(currentDate);
+		let timeMoment = new moment(timeString, 'h:mm A');
+
+		currentMoment.hours(timeMoment.hours());
+		currentMoment.minutes(timeMoment.minutes());
+
+		return currentMoment;
+	}
+
 	/**
-	 * Validates the CourseCode and EndTime fields
+	 * Validates the CourseCode field
 	 */
 	fieldValidation = () => {
 		let validated = true;
 
-		if (this.state.courseCode === '') {
+		if (this.state.summary === '') {
 			this.setState({courseCodeValidated: false});
 			validated = false;
 		} else {
 			this.setState({courseCodeValidated: true});
-		}
-		
-		if (this.state.disabledEndTime === true) {
-			this.setState({endTimeValidated: false});
-			validated = false;
-		} else {
-			this.setState({endTimeValidated: true});
 		}
 
 		return validated;
@@ -269,9 +147,9 @@ class Course extends React.Component {
 	 * Adds the event in the calendar
 	 */
 	nextScreen = () => {
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
+		if (this.props.navigation.state.routeName === CourseRoute) {
 			if (this.addAnotherEvent()) {
-				this.props.navigation.navigate(TutorialFixedEvent);
+				this.props.navigation.pop();
 			}
 		} else {
 			let validated = this.fieldValidation();
@@ -280,7 +158,7 @@ class Course extends React.Component {
 			}
 			
 			this.props.dispatch(updateCourses(this.props.selectedIndex, this.state));
-			this.props.navigation.navigate('TutorialReviewEvent');
+			this.props.navigation.pop();
 		}
 	}
 
@@ -291,25 +169,45 @@ class Course extends React.Component {
 		let validated = this.fieldValidation();
 		if (!validated) {
 			this.setState({
-				snackbarText: 'Invalid fields, please review to add course',
+				snackbarText: this.strings.snackbarFailure,
 				snackbarVisible: true,
 				snackbarTime: 5000
 			});
 			return false;
 		}
 
-		this.props.dispatch(addCourse(this.state));
+		let courseStartDate = getStartDate(this.props.semesterStartDate, this.state.dayOfWeek);
+		let courseEndDate = new Date(courseStartDate.getTime());
 
-		if(validated) {
-			this.resetField();
-			this.refs._scrollView.scrollTo({x: 0});
-			this.setState({
-				snackbarText: 'Course successfully added',
-				snackbarVisible: true,
-				snackbarTime: 3000
-			});
-		}
-		return validated;
+		courseEndDate = this.getDateFromTimeString(this.state.endTime, courseEndDate);
+		courseEndDate = courseEndDate.toJSON();
+
+		courseStartDate = this.getDateFromTimeString(this.state.startTime, courseStartDate);
+		courseStartDate = courseStartDate.toJSON();
+
+		return this.setState({
+			end: {
+				timeZone: 'America/Toronto',
+				dateTime: courseEndDate
+			},
+			start: {
+				timeZone: 'America/Toronto',
+				dateTime: courseStartDate
+			}
+		}, () => {
+			this.props.dispatch(addCourse(this.state));
+
+			if (validated) {
+				this.resetField();
+				this.refs._scrollView.scrollTo({x: 0});
+				this.setState({
+					snackbarText: this.strings.snackbarSuccess,
+					snackbarVisible: true,
+					snackbarTime: 3000
+				});
+			}
+			return validated;
+		});
 	}
 
 	/**
@@ -317,25 +215,17 @@ class Course extends React.Component {
 	 */
 	resetField = () => {
 		this.setState({
-			courseCode: '',
+			summary: '',
 			courseCodeValidated: true,
-			
-			dayOfWeek: 'Monday',
-			dayOfWeekValue: 'MONDAY',
-
-			startTime: new Date().toLocaleTimeString(),
-			amPmStart: this.getAmPm(),
-
-			endTime: new Date().toLocaleTimeString(),
-			minEndTime: new Date().toLocaleTimeString(),
-			disabledEndTime: true,
-			amPmEnd: this.getAmPm(),
-			endTimeValidated: true,
-
+			dayOfWeek: this.strings.week[0],
+			dayOfWeekValue: 'Monday',
+			startTime: moment().round(30, 'minutes').format('h:mm A'),
+			endTime: moment().round(30, 'minutes').format('h:mm A'),
 			location: '',
 			snackbarVisible: false,
 			snackbarText: '',
-			snackbarTime: 3000
+			snackbarTime: 3000,
+			recurrence: [`RRULE:FREQ=WEEKLY;UNTIL=${this.props.semesterEndDate};`]
 		});
 	}
 
@@ -345,27 +235,19 @@ class Course extends React.Component {
 		let addEventButtonText;
 		let addEventButtonFunction;
 		let errorCourseCode;
-		let errorEndTime;
 		let showNextButton = true;
 
 		if (!this.state.courseCodeValidated) {
-			errorCourseCode = <Text style={styles.errorCourseCode}>Course Code cannot be empty.</Text>;
+			errorCourseCode = <Text style={styles.errorCourseCode}>{this.strings.courseCodeEmpty}</Text>;
 		} else {
 			errorCourseCode = null;
 		}
-
-		if (!this.state.endTimeValidated) {
-			errorEndTime = <Text style={styles.errorEndTime}>Please select a Start and End Time.</Text>;
-		} else {
-			errorEndTime = null;
-		}
 		
-
-		if (this.props.navigation.state.routeName === TutorialAddCourse) {
-			addEventButtonText = 'Add';
+		if (this.props.navigation.state.routeName === CourseRoute) {
+			addEventButtonText = this.buttonStrings.add;
 			addEventButtonFunction = this.addAnotherEvent;
 		} else {
-			addEventButtonText = 'Done';
+			addEventButtonText = this.buttonStrings.done;
 			addEventButtonFunction = this.nextScreen;
 			showNextButton = false;
 		}
@@ -373,131 +255,155 @@ class Course extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent={true}
-					backgroundColor={statusBlueColor} />
+					backgroundColor={statusBlueColor}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'} />
 
-				<ScrollView ref='_scrollView'>
-					<View style={[styles.content, {height: containerHeight}]}>
-						<View style={styles.instruction}>
-							<Text style={styles.text}>Add all your courses from your school schedule</Text>
-							<FontAwesome5 name="university"
-								size={130}
-								color={blue}/>
-						</View>
+				<KeyboardAvoidingView 
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+					<ScrollView ref='_scrollView'>
+						<View style={[styles.content, {height: containerHeight}]}>
+							<View style={styles.instruction}>
+								<Text style={styles.text}>{this.strings.description}</Text>
+
+								<FontAwesome5 name="university"
+									size={130}
+									color={dark_blue}/>
+							</View>
 						
-						<View>
+							<View>
+								<View style={styles.textInput}>
+									<MaterialIcons name="class"
+										size={30}
+										color={blue} />
+
+									<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? red : '#D4D4D4'}]}>
+										<TextInput style={styles.textInputText} 
+											maxLength={1024}
+											placeholder={this.strings.courseCodePlaceholder}
+											returnKeyType = {'next'}
+											onSubmitEditing={() => this.refs.locationInput.focus()}
+											blurOnSubmit={false}
+											onChangeText={(courseCode) => this.setState({summary: courseCode, courseCodeValidated: true})} 
+											value={this.state.summary} />
+									</View>
+								</View>
+
+								{errorCourseCode}
+							</View>
+
+							<View style={styles.dayOfWeekSection}>
+								<Text style={styles.dayOfWeekTitle}>{this.strings.dayOfWeek}</Text>
+
+								<View style={styles.dayOfWeekBorder}>
+									{
+										Platform.OS === 'ios' ? 
+											<View>
+												<MaterialIcons name="arrow-drop-down"
+													size={20}
+													style={styles.arrow} />
+												<Text style={styles.dayOfWeekText} 
+													onPress={this.dayOfWeekOnClick}>
+													{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}
+												</Text>
+											</View>
+											:	
+											<Picker style={styles.dayOfWeekValues} 
+												selectedValue={this.state.dayOfWeek} 
+												onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue, dayOfWeekValue})}>
+												<Picker.Item label={this.strings.week[0]} value="Monday" />
+												<Picker.Item label={this.strings.week[1]} value="Tuesday" />
+												<Picker.Item label={this.strings.week[2]} value="Wednesday" />
+												<Picker.Item label={this.strings.week[3]} value="Thursday" />
+												<Picker.Item label={this.strings.week[4]} value="Friday" />
+												<Picker.Item label={this.strings.week[5]} value="Saturday" />
+												<Picker.Item label={this.strings.week[6]} value="Sunday" />
+											</Picker>
+									}
+								</View>
+							</View>
+							<View>
+								<View style={styles.time}>
+									<Text style={styles.blueTitle}>{this.strings.startTime}</Text>
+
+									<DatePicker showIcon={false} 
+										date={this.state.startTime} 
+										mode="time" 
+										customStyles={{
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular'}
+										}}
+										format="h:mm A" 
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										locale={'US'}
+										is24Hour={false}
+										onDateChange={(startTime) => {
+											this.setState({startTime,
+												endTime: timeVerification(startTime, this.state.endTime, this.state.endTime)});
+										}} />
+								</View>
+
+								<View style={styles.time}>
+									<Text style={styles.blueTitle}>{this.strings.endTime}</Text>
+
+									<DatePicker showIcon={false} 
+										date={this.state.endTime} 
+										mode="time"
+										customStyles={{
+											dateInput:{borderWidth: 0}, 
+											dateText:{fontFamily: 'OpenSans-Regular'}, 
+										}}
+										format="h:mm A"
+										confirmBtnText={this.strings.confirmButton}
+										cancelBtnText={this.strings.cancelButton}
+										locale={'US'}
+										is24Hour={false}
+										onDateChange={(endTime) => {
+											this.setState({endTime,
+												startTime: timeVerification(this.state.startTime, endTime, this.state.startTime)});
+										}} />
+								</View>
+							</View>
+
 							<View style={styles.textInput}>
-								<MaterialIcons name="class"
+								<MaterialIcons name="location-on"
 									size={30}
 									color={blue} />
 
-								<View style={[styles.textInputBorder, {borderBottomColor: !this.state.courseCodeValidated ? '#ff0000' : '#D4D4D4'}]}>
+								<View style={styles.textInputBorder}>
 									<TextInput style={styles.textInputText} 
-										placeholder="Course Code" 
-										onChangeText={(courseCode) => this.setState({courseCode, courseCodeValidated: true})} 
-										value={this.state.courseCode} />
+										onFocus={() => this.scrollToInput(this.refs.locationInput, 230)}
+										maxLength={1024}
+										placeholder={this.strings.locationPlaceholder}
+										ref='locationInput'
+										returnKeyType = {'done'}
+										onChangeText={(location) => this.setState({location})} 
+										value={this.state.location}/>
 								</View>
 							</View>
 
-							{errorCourseCode}
+							<BottomButtons twoButtons={showNextButton}
+								buttonText={[addEventButtonText, this.buttonStrings.done]}
+								buttonMethods={[addEventButtonFunction, () => {
+									let routes = this.props.navigation.dangerouslyGetParent().state.routes;
+
+									if (routes && (routes[routes.length - 3].routeName == ReviewEventRoute || 
+										(routes[routes.length - 3].routeName == SchoolInformationRoute && routes[routes.length - 4].routeName == ReviewEventRoute))) {
+										this.props.navigation.navigate(ReviewEventRoute,  {title: getStrings().ReviewEvent.title});
+									} else if (routes && routes[routes.length - 2].routeName == SchoolScheduleRoute) {
+										this.props.navigation.navigate(DashboardNavigator);
+									} else {
+										this.props.navigation.pop();
+									}
+								}]} />
 						</View>
-
-						<View style={styles.textInput}>
-							<Text style={styles.dayOfWeekTitle}>Day of Week</Text>
-
-							<View style={styles.dayOfWeekBorder}>
-								{
-									Platform.OS === 'ios' ? 
-										<Text onPress={this.dayOfWeekOnClick}>{dayOfWeekValue.charAt(0).toUpperCase() + dayOfWeekValue.slice(1).toLowerCase()}</Text>
-										:	
-										<Picker style={styles.dayOfWeekValues} 
-											selectedValue={this.state.dayOfWeek} 
-											onValueChange={(dayOfWeekValue) => this.setState({dayOfWeek: dayOfWeekValue})}>
-											<Picker.Item label="Monday" value="MONDAY" />
-											<Picker.Item label="Tuesday" value="TUESDAY" />
-											<Picker.Item label="Wednesday" value="WEDNESDAY" />
-											<Picker.Item label="Thursday" value="THURSDAY" />
-											<Picker.Item label="Friday" value="FRIDAY" />
-											<Picker.Item label="Saturday" value="SATURDAY" />
-											<Picker.Item label="Sunday" value="SUNDAY" />
-										</Picker>
-								}
-							</View>
-						</View>
-						<View>
-							<View style={styles.time}>
-								<Text style={styles.blueTitle}>Start Time</Text>
-								<DatePicker showIcon={false} 
-									date={this.state.startTime} 
-									mode="time" 
-									customStyles={{
-										dateInput:{borderWidth: 0}, 
-										dateText:{
-											fontFamily: 'OpenSans-Regular',
-											color: gray
-										}, 
-										placeholderText:{color: !this.state.endTimeValidated ? '#ff0000' : gray}
-									}}
-									placeholder={this.getTwelveHourTime(this.state.startTime.split(':')[0] + ':' + this.state.startTime.split(':')[1] +  this.state.amPmStart)} 
-									format="h:mm A" 
-									confirmBtnText="Confirm" 
-									cancelBtnText="Cancel" 
-									is24Hour={false}
-									onDateChange={(startTime) => {
-										this.setState({endTimeValidated: true, startTime, endTime: this.beforeStartTime(this.getTwelveHourTime(startTime), undefined)});
-										this.setState({ disabledEndTime: this.enableEndTime()});
-									}} />
-							</View>
-
-							<View>
-								<View style={styles.time}>
-									<Text style={styles.blueTitle}>End Time</Text>
-									<DatePicker showIcon={false} 
-										date={this.state.endTime} 
-										mode="time" 
-										disabled= {this.state.disabledEndTime}
-										customStyles={{
-											disabled:{backgroundColor: 'transparent'}, 
-											dateInput:{borderWidth: 0}, 
-											dateText:{fontFamily: 'OpenSans-Regular'}, 
-											placeholderText:{
-												color: !this.state.endTimeValidated ? '#ff0000' : gray,
-												textDecorationLine: this.state.disabledEndTime ? 'line-through' : 'none'}}}
-										placeholder={this.getTwelveHourTime(this.state.endTime.split(':')[0] + ':' + this.state.endTime.split(':')[1] +  this.state.amPmEnd)} 
-										format="h:mm A" 
-										minDate={this.state.minEndTime}
-										confirmBtnText="Confirm" 
-										cancelBtnText="Cancel" 
-										is24Hour={false}
-										onDateChange={(endTime) => this.setState({endTime, startTime: this.beforeStartTime(undefined, this.getTwelveHourTime(endTime))})}/>
-								</View>
-
-								{errorEndTime}
-							</View>
-						</View>
-
-						<View style={styles.textInput}>
-							<MaterialIcons name="location-on"
-								size={30}
-								color={blue} />
-							<View style={styles.textInputBorder}>
-								<TextInput style={styles.textInputText} 
-									placeholder="Location" 
-									onChangeText={(location) => this.setState({location})} 
-									value={this.state.location}/>
-							</View>
-						</View>
-
-
-						<BottomButtons twoButtons={showNextButton}
-							buttonText={[addEventButtonText, 'Next']}
-							buttonMethods={[addEventButtonFunction, () => 
-								this.props.navigation.navigate(TutorialFixedEvent)]} />
-					</View>
-				</ScrollView>
+					</ScrollView>
+				</KeyboardAvoidingView>
 
 				<Snackbar
 					visible={snackbarVisible}
-					onDismiss={() => this.setState({ snackbarVisible: false })} 
+					onDismiss={() => this.setState({snackbarVisible: false})} 
 					style={styles.snackbar}
 					duration={snackbarTime}>
 					{snackbarText}
@@ -508,13 +414,20 @@ class Course extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-	const { CoursesReducer, NavigationReducer } = state;
+	const { CoursesReducer, NavigationReducer, SchoolInformationReducer } = state;
+
 	let selected = NavigationReducer.reviewEventSelected;
+	let semesterEndDate = new Date(SchoolInformationReducer.info.info.endDate);
+	let semesterStartDate = new Date(SchoolInformationReducer.info.info.startDate);
+
+	semesterEndDate = semesterEndDate.toISOString().split('T')[0].replace(/-/g, '');
 
 	return {
 		CourseState: CoursesReducer[selected],
 		CoursesReducer,
-		selectedIndex: selected
+		selectedIndex: selected,
+		semesterEndDate,
+		semesterStartDate
 	};
 };
 

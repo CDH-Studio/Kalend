@@ -162,6 +162,7 @@ exports[`NumericInputs render correctly 1`] = `
       onBlur={[Function]}
       onChangeText={[Function]}
       onFocus={[Function]}
+      rejectResponderTermination={true}
       returnKeyType="done"
       style={
         Array [
@@ -244,26 +245,6 @@ exports[`NumericInputs render correctly 1`] = `
     </Text>
   </View>
 </View>
-`;
-
-exports[`Slider renders correctly 1`] = `
-<RCTSlider
-  disabled={false}
-  enabled={true}
-  maximumValue={1}
-  minimumTrackTintColor="#FFBF69"
-  minimumValue={0}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  step={0.5}
-  style={
-    Object {
-      "height": 40,
-    }
-  }
-  thumbTintColor="#FF9F1C"
-  value={0}
-/>
 `;
 
 exports[`StatusBar renders correctly 1`] = `null`;

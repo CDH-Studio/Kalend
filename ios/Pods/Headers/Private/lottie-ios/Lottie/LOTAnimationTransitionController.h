@@ -1,1 +1,1 @@
-../../../../lottie-ios/lottie-ios/Classes/PublicHeaders/LOTAnimationTransitionController.h
+../../../../../../node_modules/lottie-ios/lottie-ios/Classes/PublicHeaders/LOTAnimationTransitionController.h

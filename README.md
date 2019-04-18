@@ -1,112 +1,58 @@
-<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/dev/src/assets/img/dark_logo.png" alt="Kalend" width="300"/>
+[<img src="https://raw.githubusercontent.com/CDH-Studio/Kalend/dev/src/assets/img/dark_logo.png" alt="Kalend" width="300"/>](https://benjeau.github.io/)
 
 [![CircleCI](https://img.shields.io/circleci/project/github/CDH-Studio/Kalend/master.svg?style=flat&logo=circleci)](https://circleci.com/gh/CDH-Studio/Kalend)
 [![Release Version](https://img.shields.io/github/release/CDH-Studio/Kalend.svg?style=flat)](https://github.com/CDH-Studio/Kalend/releases)
 ![](https://img.shields.io/github/license/CDH-Studio/Kalend.svg?style=flat)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/CDH-Studio/Kalend.svg)
 
-For more information please go and see our [wiki](https://github.com/CDH-Studio/Kalend/wiki)
-
-## React Native Modules
-
-* React Native Vector Icons
-  * https://github.com/oblador/react-native-vector-icons
-* React Native Paper
-  * https://github.com/callstack/react-native-paper
-* React Native Google SignIn
-  * https://github.com/react-native-community/react-native-google-signin
-* React Native Linear Gradient
-  * https://github.com/react-native-community/react-native-linear-gradient
-* React Navigation
-  * https://reactnavigation.org/en/
-* React Native Datepicker
-  * https://github.com/xgfe/react-native-datepicker
-* React Native App Intro Sliders
-  * https://github.com/Jacse/react-native-app-intro-slider
-* React Native Numeric Input
-  * https://www.npmjs.com/package/react-native-numeric-input
-* Jest
-  * https://jestjs.io/docs/en/tutorial-react-native
-* React Native Camera
-  * https://github.com/react-native-community/react-native-camera
-* React Native Firebase
-  * https://rnfirebase.io/
-* React Native Simple Radio Button
-  * https://www.npmjs.com/package/react-native-simple-radio-button
-* Redux
-  * https://redux.js.org/
-* Redux Persist
-  * https://github.com/rt2zz/redux-persist
-* React Native iPhone X Helper
-  * https://github.com/ptelad/react-native-iphone-x-helper
+A mobile application that leverages Artificial Intelligence technology to create optimized schedules while taking into account various user constraints as well as other information such as the location of activities and their duration. Our project demo website is available [here](https://benjeau.github.io/).
 
 ## Dependencies
 
-Below is a list of dependencies to run our project, you can either install all of the manually or run the PowerShell script.
+Below is a list of development dependencies to run the project, you can either install all of them manually or run the PowerShell script.
 
-* yarn
-* node.js
-* Java JDK
-* Python 2
-* React Native
-* Android Studio (for Android testing)
-* Android SDK (for Android testing, needed for React Native)
+* [Yarn](https://yarnpkg.com/)
+* [Node.js](https://nodejs.org/)
+* [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [React Native](https://facebook.github.io/react-native/docs/getting-started#installing-dependencies)
+* [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (for iOS development)
+* [Android Studio](https://developer.android.com/studio) (for Android development)
+* Android SDK (for Android development, needed for React Native)
   * Android SDK Platform 28
   * Android SDK Build-Tools 28.0.3
   * Sources for Android 28
   * Intel x86 Emulator Accelerator (HAXM installer)
-* Android SDK (for Android testing, needed for React Native Google Sign In)
-  * Google APIs 23
-  * Google APIs 22
-  * Android SDK Platform 23
-  * Android SDK Platform 22
-  * Android SDK Build-Tools 27.0.3
-  * Android SDK Build-Tools 28.0.3
-  * Google Play services
-  * Google Repository
-  * Android Support Repository
-  * Android SDK Tools
-  * Android SDK Platform-Tools
 
-### Automatic install
+### Manual install
 
-Located at the root of this project, there is a file called *setup.ps1*. To install via the script:
+A basic install of [React Native](https://facebook.github.io/react-native/docs/getting-started#installing-dependencies) should be fine to run this project.
+
+### Automatic install (windows only)
+
+If you have none of the dependencies listed above and want to install from scratch, located at the root of this project, there is a file called **setup.ps1** in the config folder. To install via the script:
 
 1. Open a PowerShell window with Administrator privileges.
-2. Run this command to be able to run the PowerShell script. Then enter **a** when asked for an input.
-```
-Set-ExecutionPolicy RemoteSigned
-```
-3. Run this command to run the script. Follow the instructions displayed in PowerShell when running the script
-```
-.\script.ps1
-```
+2. Run `Set-ExecutionPolicy RemoteSigned` to be able to run the PowerShell script. Then enter **a** when asked for an input.
+3. Run `cd config`, then `.\script.ps1` to run the script. Follow the instructions displayed in PowerShell when running the script
 
+## Getting up and running
 
-## To have the app running
+Make sure to install every development dependencies mentionned above before proceding.
 
-1. Clone the repo
+1. Clone the repo `git clone https://github.com/CDH-Studio/Kalend.git`
+2. Change directory `cd Kalend`
+3. Install project dependencies `yarn install` or just `yarn`
+    * **Note**: if you want to test it on iOS, you need to install pod dependencies by doing `cd ios && pod install`
+4. Run the application
+    1. In the debug environment
+        * On Android `yarn android` or `react-native run-android`
+        * On iOS `yarn ios` or `react-native run-ios`
+    2. In the release environment
+        * On Android `yarn android-release` or `react-native run-android`
+        * On iOS `yarn ios-release` or `react-native run-android`
 
-```
-cd Kalend
-yarn install
-```
+**Note**: to get the Google Sign In working on the debug version of Android, you need to replace the *debug.keystore* located in .android folder of your home directory by the project's keystore file located in the project's android folder.
 
-```
-cd into server folder
-run yarn install
-```
+The code for the backend part of this project is located in another [repository](https://github.com/CDH-Studio/Kalend-backend), which contains the code necessary for the server-side part of the project.
 
-## To start server:
-inside server folder run node server.js
-
-## If Jest testing isn't working, do these steps:
-1. npm i -D babel-core@bridge
-
-2. Change .babelrc to babel.config.js
-
-3. Overwrite the babel.config.js content with this:
-```
-module.exports = {
-	presets: ['module:metro-react-native-babel-preset']
-};
-```
+#### Go to our [wiki](https://github.com/CDH-Studio/Kalend/wiki) for more information

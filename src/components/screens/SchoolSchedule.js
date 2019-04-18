@@ -1,54 +1,23 @@
 import React from 'react';
-import { ImageBackground, StatusBar, View, Text, Platform, TouchableOpacity, Dimensions } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { IconButton } from 'react-native-paper';
+import { StatusBar, View, Text, Platform, ScrollView } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Image from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Header } from 'react-navigation';
-import { gradientColors } from '../../../config';
-import updateNavigation from '../NavigationHelper';
+import { SchoolScheduleSelectPictureRoute, SchoolScheduleTakePictureRoute, CourseRoute } from '../../constants/screenNames';
 import { requestStoragePermission, requestCamera } from '../../services/android_permissions';
-import { googleSignOut } from '../../services/google_identity';
-import { schoolScheduleStyles as styles, white } from '../../styles';
-import TutorialStatus from '../TutorialStatus';
-import { TutorialSchoolSchedule,
-	LoginNavigator,
-	TutorialSchoolScheduleSelectPicture,
-	DashboardSchoolScheduleSelectPicture,
-	TutorialSchoolScheduleTakePicture,
-	DashboardSchoolScheduleTakePicture,
-	TutorialFixedEvent,
-	TutorialAddCourse,
-	DashboardAddCourse } from '../../constants/screenNames';
-
-const fixedContainerHeight = Dimensions.get('window').height - StatusBar.currentHeight - Header.HEIGHT;
+import { schoolScheduleStyles as styles, dark_blue, statusBlueColor, whiteRipple, blueRipple } from '../../styles';
+import updateNavigation from '../NavigationHelper';
+import { getStrings } from '../../services/helper';
+import { TouchableRipple } from 'react-native-paper';
 
 /**
  * Permits the user to import their school schedule by selecting or taking a picture or by manual import.
  */
-class SchoolSchedule extends React.Component {
+class SchoolSchedule extends React.PureComponent {
 
-	static navigationOptions = ({navigation}) => {
+	strings = getStrings().SchoolSchedule;
+
+	static navigationOptions = ({ navigation }) => {
 		return {
-			title: 'Add School Schedule',
-			headerTintColor: white,
-			headerTitleStyle: {fontFamily: 'Raleway-Regular'},
-			headerTransparent: true,
-			headerStyle: {
-				backgroundColor: 'rgba(0, 0, 0, 0.2)',
-				marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-			},
-			headerRight: navigation.state.routeName === TutorialSchoolSchedule ? (
-				<IconButton
-					onPress={navigation.getParam('goBack')}
-					icon={({size, color}) => (
-						<Image name='logout'
-							size={size}
-							color={color} />
-					)}
-					color={white}
-					size={25} /> 
-			) : null
+			title: navigation.state.params.title
 		};
 	};
 
@@ -57,135 +26,91 @@ class SchoolSchedule extends React.Component {
 		this.state = { 
 			containerHeight: null,
 		};
-		
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+
+		// Updates the navigation location in redux
+		updateNavigation('SchoolSchedule', props.navigation.state.routeName);
 	}
 
-	componentDidMount() {
-		this.props.navigation.setParams({goBack: this.goBack});
-	}
-
-	goBack = () => {
-		googleSignOut();
-		this.props.navigation.navigate(LoginNavigator);
-	}
-
+	/**
+	 * In order to open the user's camera roll with permission
+	 */
 	selectAPicture() {
 		if (Platform.OS !== 'ios') {
 			requestStoragePermission().then((accepted) => {
 				if (accepted) {
-					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-						this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
-					} else {
-						this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
-					}
+					this.props.navigation.navigate(SchoolScheduleSelectPictureRoute, {title: getStrings().SchoolScheduleSelectPicture.title});
 				}
 			});
 		} else {
-			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-				this.props.navigation.navigate(TutorialSchoolScheduleSelectPicture);
-			} else {
-				this.props.navigation.navigate(DashboardSchoolScheduleSelectPicture);
-			}
-		}
-	}
-
-	cameraCapture() {
-		if (Platform.OS !== 'ios') {
-			requestCamera().then((accepted) => {				
-				if (accepted) {
-					if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-						this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
-					} else {
-						this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
-					}
-				}
-			});
-		} else {
-			if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-				this.props.navigation.navigate(TutorialSchoolScheduleTakePicture);
-			} else {
-				this.props.navigation.navigate(DashboardSchoolScheduleTakePicture);
-			}
+			this.props.navigation.navigate('SchoolScheduleSelectPicture', {title: getStrings().SchoolScheduleSelectPicture.title});
 		}
 	}
 
 	/**
-	 * To go to the appropriate Add Course screen according to the current route*/
-	manualImport() {
-		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-			this.props.navigation.navigate(TutorialAddCourse);
+	 * In order to open the user's camera with permission
+	 */
+	cameraCapture() {
+		if (Platform.OS !== 'ios') {
+			requestCamera().then((accepted) => {				
+				if (accepted) {
+					this.props.navigation.navigate(SchoolScheduleTakePictureRoute, {title: getStrings().SchoolScheduleTakePicture.title});
+				}
+			});
 		} else {
-			this.props.navigation.navigate(DashboardAddCourse);
+			this.props.navigation.navigate(SchoolScheduleTakePictureRoute, {title: getStrings().SchoolScheduleTakePicture.title});
 		}
 	}
 
-	/** 
-	 * To go to the next screen without entering any information*/
-	skip = () => {
-		this.props.navigation.navigate(TutorialFixedEvent, {update:false});
+	/**
+	 * To go to the appropriate Add Course screen according to the current route
+	 */
+	manualImport() {
+		this.props.navigation.navigate(CourseRoute,  {addTitle: getStrings().Course.addTitle});
 	}
 
 	render() {
-		const {containerHeight} = this.state;
-		let tutorialStatus;
-
-		if (this.props.navigation.state.routeName === TutorialSchoolSchedule) {
-			tutorialStatus = <TutorialStatus active={1}
-				color={white}
-				skip={this.skip} />;
-		} else {
-			tutorialStatus = null;
-		}
-
 		return (
-			<LinearGradient style={styles.container}
-				colors={gradientColors}>
-				<ImageBackground style={styles.container}
-					source={require('../../assets/img/loginScreen/backPattern.png')} 
-					resizeMode="repeat">
-					<StatusBar translucent={true}
-						backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+			<View style={styles.container}>
+				<StatusBar translucent={true}
+					barStyle={Platform.OS === 'ios' ? 'dark-content' : 'default'}
+					backgroundColor={statusBlueColor} />
 
-					<View style={[styles.content, {height:containerHeight}]}
-						onLayout={(event) => {
-							let height = event.nativeEvent.layout;
-							if (height < fixedContainerHeight) {
-								this.setState({fixedContainerHeight});
-							}
-						}}>
-						<View style={styles.instruction}>
-							<FontAwesome5 name="university"
-								size={130}
-								color={white}/>
-							<Text style={styles.text}>Import your school schedule by importing or taking a picture</Text>
-						</View>
-						
-						<View style={styles.button}>
-							<TouchableOpacity style={styles.buttonSelect}
-								onPress={() => this.selectAPicture()}>
-								<Text style={styles.buttonSelectText}>SELECT A PICTURE</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity style={styles.buttonTake}
-								onPress={() => this.cameraCapture()}>
-								<Text style={styles.buttonTakeText}>TAKE A PICTURE</Text>
-							</TouchableOpacity>
+				<ScrollView contentContainerStyle={styles.content}>
+					<View style={styles.instruction}>
+						<FontAwesome5 name="university"
+							size={130}
+							color={dark_blue} />
 							
-							<Text style={styles.manual}>
-								<Text style={styles.textManual}>or import your school schedule </Text>
-								
-								<Text style={styles.buttonManual}
-									onPress={() => this.manualImport()}>manually</Text>
-
-								<Text style={styles.textManual}>.</Text>
-							</Text>
-						</View>
-
-						{tutorialStatus}
+						<Text style={styles.text}>{this.strings.description}</Text>
 					</View>
-				</ImageBackground>
-			</LinearGradient>
+					
+					<View style={styles.button}>
+						<TouchableRipple style={styles.buttonSelect}
+							rippleColor={whiteRipple}
+							underlayColor={blueRipple}
+							onPress={() => this.selectAPicture()}>
+							<Text style={styles.buttonSelectText}>{this.strings.selectPicture}</Text>
+						</TouchableRipple>
+
+						<TouchableRipple style={styles.buttonTake}
+							rippleColor={whiteRipple}
+							underlayColor={blueRipple}
+							onPress={() => this.cameraCapture()}>
+							<Text style={styles.buttonTakeText}>{this.strings.takePicture}</Text>
+						</TouchableRipple>
+							
+						<Text style={styles.manual}>
+							<Text style={styles.textManual}>{this.strings.manual}</Text>
+								
+							<Text style={styles.buttonManual}
+								onPress={() => this.manualImport()}>{this.strings.manually}</Text>
+
+							<Text style={styles.textManual}>.</Text>
+
+						</Text>
+					</View>
+				</ScrollView>
+			</View>
 		);
 	}
 }

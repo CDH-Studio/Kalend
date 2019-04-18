@@ -1,21 +1,49 @@
 import { 
 	SET_NAV_SCREEN, 
 	SET_SELECTED_SCHEDULE, 
-	UPDATE_NFE, SIGNED_IN, 
-	SIGNED_OUT, 
+	SET_UNAVAILABLE_HOURS,
+	SET_SCHOOL_INFORMATION,
+	SET_LANGUAGE,
+	SET_BOTTOM_STRINGS,
 	SET_IMG, 
+	SET_DASHBOARD_DATA,
+	SET_TUTORIAL_STATUS,
+	SET_NONFIXED_COLOR,
+	SET_COURSE_COLOR,
+	SET_FIXED_COLOR,
+	SET_CALENDAR_COLOR,
+	CREATE_CALENDAR,
+	SIGNED_IN, 
+	SIGNED_OUT, 
 	ADD_FE, 
+	ADD_GENERATED_NFE,
+	ADD_GENERATED_CALENDAR,
 	ADD_NFE, 
 	ADD_COURSE, 
+	ADD_COLORS,
 	DELETE_NFE, 
 	DELETE_FE, 
-	DELETE_COURSE, 
+	DELETE_COURSE,
+	DELETE_GENERATED_CALENDAR, 
 	UPDATE_FE, 
+	UPDATE_NFE, 
 	UPDATE_COURSE, 
-	SET_UNAVAILABLE_HOURS,
-	CREATE_CALENDAR,
-	ADD_GENERATED_NFE 
+	CLEAR_GENERATED_CALENDAR,
+	CLEAR_CALENDAR,
+	CLEAR_COURSE,
+	CLEAR_GENERATED_NFE,
+	CLEAR_FE,
+	CLEAR_NFE,
+	CLEAR_TUTORIAL_STATUS,
+	CLEAR_NAV_SCREEN,
+	CLEAR_SCHEDULE,
+	CLEAR_SCHOOL_INFORMATION,
+	CLEAR_UNAVAILABLE_HOURS,
+	CLEAR_SETTINGS,
+	CLEAR_BOTTOM_STRINGS,
+	CLEAR_DASHBOARD_DATA,
 } from '../constants';
+
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -78,6 +106,15 @@ export function setImageURI (data, hasImage) {
 }
 
 /*** ADD ***/
+export function addColors (colors) {
+	const action = {
+		type: ADD_COLORS, 
+		colors
+	};
+
+	return action;
+}
+
 export function addFixedEvent (event) {
 	const action = {
 		type: ADD_FE,
@@ -91,6 +128,15 @@ export function addGeneratedNonFixedEvent (event) {
 	const action = {
 		type: ADD_GENERATED_NFE,
 		event
+	}; 
+
+	return action;
+}
+
+export function addGeneratedCalendar (calendar) {
+	const action = {
+		type: ADD_GENERATED_CALENDAR,
+		calendar
 	}; 
 
 	return action;
@@ -124,6 +170,8 @@ export function deleteNonFixedEvent (index) {
 	return action;
 }
 
+
+
 export function deleteFixedEvent (index) {
 	const action = {
 		type: DELETE_FE,
@@ -138,6 +186,15 @@ export function deleteCourse (index) {
 		type: DELETE_COURSE,
 		index
 	}; 
+
+	return action;
+}
+
+export function deleteGeneratedCalendar(index) {
+	const action = {
+		type: DELETE_GENERATED_CALENDAR,
+		index
+	};
 
 	return action;
 }
@@ -168,7 +225,8 @@ export function setNavigationScreen (data) {
 		route: data.route,
 		main: data.main,
 		routes: data.routes,
-		reviewEventSelected: data.reviewEventSelected
+		reviewEventSelected: data.reviewEventSelected,
+		successfullyInsertedEvents: data.successfullyInsertedEvents
 	};
 
 	return action;
@@ -178,6 +236,200 @@ export function setUnavailableHours (info) {
 	const action = {
 		type: SET_UNAVAILABLE_HOURS,
 		info
+	};
+
+	return action;
+}
+
+export function setSchoolInformation (info) {
+	const action = {
+		type: SET_SCHOOL_INFORMATION,
+		info
+	};
+
+	return action;
+}
+
+export function setLanguage (language) {
+	const action = {
+		type: SET_LANGUAGE,
+		language
+	};
+
+	return action;
+}
+export function setDashboardData (data) {
+	const action = {
+		type: SET_DASHBOARD_DATA,
+		data
+	};
+
+	return action;
+}
+
+export function setBottomString (params) {
+	const action = {
+		type: SET_BOTTOM_STRINGS,
+		params
+	};
+
+	return action;
+}
+
+export function setFixedColor (fixedEventsColor) {
+	const action = {
+		type: SET_FIXED_COLOR,
+		fixedEventsColor
+	};
+
+	return action;
+}
+
+export function setNonFixedColor (nonFixedEventsColor) {
+	const action = {
+		type: SET_NONFIXED_COLOR,
+		nonFixedEventsColor
+	};
+
+	return action;
+}
+
+export function setCourseColor (courseColor) {
+	const action = {
+		type: SET_COURSE_COLOR,
+		courseColor
+	};
+
+	return action;
+}
+
+export function setCalendarColor (calendarColor) {
+	const action = {
+		type: SET_CALENDAR_COLOR,
+		calendarColor
+	};
+
+	return action;
+}
+
+export function setTutorialStatus (tutorialScreen, tutorialValue) {
+	const action = {
+		type: SET_TUTORIAL_STATUS,
+		tutorialScreen,
+		tutorialValue
+	};
+
+	return action;
+}
+
+/*** CLEAR ***/
+export function clearCalendarID () {
+	const action = {
+		type: CLEAR_CALENDAR
+	};
+
+	return action;
+}
+
+export function clearCourse () {
+	const action = {
+		type: CLEAR_COURSE
+	};
+
+	return action;
+}
+
+export function clearFixedEvents () {
+	const action = {
+		type: CLEAR_FE
+	};
+
+	return action;
+}
+
+export function clearNonFixedEvents () {
+	const action = {
+		type: CLEAR_NFE
+	};
+
+	return action;
+}
+
+export function clearGeneratedNonFixedEvents () {
+	const action = {
+		type: CLEAR_GENERATED_NFE
+	};
+
+	return action;
+}
+
+export function clearGeneratedCalendars () {
+	const action = {
+		type: CLEAR_GENERATED_CALENDAR
+	}; 
+
+	return action;
+}
+
+export function clearNavigation () {
+	const action = {
+		type: CLEAR_NAV_SCREEN
+	};
+
+	return action;
+}
+
+export function clearSchedule () {
+	const action = {
+		type: CLEAR_SCHEDULE
+	};
+
+	return action;
+}
+
+export function clearDashboardData () {
+	const action = {
+		type: CLEAR_DASHBOARD_DATA
+	};
+
+	return action;
+}
+
+export function clearSchoolInformation () {
+	const action = {
+		type: CLEAR_SCHOOL_INFORMATION
+	};
+
+	return action;
+}
+
+export function clearUnavailableHours () {
+	const action = {
+		type: CLEAR_UNAVAILABLE_HOURS
+	};
+
+	return action;
+}
+
+export function clearLanguage () {
+	const action = {
+		type: CLEAR_SETTINGS
+	};
+
+	return action;
+}
+
+export function clearBottomString () {
+	const action = {
+		type: CLEAR_BOTTOM_STRINGS
+	};
+
+	return action;
+}
+
+export function clearTutorialStatus () {
+	const action = {
+		type: CLEAR_TUTORIAL_STATUS
 	};
 
 	return action;

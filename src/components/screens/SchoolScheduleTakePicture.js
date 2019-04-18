@@ -1,14 +1,14 @@
 import React from 'react';
-import { TouchableOpacity, View, Platform, StatusBar, NativeModules, LayoutAnimation } from 'react-native';
+import { TouchableOpacity, View, StatusBar, NativeModules, LayoutAnimation, Platform } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { setImageURI } from '../../actions';
+import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { analyzePicture } from '../../services/service';
-import { takePictureStyles as styles, orange, red, blue, white } from '../../styles';
-import { setImageURI } from '../../actions';
-
-const iconColor = 'white';
+import { getStrings } from '../../services/helper';
+import { takePictureStyles as styles, darkRed, blue, white, dark_blue } from '../../styles';
 
 // Enables the LayoutAnimation on Android
 const { UIManager } = NativeModules;
@@ -18,19 +18,16 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
  * The camera screen which allows the user to take a picture of their schedule
  * and upload it to the server to extract the information about their school schedule
  */
-class SchoolScheduleTakePicture extends React.Component {
+class SchoolScheduleTakePicture extends React.PureComponent {
 
-	static navigationOptions = {
-		title: 'Take a Picture',
-		headerTintColor: white,
-		headerTitleStyle: {
-			fontFamily: 'Raleway-Regular'
-		},
-		headerTransparent: true,
-		headerStyle: {
-			backgroundColor: 'rgba(0, 0, 0, 0.3)',
-			marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-		}
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.state.params.title,
+			headerTransparent: true,
+			headerStyle: {
+				backgroundColor: 'rgba(0, 0, 0, 0.3)',
+			}
+		};
 	};
 	
 	constructor(props) {
@@ -45,7 +42,7 @@ class SchoolScheduleTakePicture extends React.Component {
 		};
 		
 		// Updates the navigation location in redux
-		updateNavigation(this.constructor.name, props.navigation.state.routeName);
+		updateNavigation('SchoolScheduleTakePicture', props.navigation.state.routeName);
 	}
 	
 	componentDidMount() {
@@ -144,11 +141,7 @@ class SchoolScheduleTakePicture extends React.Component {
 				
 				this.props.dispatch(setImageURI(undefined, false));
 
-				if(this.props.navigation.state.routeName === 'TutorialSchoolScheduleTakePicture') {
-					this.props.navigation.navigate('TutorialSchoolScheduleCreation');
-				}else {
-					this.props.navigation.navigate('DashboardSchoolScheduleCreation');
-				}
+				this.props.navigation.navigate(SchoolScheduleCreationRoute, {title: getStrings().SchoolScheduleCreation.title});
 			}
 		}
 	}
@@ -171,6 +164,7 @@ class SchoolScheduleTakePicture extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar translucent={true} 
+					barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
 					backgroundColor={'rgba(0, 0, 0, 0.6)'} />
 
 				<RNCamera captureAudio={false}
@@ -185,20 +179,20 @@ class SchoolScheduleTakePicture extends React.Component {
 					<View style={{opacity: dismissOpacity}}>
 						<TouchableOpacity
 							onPress={this.cancelPicture}
-							style={[styles.capture, {backgroundColor: red}]}>
+							style={[styles.capture, {backgroundColor: darkRed}]}>
 							<Entypo name='cross' 
 								size={dismissIcon}
-								color={iconColor} 
+								color={white} 
 								style={styles.icon} />
 						</TouchableOpacity>
 					</View>
 
 					<View style={{opacity: takePictureOpacity}}>
 						<TouchableOpacity onPress={this.takePicture}
-							style={[styles.capture, {backgroundColor: changeIcon ? orange : blue }]}>
+							style={[styles.capture, {backgroundColor: changeIcon ? dark_blue : blue }]}>
 							<Entypo name={changeIcon ? 'upload' : 'camera'} 
 								size={takePictureIcon} 
-								color={iconColor} 
+								color={white} 
 								style={styles.icon} />
 						</TouchableOpacity>
 					</View>
