@@ -82,16 +82,19 @@ class CompareSchedule extends React.PureComponent {
 							data = await data.val();
 
 							let notDimissed = [];
-							Object.keys(data).map(i => {
-								if (!('dismiss' in data[i]) || data[i].dismiss) {
-									notDimissed.push(data[i]);
-								}
-							});
+							if (data) {
+								Object.keys(data).map(i => {
+									if (!('dismiss' in data[i]) || data[i].dismiss) {
+										notDimissed.push(data[i]);
+									}
+								});
+							}
 
 							this.setState({
 								hasNotification: notDimissed.length !== 0,
 							});
-						});
+						})
+					.catch(err => console.log(err));
 			}
 		);
 	}

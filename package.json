@@ -29,7 +29,7 @@
     "react-addons-update": "^15.6.2",
     "react-art": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-native": "^0.59.1",
+    "react-native": "0.59.4",
     "react-native-app-intro-slider": "^1.0.1",
     "react-native-calendars": "https://github.com/MarieEveLegault/react-native-calendar-kalend.git",
     "react-native-camera": "^2.0.2",

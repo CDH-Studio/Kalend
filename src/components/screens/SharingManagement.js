@@ -44,17 +44,18 @@ class SharingManagement extends React.PureComponent {
 			.once('value', 
 				async (data) => {
 					data = await data.val();
-					console.log(JSON.stringify(data));
 
 					let notDimissed = [];
-					Object.keys(data).map(i => {
-						if (!('dismiss' in data[i]) || data[i].dismiss) {
-							notDimissed.push({
-								...data[i],
-								notificationPath: i
-							});
-						}
-					});
+					if (data) {
+						Object.keys(data).map(i => {
+							if (!('dismiss' in data[i]) || data[i].dismiss) {
+								notDimissed.push({
+									...data[i],
+									notificationPath: i
+								});
+							}
+						});
+					}
 
 					this.setState({
 						loadingList: false,
