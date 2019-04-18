@@ -69,6 +69,7 @@ class CompareSchedule extends React.PureComponent {
 
 	componentWillMount() {
 		this.refreshData();
+		this.refreshAgenda()
 	}
 
 	componentDidMount() {
@@ -478,7 +479,8 @@ class CompareSchedule extends React.PureComponent {
 					deviceHeight={deviceHeight}
 					deviceWidth={deviceWidth}
 					avoidKeyboard
-					onBackdropPress={() => this.setState({searchModalVisible: false})}>
+					onBackdropPress={() => this.setState({searchModalVisible: false})}
+					onModalHide={() => setTimeout(() => {this.refreshAgenda()}, 500)}>
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>{this.strings.enterEmail}</Text>
 
