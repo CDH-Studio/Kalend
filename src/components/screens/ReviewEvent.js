@@ -168,17 +168,17 @@ class ReviewEvent extends React.PureComponent {
 
 		switch (category) {
 			case SchoolScheduleRoute:
-				dataToDispatch = deleteCourse(id);
+				dataToDispatch = this.props.deleteCourse;
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
 			case FixedEventRoute:
-				dataToDispatch = deleteFixedEvent(id);
+				dataToDispatch = this.props.deleteFixedEvent;
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
 			case NonFixedEventRoute:
-				dataToDispatch = deleteNonFixedEvent(id);
+				dataToDispatch = this.props.deleteNonFixedEvent;
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
 				break;
@@ -191,7 +191,7 @@ class ReviewEvent extends React.PureComponent {
 			if (index != id) return event;
 		});
 
-		this.props.dispatch(dataToDispatch);
+		dataToDispatch(id);
 		this.setState({[objectToChange]: newEvents});
 	}
 
@@ -437,11 +437,11 @@ class ReviewEvent extends React.PureComponent {
 					fromView={this.refs.check}
 					onClose={() => {
 						this.setState({checkPopover:false});
-						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+						this.props.setTutorialStatus('reviewEvents', true);
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({checkPopover:false});
-						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+						this.props.setTutorialStatus('reviewEvents', true);
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.checkPopover}</Text>
 					</TouchableOpacity>
@@ -474,7 +474,7 @@ function mapStateToProps(state) {
 
 
 let mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearCourse, clearFixedEvents, setNavigationScreen}, dispatch);
+	return bindActionCreators({ clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearCourse, clearFixedEvents, setNavigationScreen, setTutorialStatus, deleteCourse, deleteFixedEvent, deleteNonFixedEvent}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReviewEvent);

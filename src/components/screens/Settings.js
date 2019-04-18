@@ -84,11 +84,11 @@ class Settings extends React.PureComponent {
 
 	logout = async () => {
 		await googleSignOut();
-		clearEveryReducer();
 		await logOutUser()
 			.then(res => res.json())
 			.then(id => {
 				firebase.messaging().unsubscribeFromTopic((id).toString());
+				clearEveryReducer();
 				this.props.navigation.navigate(LoginNavigator);
 			});
 	}

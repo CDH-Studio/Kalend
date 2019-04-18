@@ -112,7 +112,7 @@ class EventOverview extends React.PureComponent {
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
 
-						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence}</Text>
+						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence[0].toUpperCase() + this.props.recurrence.slice(1).toLowerCase()}</Text>
 					</View>
 				</View>;
 			detailHeight = 80;

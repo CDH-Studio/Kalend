@@ -580,13 +580,13 @@ class CompareSchedule extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	const { id } = state.CalendarReducer;
-	const { name, email } = state.HomeReducer.profile.profile.user;
+	const { name, email } = state.HomeReducer.profile ? state.HomeReducer.profile.profile.user : {name: '', email: ''};
 
 	return {
 		calendarID: id,
 		name,
 		email,
-		id: state.HomeReducer.profile.profile.user.id,
+		id: state.HomeReducer.profile ? state.HomeReducer.profile.profile.user.id : '',
 		showTutorial: state.SettingsReducer.tutorialStatus.compareSchedule
 	};
 };

@@ -68,7 +68,7 @@ const en = {
 		addTitle: 'Add Fixed Event',
 		editTitle: 'Edit Fixed Event',
 		description: 'Add your events, office hours, appointments, etc.',
-		recurrence: ['None', 'Everyday', 'Weekly', 'Monthly'],
+		recurrence: ['None', 'Daily', 'Weekly', 'Monthly'],
 		cancel: 'Cancel',
 		snackbarSuccess: 'Event successfully added',
 		snackbarFailure: 'Invalid field(s), please review to add event',
