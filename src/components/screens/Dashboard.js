@@ -7,7 +7,7 @@ import Popover from 'react-native-popover-view';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite, statusBarPopover, statusBarLightPopover } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite, statusBarLightPopover } from '../../styles';
 import { setDashboardData, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';

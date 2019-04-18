@@ -11,7 +11,7 @@ import { extendMoment } from 'moment-range';
 import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { setTutorialStatus } from '../../actions';
 import { store } from '../../store';
-import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark, statusBarPopover, statusBarLightPopover } from '../../styles';
+import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark, statusBarLightPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, addPermissionPerson, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';

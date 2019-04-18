@@ -1979,17 +1979,12 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	profileIconContainer: {
-		elevation: 3,
-		zIndex: 999, 
 		...Platform.select({
 			ios: {
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.4,
 				shadowRadius: 3
-			},
-			android: {
-				elevation: 5
 			},
 		}),
 	},
