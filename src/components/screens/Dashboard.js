@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules } from 'react-native';
+import { StatusBar, TouchableOpacity, Text, View, Platform, NativeModules, LayoutAnimation } from 'react-native';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Snackbar, FAB } from 'react-native-paper';
@@ -7,7 +7,7 @@ import Popover from 'react-native-popover-view';
 import { connect } from 'react-redux';
 import { store } from '../../store';
 import updateNavigation from '../NavigationHelper';
-import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite, statusBarPopover } from '../../styles';
+import { dashboardStyles as styles, white, dark_blue, black, statusBarDark, semiTransparentWhite, statusBarLightPopover } from '../../styles';
 import { setDashboardData, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
@@ -125,10 +125,7 @@ class Dashboard extends React.PureComponent {
 
 	getMonth(date) {
 		const month = date - 1;
-		const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-			'July', 'August', 'September', 'October', 'November', 'December'];
-			
-		this.setState({ month: monthNames[month], showMonth: true });
+		this.setState({ month: this.strings.months[month], showMonth: true });
 	}
 	
 	componentDidMount() {
@@ -149,6 +146,8 @@ class Dashboard extends React.PureComponent {
 
 					this.props.dispatch(setNavigationScreen({successfullyInsertedEvents: null}));
 				}
+
+				this.refreshAgenda();
 			}
 		);
 	}
@@ -312,7 +311,7 @@ class Dashboard extends React.PureComponent {
 
 	darkenStatusBar = () => {
 		if (Platform.OS === 'android') {
-			StatusBar.setBackgroundColor(statusBarPopover, true);
+			StatusBar.setBackgroundColor(statusBarLightPopover, true);
 		}
 	}
 
@@ -322,8 +321,14 @@ class Dashboard extends React.PureComponent {
 		}
 	}
 
+	refreshAgenda = () => {
+		if (Platform.OS !== 'ios') {
+			this.setState({agendaKey: Math.random()});
+		}
+	}
+
 	render() {
-		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month} = this.state;
+		const {calendarOpened, snackbarVisible, snackbarTime, snackbarText, month, agendaKey} = this.state;
 		let showCloseFab;
 		let showMonthView;
 
@@ -360,6 +365,7 @@ class Dashboard extends React.PureComponent {
 					
 					<View style={styles.calendar}>
 						<Agenda ref='agenda'
+							key={agendaKey}
 							items={this.state.items}
 							renderItem={(item) => this.renderItem(item, this.changeInfo, this.setModalInfo)}
 							listTitle={this.strings.eventsDayTitle}
@@ -375,14 +381,13 @@ class Dashboard extends React.PureComponent {
 							shouldChangeDay={this.shouldChangeDay}
 							theme={{agendaKnobColor: dark_blue}}
 							onCalendarToggled={(calendarOpened) => {
-								// LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
 								this.setState({calendarOpened}, () => {
-									this.forceUpdate();
+									LayoutAnimation.configureNext(LayoutAnimation.create(400, 'easeInEaseOut', 'opacity'));
 								});
 							}}
 						/>
 					</View>
-
+					
 					{ 
 						calendarOpened ?
 							null :
@@ -423,26 +428,29 @@ class Dashboard extends React.PureComponent {
 
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.eventsPopover}
-					onClose={() => this.setState({eventsPopover:false}, () => this.setState({knobPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({eventsPopover:false}, () => this.setState({knobPopover:true}))}>
+					onClose={() => this.setState({eventsPopover:false})}
+					doneClosingCallback={() => this.setState({knobPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({eventsPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.eventsPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={60}
+					verticalOffset={Platform.OS === 'ios' ? 90 : 55}
 					fromView={this.refs.agenda}
 					isVisible={this.state.knobPopover}
-					onClose={() => this.setState({knobPopover:false}, () => this.setState({createPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({knobPopover:false}, () => this.setState({createPopover:true}))}>
+					onClose={() => this.setState({knobPopover:false})}
+					doneClosingCallback={() => this.setState({createPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({knobPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.knobPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 				
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight + 2)}
+					verticalOffset={Platform.OS === 'ios' ? 0 : -(StatusBar.currentHeight + 2)}
 					isVisible={this.state.createPopover}
 					fromView={this.refs.create}
+					placement={'top'}
 					onClose={() => {
 						this.setState({createPopover:false});
 						this.props.dispatch(setTutorialStatus('dashboard', true));

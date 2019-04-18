@@ -146,6 +146,7 @@ class Settings extends React.PureComponent {
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.topProfileContainer}>
 							<View style={styles.profileIconContainer}>
+								<View style={{position: 'absolute', width: 100, height: 100, elevation: 9, borderRadius: 50, marginTop: 20}}/>
 								<Image style={styles.profileImage}
 									source={{uri: this.props.profileImage}}/>
 							</View>
@@ -195,7 +196,7 @@ class Settings extends React.PureComponent {
 
 						<TouchableOpacity style={styles.button}
 							onPress={this.showLanguage}>
-							<Text style={styles.buttonText}>{this.props.language === 'en' ? 'Français' : 'English'}</Text>
+							<Text style={styles.buttonText}>{this.strings.changeLanguage}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity style={styles.button}

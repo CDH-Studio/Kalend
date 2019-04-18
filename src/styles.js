@@ -14,6 +14,7 @@ export const dark_blue = '#153d73';
 export const red = '#FF0000';
 export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
+export const statusBarLightPopover = '#000000A0';
 export const statusBarPopover = '#000000D0';
 export const gray = '#565454';
 export const whiteRipple = '#DDDDDD';
@@ -1978,17 +1979,12 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	profileIconContainer: {
-		elevation: 3,
-		zIndex: 999, 
 		...Platform.select({
 			ios: {
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.4,
 				shadowRadius: 3
-			},
-			android: {
-				elevation: 5
 			},
 		}),
 	},

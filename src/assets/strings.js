@@ -58,7 +58,8 @@ const en = {
 		create: 'Create',
 		eventsPopover: 'Your events will show here. Don\'t forget to keep track of your progress with the checkboxes beside each of them!',
 		knobPopover: 'Pull down the knob to see more dates!',
-		createPopover: 'Tap here to start adding events!'
+		createPopover: 'Tap here to start adding events!',
+		months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	},
 
 	FixedEvent: {
@@ -236,11 +237,11 @@ const en = {
 		unavailableHours: 'Set Unavailable Hours',
 		schoolInformation: 'Set School Information',
 		preferences: 'Preferences',
-		changeLanguage: 'Switch to French?',
+		changeLanguage: 'Switch to French',
 		cancel: 'Cancel',
 		yes: 'Yes',
 		notifications: 'Notifications',
-		theme: 'Theme',
+		theme: 'Event Colors',
 		general: 'General',
 		tutorial: 'Reload Tutorial',
 		resetTutorialSuccess: 'Tutorial reloaded!',
@@ -251,7 +252,7 @@ const en = {
 		version: 'Version 0.2.0',
 		deleteAccount: 'Delete Account',
 		termsOfService: 'Terms of Service',
-		modifySharing: 'Manage who can see your calendar',
+		modifySharing: 'Calendar Permissions',
 		languageTitle: 'Change language',
 		modifyCalendar: 'Manage Calendar',
 		modifyCalendarDescription: 'Clear deletes all events from your calendar whereas delete deletes the calendar from your account.',
@@ -427,6 +428,7 @@ const fr = {
 		eventsPopover: 'Vos événements vont apparaîte ici. N\'oubliez pas de suivre votre progrès avec les boîtes à cocher à côté de chacun d\'entres eux!',
 		knobPopover: 'Dérouler le calendrier pour plus de dates!',
 		createPopover: 'Appuyer ici pour commencer à ajouter des événements!',
+		months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
 	},
 
 	FixedEvent: {
@@ -608,11 +610,11 @@ const fr = {
 		unavailableHours: 'Préciser les heures non disponibles',
 		schoolInformation: 'Préciser l\'information scolaire',
 		preferences: 'Préférences',
-		changeLanguage: 'Passer à l\'anglais?',
+		changeLanguage: 'Passer à l\'anglais',
 		cancel: 'Annuler',
 		yes: 'Oui',
 		notifications: 'Notifications',
-		theme: 'Thème',
+		theme: 'Couleur des événements',
 		general: 'Général',
 		tutorial: 'Relancer le tutoriel',
 		resetTutorialSuccess: 'Tutoriel relancé!',
