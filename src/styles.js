@@ -14,6 +14,7 @@ export const dark_blue = '#153d73';
 export const red = '#FF0000';
 export const darkRed = '#B80000';
 export const statusBarDark = '#00000050';
+export const statusBarLightPopover = '#000000A0';
 export const statusBarPopover = '#000000D0';
 export const gray = '#565454';
 export const whiteRipple = '#DDDDDD';
@@ -1328,7 +1329,7 @@ export const scheduleSelectionDetailsStyle = StyleSheet.create({
 	},
 
 	eventTitle: {
-		fontFamily: 'Raleway-Bold',
+		fontFamily: 'OpenSans-Bold',
 		color: gray
 	},
 
@@ -1342,7 +1343,7 @@ export const scheduleSelectionDetailsStyle = StyleSheet.create({
 
 	scheduleEventColor: {
 		width: 20,
-		borderBottomLeftRadius: 5, 
+		borderBottomLeftRadius: 5,
 		borderTopLeftRadius: 5
 	}
 });
@@ -1551,7 +1552,7 @@ export const modalEventStyles = StyleSheet.create({
 		backgroundColor: white,
 		borderRadius: 8,
 		marginHorizontal: 20,
-		width: '90%',
+		width: '95%',
 		...Platform.select({
 			ios: {
 				shadowColor: black,
@@ -1565,12 +1566,13 @@ export const modalEventStyles = StyleSheet.create({
 	closeModal: {
 		justifyContent:'flex-end',
 		paddingHorizontal: 15,
-		paddingVertical: 10
+		paddingTop: 10,
+		flex:1
 	},
 
 	modalTitle: {
 		paddingHorizontal: 20,
-		paddingVertical: 10,
+		paddingBottom: 5,
 		flexWrap: 'wrap',
 		fontSize: 18,
 		fontFamily: 'OpenSans-SemiBold',
@@ -1582,14 +1584,13 @@ export const modalEventStyles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 20,
-		marginTop: -20
+		marginTop: 5
 	},
 
 	modalInfoDate: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		flexWrap: 'wrap',
-		width: 160
 	},
 
 	modalInfoTime: {
@@ -1609,19 +1610,18 @@ export const modalEventStyles = StyleSheet.create({
 		fontSize: 15,
 		fontFamily: 'OpenSans-Regular',
 		paddingVertical: 3,
-		color: white,
-		width: 120
+		color: white
 	},
 
 	modalDetailsView: {
-		paddingHorizontal: 20,
-		marginTop: 10
+		paddingHorizontal: 20
 	},
 
 	actionsModal: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginVertical: 10,
+		marginTop: 5,
+		marginBottom: 10
 	},
 
 	actionIconModal: {
@@ -1978,17 +1978,12 @@ export const settingsStyles = StyleSheet.create({
 	},
 
 	profileIconContainer: {
-		elevation: 3,
-		zIndex: 999, 
 		...Platform.select({
 			ios: {
 				shadowColor: black,
 				shadowOffset: { width: 0, height: 2 },
 				shadowOpacity: 0.4,
 				shadowRadius: 3
-			},
-			android: {
-				elevation: 5
 			},
 		}),
 	},

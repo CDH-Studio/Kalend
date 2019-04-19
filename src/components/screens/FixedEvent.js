@@ -138,13 +138,13 @@ class FixedEvent extends React.PureComponent {
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					this.setState({recurrenceValue: 'NONE'});
+					this.setState({recurrence: 'NONE'});
 				} else if (buttonIndex === 1) {
-					this.setState({recurrenceValue: 'DAILY'});
+					this.setState({recurrence: 'DAILY'});
 				} else if (buttonIndex === 2) {
-					this.setState({recurrenceValue: 'WEEKLY'});
+					this.setState({recurrence: 'WEEKLY'});
 				} else if (buttonIndex === 3) {
-					this.setState({recurrenceValue: 'MONTHLY'});
+					this.setState({recurrence: 'MONTHLY'});
 				}
 			},
 		);
@@ -451,13 +451,13 @@ class FixedEvent extends React.PureComponent {
 														style={styles.arrow} />
 													<Text style={styles.recurrenceText} 
 														onPress={this.recurrenceOnClick}>
-														{this.state.recurrenceValue.charAt(0).toUpperCase() + this.state.recurrenceValue.slice(1).toLowerCase()}
+														{this.state.recurrence.charAt(0).toUpperCase() + this.state.recurrence.slice(1).toLowerCase()}
 													</Text>
 												</View>
 												:	
 												<Picker style={styles.recurrence} 
 													selectedValue={this.state.recurrence} 
-													onValueChange={(recurrenceValue) => this.setState({recurrence: recurrenceValue})}>
+													onValueChange={(recurrence) => this.setState({recurrence})}>
 													<Picker.Item label={this.strings.recurrence[0]} value="NONE" />
 													<Picker.Item label={this.strings.recurrence[1]} value="DAILY" />
 													<Picker.Item label={this.strings.recurrence[2]} value="WEEKLY" />

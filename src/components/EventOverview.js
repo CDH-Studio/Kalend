@@ -84,30 +84,36 @@ class EventOverview extends React.PureComponent {
 			categoryColor = this.props.courseColor;
 			lightCategoryColor = this.props.insideCourseColor;
 			categoryIcon = 'school';
-			details = 
+
+			if (this.props.location) {
+				details = 
 				<View style={styles.modalDetailView}>
 					<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 					<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
 				</View>;
+			} else {
+				details = null;
+			}
 			detailHeight = 45;
 			editScreen = 'Course';
 		} else if (this.props.category === 'FixedEvent') {
 			categoryColor = this.props.fixedEventsColor;
 			lightCategoryColor = this.props.insideFixedEventsColor;
 			categoryIcon = 'calendar-today';
+
 			details = 
 				<View>
-					<View style={styles.modalDetailView}>
+					{this.props.location ? <View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
-					</View>
+					</View> : null}
 
-					<View style={styles.modalDetailView}>
+					{this.props.description ? <View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
-					</View>
+					</View> : null}
 
 					<View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.recurrence}</Text>
@@ -115,6 +121,7 @@ class EventOverview extends React.PureComponent {
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.recurrence[0].toUpperCase() + this.props.recurrence.slice(1).toLowerCase()}</Text>
 					</View>
 				</View>;
+
 			detailHeight = 80;
 			editScreen = 'FixedEvent';
 		} else {
@@ -133,16 +140,16 @@ class EventOverview extends React.PureComponent {
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.priorityLevel}</Text>
 					</View>
-					<View style={styles.modalDetailView}>
+					{this.props.location ? <View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.location}</Text>
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.location}</Text>
-					</View>
-					<View style={styles.modalDetailView}>
+					</View> : null}
+					{this.props.description ? <View style={styles.modalDetailView}>
 						<Text style={styles.modalDetailsSubtitle}>{this.strings.description}</Text>
 
 						<Text style={[styles.modalDetailsText, {color: semiTransparentWhite}]}>{this.props.description}</Text>
-					</View>
+					</View> : null}
 				</View>;
 			detailHeight = 100;
 			editScreen = 'NonFixedEvent';

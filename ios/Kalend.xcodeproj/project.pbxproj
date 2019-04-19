@@ -241,14 +241,14 @@
 			remoteGlobalIDString = 9FD355121D3E4A2900D06170;
 			remoteInfo = RNGoogleSignin;
 		};
-		5E8DEE7A2268BC9E001C8F55 /* PBXContainerItemProxy */ = {
+		5E8DEED12268D4A0001C8F55 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
 			remoteInfo = RCTRestart;
 		};
-		5E8DEE7F2268BC9E001C8F55 /* PBXContainerItemProxy */ = {
+		5E8DEED42268D4A0001C8F55 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */;
 			proxyType = 2;
@@ -616,18 +616,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5E8DEE772268BC9E001C8F55 /* Products */ = {
+		5E8DEECC2268D49F001C8F55 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5E8DEE7B2268BC9E001C8F55 /* libRCTRestart.a */,
+				5E8DEED22268D4A0001C8F55 /* libRCTRestart.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5E8DEE7C2268BC9E001C8F55 /* Products */ = {
+		5E8DEECE2268D49F001C8F55 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5E8DEE802268BC9E001C8F55 /* libDBCustomTabs.a */,
+				5E8DEED52268D4A0001C8F55 /* libDBCustomTabs.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -855,7 +855,7 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
-					ProductGroup = 5E8DEE772268BC9E001C8F55 /* Products */;
+					ProductGroup = 5E8DEECC2268D49F001C8F55 /* Products */;
 					ProjectRef = CDE3F6CBC9C24E2EAAF1F035 /* RCTRestart.xcodeproj */;
 				},
 				{
@@ -879,7 +879,7 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 5E8DEE7C2268BC9E001C8F55 /* Products */;
+					ProductGroup = 5E8DEECE2268D49F001C8F55 /* Products */;
 					ProjectRef = 8D9CA25C9E2442708F022835 /* ReactNativeCustomTabs.xcodeproj */;
 				},
 				{
@@ -1097,18 +1097,18 @@
 			remoteRef = 5E6D3603221466310007137A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5E8DEE7B2268BC9E001C8F55 /* libRCTRestart.a */ = {
+		5E8DEED22268D4A0001C8F55 /* libRCTRestart.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTRestart.a;
-			remoteRef = 5E8DEE7A2268BC9E001C8F55 /* PBXContainerItemProxy */;
+			remoteRef = 5E8DEED12268D4A0001C8F55 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5E8DEE802268BC9E001C8F55 /* libDBCustomTabs.a */ = {
+		5E8DEED52268D4A0001C8F55 /* libDBCustomTabs.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libDBCustomTabs.a;
-			remoteRef = 5E8DEE7F2268BC9E001C8F55 /* PBXContainerItemProxy */;
+			remoteRef = 5E8DEED42268D4A0001C8F55 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {

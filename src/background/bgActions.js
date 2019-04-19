@@ -2,11 +2,9 @@ import firebase from 'react-native-firebase';
 import { dark_blue } from '../styles';
 import { getStrings } from '../services/helper';
 import { requestCalendarPermissions } from '../services/firebase_messaging';
-import { store } from '../store';
 
 
 export default async (notificationOpen) => {
-	let accpterEmail = store.getState().HomeReducer.profile.profile.user.email;	
 	let strings = getStrings().SharingNotification;
 	let notification = notificationOpen.notification;
 	let action = notificationOpen.action;
