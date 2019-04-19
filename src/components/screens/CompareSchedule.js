@@ -171,7 +171,8 @@ class CompareSchedule extends React.PureComponent {
 						firebase.database().ref(`notifications/${data.ID}/`)
 							.push({
 								name: this.props.name,
-								email: this.props.email,
+								senderEmail: this.props.email,
+								receiverEmail: this.state.searchText,
 								createdAt: new Date().toJSON(),
 								allow: false,
 								dismiss: true

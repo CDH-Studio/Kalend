@@ -71,8 +71,8 @@ class LoadingScreen extends React.PureComponent {
 			Alert.alert(this.notificationStrings.title, message.data.name + this.notificationStrings.body, [
 				{text: 'Allow', onPress: () => {
 					requestCalendarPermissions({
-						requester: {email: message.data.email},
-						accepter : {email: this.props.profile.user.email}
+						requester: {email: message.data.senderEmail},
+						accepter : {email: message.data.receiverEmail}
 					})
 						.then(res => res.json())
 						.then(success => {
