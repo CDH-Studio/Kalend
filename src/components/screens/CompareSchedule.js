@@ -142,7 +142,8 @@ class CompareSchedule extends React.PureComponent {
 			<CalendarScheduleItem id={index}
 				onPressItem={this._onPressItem}
 				selected={!!this.state.selected.get(index)}
-				name={item.id} />
+				name={(item.name ? item.name : item.id)}
+				photo={item.photo} />
 		);
 	};
 
