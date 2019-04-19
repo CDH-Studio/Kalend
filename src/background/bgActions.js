@@ -29,8 +29,8 @@ export default async (notificationOpen) => {
 			.android.setTimeoutAfter(2000)
 			.android.setPriority(firebase.notifications.Android.Priority.High);
 		requestCalendarPermissions({
-			requester: {email: notification.data.email},
-			accepter : {email: accpterEmail}
+			requester: {email: notification.data.senderEmail},
+			accepter : {email: notification.data.receiverEmail}
 		})
 			.then(res => res.json())
 			.then((success) => {

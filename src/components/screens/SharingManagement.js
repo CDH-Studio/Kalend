@@ -137,7 +137,7 @@ class SharingManagement extends React.PureComponent {
 				title={item.name}
 				denyItem={this._onDenyItem}
 				allowItem={this._onAllowItem}
-				subtitle={item.email == undefined ? '' : item.email} />
+				subtitle={item.senderEmail == undefined ? '' : item.senderEmail} />
 		);
 	};
 
