@@ -164,6 +164,11 @@ class CompareSchedule extends React.PureComponent {
 				}
 			}).then(res => res.json())
 				.then(data => {
+					if (!data) {
+						alert('No user found');
+						return
+					}
+					 
 					firebase.database().ref(`notifications/${data.ID}/`)
 						.push({
 							name: this.props.name,

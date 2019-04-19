@@ -64,10 +64,10 @@ class Home extends React.PureComponent {
 				.then( data => {
 					if (data.calendarID === undefined) {
 						createCalendar()
-							.then(id => {
-								this.props.setCalendarID(id);
+							.then(data => {
+								this.props.setCalendarID(data.calendarID);
 								this.props.setCalendarColor(data.calendarColor);
-								resolve(id);
+								resolve(data.calendarID);
 							});
 					} else {
 						this.props.setCalendarID(data.calendarID);
@@ -124,8 +124,8 @@ class Home extends React.PureComponent {
 		firebase.messaging().hasPermission()
 			.then(async () => {
 				await firebase.messaging().requestPermission();
-				let id = await getUserValuesService({columns:['ID']}).then(res => res.json());
-				firebase.messaging().subscribeToTopic((id.ID).toString());
+				let data = await getUserValuesService({columns:['ID']}).then(res => res.json());
+				firebase.messaging().subscribeToTopic((data.ID).toString());
 				this.props.navigation.navigate(DashboardNavigator);
 			});
 	}
