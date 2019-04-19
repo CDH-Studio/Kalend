@@ -1,4 +1,4 @@
-let server  =  'http://172.17.74.11:8080/';
+let server  =  'http://52.60.127.46:8080/';
 
 let apiHelperCall = (URL, method, data) => {
 
