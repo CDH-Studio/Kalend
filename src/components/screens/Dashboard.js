@@ -188,6 +188,7 @@ class Dashboard extends React.PureComponent {
 				let dict =  sortEventsInDictonary(items);
 				this.props.dispatch(setDashboardData(dict));
 				this.setState({items: dict});
+				console.log(dict);
 			})
 			.catch(err => {
 				console.log('err', err);

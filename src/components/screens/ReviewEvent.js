@@ -461,12 +461,12 @@ class ReviewEvent extends React.PureComponent {
 					fromView={this.refs.check}
 					onClose={() => {
 						this.setState({checkPopover:false});
-						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+						this.props.setTutorialStatus('reviewEvents', true);
 						this.restoreStatusBar();
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({checkPopover:false});
-						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+						this.props.setTutorialStatus('reviewEvents', true);
 						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.checkPopover}</Text>

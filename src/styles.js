@@ -1909,7 +1909,7 @@ export const compareScheduleStyles = StyleSheet.create({
 
 	flatList: {
 		flexWrap: 'wrap', 
-		paddingVertical: 10, 
+		paddingVertical: Platform.OS === 'ios' ? 0 : 10, 
 		marginLeft: -7
 	},
 
