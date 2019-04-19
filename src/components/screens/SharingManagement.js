@@ -86,8 +86,8 @@ class SharingManagement extends React.PureComponent {
 
 	_onAllowItem = (id) => {
 		requestCalendarPermissions({
-			requester: {email: this.state.data[id].email},
-			accepter: {email: this.props.email}
+			requester: {email: this.state.data[id].senderEmail},
+			accepter: {email:  this.state.data[id].receiverEmail}
 		})
 			.then(res => res.json())
 			.then(success => {

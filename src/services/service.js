@@ -2,7 +2,7 @@ import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteg
 import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, getCalendar, insertAccessRule, getAccessRules, removeAccessRules, deleteCalendar, deleteEvent } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
-import { getEvents } from './api/storage_services';
+import { getEvents, getUserInfoByColumnService } from './api/storage_services';
 import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser, addEvents } from '../actions';
 import firebase from 'react-native-firebase';
 
@@ -646,13 +646,30 @@ export const listPermissions = () => {
  * Function in compare schedule, to list everyone who you can compare the schedules
  */
 export const listSharedKalendCalendars = () => {
-	return new Promise((resolve, reject) => {
-		getCalendarList().then(data => {
+	return new Promise( async(resolve, reject) => {
+		getCalendarList().then(async data => {
 			if (data.error) reject('The calendar does not exists');
+			
+			let promises = []
+			let sharedCalendars = data.items.filter(i => i.accessRole == 'freeBusyReader' && i.summary == 'Kalend')
+			await sharedCalendars.forEach((i) => {
+				promises.push( new Promise((resolve, reject) => {
+					getUserInfoByColumnService({columns: ['PHOTOURL',`FULLNAME`], where: {value: i.id, field: 'CALENDARID'} })
+					.then(res => res.json())
+					.then(info => {
+						if (info) {
+							i.name = info.FULLNAME;
+							i.photo = info.PHOTOURL;
+						}
+						resolve(i);
+					});
+				}));
+				
+			});
 
-			let sharedCalendars = data.items.filter(i => i.accessRole === 'freeBusyReader' && i.summary === 'Kalend');
-
-			resolve(sharedCalendars);
+			Promise.all(promises).then(data => {
+				resolve(data)
+			});
 		});
 	});
 };
