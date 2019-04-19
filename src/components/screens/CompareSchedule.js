@@ -167,28 +167,28 @@ class CompareSchedule extends React.PureComponent {
 					if (!data) {
 						alert('No user found');
 						return
+					} else {
+						firebase.database().ref(`notifications/${data.ID}/`)
+							.push({
+								name: this.props.name,
+								email: this.props.email,
+								createdAt: new Date().toJSON(),
+								allow: false,
+								dismiss: true
+							})
+							.then(() => {
+								this.setState({
+									snackbarText: this.strings.addPermission,
+									snackbarVisible: true
+								});
+							})
+							.catch(() => {
+								this.setState({
+									snackbarText: this.strings.permissionError,
+									snackbarVisible: true
+								});
+							});
 					}
-					 
-					firebase.database().ref(`notifications/${data.ID}/`)
-						.push({
-							name: this.props.name,
-							email: this.props.email,
-							createdAt: new Date().toJSON(),
-							allow: false,
-							dismiss: true
-						})
-						.then(() => {
-							this.setState({
-								snackbarText: this.strings.addPermission,
-								snackbarVisible: true
-							});
-						})
-						.catch(() => {
-							this.setState({
-								snackbarText: this.strings.permissionError,
-								snackbarVisible: true
-							});
-						});
 				});
 		}
 	}
