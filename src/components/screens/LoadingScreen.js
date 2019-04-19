@@ -72,7 +72,7 @@ class LoadingScreen extends React.PureComponent {
 				{text: 'Allow', onPress: () => {
 					requestCalendarPermissions({
 						requester: {email: message.data.email},
-						accepter : {email: this.props.profile.profile.user.email}
+						accepter : {email: this.props.profile.user.email}
 					})
 						.then(res => res.json())
 						.then(success => {
