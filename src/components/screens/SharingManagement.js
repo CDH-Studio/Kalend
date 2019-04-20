@@ -92,13 +92,13 @@ class SharingManagement extends React.PureComponent {
 			.then(res => res.json())
 			.then(success => {
 				if (success) {
-					this._deleteItem(id);
 					firebase.database()
 						.ref(`notifications/${this.props.id}/${this.state.data[id].notificationPath}/`)
 						.update({
 							allow: true,
 							dismiss: false
 						});
+					this._deleteItem(id);
 					this.setState({
 						snackbarVisible: true,
 						snackbarText: this.strings.allowSuccess,
@@ -113,13 +113,14 @@ class SharingManagement extends React.PureComponent {
 	}
 
 	_onDenyItem = (id) => {
-		this._deleteItem(id);
 		firebase.database()
 			.ref(`notifications/${this.props.id}/${this.state.data[id].notificationPath}/`)
 			.update({
 				allow: false,
 				dismiss: false
 			});
+		
+		this._deleteItem(id);
 
 		this.setState({
 			snackbarVisible: true,

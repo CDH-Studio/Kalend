@@ -650,25 +650,25 @@ export const listSharedKalendCalendars = () => {
 		getCalendarList().then(async data => {
 			if (data.error) reject('The calendar does not exists');
 			
-			let promises = []
-			let sharedCalendars = data.items.filter(i => i.accessRole == 'freeBusyReader' && i.summary == 'Kalend')
+			let promises = [];
+			let sharedCalendars = data.items.filter(i => i.accessRole == 'freeBusyReader' && i.summary == 'Kalend');
 			await sharedCalendars.forEach((i) => {
-				promises.push( new Promise((resolve, reject) => {
-					getUserInfoByColumnService({columns: ['PHOTOURL',`FULLNAME`], where: {value: i.id, field: 'CALENDARID'} })
-					.then(res => res.json())
-					.then(info => {
-						if (info) {
-							i.name = info.FULLNAME;
-							i.photo = info.PHOTOURL;
-						}
-						resolve(i);
-					});
+				promises.push( new Promise((resolve) => {
+					getUserInfoByColumnService({columns: ['PHOTOURL','FULLNAME'], where: {value: i.id, field: 'CALENDARID'} })
+						.then(res => res.json())
+						.then(info => {
+							if (info) {
+								i.name = info.FULLNAME;
+								i.photo = info.PHOTOURL;
+							}
+							resolve(i);
+						});
 				}));
 				
 			});
 
 			Promise.all(promises).then(data => {
-				resolve(data)
+				resolve(data);
 			});
 		});
 	});

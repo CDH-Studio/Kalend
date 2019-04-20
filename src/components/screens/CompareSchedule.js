@@ -11,7 +11,7 @@ import { extendMoment } from 'moment-range';
 import { getStrings, deviceHeight, deviceWidth } from '../../services/helper';
 import { setTutorialStatus } from '../../actions';
 import { store } from '../../store';
-import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark } from '../../styles';
+import { compareScheduleStyles as styles, dark_blue, gray, whiteRipple, blueRipple, statusBarDark, statusBarLightPopover } from '../../styles';
 import updateNavigation from '../NavigationHelper';
 import { getAvailabilitiesCalendars, listSharedKalendCalendars, deleteOtherSharedCalendar } from '../../services/service';
 import CalendarScheduleItem from '../CalendarScheduleItem';
@@ -71,6 +71,11 @@ class CompareSchedule extends React.PureComponent {
 		LocaleConfig.defaultLocale = this.defaultLocale;
 	}
 
+	componentWillMount() {
+		this.refreshData();
+		this.refreshAgenda();
+	}
+
 	componentDidMount() {
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -95,12 +100,13 @@ class CompareSchedule extends React.PureComponent {
 							});
 						})
 					.catch(err => console.log(err));
+
+				this.setState({allowPopover: !this.props.showTutorial});
+				if (!this.props.showTutorial) {
+					this.darkenStatusBar();
+				}
 			}
 		);
-	}
-
-	componentWillMount() {
-		this.refreshData();
 	}
 
 	componentWillUnmount() {
@@ -167,7 +173,7 @@ class CompareSchedule extends React.PureComponent {
 				.then(data => {
 					if (!data) {
 						alert('No user found');
-						return
+						return;
 					} else {
 						firebase.database().ref(`notifications/${data.ID}/`)
 							.push({
@@ -252,16 +258,8 @@ class CompareSchedule extends React.PureComponent {
 				showCalendar: false,
 				agendaData: {},
 			}, () => {
-				this.forceUpdate();
 				LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-				this.setState({animatedHeight: this.listHeight});
-				// Animated.timing(
-				// 	this.state.animatedHeight,
-				// 	{
-				// 		toValue: this.listHeight,
-				// 		useNativeDriver: true,
-				// 	},
-				// ).start();
+				this.setState({animatedHeight: this.listHeight}, () => this.refreshAgenda());
 			});
 		} else {
 			if (selectedValue.length === 0) {
@@ -326,20 +324,43 @@ class CompareSchedule extends React.PureComponent {
 								end: range.end
 							});
 						});
+
+						// Inverts the dates to show availabilities instead of the non-availabilities
+						let invertedDates = {};
+						Object.keys(dates).map(date => {
+							let ranges = [];
+
+							let startMoment = moment(date, 'YYYY-MM-DD').startOf('day');
+
+							// Iterates over the array of ranges, and create a range from the start of the day or the last event to the start of the next event
+							dates[date].map(range => {
+								if (!startMoment.isSame(range.start)) {
+									ranges.push({
+										start: startMoment,
+										end: range.start
+									});
+								}
+								startMoment = range.end;
+							});
+
+							// Adds the last event of the day
+							let endOfDay = moment(date, 'YYYY-MM-DD').endOf('day');
+							if (!endOfDay.isSame(startMoment)) {
+								ranges.push({
+									start: startMoment,
+									end: endOfDay
+								});
+							}
+
+							invertedDates[date] = ranges;
+						});
 						
 						LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 						this.setState({animatedHeight: 0});
+						this.refreshAgenda();
 
-						// Animated.timing(
-						// 	// Animate value over time
-						// 	this.state.animatedHeight, // The value to drive
-						// 	{
-						// 		toValue: 0,
-						// 		useNativeDriver: true,
-						// 	},
-						// ).start(); // Start the animation
 						this.setState({
-							agendaData: dates,
+							agendaData: invertedDates,
 							showCalendar: true
 						});
 					})
@@ -396,8 +417,26 @@ class CompareSchedule extends React.PureComponent {
 		return r1 !== r2;
 	}
 
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarLightPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
+	}
+	
+	refreshAgenda = () => {
+		if (Platform.OS !== 'ios') {
+			this.setState({agendaKey: Math.random()});
+		}
+	}
+
 	render() {
-		const { userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight, hasNotification } = this.state;
+		const { agendaKey, userAvailabilities, searchModalVisible, snackbarVisible, snackbarText, snackbarTime, loadingSharedList, agendaData, showCalendar, animatedHeight, hasNotification } = this.state;
 
 		return(
 			<View style={styles.content}>
@@ -460,18 +499,15 @@ class CompareSchedule extends React.PureComponent {
 						</Animated.View> }
 
 				<View style={styles.buttons}>
-					{
-						showCalendar ?
-							null :
-							<TouchableRipple ref='delete' onPress={this.removePeople}
-								style={styles.sideButton}
-								rippleColor={whiteRipple}
-								underlayColor={whiteRipple}>
-								<Text style={styles.sideButtonText}>{this.strings.delete}</Text>
-							</TouchableRipple>}
+					<TouchableRipple ref='delete' onPress={this.removePeople}
+						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1, width: showCalendar ? 0 : null, height: showCalendar ? 0 : null, padding: showCalendar ? 0 : 8}]}
+						rippleColor={whiteRipple}
+						underlayColor={whiteRipple}>
+						<Text style={styles.sideButtonText}>{this.strings.delete}</Text>
+					</TouchableRipple>
 
 					<TouchableRipple ref='availabilities' onPress={this.seeAvailabilities}
-						style={[styles.availabilityButton, {width: showCalendar ? '100%' : null}]}
+						style={[styles.availabilityButton, {width: showCalendar ? '95%' : null}]}
 						rippleColor={whiteRipple}
 						underlayColor={blueRipple}>
 						<Text style={styles.availabilityButtonText}>
@@ -480,7 +516,7 @@ class CompareSchedule extends React.PureComponent {
 					</TouchableRipple>
 					
 					<TouchableRipple ref='allow' onPress={() => this.setState({searchModalVisible: true}) }
-						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1}]}
+						style={[styles.sideButton, {opacity: showCalendar ? 0 : 1, width: showCalendar ? 0 : null, height: showCalendar ? 0 : null, padding: showCalendar ? 0 : 8}]}
 						disabled={showCalendar}
 						rippleColor={whiteRipple}
 						underlayColor={whiteRipple}>
@@ -489,6 +525,7 @@ class CompareSchedule extends React.PureComponent {
 				</View>
 
 				<Agenda ref='agenda'
+					key={agendaKey}
 					items={agendaData}
 					refreshing={loadingSharedList}
 					renderItem={this.renderItem}
@@ -506,12 +543,16 @@ class CompareSchedule extends React.PureComponent {
 					hideKnob={!showCalendar}
 					theme={{agendaKnobColor: dark_blue}}/>
 
-
 				<Modal isVisible={searchModalVisible}
 					deviceHeight={deviceHeight}
 					deviceWidth={deviceWidth}
 					avoidKeyboard
-					onBackdropPress={() => this.setState({searchModalVisible: false})}>
+					onBackdropPress={() => this.setState({searchModalVisible: false})}
+					onModalHide={() => 
+						setTimeout(() => { 
+							this.refreshAgenda();
+						}, 500)
+					}>
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>{this.strings.enterEmail}</Text>
 
@@ -543,8 +584,10 @@ class CompareSchedule extends React.PureComponent {
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.allowPopover}
 					fromView={this.refs.allow}
-					onClose={() => this.setState({allowPopover:false}, () => this.setState({availabilitiesPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({allowPopover:false}, () => this.setState({availabilitiesPopover:true}))}>
+					placement={'bottom'}
+					onClose={() => this.setState({allowPopover:false})}
+					doneClosingCallback={() => this.setState({availabilitiesPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({allowPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.allowPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
@@ -552,8 +595,10 @@ class CompareSchedule extends React.PureComponent {
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.availabilitiesPopover}
 					fromView={this.refs.availabilities}
-					onClose={() => this.setState({availabilitiesPopover:false}, () => this.setState({deletePopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({availabilitiesPopover:false}, () => this.setState({deletePopover:true}))}>
+					placement={'bottom'}
+					onClose={() => this.setState({availabilitiesPopover:false})}
+					doneClosingCallback={() => this.setState({deletePopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({availabilitiesPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.availabilitiesPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
@@ -561,13 +606,16 @@ class CompareSchedule extends React.PureComponent {
 				<Popover popoverStyle={styles.tooltipView}
 					isVisible={this.state.deletePopover}
 					fromView={this.refs.delete}
+					placement={'bottom'}
 					onClose={() => {
 						this.setState({deletePopover:false});
-						this.props.dispatch(setTutorialStatus('compareSchedule', true));	
+						this.props.dispatch(setTutorialStatus('compareSchedule', true));
+						this.restoreStatusBar();	
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({deletePopover:false});
 						this.props.dispatch(setTutorialStatus('compareSchedule', true));	
+						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.deletePopover}</Text>
 					</TouchableOpacity>

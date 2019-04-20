@@ -11,9 +11,10 @@ import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCale
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute, UnavailableRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
-import { reviewEventStyles as styles, white, blue, statusBlueColor, statusBarPopover, statusBarDark, black, dark_blue } from '../../styles';
+import { reviewEventStyles as styles, white, blue, statusBlueColor, statusBarPopover, statusBarDark, black, dark_blue, statusBarLightPopover } from '../../styles';
 import { insertFixedEventsToGoogle } from '../../services/service';
 import { getStrings } from '../../services/helper';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 /**
  * Permits users to verify and edit the events they added
@@ -82,7 +83,12 @@ class ReviewEvent extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		this.setState({coursePopover: !this.props.showTutorial});
+		setTimeout(() => {
+			this.setState({coursePopover: !this.props.showTutorial});
+			if (!this.props.showTutorial) {
+				this.darkenStatusBar();
+			}
+		}, 300);
 	}
 
 	componentWillReceiveProps() {
@@ -132,7 +138,7 @@ class ReviewEvent extends React.PureComponent {
 				fixedEventData.push({
 					title: data.title,
 					dates: data.startDate + ' - ' + data.endDate,
-					recurrence: data.recurrenceValue,
+					recurrence: data.recurrence,
 					hours: data.allDay ? this.strings.allDay : (data.startTime + ' - ' + data.endTime),
 					location: data.location,
 					description: data.description
@@ -277,6 +283,19 @@ class ReviewEvent extends React.PureComponent {
 		StatusBar.setBackgroundColor(statusBarDark);
 	}
 
+
+	darkenStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarLightPopover, true);
+		}
+	}
+
+	restoreStatusBar = () => {
+		if (Platform.OS === 'android') {
+			StatusBar.setBackgroundColor(statusBarDark, true);
+		}
+	}
+
 	render() {
 		return(
 			<View style={styles.container}>
@@ -389,60 +408,67 @@ class ReviewEvent extends React.PureComponent {
 				</ScrollView>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight)}
+					verticalOffset={Platform.OS === 'ios' ? 0 : -(StatusBar.currentHeight)}
 					placement={'bottom'}
 					isVisible={this.state.coursePopover}
 					fromView={this.refs.course}
-					onClose={() => this.setState({coursePopover:false}, () => this.setState({fixedPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({coursePopover:false}, () => this.setState({fixedPopover:true}))}>
+					onClose={() => this.setState({coursePopover:false})}
+					doneClosingCallback={() => this.setState({fixedPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({coursePopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.coursePopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight)}
+					verticalOffset={Platform.OS === 'ios' ? 0 : -(StatusBar.currentHeight)}
 					placement={'bottom'}
 					isVisible={this.state.fixedPopover}
 					fromView={this.refs.fixed}
-					onClose={() => this.setState({fixedPopover:false}, () => this.setState({nonFixedPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({fixedPopover:false}, () => this.setState({nonFixedPopover:true}))}>
+					onClose={() => this.setState({fixedPopover:false})}
+					doneClosingCallback={() => this.setState({nonFixedPopover: true})}>
+					<TouchableOpacity onPress={() => this.setState({fixedPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.fixedPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight)}
+					verticalOffset={Platform.OS === 'ios' ? 0 : -(StatusBar.currentHeight)}
 					placement={'bottom'}
 					isVisible={this.state.nonFixedPopover}
 					fromView={this.refs.nonFixed}
-					onClose={() => this.setState({nonFixedPopover:false}, () => this.setState({unavailablePopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({nonFixedPopover:false}, () => this.setState({unavailablePopover:true}))}>
+					onClose={() => this.setState({nonFixedPopover:false})}
+					doneClosingCallback={() => this.setState({unavailablePopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({nonFixedPopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.nonFixedPopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight + 57)}
+					verticalOffset={Platform.OS === 'ios' ? -(getStatusBarHeight() + 18) : -(StatusBar.currentHeight + 57)}
 					placement={'bottom'}
 					isVisible={this.state.unavailablePopover}
 					fromView={this.refs.course}
-					onClose={() => this.setState({unavailablePopover:false}, () => this.setState({checkPopover:true}))}>
-					<TouchableOpacity onPress={() => this.setState({unavailablePopover:false}, () => this.setState({checkPopover:true}))}>
+					onClose={() => this.setState({unavailablePopover:false})}
+					doneClosingCallback={() => this.setState({checkPopover:true})}>
+					<TouchableOpacity onPress={() => this.setState({unavailablePopover:false})}>
 						<Text style={styles.tooltipText}>{this.strings.unavailablePopover}</Text>
 					</TouchableOpacity>
 				</Popover>
 
 				<Popover popoverStyle={styles.tooltipView}
-					verticalOffset={-(StatusBar.currentHeight)}
+					verticalOffset={Platform.OS === 'ios' ? 0 : -(StatusBar.currentHeight)}
+					placement={'top'}
 					isVisible={this.state.checkPopover}
 					fromView={this.refs.check}
 					onClose={() => {
 						this.setState({checkPopover:false});
 						this.props.setTutorialStatus('reviewEvents', true);
+						this.restoreStatusBar();
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({checkPopover:false});
 						this.props.setTutorialStatus('reviewEvents', true);
+						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.checkPopover}</Text>
 					</TouchableOpacity>

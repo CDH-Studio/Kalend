@@ -65,6 +65,7 @@ class ModalEvent extends React.PureComponent {
 					deviceHeight={deviceHeight}
 					deviceWidth={deviceWidth}
 					onBackdropPress={this.dismissModal}
+					style={{alignItems:'center'}}
 					useNativeDriver
 					onModalHide={() => {
 						if (this.state.showDelete) {
@@ -73,8 +74,8 @@ class ModalEvent extends React.PureComponent {
 						}
 					}}>
 					<View style={[styles.modalContent, {backgroundColor: this.props.categoryColor}]}>
-						<View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5}}>
-							<View style={{height:70, padding: 3}}>
+						<View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+							<View style={{flex: 10, maxHeight:70, marginTop: 10}}>
 								<ScrollView>
 									<TouchableOpacity activeOpacity={1}>
 										<Text style={styles.modalTitle}>{this.props.eventTitle}</Text>
@@ -88,8 +89,9 @@ class ModalEvent extends React.PureComponent {
 									size={30}
 									color={semiTransparentWhite} />
 							</TouchableOpacity>
-						</View>
+						</View>	
 						
+
 						<View style={styles.modalInfoView}>
 							<View>
 								<View style={styles.modalInfoDate}>
@@ -103,21 +105,17 @@ class ModalEvent extends React.PureComponent {
 									<Text style={[styles.modalInfoText, {color: semiTransparentWhite}]}>{this.props.time}</Text>
 								</View>
 							</View>
-							
-							<MaterialCommunityIcons name={this.props.categoryIcon}
-								size={80}
-								color={semiTransparentWhite} />
 						</View>
 
-						<View style={styles.modalDetailsView}>
-							<View style={{height:this.props.detailHeight}} onStartShouldSetResponder={() => true}>
+						{this.props.details ? <View style={styles.modalDetailsView}>
+							<View style={{maxHeight:this.props.detailHeight}} onStartShouldSetResponder={() => true}>
 								<ScrollView>
 									<TouchableOpacity activeOpacity={1}>
 										{this.props.details}
 									</TouchableOpacity>
 								</ScrollView>
 							</View>
-						</View>
+						</View> : null}
 						
 						<View style={[styles.actionsModal, {backgroundColor: this.props.categoryColor}]}>
 							<View style={styles.actionIconModal}>
