@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { connect } from 'react-redux';
 import EventOverview from '../EventOverview';
 import { bindActionCreators } from 'redux';
-import { storeGeneratedCalendars } from '../../services/api/storage_services';
+import { storeInsertedCalendars } from '../../services/api/storage_services';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearCourse, clearFixedEvents, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute, UnavailableRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
@@ -239,7 +239,8 @@ class ReviewEvent extends React.PureComponent {
 			.then((promises) => {
 			
 				if (this.state.nonFixedEventData.length == 0) {
-					storeGeneratedCalendars(promises).then(success => {
+					storeInsertedCalendars(promises).then(success => {
+						
 						if(success) {
 							this.props.clearCourse();
 							this.props.clearFixedEvents();
