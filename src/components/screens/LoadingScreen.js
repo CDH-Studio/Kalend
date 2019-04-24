@@ -126,7 +126,7 @@ class LoadingScreen extends React.PureComponent {
 		switch (this.props.main) {
 			case 'Home':
 				this.setState({
-					nextScreen: LoginNavigator
+					nextScreen: WelcomeScreen
 				});
 				break;
 			case 'SchoolSchedule':

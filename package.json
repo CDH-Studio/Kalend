@@ -37,7 +37,6 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-extra-dimensions-android": "^1.2.5",
     "react-native-firebase": "^5.2.2",
-    "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.1",
     "react-native-iphone-x-helper": "^1.2.0",
@@ -57,10 +56,8 @@
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
-    "redux-thunk": "^2.3.0",
     "rn-fetch-blob": "^0.10.15",
     "rn-viewpager": "^1.2.9",
-    "sqlite3": "^4.0.6",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
