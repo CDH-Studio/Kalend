@@ -5486,9 +5486,9 @@ react-native-app-intro-slider@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-1.0.1.tgz#712bf3dc1d66b3432bf4092971db4dfc01b916bd"
   integrity sha512-5Gzg5FG2uP/RHkSDFB5+2df4vQ2FpyUJ5PGYd23lLEISsEOJe0Zredh1hHMJj+fB5D9B7ZoL0IlR+SNn8iFxHg==
 
-"react-native-calendars@https://github.com/MarieEveLegault/react-native-calendar-kalend.git":
+"react-native-calendars@https://github.com/CDH-Studio/react-native-calendar-kalend.git":
   version "1.19.3"
-  resolved "https://github.com/MarieEveLegault/react-native-calendar-kalend.git#fd82215fb8e7729924c28120f728e45c99fc3ff7"
+  resolved "https://github.com/CDH-Studio/react-native-calendar-kalend.git#fd82215fb8e7729924c28120f728e45c99fc3ff7"
   dependencies:
     lodash.get "^4.4.2"
     lodash.isequal "^4.5.0"
