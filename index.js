@@ -33,6 +33,19 @@ import CleanReducers from './src/components/screens/CleanReducers';
 import CalendarPermission from './src/components/screens/CalendarPermission';
 import { blue, dark_blue, white } from './src/styles.js';
 import { getStrings } from './src/services/helper';
+import firebase from 'react-native-firebase';
+import bgMessaging from './src/background/bgMessaging';
+import bgActions from './src/background/bgActions';
+import SharingManagement from './src/components/screens/SharingManagement';
+
+let config = {
+	databaseURL: 'https://kalend.firebaseio.com/',
+	projectId: 'AIzaSyAsHLSwnApIrFap-5kuCjB2sCsfaAi81f4',
+};
+
+if (!firebase.apps.length) {
+	firebase.initializeApp(config);
+}
 
 const theme = {
 	...DefaultTheme,
@@ -224,7 +237,8 @@ const DashboardOptionsNavigator = createStackNavigator(
 
 		UnavailableHours: { screen: UnavailableHours, navigationOptions: DashboardOptionsNavigatorOptions },
 		UnavailableFixed: { screen: FixedEvent, navigationOptions: DashboardOptionsNavigatorOptions },
-		CalendarPermission: { screen: CalendarPermission, navigationOptions: DashboardOptionsNavigatorOptions }
+		CalendarPermission: { screen: CalendarPermission, navigationOptions: DashboardOptionsNavigatorOptions },
+		SharingManagement: { screen: SharingManagement, navigationOptions: DashboardOptionsNavigatorOptions}
 	},
 	{
 		initialRouteName: 'DashboardNavigator',
@@ -279,3 +293,5 @@ export default function Main() {
 }
 
 AppRegistry.registerComponent(appName, () => Main);
+AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => bgMessaging); 
+AppRegistry.registerHeadlessTask('RNFirebaseBackgroundNotificationAction', () => bgActions);

@@ -3,6 +3,8 @@ import {
 	SET_SELECTED_SCHEDULE, 
 	SET_UNAVAILABLE_HOURS,
 	SET_SCHOOL_INFORMATION,
+	SET_SELECTED_CALENDAR,
+	UPDATE_NFE, 
 	SET_LANGUAGE,
 	SET_BOTTOM_STRINGS,
 	SET_IMG, 
@@ -26,7 +28,6 @@ import {
 	DELETE_COURSE,
 	DELETE_GENERATED_CALENDAR, 
 	UPDATE_FE, 
-	UPDATE_NFE, 
 	UPDATE_COURSE, 
 	CLEAR_GENERATED_CALENDAR,
 	CLEAR_CALENDAR,
@@ -44,6 +45,7 @@ import {
 	CLEAR_DASHBOARD_DATA,
 } from '../constants';
 
+export *  from './allEvents';
 
 /*** UPDATE ***/
 export function updateFixedEvents (index, event) {
@@ -250,6 +252,15 @@ export function setSchoolInformation (info) {
 	return action;
 }
 
+export function setSelectedCalendar(index) {
+	const action = {
+		type: SET_SELECTED_CALENDAR,
+		index
+	};
+
+	return action;
+}
+
 export function setLanguage (language) {
 	const action = {
 		type: SET_LANGUAGE,
@@ -258,6 +269,7 @@ export function setLanguage (language) {
 
 	return action;
 }
+
 export function setDashboardData (data) {
 	const action = {
 		type: SET_DASHBOARD_DATA,

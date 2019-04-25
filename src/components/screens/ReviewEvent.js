@@ -4,9 +4,11 @@ import { FAB } from 'react-native-paper';
 import Popover from 'react-native-popover-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
+import EventOverview from '../EventOverview';
+import { bindActionCreators } from 'redux';
+import { storeInsertedCalendars } from '../../services/api/storage_services';
 import { deleteCourse, deleteFixedEvent, deleteNonFixedEvent, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearCourse, clearFixedEvents, setNavigationScreen, setTutorialStatus } from '../../actions';
 import { SchoolScheduleRoute, FixedEventRoute, NonFixedEventRoute, ScheduleCreationRoute, SchoolInformationRoute, CourseRoute, UnavailableRoute } from '../../constants/screenNames';
-import EventOverview from '../EventOverview';
 import updateNavigation from '../NavigationHelper';
 import { store } from '../../store';
 import { reviewEventStyles as styles, white, blue, statusBlueColor, statusBarPopover, statusBarDark, black, dark_blue, statusBarLightPopover } from '../../styles';
@@ -172,17 +174,17 @@ class ReviewEvent extends React.PureComponent {
 
 		switch (category) {
 			case SchoolScheduleRoute:
-				dataToDispatch = deleteCourse(id);
+				dataToDispatch = this.props.deleteCourse;
 				newEvents = this.state.schoolScheduleData;
 				objectToChange = 'schoolScheduleData';
 				break;
 			case FixedEventRoute:
-				dataToDispatch = deleteFixedEvent(id);
+				dataToDispatch = this.props.deleteFixedEvent;
 				newEvents = this.state.fixedEventData;
 				objectToChange = 'fixedEventData';
 				break;
 			case NonFixedEventRoute:
-				dataToDispatch = deleteNonFixedEvent(id);
+				dataToDispatch = this.props.deleteNonFixedEvent;
 				newEvents = this.state.nonFixedEventData;
 				objectToChange = 'nonFixedEventData';
 				break;
@@ -195,7 +197,7 @@ class ReviewEvent extends React.PureComponent {
 			if (index != id) return event;
 		});
 
-		this.props.dispatch(dataToDispatch);
+		dataToDispatch(id);
 		this.setState({[objectToChange]: newEvents});
 	}
 
@@ -224,8 +226,8 @@ class ReviewEvent extends React.PureComponent {
 	 * Goes to the appropriate Schedule Creation Screen
 	 */
 	navigateCreationScreen = () => {
-		this.props.dispatch(clearGeneratedCalendars());
-		this.props.dispatch(clearGeneratedNonFixedEvents());
+		this.props.clearGeneratedCalendars();
+		this.props.clearGeneratedNonFixedEvents();
 
 		if (this.state.schoolScheduleData.length == 0 && this.state.nonFixedEventData.length == 0 && this.state.fixedEventData.length == 0 ) {
 			Alert.alert(
@@ -238,30 +240,37 @@ class ReviewEvent extends React.PureComponent {
 			);
 			return;
 		}
-
-		if (this.state.nonFixedEventData.length == 0) {
-			insertFixedEventsToGoogle()
-				.then(() => {
-					this.props.dispatch(clearCourse());
-					this.props.dispatch(clearFixedEvents());
-					this.props.dispatch(setNavigationScreen({successfullyInsertedEvents: true}));
-					this.props.navigation.pop();
-				})
-				.catch(err => {
-					if (err) {
-						Alert.alert(
-							this.strings.error,
-							err,
-							[
-								{text: this.strings.ok},
-							],
-							{cancelable: false}
-						);
-					}
-				});
-		} else {
-			this.props.navigation.navigate(ScheduleCreationRoute, {title: getStrings().ScheduleCreation.title});
-		}
+		
+		insertFixedEventsToGoogle()
+			.then((promises) => {
+			
+				if (this.state.nonFixedEventData.length == 0) {
+					storeInsertedCalendars(promises).then(success => {
+						
+						if(success) {
+							this.props.clearCourse();
+							this.props.clearFixedEvents();
+							this.props.setNavigationScreen({successfullyInsertedEvents: true});
+							this.props.navigation.pop();
+						}
+					});
+				} else {
+					this.props.navigation.navigate(ScheduleCreationRoute, {title: getStrings().ScheduleCreation.title});	
+				}			
+			})
+			.catch(err => {
+				console.log('err', err);
+				if (err) {
+					Alert.alert(
+						this.strings.error,
+						err,
+						[
+							{text: this.strings.ok},
+						],
+						{cancelable: false}
+					);
+				}
+			});
 	}
 
 	showPopover = (isVisible) => {
@@ -453,12 +462,12 @@ class ReviewEvent extends React.PureComponent {
 					fromView={this.refs.check}
 					onClose={() => {
 						this.setState({checkPopover:false});
-						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+						this.props.setTutorialStatus('reviewEvents', true);
 						this.restoreStatusBar();
 					}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({checkPopover:false});
-						this.props.dispatch(setTutorialStatus('reviewEvents', true));
+						this.props.setTutorialStatus('reviewEvents', true);
 						this.restoreStatusBar();
 					}}>
 						<Text style={styles.tooltipText}>{this.strings.checkPopover}</Text>
@@ -490,4 +499,9 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, null)(ReviewEvent);
+
+let mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ clearGeneratedNonFixedEvents, clearGeneratedCalendars, clearCourse, clearFixedEvents, setNavigationScreen, setTutorialStatus, deleteCourse, deleteFixedEvent, deleteNonFixedEvent}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewEvent);

@@ -1,8 +1,9 @@
 import { formatData, getStartDate, containsDateTime, divideDuration, getRndInteger, convertEventsToDictionary, selectionSort, getRandomDate, getStrings } from './helper';
-import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, listEvents, getCalendar, insertAccessRule, getAccessRules, removeAccessRules, deleteCalendar } from './google_calendar';
+import { insertEvent, getCalendarList, createSecondaryCalendar, getAvailabilities, getCalendar, insertAccessRule, getAccessRules, removeAccessRules, deleteCalendar, deleteEvent } from './google_calendar';
 import { googleGetCurrentUserInfo } from './google_identity';
 import { store } from '../store';
-import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser } from '../actions';
+import { getEvents, getUserInfoByColumnService } from './api/storage_services';
+import { addGeneratedNonFixedEvent, addCourse, addGeneratedCalendar, clearGeneratedNonFixedEvents, logonUser, addEvents } from '../actions';
 import firebase from 'react-native-firebase';
 
 const strings = getStrings().ServicesError;
@@ -217,6 +218,7 @@ export const  InsertFixedEventToCalendar = (event) => {
 export const getCalendarID2 = () => {
 	return new Promise( async function(resolve) { 
 		await getCalendarList().then((data) => {
+			console.log ('data', data);
 			let calendarID;
 			let calendarColor;
 			for (let i = 0; i < data.items.length; i++) {
@@ -492,15 +494,17 @@ export const generateCalendars = async () => {
 };
 
 export const getDataforDashboard = async () => {
-	let calendarID = store.getState().CalendarReducer.id;
 	return new Promise(async (resolve, reject) => {
-		await listEvents(calendarID).then(data => {
-			if (data.error) reject('There was a problem featching your data');
-			convertEventsToDictionary(data.items).then(dict => {
-				if(dict == undefined) reject('There was an error in converting data to dict');
-				resolve(dict);
+		await getEvents()
+			.then(res => res.json())
+			.then((events) => {
+				if(events.length != 0) {
+					convertEventsToDictionary(events).then(dict => {
+						if(dict == undefined) reject('There was an error in converting data to dict');
+						resolve(dict);
+					});
+				}
 			});
-		});
 	});
 };
 
@@ -509,6 +513,7 @@ export const sortEventsInDictonary = (dict) => {
 		let sortedValue = selectionSort(value);
 		dict[key] = sortedValue;
 	}
+
 	return dict;
 };
 
@@ -518,7 +523,10 @@ export const insertFixedEventsToGoogle = async () => {
 	await store.getState().CoursesReducer.forEach(async (event) => {
 		promises.push(new Promise(function(resolve,reject) {
 			InsertCourseEventToCalendar(event).then(data => {
+				console.log('course', data);
 				if(data.error) reject(strings.insertFixedCourse);
+				data.category = 3;
+				store.dispatch(addEvents(data));
 				resolve(data);
 			});
 		}));
@@ -539,7 +547,9 @@ export const insertFixedEventsToGoogle = async () => {
 		
 		promises.push(new Promise(function(resolve,reject) {
 			InsertFixedEventToCalendar(info).then(data => {
-				if (data.error) reject(strings.insertFixed);
+				if (data.error)  reject(strings.insertFixed);
+				data.category = 2;
+				store.dispatch(addEvents(data));
 				resolve(data);
 			});
 		}));
@@ -636,13 +646,30 @@ export const listPermissions = () => {
  * Function in compare schedule, to list everyone who you can compare the schedules
  */
 export const listSharedKalendCalendars = () => {
-	return new Promise((resolve, reject) => {
-		getCalendarList().then(data => {
+	return new Promise( async(resolve, reject) => {
+		getCalendarList().then(async data => {
 			if (data.error) reject('The calendar does not exists');
+			
+			let promises = [];
+			let sharedCalendars = data.items.filter(i => i.accessRole == 'freeBusyReader' && i.summary == 'Kalend');
+			await sharedCalendars.forEach((i) => {
+				promises.push( new Promise((resolve) => {
+					getUserInfoByColumnService({columns: ['PHOTOURL','FULLNAME'], where: {value: i.id, field: 'CALENDARID'} })
+						.then(res => res.json())
+						.then(info => {
+							if (info) {
+								i.name = info.FULLNAME;
+								i.photo = info.PHOTOURL;
+							}
+							resolve(i);
+						});
+				}));
+				
+			});
 
-			let sharedCalendars = data.items.filter(i => i.accessRole === 'freeBusyReader' && i.summary === 'Kalend');
-
-			resolve(sharedCalendars);
+			Promise.all(promises).then(data => {
+				resolve(data);
+			});
 		});
 	});
 };
@@ -676,4 +703,22 @@ export const getAvailabilitiesCalendars = (calendarIds, startTime, endTime) => {
 			resolve(data);
 		});
 	});
+};
+
+/**
+  * 
+  * Function called in compare schedule, to remove someone else from your shared calendars
+  * 
+  * @param {Strings} calendarId The ID of the Calendar
+  * @param {String} events IDs of the events pushed to google Calendar
+  */
+export const deleteCreatedGoogleEvents = () => {
+	let events = store.getState().AllEventsReducer;
+	let calendarID = store.getState().CalendarReducer.id;
+	let promises = [];
+	events.forEach(event => {
+		promises.push(deleteEvent(calendarID, event.id));
+	});
+
+	return Promise.all(promises);
 };

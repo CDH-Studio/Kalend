@@ -7,7 +7,7 @@ import updateNavigation from '../NavigationHelper';
 import { setImageURI } from '../../actions';
 import CameraRollImage from '../CameraRollImage';
 import { SchoolScheduleCreationRoute } from '../../constants/screenNames';
-import { selectPictureStyles as styles, white, blue } from '../../styles';
+import { selectPictureStyles as styles, white, dark_blue } from '../../styles';
 import { getStrings } from '../../services/helper';
 import CameraRoll from '@react-native-community/cameraroll';
 
@@ -236,7 +236,8 @@ class SchoolScheduleSelectPicture extends React.PureComponent {
 				
 				<FAB style={styles.fab}
 					icon="file-upload"
-					theme={{colors:{accent:blue}}}
+					theme={{colors:{accent:white}}}
+					color={dark_blue}
 					visible={showFAB}
 					onPress={this.nextScreen} />
 			</View>

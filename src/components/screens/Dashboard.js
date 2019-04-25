@@ -13,6 +13,8 @@ import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { ReviewEventRoute } from '../../constants/screenNames';
 import { getStrings } from '../../services/helper';
 import { getDataforDashboard, sortEventsInDictonary } from '../../services/service';
+import { updateUser } from '../../services/api/storage_services';
+import firebase from 'react-native-firebase';
 // import ModalEvent from '../ModalEvent';
 // import DeleteModal from '../DeleteModal';
 
@@ -129,6 +131,20 @@ class Dashboard extends React.PureComponent {
 	}
 	
 	componentDidMount() {
+		firebase.messaging().getToken().then(fcmToken => {
+			if (fcmToken) {
+				console.log('token firebase', fcmToken);
+				updateUser({values:[fcmToken], columns:['FIREBASEID']});
+			}
+		});
+
+		this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+			// Process your token as required
+			console.log('token firebase', fcmToken);
+			updateUser({values:[fcmToken], columns:['FIREBASEID']});
+		});
+	
+		// this.setState({isVisible: true});
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
@@ -163,16 +179,16 @@ class Dashboard extends React.PureComponent {
 
 	componentWillUnmount() {
 		this.willFocusSubscription.remove();
+		this.onTokenRefreshListener();
 	}
 
 	setDashboardDataService = () => {
 		getDataforDashboard()
 			.then(items => {
-				setTimeout(() => {
-					let dict = sortEventsInDictonary(items);
-					this.props.dispatch(setDashboardData(dict));
-					this.setState({items: dict});
-				},2000);
+				let dict =  sortEventsInDictonary(items);
+				this.props.dispatch(setDashboardData(dict));
+				this.setState({items: dict});
+				console.log(dict);
 			})
 			.catch(err => {
 				console.log('err', err);

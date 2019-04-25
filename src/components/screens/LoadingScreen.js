@@ -1,13 +1,15 @@
 import React from 'react';
-import { StatusBar, View, Animated, Easing, Platform } from 'react-native';
+import { StatusBar, View, Animated, Easing, Platform, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
-import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
+import { WelcomeScreen, DashboardOptionsNavigator } from '../../constants/screenNames';
 import { gradientColors } from '../../../config/config';
 import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 import { setBottomString, setLanguage } from '../../actions';
 import { getStrings } from '../../services/helper';
+import firebase from 'react-native-firebase';
+import { requestCalendarPermissions } from '../../services/firebase_messaging';
 
 const logoFile = require('../../assets/logoAnim.json');
 const gradientAnimDuration = 2250;
@@ -17,6 +19,8 @@ const logoAnimDuration = 3000;
  * The logo animation screen when the application is opened.
  */
 class LoadingScreen extends React.PureComponent {
+
+	notificationStrings = getStrings().SharingNotification;
 
 	constructor(props) {
 		super(props);
@@ -55,6 +59,65 @@ class LoadingScreen extends React.PureComponent {
 		this.setState({
 			colors: gradientColors
 		});
+
+		this.createNotificationListeners();
+	}
+
+	createNotificationListeners = async () => {
+		/*
+		* Triggered for data only payload in foreground
+		* */
+		this.messageListener = firebase.messaging().onMessage((message) => {
+			Alert.alert(this.notificationStrings.title, message.data.name + this.notificationStrings.body, [
+				{text: 'Allow', onPress: () => {
+					requestCalendarPermissions({
+						requester: {email: message.data.senderEmail},
+						accepter : {email: message.data.receiverEmail}
+					})
+						.then(res => res.json())
+						.then(success => {
+							if(success) {
+								firebase.database()
+									.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+									.update({
+										allow: true,
+										dismiss: false
+									});
+								Alert.alert('', this.notificationStrings.allowBody, [{text: 'Ok'}], {cancelable: true});
+							}
+						});
+				}
+				},
+				{text: 'Deny', onPress: () => {
+					firebase.database()
+						.ref(`notifications/${message.from.split('/')[2]}/${message.data.notificationId}/`)
+						.update({
+							allow: false,
+							dismiss: false
+						});
+					Alert.alert('', this.notificationStrings.denyBody, [{text: 'Ok'}], {cancelable: true});
+				}, style: 'cancel'}
+			], {cancelable: true});
+		});
+
+		this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+			const action = notificationOpen.action;
+			const notification = notificationOpen.notification;
+
+			if (action === 'allow' ||  action === 'deny') {
+				firebase.notifications().removeDeliveredNotification(notification.notificationId);
+			}
+		});
+	}
+
+	showAlert(title, body) {
+		Alert.alert(
+			title, body,
+			[
+				{ text: 'OK', onPress: () => console.log('OK Pressed') },
+			],
+			{ cancelable: false },
+		);
 	}
 
 	componentWillMount() {
@@ -63,7 +126,7 @@ class LoadingScreen extends React.PureComponent {
 		switch (this.props.main) {
 			case 'Home':
 				this.setState({
-					nextScreen: LoginNavigator
+					nextScreen: WelcomeScreen
 				});
 				break;
 			case 'SchoolSchedule':

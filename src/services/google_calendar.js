@@ -1,5 +1,4 @@
-import { store } from '../store';
-let accessToken;
+import { getUserValuesService  } from './api/storage_services';
 
 /**
  * Helper method for the Google Calendar API calls
@@ -9,9 +8,9 @@ let accessToken;
  * @param {Object} body The body of the call
  * @param {Object} query Query parameter object to be appended to the URL
  */
-let apiHelperCall = (URL, method, body, query) => {
-	accessToken = store.getState().HomeReducer.profile.profile.accessToken;
-	//accessToken = "ya29.Glu-BlpDlUfWvL5rkqAwV6WUfx4XCfsGku8G072--YzoPjC3_6yb4Rh4b0pXNI5uxF35W_V_-eOhxYkfIyU3XuHlsN0rkt_32sXKe1zxPv6C6TYr_-idfDxj_cE8"
+let apiHelperCall = async (URL, method, body, query) => {
+	let tokenData = await getUserValuesService({columns:['ACCESSTOKEN']}).then(res => res.json());
+	let accessToken = tokenData.ACCESSTOKEN;
 
 	let fetchData = {
 		method,
@@ -82,7 +81,6 @@ let getCalendarList = () => {
  * @returns {Promise} A promise containing an object with the information about the newly created calendar
  */
 let createSecondaryCalendar = (data) => {
-	console.log('secondary', data);
 	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars', 'POST', data);
 };
 
@@ -242,7 +240,9 @@ let addQuickEvent = (calendarId, data, query) => {
  * @returns {Promise} A promise containing an object with all of the recurrent events
  */
 let getEventsInstances = (calendarId, eventId, data, query) => {
-	return apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId + '/instances', 'GET', data, query);
+	return  new Promise(resolve => {
+		resolve(apiHelperCall('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/' + eventId + '/instances', 'GET', data, query));
+	});
 };
 
 /**

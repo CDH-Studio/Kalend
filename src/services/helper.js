@@ -22,7 +22,6 @@ export const convertToDictionary  = (data) => {
 	return dict; 
 };
 
-
 export const convertEventsToDictionary  = async (data) => {
 	let calendarID = store.getState().CalendarReducer.id;
 	let dict = {};
@@ -30,27 +29,34 @@ export const convertEventsToDictionary  = async (data) => {
 	if (data == undefined) return;
 
 	data.forEach(async (event) => {
-		if (event.recurrence) {
+		if (event.RECURRENCE) {
 			// Get all recurring events if it has recurrence
-			await getEventsInstances(calendarID, event.id).then(instances => {
+			await getEventsInstances(calendarID, event.ID).then(async instances => {
+				let tempEvent = event;
+
 				instances.items.forEach(eventRec => {
 					let item = {};
+					item.category = tempEvent.CATEGORY;
+					item.location = event.LOCATION;
+					item.description = event.DESCRIPTION;
 					item.name = eventRec.summary;
-					let keyDate = eventRec.start.dateTime.split('T')[0];
+					let keyDate = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime.split('T')[0];
 					item.date = keyDate;
-					item.actualTime = eventRec.start.dateTime;
-	
-					item.time = `${convertLocalTimeStringToSimple(eventRec.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+					item.actualTime = (eventRec.start.date) ? eventRec.start.date : eventRec.start.dateTime;
+					item.time = (eventRec.start.date)? '' : `${convertLocalTimeStringToSimple(eventRec.start.dateTime)} - ${convertLocalTimeStringToSimple(eventRec.end.dateTime)}`;
 					(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];
 				});
 			});
 		} else {
 			let item = {};
-			let keyDate = event.start.dateTime.split('T')[0];
-			item.name = event.summary;
+			item.name = event.SUMMARY;
+			item.category = event.CATEGORY;
+			item.location = event.LOCATION;
+			item.description = event.DESCRIPTION;
+			let keyDate = event.START.split('T')[0];
 			item.date = keyDate;
-			item.actualTime = event.start.dateTime;
-			item.time = `${convertLocalTimeStringToSimple(event.start.dateTime)} - ${convertLocalTimeStringToSimple(event.end.dateTime)}`;
+			item.actualTime = event.START;
+			item.time = (event.ALLDAY) ? '': `${convertLocalTimeStringToSimple(event.START)} - ${convertLocalTimeStringToSimple(event.END)}`;
 			(dict[keyDate] != undefined) ? dict[keyDate].push(item) : dict[keyDate] = [item];	
 		}
 	});

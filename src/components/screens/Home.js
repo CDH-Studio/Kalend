@@ -12,8 +12,10 @@ import updateNavigation from '../NavigationHelper';
 import { bindActionCreators } from 'redux';
 import { googleSignIn, googleIsSignedIn, googleGetCurrentUserInfo } from '../../services/google_identity';
 import { createCalendar, getCalendarID2 } from '../../services/service';
+import { storeUserInfoService, updateUser, getUserValuesService } from '../../services/api/storage_services';
 import { homeStyles as styles, dark_blue, white } from '../../styles';
 import { getStrings } from '../../services/helper';
+import firebase from 'react-native-firebase';
 
 /** 
  * Home/Login screen of the app.
@@ -35,27 +37,50 @@ class Home extends React.PureComponent {
 	 * Sets the user information
 	 */
 	setUser = (userInfo) => {
-		this.props.logonUser(userInfo);	
+		storeUserInfoService(userInfo)
+			.then(res => res.json())
+			.then((success) => {
+				if (success) {
+					this.props.logonUser(userInfo);
+					this.setCalendar().then(id => {
+						updateUser({values:[id], columns:['CALENDARID']});
+						this.nextScreen();
+					});
+				} else {
+					alert('There was an error setting Users data');
+				}
+			})
+			.catch((err) => {
+				console.log('err', err);
+			});
 	}
 
 	/**
 	 * Creates the Kalend calendar in the user's Google Account
 	 */
 	setCalendar() {
-		getCalendarID2().then(data => {
-			if (data.calendarID === undefined) {
-				createCalendar().then(data => {
-					this.props.setCalendarID(data.calendarID);
-					this.props.setCalendarColor(data.calendarColor);
-					this.props.navigation.navigate(DashboardNavigator);
+		return new Promise( async (resolve, reject) =>  {
+			await getCalendarID2()
+				.then( data => {
+					if (data.calendarID === undefined) {
+						createCalendar()
+							.then(data => {
+								this.props.setCalendarID(data.calendarID);
+								this.props.setCalendarColor(data.calendarColor);
+								resolve(data.calendarID);
+							});
+					} else {
+						this.props.setCalendarID(data.calendarID);
+						this.props.setCalendarColor(data.calendarColor);
+						resolve(data.calendarID);
+					}
+				}).catch(err => {
+					reject(err);
+					alert(err);
 				});
-			} else {
-				this.props.setCalendarID(data.calendarID);
-				this.props.setCalendarColor(data.calendarColor);
-				this.props.navigation.navigate(DashboardNavigator);
-			}
 		});
-	}
+	}	
+
 	
 	/**
 	 * Log In the user with their Google Account
@@ -77,23 +102,34 @@ class Home extends React.PureComponent {
 					googleGetCurrentUserInfo().then((userInfo) => {
 						if (userInfo !== undefined) {
 							this.setUser(userInfo);
-							this.setCalendar();
 						}
 						googleSignIn().then((userInfo) => {
-							if (userInfo !== null) {
+							if (userInfo) {
 								this.setUser(userInfo);
-								this.setCalendar();
 							}
 							this.state.clicked = false;
 						});
 					});
 				} else {
-					this.setCalendar();
+					this.setCalendar().then(id => {
+						updateUser({values:[id], columns:['CALENDARID']});	
+					});
+					this.nextScreen();
 				}
 			});
 		}
 	}
 
+	nextScreen = async () => {
+		firebase.messaging().hasPermission()
+			.then(async () => {
+				await firebase.messaging().requestPermission();
+				let data = await getUserValuesService({columns:['ID']}).then(res => res.json());
+				firebase.messaging().subscribeToTopic((data.ID).toString());
+				this.props.navigation.navigate(DashboardNavigator);
+			});
+	}
+	
 	showWebsite = (url) => {
 		if (Platform.OS === 'ios') {
 			this.openSafari(url);
@@ -149,7 +185,6 @@ class Home extends React.PureComponent {
 									color={GoogleSigninButton.Color.Light} 
 									onPress={this.signIn} />
 							</View>
-
 							<TouchableOpacity style={styles.cdhSection}
 								onPress={ ()=>{
 									this.props.language === 'en' ? this.showWebsite('https://cdhstudio.ca/') : this.showWebsite('https://cdhstudio.ca/fr');

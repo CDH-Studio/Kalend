@@ -3,8 +3,10 @@ import { StatusBar, BackHandler, Alert, Text, View, Platform } from 'react-nativ
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
 import { HeaderBackButton } from 'react-navigation';
-import { generateCalendars, setUserInfo, insertFixedEventsToGoogle } from '../../services/service';
+import { generateCalendars, setUserInfo, deleteCreatedGoogleEvents } from '../../services/service';
 import { connect } from 'react-redux';
+import { addEvents } from '../../actions';
+import { bindActionCreators } from 'redux';
 import { DashboardNavigator, ScheduleSelectionRoute, ReviewEventRoute } from '../../constants/screenNames';
 import { scheduleCreateStyles as styles, dark_blue, white } from '../../styles';
 import updateNavigation from '../NavigationHelper';
@@ -39,29 +41,10 @@ class ScheduleCreation extends React.PureComponent {
 	componentWillMount() {
 		// Adds a little delay before going to the next screen
 		setUserInfo();
-		insertFixedEventsToGoogle()
-			.then(() => {
-				if (this.props.NonFixedEventsReducer.length != 0) {
-					setTimeout(() =>{ 
-						this.generateScheduleService();
-					}, 3000);
-				} else  {
-					this.setState({goToNextScreen: true});
-					this.navigateToSelection();
-				}
-			})
-			.catch(err => {
-				if (err) {
-					Alert.alert(
-						this.strings.error,
-						err,
-						[
-							{text: this.strings.ok, onPress: () => this.props.navigation.pop()},
-						],
-						{cancelable: false}
-					);
-				}
-			});
+		setTimeout(() =>{ 
+			this.generateScheduleService();
+		}, 3000);
+		
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		this.props.navigation.setParams({onBackPress:  this.handleBackButton});
 	}
@@ -87,13 +70,16 @@ class ScheduleCreation extends React.PureComponent {
 				{
 					text: getStrings().Dashboard.name,
 					onPress: () => {
-						this.props.navigation.navigate(DashboardNavigator);
+						deleteCreatedGoogleEvents()
+							.then(() => this.props.navigation.navigate(DashboardNavigator));
+						
 					}
 				},
 				{
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
+						deleteCreatedGoogleEvents()
+							.then(() => this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title}));
 					},
 				},
 			],
@@ -154,4 +140,8 @@ let mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(ScheduleCreation);
+let mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ addEvents }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleCreation);

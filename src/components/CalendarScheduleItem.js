@@ -26,12 +26,15 @@ class CalendarScheduleItem extends React.PureComponent {
 					theme={{colors:{accent:dark_blue}}} />
 
 				<TouchableOpacity onPress={this._onPress} style={styles.calendarItemTouch}>
-					<View style={styles.calendarItemImageContainer}>
-						<Image style={styles.calendarItemImage}
-							source={{uri: this.props.photo == undefined ? 'https://api.adorable.io/avatars/' + this.props.name : this.props.photo}} />
-					</View>
+					{
+						this.props.photo == undefined ? null :
+							<View style={styles.calendarItemImageContainer}>
+								<Image style={styles.calendarItemImage}
+									source={{uri: this.props.photo}} />
+							</View>
+					}
 
-					<Text style={styles.calendarItemName}>
+					<Text style={[styles.calendarItemName, {width: this.props.photo == undefined ? '95%' : '82%'}]}>
 						{this.props.name}
 					</Text>
 				</TouchableOpacity>

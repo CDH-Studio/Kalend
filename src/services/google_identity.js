@@ -21,7 +21,6 @@ let googleSignIn = async () => {
 
 let googleSignOut = async () => {
 	try {
-		await GoogleSignin.revokeAccess();
 		await GoogleSignin.signOut();
 	} catch (error) {
 		// console.error(error);
@@ -50,4 +49,8 @@ let googleGetCurrentUserInfo = async () => {
 	}
 };
 
-module.exports = { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo };
+let getTokens =  async () => {
+	return await GoogleSignin.getTokens();
+};
+
+module.exports = { googleSignIn, googleSignOut, googleRevokeAccess, googleIsSignedIn, googleGetCurrentUserInfo, getTokens };

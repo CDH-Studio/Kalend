@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, TouchableOpacity, View, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { cameraRollImageStyles as styles, blue, white } from '../styles';
+import { cameraRollImageStyles as styles, white, dark_blue } from '../styles';
 
 const selectedIconSize = 35;
 
@@ -71,12 +71,12 @@ class CameraRollImage extends React.PureComponent {
 						<Icon style={[styles.circleIcon, {opacity: selectedStyle}]} 
 							name="checkbox-blank-circle" 
 							size={selectedIconSize} 
-							color={blue} />
+							color={white} />
 
 						<Icon style={[styles.checkIcon, {opacity: selectedStyle}]} 
 							name="check" 
 							size={selectedIconSize - 10}
-							color={white} />
+							color={dark_blue} />
 					</Animated.View>
 				</TouchableOpacity>
 			</View>

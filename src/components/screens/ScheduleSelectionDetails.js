@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { calendarColors } from '../../../config/config';
 import { DashboardNavigator } from '../../constants/screenNames';
 import { insertGeneratedEvent } from '../../services/service';
+import { storeInsertedCalendars } from '../../services/api/storage_services';
 import { getStrings } from '../../services/helper';
 import updateNavigation from '../NavigationHelper';
-import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse} from '../../actions';
+import { clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearNonFixedEvents, clearFixedEvents, clearCourse, addEvents, clearAllEvents, setSelectedCalendar } from '../../actions';
 import { scheduleSelectionDetailsStyle as styles, white, dark_blue, blue } from '../../styles';
 
 const moment = require('moment');
@@ -260,14 +261,46 @@ class ScheduleSelectionDetails extends React.PureComponent {
 	/**
 	 * Goes to the next screen
 	 */
-	nextScreen = () => {
+	nextScreen = async () => {
 		if (this.state.data.aiEvents) {
-			this.state.data.aiEvents.forEach(event => {
-				insertGeneratedEvent(event);
+			this.props.dispatch(setSelectedCalendar(this.props.index));
+			await this.insertGeneratedEvents(this.state.data.aiEvents).then(() => {
+				//storeGeneratedCalendars(this.props.GeneratedCalendarsReducer);
+				storeInsertedCalendars(this.props.AllEventsReducer)
+					.then(success => {
+						if (success) {
+							this.clearEvents();
+							this.props.navigation.navigate(DashboardNavigator);
+						} else {
+							alert('There was a problem storing Generated Events');
+						} 
+					})
+					.catch(err => {
+						alert(err);
+					});
 			});
 		}
-		this.clearEvents();
-		this.props.navigation.navigate(DashboardNavigator);
+	}
+
+	insertGeneratedEvents = (events) => {
+		let promises = [];
+		events.forEach(event => {
+			promises.push(new Promise((resolve, reject) => {
+				insertGeneratedEvent(event)
+					.then(data => {
+						if (data.error) {
+							reject(data.error);
+							return;
+						} 
+
+						data.category = 1;
+						resolve(data);
+						this.props.dispatch(addEvents(data));
+					});
+			}));
+		}); 
+
+		return Promise.all(promises);
 	}
 
 	clearEvents = () => {
@@ -276,6 +309,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 		this.props.dispatch(clearNonFixedEvents());
 		this.props.dispatch(clearFixedEvents());
 		this.props.dispatch(clearCourse());
+		this.props.dispatch(clearAllEvents());
 	}
 
 	render() {
@@ -316,7 +350,7 @@ class ScheduleSelectionDetails extends React.PureComponent {
 
 let mapStateToProps = (state) => {
 	const { index } = state.ScheduleSelectionReducer;
-	const { GeneratedNonFixedEventsReducer } = state;
+	const { GeneratedNonFixedEventsReducer, GeneratedCalendarsReducer, AllEventsReducer } = state;
 	let { fixedEventsColor, nonFixedEventsColor, courseColor } = state.CalendarReducer;
 
 	for (let i = 0; i < calendarColors.length; i++) {
@@ -353,6 +387,8 @@ let mapStateToProps = (state) => {
 	return {
 		index,
 		GeneratedNonFixedEventsReducer,
+		GeneratedCalendarsReducer,
+		AllEventsReducer,
 		fixedEventsColor,
 		nonFixedEventsColor,
 		courseColor

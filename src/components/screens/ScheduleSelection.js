@@ -2,12 +2,12 @@ import React from 'react';
 import { Platform, StatusBar, View, BackHandler, Alert, Text, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from 'react-navigation';
-import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents } from '../../actions';
+import { setSelectedSchedule, deleteGeneratedCalendar, clearGeneratedCalendars, clearGeneratedNonFixedEvents, clearAllEvents} from '../../actions';
 import { calendarColors, calendarInsideColors } from '../../../config/config';
 import { DashboardNavigator, ScheduleSelectionDetailsRoute, ReviewEventRoute } from '../../constants/screenNames';
 import updateNavigation from '../NavigationHelper';
 import converter from 'number-to-words';
-import { eventsToScheduleSelectionData } from '../../services/service';
+import { eventsToScheduleSelectionData, deleteCreatedGoogleEvents } from '../../services/service';
 import { scheduleSelectionStyle as styles, black, white } from '../../styles';
 import { getStrings } from '../../services/helper';
 
@@ -431,17 +431,25 @@ class ScheduleSelection extends React.PureComponent {
 				{
 					text: getStrings().Dashboard.name,
 					onPress: () => {
-						this.props.navigation.navigate(DashboardNavigator);
-						this.props.dispatch(clearGeneratedCalendars());
-						this.props.dispatch(clearGeneratedNonFixedEvents());
+						deleteCreatedGoogleEvents()
+							.then(() => {
+								this.props.navigation.navigate(DashboardNavigator);
+								this.props.dispatch(clearGeneratedCalendars());
+								this.props.dispatch(clearGeneratedNonFixedEvents());
+								this.props.dispatch(clearAllEvents());
+							});
 					}
 				},
 				{
 					text: getStrings().ReviewEvent.name, 
 					onPress: () => {
-						this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
-						this.props.dispatch(clearGeneratedCalendars());
-						this.props.dispatch(clearGeneratedNonFixedEvents());
+						deleteCreatedGoogleEvents()
+							.then(() => {
+								this.props.navigation.navigate(ReviewEventRoute, {title: getStrings().ReviewEvent.title});
+								this.props.dispatch(clearGeneratedCalendars());
+								this.props.dispatch(clearGeneratedNonFixedEvents());
+								this.props.dispatch(clearAllEvents());
+							});
 					},
 				},
 			],

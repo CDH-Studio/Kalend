@@ -1909,7 +1909,7 @@ export const compareScheduleStyles = StyleSheet.create({
 
 	flatList: {
 		flexWrap: 'wrap', 
-		paddingVertical: 10, 
+		paddingVertical: Platform.OS === 'ios' ? 0 : 10, 
 		marginLeft: -7
 	},
 
@@ -2551,4 +2551,97 @@ export const importCalendarStyles = StyleSheet.create({
 		color: gray, 
 		paddingTop: 10
 	}
+});
+
+export const sharingManagementItemsStyles = StyleSheet.create({
+
+	content: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		padding: 10,
+		margin: 5,
+		marginBottom: 5,
+		marginHorizontal: 15,
+		borderRadius: 5,
+		...Platform.select({
+			ios: {
+				shadowColor: '#000000',
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.3,
+				shadowRadius: 3,    
+			},
+			android: {
+				elevation: 4,
+			},
+		}),
+		backgroundColor: white
+	},
+
+	buttons: {
+		flexDirection: 'row',
+	},
+	
+	allow: {
+		marginHorizontal: 10,
+		backgroundColor: dark_blue,
+		borderRadius: 5,
+		padding: 8
+	},
+
+	allowText: {
+		fontFamily: 'Raleway-Regular', 
+		color: white,
+	},
+
+	deny: {
+		marginHorizontal: 10,
+		backgroundColor: white,
+		borderRadius: 5,
+		padding: 8
+	},
+
+	denyText: {
+		fontFamily: 'Raleway-Regular', 
+		color: dark_blue,
+	},
+
+	title: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+	email: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	}
+});
+
+export const sharingManagementStyles = StyleSheet.create({
+	content: {
+		flex: 1, 
+		width: '100%',
+		height: '100%',
+	},
+
+	activityIndicatorContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '100%'
+	},
+
+	emptyContainer: {
+		height: Dimensions.get('window').height - getStatusBarHeight() - Header.HEIGHT - 30, 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+
+	emptyTitle: {
+		fontFamily: 'Raleway-Bold', 
+		color: gray
+	},
+	
+	emptyDescription: {
+		fontFamily: 'Raleway-Regular', 
+		color: gray
+	},
 });

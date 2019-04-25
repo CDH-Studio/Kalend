@@ -17,6 +17,8 @@ import { setCalendarID, clearTutorialStatus } from '../../actions';
 import EventsColorPicker from '../EventsColorPicker';
 import ImportCalendar from '../ImportCalendar';
 import LanguageSwitcher from '../LanguageSwitcher';
+import { logOutUser } from '../../services/api/storage_services';
+import firebase from 'react-native-firebase';
 
 const viewHeight = 669.1428833007812;
 
@@ -53,10 +55,42 @@ class Settings extends React.PureComponent {
 		this.restoreStatusBar();
 	}
 
-	logout = () => {
-		googleSignOut();
-		clearEveryReducer();
-		this.props.navigation.navigate(LoginNavigator);
+	showWebsite = (url) => {
+		if (Platform.OS === 'ios') {
+			this.openSafari(url);
+		} else {
+			this.openChrome(url);
+		}
+	}
+
+	openSafari = (url) => {
+		SafariView.isAvailable()
+			.then(SafariView.show({url,
+				tintColor: dark_blue,
+				barTintColor: '#fff',
+				fromBottom: true }))
+			.catch(() => this.openChrome(url));
+	}
+
+	openChrome = (url) => {
+		CustomTabs.openURL(url, {
+			toolbarColor: dark_blue,
+			enableUrlBarHiding: true,
+			showPageTitle: true,
+			enableDefaultShare: true,
+			forceCloseOnRedirection: true,
+		});
+	}
+
+	logout = async () => {
+		await googleSignOut();
+		await logOutUser()
+			.then(res => res.json())
+			.then(id => {
+				firebase.messaging().unsubscribeFromTopic((id).toString());
+				clearEveryReducer();
+				this.props.navigation.navigate(LoginNavigator);
+			});
 	}
 
 	dismissImportCalendar = () => {
@@ -146,7 +180,7 @@ class Settings extends React.PureComponent {
 					<View style={[styles.content, {height: containerHeight}]}>
 						<View style={styles.topProfileContainer}>
 							<View style={styles.profileIconContainer}>
-								<View style={{position: 'absolute', width: 100, height: 100, elevation: 9, borderRadius: 50, marginTop: 20}}/>
+								{/* <View style={{position: 'absolute', width: 100, height: 100, elevation: 9, borderRadius: 50, marginTop: 20}}/> */}
 								<Image style={styles.profileImage}
 									source={{uri: this.props.profileImage}}/>
 							</View>

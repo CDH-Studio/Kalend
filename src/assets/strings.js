@@ -5,7 +5,8 @@ const en = {
 
 	CompareSchedule: {
 		name: 'Compare',
-		addPermission: 'This person can now see your calendar',
+		addPermission: 'A notification has been sent to the other person',
+		permissionError: 'Cannot send notification to the other person',
 		removePermission: 'Successfully removed the selected person/people',
 		noCheckbox: 'Please select one or more users to compare schedules with',
 		availabilities: 'Availabilities',
@@ -22,6 +23,7 @@ const en = {
 		email: 'Email',
 		close: 'Close',
 		add: 'Add',
+		invalidEmail: 'You cannot add yourself',
 		allowPopover: 'Add users so that they can see your calendar!',
 		availabilitiesPopover: 'Select users from the list above and tap here to see when you\'re all available!',
 		deletePopover: 'Select the users for which you don\'t want to share your calendar with anymore and tap here to remove them!'
@@ -67,7 +69,7 @@ const en = {
 		addTitle: 'Add Fixed Event',
 		editTitle: 'Edit Fixed Event',
 		description: 'Add your events, office hours, appointments, etc.',
-		recurrence: ['None', 'Everyday', 'Weekly', 'Monthly'],
+		recurrence: ['None', 'Daily', 'Weekly', 'Monthly'],
 		cancel: 'Cancel',
 		snackbarSuccess: 'Event successfully added',
 		snackbarFailure: 'Invalid field(s), please review to add event',
@@ -364,6 +366,28 @@ const en = {
 		importError: 'Imported some of the calendar events',
 		importSuccess: ' successfully imported!'
 	},
+	SharingNotification: {
+		title: 'Sharing Request',
+		subtitle: 'Compare Schedule',
+		body: ' would like to share calendars with you',
+		allow: 'Allow',
+		deny: 'Deny',
+		allowBody: 'Calendar shared!',
+		denyBody: 'Request cancelled'
+	},
+	SharingManagement: {
+		title: 'Sharing Requests',
+		allowSuccess: 'Successfully shared calendars',
+		allowError: 'Could not share calendars ',
+		denySuccess: 'Removed the selected request',
+		emptyTitle: 'You have no sharing requests',
+		emptyDescription: 'Tap to refresh the notifications',
+	},
+	SharingManagementItem: {
+		allow: 'Allow',
+		deny: 'Deny',
+
+	}
 
 };
 
@@ -391,6 +415,7 @@ const fr = {
 		email: 'Courriel',
 		close: 'Fermer',
 		add: 'Ajouter',
+		invalidEmail: 'Vous ne pouvez pas vous ajoutez',
 		allowPopover: 'Ajoutez des utilisateurs pour qu\'ils puissent voir votre calendrier!',
 		availabilitiesPopover: 'Sélectionnez des utilisateurs parmi la liste ci-dessus et appuyer ici pour voir quand vous êtes tous disponibles!',
 		deletePopover: 'Sélectionnez les utilisateurs pour lesquels vous ne voulez plus partager votre calendrier avec et appuyer ici pour les retirer!'
@@ -736,6 +761,18 @@ const fr = {
 		noEvents: 'Aucun événement trouvé dans votre sélection de calendrier(s)',
 		importError: 'Importé certains des événements du calendrier',
 		importSuccess: ' importer avec succès!'
+	},
+	SharingNotification: {
+		title: 'Demande de partage',
+		subtitle: 'Comparaison d\'horaires',
+		body: ' aimerait partager de calendriers avec vous',
+		allow: 'Autoriser',
+		deny: 'Refuser',
+		allowBody: 'Calendrier partagé',
+		denyBody: 'Requête annulé'
+	},
+	SharingManagement: {
+		title: 'Requête de partage de calendrier'
 	}
 };
 
