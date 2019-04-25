@@ -3,7 +3,7 @@ import { StatusBar, View, Animated, Easing, Platform, Alert } from 'react-native
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import AnimatedGradient from '../AnimatedGradient';
-import { WelcomeScreen, LoginNavigator, DashboardOptionsNavigator } from '../../constants/screenNames';
+import { WelcomeScreen, DashboardOptionsNavigator } from '../../constants/screenNames';
 import { gradientColors } from '../../../config/config';
 import { loadingStyles as styles, blue, statusBarDark } from '../../styles';
 import { setBottomString, setLanguage } from '../../actions';
