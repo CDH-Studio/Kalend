@@ -5,7 +5,7 @@
 ![](https://img.shields.io/github/license/CDH-Studio/Kalend.svg?style=flat)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/CDH-Studio/Kalend.svg)
 
-A mobile application that leverages Artificial Intelligence technology to create optimized schedules while taking into account various user constraints as well as other information such as the location of activities and their duration. Our project demo website is available [here](https://benjeau.github.io/).
+A mobile application that leverages Artificial Intelligence technology to create optimized schedules while taking into account various user constraints as well as other information such as the location of activities and their duration. Our project demo website is available [here](https://cdh-studio.github.io/Kalend-Demo-Website/).
 
 ## Dependencies
 
